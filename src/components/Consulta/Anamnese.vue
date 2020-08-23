@@ -103,75 +103,89 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapState } from "vuex"
+
 export default {
   data() {
     return {
+      ...mapState({
+        pacienteSelected: state => state.pacienteSelected
+      }),
       anamnese: [],
       sintomas: [
-        { text: "Prurido", value: "prurido" },
-        { text: "Fotofobia", value: "fotofobia" },
-        { text: "Hiperemia", value: "hiperemia" },
-        { text: "Pterígio", value: "pterigio" },
-        { text: "Epífera", value: "epifera" },
-        { text: "Trauma", value: "trauma" },
-        { text: "Vermelhidão", value: "vermelhidao" },
-        { text: "Ardência", value: "ardencia" },
-        { text: "Dor Ocular", value: "dorOcular" },
-        { text: "Lacrimejamento", value: "lacrimejamento" },
-        { text: "Força a Visão", value: "forcaVisao" },
-        { text: "Cansaço Visual", value: "cansacoVisual" },
-        { text: "Sensibilidade a Luz", value: "sensibilidadeLuz" },
+        { text: "Prurido", value: "PRURIDO" },
+        { text: "Fotofobia", value: "FOTOFOBIA" },
+        { text: "Hiperemia", value: "HIPEREMIA" },
+        { text: "Pterígio", value: "PTERIGIO" },
+        { text: "Epífera", value: "EPIFERA" },
+        { text: "Trauma", value: "TRAUMA" },
+        { text: "Vermelhidão", value: "VERMELHIDAO" },
+        { text: "Ardência", value: "ARDENCIA" },
+        { text: "Dor Ocular", value: "DOROCULAR" },
+        { text: "Lacrimejamento", value: "LACRIMEJAMENTO" },
+        { text: "Força a Visão", value: "FORCAVISAO" },
+        { text: "Cansaço Visual", value: "CANSACOVISUAL" },
+        { text: "Sensibilidade a Luz", value: "SENSIBILIDADELUZ" },
       ],
       doencaOcular: [
-        { text: "Glaucoma", value: "glaucoma" },
-        { text: "Catarata", value: "catarata" },
-        { text: "Pterígioa", value: "pterigio" },
-        { text: "Ceratocone", value: "ceratocone" },
-        { text: "Estrabismo", value: "estrabismo" },
-        { text: "Conjuntivite", value: "conjuntivite" },
+        { text: "Glaucoma", value: "GLAUCOMA" },
+        { text: "Catarata", value: "CATARATA" },
+        { text: "Pterígio", value: "PTEREGIO_OD" },
+        { text: "Ceratocone", value: "CERATOCONE" },
+        { text: "Estrabismo", value: "ESTRABISMO" },
+        { text: "Conjuntivite", value: "CONJUNTIVITE" },
       ],
       doencaSistematica: [
-        { text: "Asma", value: "asma" },
-        { text: "Colesterol", value: "colesterol" },
-        { text: "Diabetes", value: "diabetes" },
-        { text: "Hipertensão", value: "hipertensão" },
-        { text: "Renite", value: "renite" },
-        { text: "Sinusite", value: "sinusite" },
-        { text: "Alergias", value: "alergias" },
-        { text: "Reumatismo", value: "reumatismo" },
+        { text: "Asma", value: "ASMA" },
+        { text: "Colesterol", value: "COLESTEROL" },
+        { text: "Diabetes", value: "DIABETES" },
+        { text: "Hipertensão", value: "HIPERTENSAO" },
+        { text: "Renite", value: "RENITE" },
+        { text: "Sinusite", value: "SINUSITE" },
+        { text: "Alergias", value: "ALERGIAS" },
+        { text: "Reumatismo", value: "REUMATISMO" },
       ],
       medicamentos: [
-        { text: "Losartana", value: "losartana" },
-        { text: "Captopril", value: "captopril" },
-        { text: "Atenolol", value: "atenolol" },
-        { text: "Nifidipino", value: "nifidipino" },
-        { text: "Propanolol", value: "propanolol" },
-        { text: "Hidrocloratiazida", value: "hidrocloratiazida" },
-        { text: "Metiformina", value: "metiformina" },
-        { text: "Glibencamida", value: "glibencamida" },
-        { text: "AAS", value: "aas" },
-        { text: "Sinvastantina", value: "sinvastantina" },
-        { text: "Polaramine", value: "polaramine" },
-        { text: "Omeprazol", value: "omeprazol" },
+        { text: "Losartana", value: "LOSARTANA" },
+        { text: "Captopril", value: "CAPTOPRIL" },
+        { text: "Atenolol", value: "ATENOLOL" },
+        { text: "Nifidipino", value: "NIFIDIPINO" },
+        { text: "Propanolol", value: "PROPANOLOL" },
+        { text: "Hidrocloratiazida", value: "HIDROCLORATIAZIDA" },
+        { text: "Metiformina", value: "METIFORMINA" },
+        { text: "Glibencamida", value: "GLIBENCAMIDA" },
+        { text: "AAS", value: "AAS" },
+        { text: "Sinvastantina", value: "SINVASTANTINA" },
+        { text: "Polaramine", value: "POLARAMINE" },
+        { text: "Omeprazol", value: "OMEPRAZOL" },
       ],
       options: [
-        { text: "Usa Óculos ", value: "usaOculos " },
-        { text: "Dificuldade Longe ", value: "dificuldadeLonge " },
-        { text: "Dificuldade Perto", value: "dificuldadePerto" },
-        { text: "Cefaléia - Dor de cabeça", value: "cefaleia" },
+        { text: "Usa Óculos ", value: "USAOCULOS" },
+        { text: "Dificuldade Longe ", value: "DIFICULDADELONGE" },
+        { text: "Dificuldade Perto", value: "DIFICULDADEPERTO" },
+        { text: "Cefaléia - Dor de cabeça", value: "CEFALEIA" },
       ],
       antecedentesFamiliar: [
-        { text: "Diabetes", value: "diabetes" },
-        { text: "Estrabismo", value: "estrabismo" },
-        { text: "Glaucoma", value: "glaucoma" },
-        { text: "Pressão Alta", value: "pressaoAlta" },
-        { text: "Catarata", value: "catarata" },
+        { text: "Diabetes", value: "DIABETES_AF" },
+        { text: "Estrabismo", value: "ESTRABISMO_AF" },
+        { text: "Glaucoma", value: "GLAUCOMA_AF" },
+        { text: "Pressão Alta", value: "PRESSAOALTA_AF" },
+        { text: "Catarata", value: "CATARATA_AF" },
       ],
     };
   },
   methods: {
     teste() {
-      console.log(this.anamnese);
+      var anamneseSelected = {};
+      this.anamnese.map(resul =>{
+        anamneseSelected[resul] = true;
+      })
+      anamneseSelected.IDPACIENTE = this.$store.state.pacienteSelected;
+    
+      axios.post('http://localhost:3000/FichaClinica/Save', anamneseSelected).then(result =>{
+        console.log("certo", this.pacienteSelected, result)
+      })
     },
   },
 };

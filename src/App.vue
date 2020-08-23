@@ -8,9 +8,7 @@
 </template>
 
 <script>
-import dayGridPlugin from "@fullcalendar/daygrid";
-import bootstrapPlugin from "@fullcalendar/bootstrap";
-import interactionPlugin from "@fullcalendar/interaction";
+
 
 export default {
   name: "App",
@@ -20,26 +18,7 @@ export default {
   data() {
     return {
 
-      calendarPlugins: [dayGridPlugin, bootstrapPlugin, interactionPlugin],
-      plugins: [interactionPlugin],
-      themeSystem: "bootstrap",
-     
-      events: [
-        {
-          title: "event1",
-          start: "2010-01-01"
-        },
-        {
-          title: "event2",
-          start: "2010-01-05",
-          end: "2010-01-07"
-        },
-        {
-          title: "event3",
-          start: "2020-06-20T12:30:00",
-          allDay: false // will make the time show
-        }
-      ]
+      
     };
   }
 };

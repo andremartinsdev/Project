@@ -7,6 +7,12 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import router from './routes'
 import store from './store'
+import VueSweetalert2 from 'vue-sweetalert2';
+
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css';
+ 
+Vue.use(VueSweetalert2);
 
 
 

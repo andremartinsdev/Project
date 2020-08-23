@@ -81,7 +81,7 @@
             </b-col>
           </b-row>
         </b-card>
-<!------------------------ E N D ------->
+
 
  <b-card bg-variant="light" style="height:130px; border-radius: 20px;" class="text-center">
           <b-row>
@@ -124,8 +124,7 @@ export default {
 </script>
 
 <style>
-@import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
+
 .testea {
   border: 1px solid black;
   display: flex;

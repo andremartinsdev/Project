@@ -15,5 +15,11 @@ export default {
     },
     selectPacienteId({commit}, event, id){
         return commit(MutationsType.SELECT_PACIENTE_ID, event, id)
+    },
+    alterOption({commit}, option){
+        return commit(MutationsType.ALTER_OPTION, option)
+    },
+    pacienteSelected({commit}, idPaciente){
+        return commit(MutationsType.SELECT_PACIENTE, idPaciente)
     }
 }

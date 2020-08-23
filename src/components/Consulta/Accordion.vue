@@ -218,7 +218,7 @@
       </b-collapse>
     </b-card>
 
-     <b-card no-body class="mb-1">
+     <b-card no-body class="mb-5">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-21 variant="info">DX</b-button>
       </b-card-header>
@@ -229,14 +229,21 @@
       </b-collapse>
     </b-card>
 
-     <div class="mt-5">
-                    <b-button  variant="primary" class="mb-3">
-                      <b-icon-person-check-fill class="mr-3"></b-icon-person-check-fill>Salvar
-                    </b-button>
-                     <b-button  variant="danger" class="mb-3 ml-4">
-                      <b-icon-x  class="mr-3"></b-icon-x>Cancelar
-                    </b-button>
-                  </div>
+     <footer class="py-2 text-white-50" id="sticky-footer">
+                      <div class="container text-center">
+                        <b-button pill  variant="light"  class="mr-2" type="submit">
+                          <b-icon-file-earmark-check class="mr-3"></b-icon-file-earmark-check>Salvar
+                        </b-button>
+
+                        <b-button pill variant="light"  class="mr-2">
+                          <b-icon-x class="mr-3"></b-icon-x>Cancelar
+                        </b-button>
+
+                       
+                        
+                      </div>
+                    </footer>
+
     
   </div>
 </template>
@@ -265,6 +272,11 @@ import RxFinal from './RxFinal'
 import Dx from './Dx'
 
 export default {
+  props:{
+    idPaciente: {
+      type: String
+    }
+  },
     components:{
         Anamnese,
         PrescricaoUltimoExame,
@@ -293,5 +305,39 @@ export default {
 </script>
 
 <style>
+.content {
+  position: absolute;
+  left: 25%;
+  top: 50%;
+}
+#sticky-footer {
+  left: 35px;
+  flex-shrink: none;
+  position: fixed;
+  margin-left: 30%;
+  margin-right: 25%;
+  bottom: 0;
+  margin-bottom: 4px;
+  width: 35%;
+  background: linear-gradient(0deg, #014779 0%, #0082c8 100%);
+  border-radius: 55px;
+  padding: 4;
+}
 
+@media (max-width: 700px) {
+  #sticky-footer {
+    position: unset;
+    display: flex;
+    width: 100%;
+    left: 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 10px;
+    align-items: center;
+  }
+  #sticky-footer button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
 </style>

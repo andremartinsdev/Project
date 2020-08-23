@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './components/Home/Home.vue'
 import CadastroPaciente from './components/CadastroPaciente/Cadastro.vue'
 import Consulta from './components/Consulta/Consulta.vue'
+import Agenda from './components/Agenda/Agenda.vue'
 
 
 Vue.use(Router)
@@ -21,6 +22,10 @@ const routes = [
         path: '/Consulta',
         component: Consulta
     },
+    {
+        path: '/Agenda',
+        component: Agenda
+    }
 ]
 
 const router = new Router({

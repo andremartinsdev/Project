@@ -7,7 +7,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        paciente: []
+        paciente: [],
+        option: false,
+        pacienteSelected: "teste",
             
     },
     actions,

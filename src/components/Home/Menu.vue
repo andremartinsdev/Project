@@ -9,7 +9,7 @@
           </router-link>
         </div>
         <div>
-          <router-link class="nav-link" to="/">
+          <router-link class="nav-link" to="/Agenda">
             <b-img center :src="imageCalender" alt="Center image"></b-img>
              <label class="text-white">Agenda</label>
           </router-link>
@@ -27,6 +27,20 @@
             <label class="text-white">Consulta</label>
           </router-link>
         </div>
+
+        <div>
+          <router-link class="nav-link" to="" >
+            <b-img center :src="imageRelatorio" alt="Center image" @click="apresentar()"></b-img>
+            <label class="text-white">Relatório</label>
+          </router-link>
+        </div>
+
+        <div>
+          <router-link class="nav-link" to="/Consulta">
+            <b-img center :src="imageConfig" alt="Center image"></b-img>
+            <label class="text-white">Configuração</label>
+          </router-link>
+        </div>
       </div>
       <!-- CARD DE PACIENTES -->
       <img src="C:\Users\Andre\Downloads\home.png" alt srcset />
@@ -35,6 +49,7 @@
 
       <!----------------------- CARD AGENDAMENTOS ------------------- -->
     </b-col>
+    
   </b-row>
 </template>
 
@@ -43,15 +58,28 @@ import image from "../../../public/home.png";
 import imageCalender from "../../../public/calender.png";
 import imagePaciente from "../../../public/user.png";
 import imageConsulta from "../../../public/consulta.png";
+import imageRelatorio from "../../../public/relatorio.png";
+import imageConfig from "../../../public/configuracao.png";
 export default {
+  props: {
+    option: Boolean
+  },
   data() {
     return {
       image: image,
       imageCalender: imageCalender,
       imagePaciente: imagePaciente,
-      imageConsulta: imageConsulta
+      imageConsulta: imageConsulta,
+      imageRelatorio: imageRelatorio,
+      imageConfig: imageConfig
     };
   },
+
+  methods:{
+    apresentar(){
+      this.$emit('mostrar',{showOption: true})
+    }
+  }
 };
 </script>
 
@@ -71,8 +99,7 @@ export default {
 }
     @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Monda:wght@700&display=swap");
 
-@import "~@fullcalendar/core/main.css";
-@import "~@fullcalendar/daygrid/main.css";
+
 .testea {
   border: 1px solid black;
   display: flex;
