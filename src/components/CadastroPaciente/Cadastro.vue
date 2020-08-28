@@ -12,16 +12,7 @@
                     Cadastro Paciente
                     <b-icon-person-plus class="ml-3"></b-icon-person-plus>
                   </h3>
-                  <b-alert
-                    class="content"
-                    :show="dismissCountDown"
-                    dismissible
-                    variant="success"
-                    @dismissed="dismissCountDown=0"
-                    @dismiss-count-down="countDownChanged"
-                  >
-                    <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
-                  </b-alert>
+                  
                   <form @submit.prevent="salvar()">
                     <div class="form-group">
                       <input type="text" v-model="paciente.IDPACIENTE" hidden class="form-control" />
@@ -221,9 +212,6 @@ export default {
       });
     },
 
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
-    },
 
     list() {
       axios.get("http://localhost:3000/Paciente/List").then(response => {
