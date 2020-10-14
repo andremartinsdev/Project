@@ -1,32 +1,47 @@
 <template>
   <div class="panel-body">
-<div class="row">
-<div class="col-md-12">
-<table class="table">
-<tbody><tr>
-<td>OD</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
-<td>AV</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
-</tr>
-<tr>
-<td>OE</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
-<td>AV</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
-</tr>
-</tbody></table>
-</div>
-</div>
-</div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>OD</td>
+              <td><b-input type="text" @change="enviarSubjetivo" v-model="subjetivo.OD" size="sm" class="form-control" /></td>
+              <td>AV</td>
+              <td><b-input type="text" @change="enviarSubjetivo" v-model="subjetivo.AV_OD" size="sm" class="form-control" /></td>
+            </tr>
+            <tr>
+              <td>OE</td>
+              <td><b-input type="text" @change="enviarSubjetivo" v-model="subjetivo.OE" size="sm" class="form-control" /></td>
+              <td>AV</td>
+              <td><b-input type="text" @change="enviarSubjetivo" v-model="subjetivo.AV_OE" size="sm" class="form-control" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-
-}
+  data(){
+    return{
+      subjetivo: {
+        OD:'',
+        OE:'',
+        AV_OD:'',
+        AV_OE:''
+      }
+    }
+  },
+  methods:{
+    enviarSubjetivo(){
+      this.$store.commit("SUBJETIVO", this.subjetivo)
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>

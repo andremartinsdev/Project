@@ -14,6 +14,7 @@
                   </h3>
                   
                   <form @submit.prevent="salvar()">
+                    
                     <div class="form-group">
                       <input type="text" v-model="paciente.IDPACIENTE" hidden class="form-control" />
                       <label for="exampleInputEmail1">Nome Paciente</label>
@@ -56,7 +57,7 @@
                       <input type="text" v-model="paciente.ESTADO" class="form-control" />
                     </div>
 
-                    <footer id="sticky-footer" class="py-4 text-white-50">
+                    <footer id="sticky-footer" class="py-2 text-white-50 mb-4">
                       <div class="container text-center">
                         <b-button pill variant="light" class="mr-2" type="submit">
                           <b-icon-person-check-fill submit class="mr-3"></b-icon-person-check-fill>Salvar
@@ -66,11 +67,8 @@
                           <b-icon-arrow-clockwise class="mr-3"></b-icon-arrow-clockwise>Limpar
                         </b-button>
 
-                        <b-button pill class="mr-2" variant="light">
-                          <b-icon-x class="mr-3 mb-1"></b-icon-x>Cancelar
-                        </b-button>
 
-                        <b-button pill variant="light" @click="tabIndex++" class="float-right">
+                        <b-button pill variant="light" @click="tabIndex++" >
                           <b-icon-search class="mr-3"></b-icon-search>Pesquisar
                         </b-button>
                       </div>
@@ -172,7 +170,6 @@ export default {
       idPacienteAcoes: -1,
       paciente: {
         IDPACIENTE: -1,
-        IDEMPRESA: "",
         NOMEPACIENTE: "",
         DATANASCIMENTO: "",
         EMAIL: "",
@@ -327,7 +324,6 @@ table {
   position: fixed;
   margin-left: 30%;
   margin-right: 25%;
-  bottom: 0;
   margin-bottom: 4px;
   width: 35%;
   background: linear-gradient(0deg, #015ea0 0%, #0082c8 100%);

@@ -13,6 +13,7 @@
                 text-field="text"
                 disabled-field="notEnabled"
                 stacked
+                @input="enviarAnamnese"
               ></b-form-checkbox-group>
             </b-form-group>
           </div>
@@ -29,6 +30,7 @@
                 text-field="text"
                 disabled-field="notEnabled"
                 stacked
+                @input="enviarAnamnese"
               ></b-form-checkbox-group>
             </b-form-group>
           </div>
@@ -45,6 +47,7 @@
                 text-field="text"
                 disabled-field="notEnabled"
                 stacked
+                @input="enviarAnamnese"
               ></b-form-checkbox-group>
             </b-form-group>
           </div>
@@ -61,6 +64,7 @@
                 text-field="text"
                 disabled-field="notEnabled"
                 stacked
+                @input="enviarAnamnese"
               ></b-form-checkbox-group>
             </b-form-group>
           </div>
@@ -77,7 +81,7 @@
                 value-field="value"
                 text-field="text"
                 disabled-field="notEnabled"
-                
+                @input="enviarAnamnese"
             
               ></b-form-checkbox-group>
         </b-form-group>
@@ -93,17 +97,15 @@
                 value-field="value"
                 text-field="text"
                 disabled-field="notEnabled"
-                
+                @input="enviarAnamnese"
               ></b-form-checkbox-group>
         </b-form-group>
       </b-card>
     </div>
-    <button @click="teste">ok</button>
   </b-container>
 </template>
 
 <script>
-import axios from "axios";
 import { mapState } from "vuex"
 
 export default {
@@ -176,16 +178,14 @@ export default {
     };
   },
   methods: {
-    teste() {
+    enviarAnamnese() {
       var anamneseSelected = {};
       this.anamnese.map(resul =>{
         anamneseSelected[resul] = true;
       })
       anamneseSelected.IDPACIENTE = this.$store.state.pacienteSelected;
-    
-      axios.post('http://localhost:3000/FichaClinica/Save', anamneseSelected).then(result =>{
-        console.log("certo", this.pacienteSelected, result)
-      })
+      this.$store.commit("ANAMNESE", anamneseSelected)
+     
     },
   },
 };

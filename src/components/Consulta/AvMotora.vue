@@ -12,31 +12,31 @@
         <td>Kappa</td>
         <td>
           <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input size="sm"></b-input>
+            <b-input @change="enviarAvMotora" v-model="avMotora.OD.KAPPA" size="sm"></b-input>
           </b-input-group>
         </td>
         <td>
           <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input size="sm"></b-input>
+            <b-input @change="enviarAvMotora" v-model="avMotora.OE.KAPPA" size="sm"></b-input>
           </b-input-group>
         </td>
       </tr>
       <tr>
         <td>Hirschberg</td>
         <td colspan="2">
-          <textarea name="ava_mot_hir" size="sm" id="c_ava_mot_hir" class="form-control"></textarea>
+          <textarea name="ava_mot_hir" size="sm" id="c_ava_mot_hir" v-model="avMotora.HIRSCHBERG" @change="enviarAvMotora" class="form-control"></textarea>
         </td>
       </tr>
       <tr>
         <td>Ducções</td>
         <td>
           <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input size="sm"></b-input>
+            <b-input @change="enviarAvMotora" v-model="avMotora.OD.DUCCOES" size="sm"></b-input>
           </b-input-group>
         </td>
         <td>
           <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-            <b-input size="sm"></b-input>
+            <b-input @change="enviarAvMotora" v-model="avMotora.OE.DUCCOES" size="sm"></b-input>
           </b-input-group>
         </td>
       </tr>
@@ -100,7 +100,28 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data(){
+    return{
+      avMotora:{
+        OD: {
+          KAPPA: '',
+          DUCCOES: ''
+        },
+        OE: {
+          KAPPA: '',
+          DUCCOES: ''
+        },
+        HIRSCHBERG: '',
+      }
+    }
+  },
+  methods:{
+    enviarAvMotora(){
+      this.$store.commit("AV_MOTORA", this.avMotora)
+    }
+  }
+};
 </script>
 
 <style>

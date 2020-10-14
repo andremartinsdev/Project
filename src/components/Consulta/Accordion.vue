@@ -165,7 +165,7 @@
 
      <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button block v-b-toggle.accordion-16 variant="light">Forometria</b-button>
+        <b-button block v-b-toggle.accordion-16 variant="light">Subjetivo</b-button>
       </b-card-header>
       <b-collapse id="accordion-16" accordion="my-accordion" role="tabpanel">
         <b-card-body>
@@ -229,7 +229,7 @@
       </b-collapse>
     </b-card>
 
-     <footer class="py-2 text-white-50" id="sticky-footer">
+     <footer class="py-2 text-white-50 mb-4" id="sticky-footer">
                       <div class="container text-center">
                         <b-button pill  variant="light"  class="mr-2" type="submit">
                           <b-icon-file-earmark-check class="mr-3"></b-icon-file-earmark-check>Salvar

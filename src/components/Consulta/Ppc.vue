@@ -13,12 +13,12 @@
           <td>OR</td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input  size="sm"></b-input>
+              <b-input @change="enviarPpc" v-model="ppc.SC.OR"  size="sm"></b-input>
             </b-input-group>
           </td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input  size="sm"></b-input>
+              <b-input @change="enviarPpc" v-model="ppc.CC.OR" size="sm"></b-input>
             </b-input-group>
           </td>
         </tr>
@@ -27,12 +27,12 @@
           <td>Luz</td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input  size="sm"></b-input>
+              <b-input @change="enviarPpc" v-model="ppc.SC.LUZ" size="sm"></b-input>
             </b-input-group>
           </td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input  size="sm"></b-input>
+              <b-input @change="enviarPpc" v-model="ppc.CC.LUZ" size="sm"></b-input>
             </b-input-group>
           </td>
         </tr>
@@ -40,12 +40,12 @@
           <td>Filtro</td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input  size="sm"></b-input>
+              <b-input @change="enviarPpc" v-model="ppc.SC.FILTRO" size="sm"></b-input>
             </b-input-group>
           </td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input  size="sm"></b-input>
+              <b-input @change="enviarPpc" v-model="ppc.CC.FILTRO" size="sm"></b-input>
             </b-input-group>
           </td>
         </tr>
@@ -57,7 +57,30 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data(){
+    return{
+      ppc: {
+        SC:{
+          OR:'',
+          LUZ: '',
+          FILTRO: ''
+        },
+        CC:{
+          OR:'',
+          LUZ: '',
+          FILTRO: ''
+        }
+      }
+    }
+  },
+
+  methods: {
+    enviarPpc(){
+      this.$store.commit("PPC", this.ppc)
+    }
+  }
+};
 </script>
 
 <style>

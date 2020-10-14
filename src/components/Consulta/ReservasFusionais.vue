@@ -1,11 +1,16 @@
 <template>
   <div>
-      <label for="input-with-list" class="mr-2">Técnica :</label>
+    <label for="input-with-list" class="mr-2">Técnica :</label>
 
-      <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input id="inline-form-input-username" size="sm"></b-input>
+    <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
+      <b-input
+        
+        @change="enviarReservasFusionais"
+        v-model="reservasFusionais.TECNICA"
+        size="sm"
+      ></b-input>
     </b-input-group>
-       <table class="table table-sm table-borderless">
+    <table class="table table-sm table-borderless">
       <thead>
         <tr class="text-center">
           <th scope="col"></th>
@@ -18,12 +23,22 @@
           <td>RFN</td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input id="inline-form-input-username" size="sm"></b-input>
+              <b-input
+                
+                v-model="reservasFusionais.VL.RFN"
+                size="sm"
+                @change="enviarReservasFusionais"
+              ></b-input>
             </b-input-group>
           </td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input id="inline-form-input-username" size="sm"></b-input>
+              <b-input
+                
+                v-model="reservasFusionais.VP.RFN"
+                @change="enviarReservasFusionais"
+                size="sm"
+              ></b-input>
             </b-input-group>
           </td>
         </tr>
@@ -32,17 +47,25 @@
           <td>RFP</td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input id="inline-form-input-username" size="sm"></b-input>
+              <b-input
+                
+                v-model="reservasFusionais.VL.RFP"
+                @change="enviarReservasFusionais"
+                size="sm"
+              ></b-input>
             </b-input-group>
           </td>
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input id="inline-form-input-username" size="sm"></b-input>
+              <b-input
+                
+                v-model="reservasFusionais.VP.RFP"
+                @change="enviarReservasFusionais"
+                size="sm"
+              ></b-input>
             </b-input-group>
           </td>
         </tr>
-       
-         
       </tbody>
     </table>
   </div>
@@ -50,10 +73,29 @@
 
 <script>
 export default {
+  data() {
+    return {
+      reservasFusionais: {
+        VL: {
+          RFN: "",
+          RFP: "",
+        },
+        VP: {
+          RFN: "",
+          RFP: "",
+        },
+        TECNICA: "",
+      },
+    };
+  },
 
-}
+  methods: {
+    enviarReservasFusionais(){
+      this.$store.commit("RESERVAS_FUSIONAIS", this.reservasFusionais)
+    }
+  }
+};
 </script>
 
 <style>
-
 </style>

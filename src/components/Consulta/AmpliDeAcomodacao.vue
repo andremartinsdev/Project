@@ -6,15 +6,15 @@
 <table class="table">
 <tbody><tr>
 <td>OD</td>
-<td><b-input type="text" size="sm" class="form-control"></b-input></td>
+<td><b-input type="text" size="sm" @change="enviarAmpliDeAcomodacao" v-model="ampliDeAcomodacao.OD" class="form-control"></b-input></td>
 <td>Nível</td>
-<td><b-input type="text" size="sm" class="form-control"></b-input></td>
+<td><b-input type="text" size="sm" @change="enviarAmpliDeAcomodacao" v-model="ampliDeAcomodacao.NIVEL_OD" class="form-control"></b-input></td>
 </tr>
 <tr>
 <td>OE</td>
-<td><b-input type="text" size="sm" class="form-control"></b-input></td>
+<td><b-input type="text" size="sm" @change="enviarAmpliDeAcomodacao" v-model="ampliDeAcomodacao.OE" class="form-control"></b-input></td>
 <td>Nível</td>
-<td><b-input type="text" size="sm" class="form-control"></b-input></td>
+<td><b-input type="text" size="sm" @change="enviarAmpliDeAcomodacao" v-model="ampliDeAcomodacao.NIVEL_OE" class="form-control"></b-input></td>
 </tr>
 </tbody></table>
 </div>
@@ -22,7 +22,21 @@
 
 <script>
 export default {
-
+ data(){
+   return{
+     ampliDeAcomodacao: {
+       OD:"",
+       NIVEL_OD:"",
+       OE:"",
+       NIVEL_OE:""
+     }
+   }
+ },
+ methods:{
+   enviarAmpliDeAcomodacao(){
+     this.$store.commit("AMPLITUDE_ACOMODACAO", this.ampliDeAcomodacao)
+   }
+ }
 }
 </script>
 

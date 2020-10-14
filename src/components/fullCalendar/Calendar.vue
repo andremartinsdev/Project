@@ -29,17 +29,17 @@ export default {
            events: [
     {
       id: 'a',
-      title: 'my event',
-      start: '2020-08-21',
+      title: 'Consulta',
+      start: '2020-09-04',
       editable: true,
-      backgroundColor: "red",
+      backgroundColor: "blue",
     },
     {
       id: 'a',
-      title: 'my event',
-      start: '2020-08-21',
+      title: 'Retorno',
+      start: '2020-09-05',
       editable: true,
-      backgroundColor: "red",
+      backgroundColor: "green",
     },
     {
       id: 'a',

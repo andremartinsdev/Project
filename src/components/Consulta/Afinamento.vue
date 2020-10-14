@@ -5,15 +5,15 @@
 <table class="table">
 <tbody><tr>
 <td>OD</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
+<td><b-input type="text" v-model="afinamento.OD" size="sm" @change="enviarAfinamento" class="form-control"/></td>
 <td>AV</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
+<td><b-input type="text" size="sm" v-model="afinamento.AVD" @change="enviarAfinamento" class="form-control"/></td>
 </tr>
 <tr>
 <td>OE</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
+<td><b-input type="text" size="sm" v-model="afinamento.OE" @change="enviarAfinamento" class="form-control"/></td>
 <td>AV</td>
-<td><b-input type="text" size="sm" class="form-control"/></td>
+<td><b-input type="text" size="sm" v-model="afinamento.AVE" @change="enviarAfinamento" class="form-control"/></td>
 </tr>
 </tbody></table>
 </div>
@@ -22,7 +22,25 @@
 </template>
 
 <script>
+
 export default {
+data(){
+  return{
+    afinamento:{
+      OD: "",
+      AVD: "",
+      OE: "",
+      AVE: ""
+    }
+  }
+},
+
+methods:{
+  enviarAfinamento(){
+  this.$store.commit('AFINAMENTO', this.afinamento)
+  },
+}
+
 
 }
 </script>

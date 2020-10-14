@@ -2,7 +2,7 @@
   <div id="app">
       <div class="atestado" v-html="content"></div>
     <vue-editor v-model="content"></vue-editor>
-    <label v-bind="paciente2">{{this.paciente2}}</label>
+    
   </div>
 </template>
 

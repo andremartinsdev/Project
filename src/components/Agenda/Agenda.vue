@@ -23,7 +23,6 @@
         <input type="date" size="sm"  class="form-control col-4 " />
         <label class="mt-2">Paciente</label>
             <b-form-select size="sm"></b-form-select>
-        <b-form-input id="input-1" type="email" required placeholder="Enter email"></b-form-input>
       </b-modal>
     </div>
   </div>

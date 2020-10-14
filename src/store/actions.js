@@ -21,5 +21,8 @@ export default {
     },
     pacienteSelected({commit}, idPaciente){
         return commit(MutationsType.SELECT_PACIENTE, idPaciente)
+    },
+    afinamento({commit}, afinamento){
+        return commit(MutationsType.AFINAMENTO, afinamento)
     }
 }

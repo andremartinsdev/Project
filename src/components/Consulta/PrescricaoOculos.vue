@@ -3,7 +3,7 @@
     <b-form inline>
       <label for="input-with-list" class="mr-2">OD :</label>
       <b-input
-        id="inline-form-input-name"
+        
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="ESF"
         type="number"
@@ -11,7 +11,7 @@
         v-model="prescricaoOculos.OD_ESFERICO"
       ></b-input>
       <b-input
-        id="inline-form-input-name"
+        
         size="sm"
         class="mb-2 mr-sm-2 mb-sm-0"
         v-model="prescricaoOculos.OD_CILINDRICO"
@@ -20,14 +20,14 @@
       <b-input-group size="sm" prepend="°" class="mb-2 mr-sm-2 mb-sm-0">
         <b-input
           size="sm"
-          id="inline-form-input-username"
+          
           placeholder="EIXO"
           v-model="prescricaoOculos.OD_EIXO"
         ></b-input>
       </b-input-group>
 
       <b-input
-        id="inline-form-input-name"
+        
         size="sm"
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="AV"
@@ -38,7 +38,7 @@
     <b-form inline class="mt-4">
       <label for="input-with-list" class="mr-2">OE :</label>
       <b-input
-        id="inline-form-input-name"
+        
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="ESF"
         type="number"
@@ -46,7 +46,7 @@
         v-model="prescricaoOculos.OE_ESFERICO"
       ></b-input>
       <b-input
-        id="inline-form-input-name"
+        
         size="sm"
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="CIL"
@@ -54,7 +54,7 @@
       ></b-input>
       <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
         <b-input
-          id="inline-form-input-username"
+          
           v-model="prescricaoOculos.OE_EIXO"
           size="sm"
           placeholder="EIXO"
@@ -62,7 +62,7 @@
       </b-input-group>
 
       <b-input
-        id="inline-form-input-name"
+        
         v-model="prescricaoOculos.OE_AV"
         size="sm"
         class="mb-2 mr-sm-2 mb-sm-0"
@@ -72,7 +72,7 @@
     <b-form inline class="mt-5">
       <label for="input-with-list" class="mr-3">ADIÇÃO :</label>
       <b-input
-        id="inline-form-input-name"
+        
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="ADIÇÃO"
         type="number"
