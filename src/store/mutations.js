@@ -1,10 +1,13 @@
 import * as MutationsTypes from './mutations-types'
+import { http } from '../services/config'
 //import axios from 'axios'
 
 
 export default {
      [MutationsTypes.SAVE_PACIENTE]  (state,paciente){
-            paciente
+        http.post("Paciente/Save", paciente).then(() =>{
+            
+        })
     },
     [MutationsTypes.DELETE_PACIENTE] (state, idPaciente){
         alert(`deletado com sucesso`, state, idPaciente)
@@ -80,5 +83,20 @@ export default {
     },
     [MutationsTypes.ADICAO](state, adicao){
         state.adicao = adicao;
+    },
+    [MutationsTypes.RX_FINAL](state, rxFinal){
+        state.rxFinal = rxFinal;
+    },
+    [MutationsTypes.DX](state, dx){
+        state.dx = dx
+    },
+    [MutationsTypes.ID_CONSULTA](state, idConsulta){
+        state.idConsulta = idConsulta;
+    },
+    [MutationsTypes.LIMPAR](state, limpar){
+        state.limpar = limpar
+    },
+    [MutationsTypes.DADOS_CLINICA](state, dadosClinica){
+        state.dadosClinica = dadosClinica
     }
 }

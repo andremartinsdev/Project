@@ -17,6 +17,11 @@
 <td><b-input type="text" size="sm" @change="enviarAmpliDeAcomodacao" v-model="ampliDeAcomodacao.NIVEL_OE" class="form-control"></b-input></td>
 </tr>
 </tbody></table>
+
+     <div class="mt-5">
+  <b-button  variant="primary" class="mr-5">Salvar</b-button>
+  <b-button  variant="primary">Limpar</b-button>
+</div>
 </div>
 </template>
 

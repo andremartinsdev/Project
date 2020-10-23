@@ -24,5 +24,6 @@ export default {
     },
     afinamento({commit}, afinamento){
         return commit(MutationsType.AFINAMENTO, afinamento)
+        
     }
 }

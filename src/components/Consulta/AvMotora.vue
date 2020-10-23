@@ -1,4 +1,5 @@
 <template>
+<div>
   <table class="table table-sm table-borderless">
     <thead>
       <tr>
@@ -97,6 +98,12 @@
       </tr>
     </tbody>
   </table>
+  
+     <div class="mt-5">
+  <b-button  variant="primary" class="mr-5">Salvar</b-button>
+  <b-button  variant="primary">Limpar</b-button>
+</div>
+</div>
 </template>
 
 <script>

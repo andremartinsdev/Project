@@ -22,7 +22,7 @@
         <b-card header="Doença Ocular" header-tag="header">
           <div class="check">
             <b-form-group>
-               <b-form-checkbox-group
+              <b-form-checkbox-group
                 v-model="anamnese"
                 :options="doencaOcular"
                 class="mb-3"
@@ -56,7 +56,7 @@
         <b-card header="Medicamento" header-tag="header">
           <div class="check">
             <b-form-group>
-               <b-form-checkbox-group
+              <b-form-checkbox-group
                 v-model="anamnese"
                 :options="medicamentos"
                 class="mb-3"
@@ -74,46 +74,68 @@
     <div class="mt-3">
       <b-card>
         <b-form-group>
-           <b-form-checkbox-group
-                v-model="anamnese"
-                :options="options"
-                class="mt-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                @input="enviarAnamnese"
-            
-              ></b-form-checkbox-group>
+          <b-form-checkbox-group
+            v-model="anamnese"
+            :options="options"
+            class="mt-3"
+            value-field="value"
+            text-field="text"
+            disabled-field="notEnabled"
+            @input="enviarAnamnese"
+          ></b-form-checkbox-group>
         </b-form-group>
       </b-card>
     </div>
     <div class="mt-3 mb-2">
       <b-card>
         <b-form-group label="Antecedentes Familiares">
-           <b-form-checkbox-group
-                v-model="anamnese"
-                :options="antecedentesFamiliar"
-                class="mt-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                @input="enviarAnamnese"
-              ></b-form-checkbox-group>
+          <b-form-checkbox-group
+            v-model="anamnese"
+            :options="antecedentesFamiliar"
+            class="mt-3"
+            value-field="value"
+            text-field="text"
+            disabled-field="notEnabled"
+            @input="enviarAnamnese"
+          ></b-form-checkbox-group>
         </b-form-group>
       </b-card>
+    </div>
+    <div class="p-3">
+      <b-button variant="primary" @click="save" class="mr-5">Salvar</b-button>
+      <b-button variant="primary" @click="LimparAnamnese">Limpar</b-button>
     </div>
   </b-container>
 </template>
 
 <script>
-import { mapState } from "vuex"
+import { mapState } from "vuex";
+import Save from "../../services/saveGeneric";
+import { DateTime } from "luxon";
 
 export default {
+  props: {
+    propsAnamnese2: {
+      type: Array,
+    },
+    Visualizar: {
+      type: Boolean,
+    },
+    LimparAnamnese: {
+      type: Boolean,
+    },
+  },
+  computed: {
+    ...mapState({
+      pacienteSelected: (state) => state.pacienteSelected,
+      anamneseState: (state) => state.anamnese,
+      dadosClinica: (state) => state.dadosClinica,
+      idConsulta: (state) => state.idConsulta,
+    }),
+  },
   data() {
     return {
-      ...mapState({
-        pacienteSelected: state => state.pacienteSelected
-      }),
+      visualizar: this.Visualizar,
       anamnese: [],
       sintomas: [
         { text: "Prurido", value: "PRURIDO" },
@@ -177,15 +199,57 @@ export default {
       ],
     };
   },
+  watch: {
+    Visualizar() {
+      this.carregarAnamnese();
+      this.visualizar = false;
+    },
+    LimparAnamnese() {
+      this.anamnese = [];
+      this.$store.commit("ANAMNESE", {});
+    },
+  },
   methods: {
+    showAlert(icon, title) {
+      // Use sweetalert2
+
+      this.$swal({
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    },
+
+    carregarAnamnese() {
+      this.anamnese = this.propsAnamnese2;
+    },
+
+    save() {
+      if (Object.keys(this.anamneseState).length != 0) {
+        Save.save("Anamnese", this.anamneseState)
+          .then(() => {
+            this.showAlert("success", "Anamnese Salva com Sucesso");
+            this.$store.commit("ANAMNESE", {});
+          })
+          .catch((err) => {
+            this.showAlert("error", "Erro ao Salvar Anamnese " + err);
+          });
+      } else {
+        this.showAlert("error", "Preencha a Anamnese");
+      }
+    },
     enviarAnamnese() {
       var anamneseSelected = {};
-      this.anamnese.map(resul =>{
+      this.anamnese.map((resul) => {
         anamneseSelected[resul] = true;
-      })
-      anamneseSelected.IDPACIENTE = this.$store.state.pacienteSelected;
-      this.$store.commit("ANAMNESE", anamneseSelected)
-     
+        anamneseSelected.UUIDCLINICA = localStorage.getItem("dadosClinica");
+        anamneseSelected.DATA = `${DateTime.local().c.year}-${DateTime.local().c.month}-${DateTime.local().c.day}`;
+        anamneseSelected.IDPACIENTE = this.$store.state.pacienteSelected;
+        anamneseSelected.IDCONSULTA = this.$store.state.idConsulta;
+      });
+
+      this.$store.commit("ANAMNESE", anamneseSelected);
     },
   },
 };

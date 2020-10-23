@@ -7,9 +7,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
+        limpar: false,
+        dadosClinica: {},
+        idConsulta: -1,
         paciente: [],
         option: false,
-        pacienteSelected: "teste",
+        pacienteSelected: -1,
         afinamento:{},
         acuidade: {},
         amplitude:{},
@@ -28,7 +31,9 @@ const store = new Vuex.Store({
         forometria:{},
         subjetivo:{},
         testeAmbulatorial:{},
-        adicao: {}
+        adicao: {},
+        rxFinal:{},
+        dx:{}
             
     },
     actions,

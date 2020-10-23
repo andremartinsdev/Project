@@ -11,6 +11,8 @@ export default {
         return http.post(`Paciente/Update/${paciente.IDPACIENTE}`, paciente)
     },
 
-
+    list: (idPaciente) => {
+        return http.get(`Prescricao/Read/${idPaciente}`)
+    }
 
 }

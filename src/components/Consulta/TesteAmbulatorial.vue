@@ -12,6 +12,11 @@
         <b-input type="text" @change="enviarTesteAmbulatorial" v-model="testeAmbulatorial.RESULTADO" size="sm" class="form-control" />
       </div>
     </div>
+    
+     <div class="mt-5">
+  <b-button  variant="primary" class="mr-5">Salvar</b-button>
+  <b-button  variant="primary">Limpar</b-button>
+</div>
   </div>
 </template>
 

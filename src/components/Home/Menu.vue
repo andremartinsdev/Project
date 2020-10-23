@@ -83,7 +83,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @keyframes bounce {
   0%, 20%, 60%, 100%{
     transform: translateY(0)

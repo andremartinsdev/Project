@@ -10,29 +10,30 @@
 
       <b-collapse id="nav-text-collapse" is-nav class="colapseContainer">
         <b-navbar-nav class="flexNav">
-          <router-link class="nav-link" to="/">
-            <b-button pill variant="light" class="ml-4">
-              <b-icon-house-door-fill font-scale="1.5" class="mr-2"></b-icon-house-door-fill>Inicio
-            </b-button>
+          <router-link class="nav-link mr-5" to="/" style=" padding:0">
+            <b-img center :src="image" alt="Center image" width="35"></b-img>
+             <label class="text-white ml-2">Inicio</label>
           </router-link>
-          <router-link class="nav-link" to="/Agenda">
-            <b-button pill variant="light" class="ml-4">
-              <b-icon-calendar-fill font-scale="1.5" class="mr-2"></b-icon-calendar-fill>Agenda
-            </b-button>
+          <router-link class="nav-link mr-5" to="/Agenda" style=" padding:0">
+            <b-img center :src="imageCalender" alt="Center image" width="35"></b-img>
+             <label class="text-white">Agenda</label>
           </router-link>
 
-          <router-link class="nav-link" to="/CadastroPaciente">
-            <b-button pill variant="light" class="ml-4">
-              <b-icon-person-plus-fill font-scale="1.5" class="mr-2"></b-icon-person-plus-fill>Paciente
-            </b-button>
+          <router-link class="nav-link mr-5" to="/CadastroPaciente" style=" padding:0">
+            <b-img center :src="imagePaciente" alt="Center image" width="35"></b-img>
+             <label class="text-white">Paciente</label>
           </router-link>
 
-          <router-link class="nav-link" to="/Consulta">
-            <b-button pill variant="light" class="ml-4">
-              <b-icon-card-list font-scale="1.5" class="mr-2"></b-icon-card-list>Consulta
-            </b-button>
+          <router-link class="nav-link mr-5" to="/Consulta" style="padding:0">
+            <b-img center :src="imageConsulta" alt="Center image" width="35"></b-img>
+            <label class="text-white">Consulta</label>
           </router-link>
-          <div class="mb-1 ml-4">
+
+           <router-link class="nav-link mr-5" to="/Consulta" style="padding:0">
+            <b-img center :src="imageRelatorio" alt="Center image" width="35"></b-img>
+            <label class="text-white">Relatorio</label>
+          </router-link>
+          <div class="ml-4" style=" margin:auto 0;">
             <b-dropdown
               pill
               size="md"
@@ -57,10 +58,27 @@
 </template>
 
 <script>
-export default {};
+import image from "../../public/home.png";
+import imageCalender from "../../public/calender.png";
+import imagePaciente from "../../public/user.png";
+import imageConsulta from "../../public/consulta.png";
+import imageRelatorio from "../../public/relatorio.png";
+import imageConfig from "../../public/configuracao.png";
+export default {
+  data(){
+    return{
+      image: image,
+      imageCalender: imageCalender,
+      imagePaciente: imagePaciente,
+      imageConsulta: imageConsulta,
+      imageRelatorio: imageRelatorio,
+      imageConfig: imageConfig
+    }
+  }
+};
 </script>
 
-<style >
+<style scoped >
 @keyframes bounce {
   0%,
   20%,
@@ -68,11 +86,9 @@ export default {};
   100% {
     transform: translateY(0);
   }
-  40% {
-    transform: translateY(-15px);
-  }
+ 
   80% {
-    transform: translateY(-5px);
+    transform: translateY(-15px);
   }
 }
 #navbar1:hover {
@@ -88,14 +104,14 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
-  font-family: "Ubuntu", sans-serif;
 }
 
-button:hover {
+img:hover {
   animation: bounce 1s;
 }
 
 .colapseContainer {
+  
   display: flex;
   justify-content: space-around;
 }

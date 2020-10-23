@@ -12,63 +12,130 @@
                     Cadastro Paciente
                     <b-icon-person-plus class="ml-3"></b-icon-person-plus>
                   </h3>
-                  
+
                   <form @submit.prevent="salvar()">
-                    
                     <div class="form-group">
-                      <input type="text" v-model="paciente.IDPACIENTE" hidden class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.IDPACIENTE"
+                        hidden
+                        class="form-control"
+                      />
                       <label for="exampleInputEmail1">Nome Paciente</label>
-                      <input type="text" v-model="paciente.NOMEPACIENTE" class="form-control" />
+                      <b-form-input
+                        id="input-live"
+                        v-model="paciente.NOMEPACIENTE"
+                        :state="nameState"
+                        aria-describedby="input-live-help input-live-feedback"
+                        trim
+                      ></b-form-input>
+
+                      <!-- This will only be shown if the preceding input has an invalid state -->
+                      <b-form-invalid-feedback id="input-live-feedback">
+                        Nome Obrigatório
+                      </b-form-invalid-feedback>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Data de Nascimento</label>
-                      <input type="date" v-model="paciente.DATANASCIMENTO" class="form-control" />
+                      <input
+                        type="date"
+                        v-model="paciente.DATANASCIMENTO"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email</label>
-                      <input type="email" v-model="paciente.EMAIL" class="form-control" />
+                      <input
+                        type="email"
+                        v-model="paciente.EMAIL"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Telefone</label>
-                      <input type="text" v-model="paciente.TELEFONE" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.TELEFONE"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Ocupação</label>
-                      <input type="text" v-model="paciente.OCUPACAO" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.OCUPACAO"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CPF</label>
-                      <input type="text" v-model="paciente.CPF" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.CPF"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">RG</label>
-                      <input type="text" v-model="paciente.RG" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.RG"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Endereço</label>
-                      <input type="text" v-model="paciente.ENDERECO" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.ENDERECO"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Cidade</label>
-                      <input type="text" v-model="paciente.CIDADE" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.CIDADE"
+                        class="form-control"
+                      />
                     </div>
                     <div class="form-group mb-5">
                       <label for="exampleInputEmail1">Estado</label>
-                      <input type="text" v-model="paciente.ESTADO" class="form-control" />
+                      <input
+                        type="text"
+                        v-model="paciente.ESTADO"
+                        class="form-control"
+                      />
                     </div>
 
                     <footer id="sticky-footer" class="py-2 text-white-50 mb-4">
                       <div class="container text-center">
-                        <b-button pill variant="light" class="mr-2" type="submit">
-                          <b-icon-person-check-fill submit class="mr-3"></b-icon-person-check-fill>Salvar
+                        <b-button
+                          pill
+                          variant="light"
+                          class="mr-2"
+                          type="submit"
+                        >
+                          <b-icon-person-check-fill
+                            submit
+                            class="mr-3"
+                          ></b-icon-person-check-fill
+                          >Salvar
                         </b-button>
 
-                        <b-button pill variant="light" @click="limpar()" class="mr-2">
-                          <b-icon-arrow-clockwise class="mr-3"></b-icon-arrow-clockwise>Limpar
+                        <b-button
+                          pill
+                          variant="light"
+                          @click="limpar()"
+                          class="mr-2"
+                        >
+                          <b-icon-arrow-clockwise
+                            class="mr-3"
+                          ></b-icon-arrow-clockwise
+                          >Limpar
                         </b-button>
 
-
-                        <b-button pill variant="light" @click="tabIndex++" >
+                        <b-button pill variant="light" @click="tabIndex++">
                           <b-icon-search class="mr-3"></b-icon-search>Pesquisar
                         </b-button>
                       </div>
@@ -82,7 +149,9 @@
                 <b-input-group class="mt-3">
                   <b-form-input></b-form-input>
                   <b-input-group-append>
-                    <b-button variant="primary" @click="list">Pesquisar</b-button>
+                    <b-button variant="primary" @click="list"
+                      >Pesquisar</b-button
+                    >
                   </b-input-group-append>
                 </b-input-group>
                 <div class="tablePaciente">
@@ -97,20 +166,29 @@
                     </thead>
                     <tbody>
                       <tr v-for="item in ListaPaciente" :key="item.IDPACIENTE">
-                        <td>{{item.NOMEPACIENTE}}</td>
-                        <td>{{new Date(item.DATANASCIMENTO).toLocaleDateString()}}</td>
-                        <td>{{item.CPF}}</td>
+                        <td>{{ item.NOMEPACIENTE }}</td>
+                        <td>
+                          {{
+                            new Date(item.DATANASCIMENTO).toLocaleDateString()
+                          }}
+                        </td>
+                        <td>{{ item.CPF }}</td>
                         <td>
                           <b-button
                             pill
                             variant="primary"
                             @click="MudarAcoes(item.IDPACIENTE)"
-                          >Ações</b-button>
+                            >Ações</b-button
+                          >
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <footer v-if="acoes == true" id="sticky-footer" class="py-4 text-white-50">
+                  <footer
+                    v-if="acoes == true"
+                    id="sticky-footer"
+                    class="py-4 text-white-50"
+                  >
                     <div class="container text-center">
                       <b-button
                         pill
@@ -119,7 +197,11 @@
                         class="mr-2"
                         type="submit"
                       >
-                        <b-icon-person-check-fill submit class="mr-3"></b-icon-person-check-fill>Editar
+                        <b-icon-person-check-fill
+                          submit
+                          class="mr-3"
+                        ></b-icon-person-check-fill
+                        >Editar
                       </b-button>
 
                       <b-button
@@ -128,7 +210,11 @@
                         @click="deletePaciente(idPacienteAcoes)"
                         class="mr-2"
                       >
-                        <b-icon-arrow-clockwise submit class="mr-3"></b-icon-arrow-clockwise>Excluir
+                        <b-icon-arrow-clockwise
+                          submit
+                          class="mr-3"
+                        ></b-icon-arrow-clockwise
+                        >Excluir
                       </b-button>
 
                       <b-button pill class="mr-2" variant="light">
@@ -151,15 +237,20 @@ import SidebarNavbar from "../SidebarNavbar";
 import { mapState, mapActions } from "vuex";
 import axios from "axios";
 import PacienteService from "../../services/paciente";
+import ValidatorPaciente from "../../services/validacoes";
 
 export default {
   components: {
-    SidebarNavbar
+    SidebarNavbar,
   },
   computed: {
     ...mapState({
-      pacientes: state => state.paciente
-    })
+      pacientes: (state) => state.paciente,
+    }),
+
+    nameState() {
+      return this.paciente.NOMEPACIENTE.length > 0 ? true : false;
+    },
   },
   data() {
     return {
@@ -179,8 +270,8 @@ export default {
         RG: "",
         ENDERECO: "",
         CIDADE: "",
-        ESTADO: ""
-      }
+        ESTADO: "",
+      },
     };
   },
 
@@ -195,9 +286,10 @@ export default {
       "deletePaciente",
       "updatePaciente",
       "selectPaciente",
-      "selectPacienteId"
+      "selectPacienteId",
     ]),
-
+    
+   
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -205,13 +297,12 @@ export default {
         icon: icon,
         title: title,
         showConfirmButton: false,
-        timer: 2000
+        timer: 2500,
       });
     },
-
-
+    
     list() {
-      axios.get("http://localhost:3000/Paciente/List").then(response => {
+      axios.get("http://localhost:3000/Paciente/List").then((response) => {
         this.ListaPaciente = response.data.retorno;
         console.log(this.ListaPaciente);
       });
@@ -235,37 +326,61 @@ export default {
         RG: "",
         ENDERECO: "",
         CIDADE: "",
-        ESTADO: ""
+        ESTADO: "",
       };
     },
-    salvar() {
-      console.log(new Date().toLocaleDateString())
-      if (this.paciente.IDPACIENTE < 0) {
-        PacienteService.save(this.paciente)
-          .then(result => {
-            if (result.data.message === "success") {
-              this.showAlert("success", "Paciente Salvo com Sucesso");
-              this.list();
-            } else {
-              this.showAlert("error", "Erro ao Salvar Paciente");
-            }
-          })
-          .catch(() => {
-            this.showAlert("erro", "Erro ao Salvar Paciente");
-          });
+    validaErro() {
+      const erro = ValidatorPaciente(this.paciente);
+      if (erro) {
+        if (erro.NOMEPACIENTE) {
+          this.showAlert("error", erro.NOMEPACIENTE);
+        } else if (erro.TELEFONE) {
+          this.showAlert("error", erro.TELEFONE);
+        } else if (erro.EMAIL) {
+          this.showAlert("error", erro.EMAIL);
+        }
+      }
+
+      if (erro) {
+        return true;
       } else {
-        PacienteService.edit(this.paciente)
-          .then(result => {
-            if (result.data.message === "success") {
-              this.showAlert("success", "Paciente Editado com Sucesso");
-              this.list();
-            } else {
+        return false;
+      }
+    },
+
+    salvar() {
+      this.validaErro();
+      if (!this.validaErro()) {
+        if (this.paciente.IDPACIENTE < 0) {
+          console.log(this.paciente)
+          
+          PacienteService.save(this.paciente)
+            .then((result) => {
+              if (result.status === 200) {
+                console.log("cadadad")
+                this.showAlert("success", "Paciente Salvo com Sucesso");
+                this.list();
+              } else {
+                this.showAlert("error", "Erro ao Salvar Paciente");
+              }
+            })
+            .catch(() => {
+              this.showAlert("erro", "Erro ao Salvar Paciente");
+            });
+        } else {
+          PacienteService.edit(this.paciente)
+            .then((result) => {
+              if (result.data.message === "success") {
+                this.showAlert("success", "Paciente Editado com Sucesso");
+                this.list();
+              } else {
+                this.showAlert("error", "Erro ao Editar Paciente");
+              }
+            })
+            .catch(() => {
               this.showAlert("error", "Erro ao Editar Paciente");
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Erro ao Editar Paciente");
-          });
+            });
+        }
       }
     },
 
@@ -273,23 +388,24 @@ export default {
       console.log(idPaciente);
       axios
         .delete(`http://localhost:3000/Paciente/Delete/${idPaciente}`)
-        .then(response => {
+        .then((response) => {
           console.log(response.data.message);
           this.list();
         });
+        this.acoes = false;
     },
 
     read(idPaciente) {
       axios
         .get(`http://localhost:3000/Paciente/Read/${idPaciente}`)
-        .then(response => {
-          console.log(response);
+        .then((response) => {
           this.tabIndex -= this.tabIndex;
           this.paciente = response.data.retorno[0];
-          console.log( response.data.retorno[0])
+          console.log(response.data.retorno[0]);
         });
-    }
-  }
+        this.acoes = false;
+    },
+  },
 };
 </script>
 

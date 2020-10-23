@@ -667,6 +667,7 @@ import CardHome from "./CardHome";
 import Menu from "./Menu";
 import Calendar from "../fullCalendar/Calendar";
 import { mapState, mapActions } from "vuex";
+import ServiceClinica from '../../services/clinica'
 
 export default {
   components: {
@@ -705,10 +706,17 @@ export default {
       this.showOptionRelatorio = false;
     },
   },
+  created(){
+    ServiceClinica.read(1).then(result =>{
+      localStorage.setItem("UUIDCLINICA", result.data.retorno[0].UUIDCLINICA)
+      localStorage.setItem("IDCLINICA", result.data.retorno[0].IDCLINICA)
+      this.$store.commit("DADOS_CLINICA", result.data.retorno[0])
+    })
+  }
 };
 </script>
 
-<style >
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Monda:wght@700&display=swap");
 
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
