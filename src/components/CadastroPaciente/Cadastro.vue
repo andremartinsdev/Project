@@ -5,7 +5,7 @@
       <div>
         <b-card no-body>
           <b-tabs v-model="tabIndex" pills card>
-            <b-tab title="Cadastro" active>
+            <b-tab title="Cadastro" active class="formClienteCard">
               <b-card class="formClienteCard">
                 <b-container class="col-sm-6" fluid>
                   <h3 class="mb-2">
@@ -17,14 +17,14 @@
                     <div class="form-group">
                       <input
                         type="text"
-                        v-model="paciente.IDPACIENTE"
+                        v-model="paciente.uuid"
                         hidden
                         class="form-control"
                       />
                       <label for="exampleInputEmail1">Nome Paciente</label>
                       <b-form-input
                         id="input-live"
-                        v-model="paciente.NOMEPACIENTE"
+                        v-model="paciente.nomePaciente"
                         :state="nameState"
                         aria-describedby="input-live-help input-live-feedback"
                         trim
@@ -39,7 +39,7 @@
                       <label for="exampleInputEmail1">Data de Nascimento</label>
                       <input
                         type="date"
-                        v-model="paciente.DATANASCIMENTO"
+                        v-model="paciente.dataNascimento"
                         class="form-control"
                       />
                     </div>
@@ -47,7 +47,7 @@
                       <label for="exampleInputEmail1">Email</label>
                       <input
                         type="email"
-                        v-model="paciente.EMAIL"
+                        v-model="paciente.email"
                         class="form-control"
                       />
                     </div>
@@ -55,23 +55,21 @@
                       <label for="exampleInputEmail1">Telefone</label>
                       <input
                         type="text"
-                        v-model="paciente.TELEFONE"
+                        v-model="paciente.telefone"
                         class="form-control"
                       />
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Ocupação</label>
-                      <input
-                        type="text"
-                        v-model="paciente.OCUPACAO"
-                        class="form-control"
-                      />
+                      <input type="text" class="form-control"  />
+                     
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">CPF</label>
                       <input
+                      v-mask="'###.###.###-##'"
                         type="text"
-                        v-model="paciente.CPF"
+                        v-model="paciente.cpf"
                         class="form-control"
                       />
                     </div>
@@ -79,7 +77,7 @@
                       <label for="exampleInputEmail1">RG</label>
                       <input
                         type="text"
-                        v-model="paciente.RG"
+                        v-model="paciente.rg"
                         class="form-control"
                       />
                     </div>
@@ -87,7 +85,7 @@
                       <label for="exampleInputEmail1">Endereço</label>
                       <input
                         type="text"
-                        v-model="paciente.ENDERECO"
+                        v-model="paciente.endereco"
                         class="form-control"
                       />
                     </div>
@@ -95,7 +93,7 @@
                       <label for="exampleInputEmail1">Cidade</label>
                       <input
                         type="text"
-                        v-model="paciente.CIDADE"
+                        v-model="paciente.cidade"
                         class="form-control"
                       />
                     </div>
@@ -103,7 +101,7 @@
                       <label for="exampleInputEmail1">Estado</label>
                       <input
                         type="text"
-                        v-model="paciente.ESTADO"
+                        v-model="paciente.estado"
                         class="form-control"
                       />
                     </div>
@@ -146,17 +144,39 @@
             </b-tab>
             <b-tab title="Pesquisa">
               <b-card class="formClienteCard">
-                <b-input-group class="mt-3">
-                  <b-form-input></b-form-input>
+                <div class="flex justify-content-center p-3">
+                  <div class="mr-3">
+                    <b-form-checkbox
+                      id="checkbox-1"
+                      v-model="statusPesquisa"
+                      name="checkbox-1"
+                      value="cpf"
+                    >
+                      Pesquisar por CPF
+                    </b-form-checkbox>
+                  </div>
+                  <div>
+                    <b-form-checkbox
+                      id="checkbox-2"
+                      v-model="statusPesquisa"
+                      name="checkbox-2"
+                      value="nome"
+                    >
+                      Pesquisar por NOME
+                    </b-form-checkbox>
+                  </div>
+                </div>
+                <b-input-group class="mt-3 mb-4">
+                  <b-form-input v-model="campoPesquisa"></b-form-input>
                   <b-input-group-append>
-                    <b-button variant="primary" @click="list"
+                    <b-button variant="primary" @click="readParams"
                       >Pesquisar</b-button
                     >
                   </b-input-group-append>
                 </b-input-group>
                 <div class="tablePaciente">
-                  <table class="table table-sm text-center">
-                    <thead class>
+                  <table class="table text-center">
+                    <thead>
                       <tr>
                         <th scope="col">Nome</th>
                         <th scope="col">Data de Nascimento</th>
@@ -165,25 +185,32 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in ListaPaciente" :key="item.IDPACIENTE">
-                        <td>{{ item.NOMEPACIENTE }}</td>
+                      <tr v-for="item in ListaPaciente" :key="item.idPaciente">
+                        <td>{{ item.nomePaciente }}</td>
                         <td>
                           {{
-                            new Date(item.DATANASCIMENTO).toLocaleDateString()
+                            new Date(
+                              item.dataNascimento
+                            ).toLocaleDateString() === "Invalid Date"
+                              ? "Data Não Informada"
+                              : new Date(
+                                  item.dataNascimento
+                                ).toLocaleDateString()
                           }}
                         </td>
-                        <td>{{ item.CPF }}</td>
+                        <td>{{ item.cpf }}</td>
                         <td>
                           <b-button
                             pill
                             variant="primary"
-                            @click="MudarAcoes(item.IDPACIENTE)"
+                            @click="MudarAcoes(item.uuid)"
                             >Ações</b-button
                           >
                         </td>
                       </tr>
                     </tbody>
                   </table>
+
                   <footer
                     v-if="acoes == true"
                     id="sticky-footer"
@@ -224,6 +251,55 @@
                   </footer>
                 </div>
               </b-card>
+              <footer class="card-footer">
+                <div class="card-footer-item">
+                  <nav
+                    class="pagination is-centered"
+                    role="navigation"
+                    aria-label="pagination"
+                  >
+                    <b-button
+                      v-if="page < totalPage"
+                      variant="primary"
+                      @click="nextPage"
+                      v-show="statePesquisa"
+                    >
+                      Proximo
+                      <b-icon-arrow-right-circle-fill>
+                      </b-icon-arrow-right-circle-fill>
+                    </b-button>
+
+                    <b-button
+                      variant="primary"
+                      @click="previousPage"
+                      class="ml-3"
+                      v-show="statePesquisa"
+                      v-if="page != 1"
+                    >
+                      <b-icon-arrow-left-circle-fill>
+                      </b-icon-arrow-left-circle-fill>
+                      Anterior
+                    </b-button>
+
+                    <b-button
+                      variant="primary"
+                      @click="limparPesquisa"
+                      v-if="statePesquisa === false"
+                    >
+                      Limpar Pesquisa
+                    </b-button>
+                  </nav>
+                </div>
+                <div class="card-footer-item mt-3" v-show="statePesquisa">
+                  <label>
+                    Total de Páginas
+                    <b-badge variant="primary">{{ totalPage }}</b-badge>
+                  </label>
+                  <label class="ml-4">
+                    Página Atual <b-badge variant="primary">{{ page }}</b-badge>
+                  </label>
+                </div>
+              </footer>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -235,7 +311,6 @@
 <script>
 import SidebarNavbar from "../SidebarNavbar";
 import { mapState, mapActions } from "vuex";
-import axios from "axios";
 import PacienteService from "../../services/paciente";
 import ValidatorPaciente from "../../services/validacoes";
 
@@ -249,35 +324,45 @@ export default {
     }),
 
     nameState() {
-      return this.paciente.NOMEPACIENTE.length > 0 ? true : false;
+      return this.paciente.nomePaciente.length > 0 ? true : false;
     },
   },
   data() {
     return {
+      myInputModel: '',
+      campoPesquisa: "",
+      pages: [],
+      statusPesquisa: "",
       message: false,
       acoes: false,
       ListaPaciente: {},
       tabIndex: 1,
       idPacienteAcoes: -1,
+      idPaciente: -1,
+      statePesquisa: true,
+      page: 1,
+      totalPage: 0,
       paciente: {
-        IDPACIENTE: -1,
-        NOMEPACIENTE: "",
-        DATANASCIMENTO: "",
-        EMAIL: "",
-        TELEFONE: "",
-        OCUPACAO: "",
-        CPF: "",
-        RG: "",
-        ENDERECO: "",
-        CIDADE: "",
-        ESTADO: "",
+        uuid: -1,
+        nomePaciente: "",
+        dataNascimento: "",
+        email: "",
+        telefone: "",
+        cpf: "",
+        rg: "",
+        endereco: "",
+        cidade: "",
+        estado: "",
       },
     };
   },
 
   beforeMount() {
-    this.list();
     console.log("teste");
+  },
+
+  mounted() {
+    this.list();
   },
 
   methods: {
@@ -288,8 +373,7 @@ export default {
       "selectPaciente",
       "selectPacienteId",
     ]),
-    
-   
+
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -300,77 +384,77 @@ export default {
         timer: 2500,
       });
     },
-    
-    list() {
-      axios.get("http://localhost:3000/Paciente/List").then((response) => {
-        this.ListaPaciente = response.data.retorno;
-        console.log(this.ListaPaciente);
-      });
-    },
 
     MudarAcoes(idPaciente) {
       this.acoes = !this.acoes;
       this.idPacienteAcoes = idPaciente;
-      console.log(this.idPacienteAcoes);
     },
+
     limpar() {
       this.paciente = {
-        IDPACIENTE: -1,
-        IDEMPRESA: "",
-        NOMEPACIENTE: "",
-        DATANASCIMENTO: "",
-        EMAIL: "",
-        TELEFONE: "",
-        OCUPACAO: "",
-        CPF: "",
-        RG: "",
-        ENDERECO: "",
-        CIDADE: "",
-        ESTADO: "",
+        uuid: -1,
+        nomePaciente: "",
+        dataNascimento: "",
+        email: "",
+        telefone: "",
+        cpf: "",
+        rg: "",
+        endereco: "",
+        cidade: "",
+        estado: "",
       };
     },
-    validaErro() {
-      const erro = ValidatorPaciente(this.paciente);
-      if (erro) {
-        if (erro.NOMEPACIENTE) {
-          this.showAlert("error", erro.NOMEPACIENTE);
-        } else if (erro.TELEFONE) {
-          this.showAlert("error", erro.TELEFONE);
-        } else if (erro.EMAIL) {
-          this.showAlert("error", erro.EMAIL);
-        }
-      }
+    limparPesquisa() {
+      this.list();
+      this.statePesquisa = true;
+      this.campoPesquisa = "";
+    },
+    list() {
+      PacienteService.list().then((response) => {
+        this.ListaPaciente = response.data.result.result;
+        const totalRows = response.data.result.total[0].count;
+        this.totalPage = Math.ceil(totalRows / 10);
+        this.page = 1;
+      });
+    },
 
-      if (erro) {
-        return true;
-      } else {
-        return false;
-      }
+    previousPage() {
+      this.page = this.page - 1;
+      PacienteService.previousPage(this.page).then((response) => {
+        this.ListaPaciente = response.data.result.result;
+      });
+    },
+
+    nextPage() {
+      this.page = this.page + 1;
+      PacienteService.nextPage(this.page).then((response) => {
+        this.ListaPaciente = response.data.result.result;
+      });
     },
 
     salvar() {
-      this.validaErro();
-      if (!this.validaErro()) {
-        if (this.paciente.IDPACIENTE < 0) {
-          console.log(this.paciente)
-          
+      const error = ValidatorPaciente.ValidarPaciente(this.paciente);
+      if (error) {
+        this.showAlert("info", "Existe algum erro de preenchimento");
+      } else {
+        if (this.paciente.uuid === -1) {
           PacienteService.save(this.paciente)
             .then((result) => {
-              if (result.status === 200) {
-                console.log("cadadad")
+              if (result.status === 201) {
                 this.showAlert("success", "Paciente Salvo com Sucesso");
+                this.paciente.uuid = result.data.uuid;
                 this.list();
               } else {
                 this.showAlert("error", "Erro ao Salvar Paciente");
               }
             })
             .catch(() => {
-              this.showAlert("erro", "Erro ao Salvar Paciente");
+              this.showAlert("error", "Erro ao Salvar Paciente");
             });
         } else {
-          PacienteService.edit(this.paciente)
+          PacienteService.edit(this.paciente, this.paciente.uuid)
             .then((result) => {
-              if (result.data.message === "success") {
+              if (result.status === 201) {
                 this.showAlert("success", "Paciente Editado com Sucesso");
                 this.list();
               } else {
@@ -384,26 +468,49 @@ export default {
       }
     },
 
-    deletePaciente(idPaciente) {
-      console.log(idPaciente);
-      axios
-        .delete(`http://localhost:3000/Paciente/Delete/${idPaciente}`)
-        .then((response) => {
-          console.log(response.data.message);
-          this.list();
+    readParams() {
+      if (!this.statusPesquisa) {
+        this.showAlert(
+          "info",
+          "Selecione uma Opção para pesquisar (Nome ou CPF)"
+        );
+      } else if (!this.campoPesquisa) {
+        this.showAlert("info", "Campo de Pesquisa em branco");
+      } else {
+        PacienteService.readParams(
+          this.statusPesquisa,
+          this.campoPesquisa
+        ).then((result) => {
+          if (Object.keys(result.data.result).length === 0) {
+            this.showAlert("info", "Nenhuma Informação encontrada");
+          } else {
+            this.statePesquisa = false;
+            this.ListaPaciente = result.data.result;
+          }
+        }).catch(() => {
+            this.showAlert("error", "Não foi possível realizar consulta");
         });
-        this.acoes = false;
+      }
     },
 
-    read(idPaciente) {
-      axios
-        .get(`http://localhost:3000/Paciente/Read/${idPaciente}`)
-        .then((response) => {
-          this.tabIndex -= this.tabIndex;
-          this.paciente = response.data.retorno[0];
-          console.log(response.data.retorno[0]);
-        });
-        this.acoes = false;
+    deletePaciente(idPaciente) {
+      PacienteService.delete(idPaciente).then(() => {
+        this.showAlert("success", "Paciente Deletado com Sucesso");
+        this.list();
+      }).catch(() => {
+        this.showAlert("error", "Erro eo Deletar registro de Paciente");
+      });
+      this.acoes = false;
+    },
+
+    read(uuid) {
+      PacienteService.read(uuid).then((response) => {
+        this.tabIndex -= this.tabIndex;
+        this.paciente = response.data.paciente;
+      }).catch(()=> {
+        this.showAlert("error", "Erro consultar registro de Paciente");
+      });
+      this.acoes = false;
     },
   },
 };
@@ -423,6 +530,7 @@ export default {
 button,
 table {
   font-family: "Monda", sans-serif;
+  font-size: 14px;
 }
 
 .formCliente h3 {
@@ -458,6 +566,9 @@ table {
     border-radius: 10px;
     align-items: center;
   }
+  .formClienteCard {
+    width: 100%;
+  }
   #sticky-footer button {
     width: 100%;
     margin-bottom: 5px;
@@ -470,7 +581,10 @@ table {
     margin-top: 150px;
   }
 }
-
+.card-footer-item {
+  display: flex;
+  justify-content: center;
+}
 .tablePaciente {
   overflow: auto;
 }

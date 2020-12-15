@@ -1,102 +1,92 @@
 import * as MutationsTypes from './mutations-types'
-import { http } from '../services/config'
-//import axios from 'axios'
 
 
 export default {
-     [MutationsTypes.SAVE_PACIENTE]  (state,paciente){
-        http.post("Paciente/Save", paciente).then(() =>{
-            
-        })
-    },
-    [MutationsTypes.DELETE_PACIENTE] (state, idPaciente){
-        alert(`deletado com sucesso`, state, idPaciente)
-    },
-    [MutationsTypes.UPDATE_PACIENTE] (state, event){
-        alert("Atualizado com sucesso", state, event)
-    },
-    [MutationsTypes.SELECT_PACIENTE] (state, event){
-        state.pacienteSelected = event;
-    },
-    [MutationsTypes.SELECT_PACIENTE_ID] (state, event, id){
-        alert("Registro do cliente Fulano selecionado", state, event, id)
-    },
-    [MutationsTypes.ALTER_OPTION](state, option){
+
+
+    [MutationsTypes.ALTER_OPTION](state, option) {
         state.option = !option
     },
-    [MutationsTypes.PACIENTE_SELECTED](state, idPaciente){
+    [MutationsTypes.PACIENTE_SELECTED](state, idPaciente) {
         state.pacienteSelected = idPaciente;
+    }, 
+    [MutationsTypes.FICHA_CLINICA](state, fichaClinica) {
+        state.fichaClinica = fichaClinica;
     },
-    [MutationsTypes.AFINAMENTO](state, afinamento){
-        state.afinamento = afinamento;
+    [MutationsTypes.AFINAMENTO](state, afinamento) {
+        state.fichaClinica.afinamento = afinamento;
     },
-    [MutationsTypes.ACUIDADE](state, acuidade){
-        state.acuidade = acuidade[0];
+    [MutationsTypes.ACUIDADE](state, acuidade) {
+        state.fichaClinica.acuidade = acuidade[0];
+        console.log(acuidade[0])
     },
-    [MutationsTypes.AMPLITUDE_ACOMODACAO](state, amplitude){
-        state.amplitude = amplitude;
+    [MutationsTypes.AMPLITUDE_ACOMODACAO](state, amplitude) {
+        state.fichaClinica.amplitude = amplitude;
     },
-    [MutationsTypes.ANAMNESE](state, anamnese){
-        state.anamnese = anamnese;
+    [MutationsTypes.ANAMNESE](state, anamnese) {
+        state.fichaClinica.anamnese = anamnese;
     },
-    [MutationsTypes.PRESCRICAO_ULTIMO_EXAME](state, prescricaoUltimoExame){
-        state.prescricaoUltimoExame = prescricaoUltimoExame
+    [MutationsTypes.PRESCRICAO_ULTIMO_EXAME](state, prescricaoUltimoExame) {
+        state.fichaClinica.prescricaoUltimoExame = prescricaoUltimoExame
     },
-    [MutationsTypes.CERAMETRIA](state, cerametria){
-        state.cerametria = cerametria;
+    [MutationsTypes.CERAMETRIA](state, cerametria) {
+        state.fichaClinica.cerametria = cerametria;
     },
-    [MutationsTypes.BIOMICRO](state, biomicro){
-        state.biomicro = biomicro;
+    [MutationsTypes.BIOMICRO](state, biomicro) {
+        state.fichaClinica.biomicro = biomicro;
     },
-    [MutationsTypes.OFTALMOSCOPIA](state, oftalmoscopia){
-        state.oftalmoscopia = oftalmoscopia
+    [MutationsTypes.OFTALMOSCOPIA](state, oftalmoscopia) {
+        state.fichaClinica.oftalmoscopia = oftalmoscopia
     },
-    [MutationsTypes.TONOMETRIA](state, tonometria){
-        state.tonometria = tonometria
+    [MutationsTypes.TONOMETRIA](state, tonometria) {
+        state.fichaClinica.tonometria = tonometria
     },
-    [MutationsTypes.REFLEXO_PULPILAR](state, reflexoPulpilar){
-        state.reflexoPulpilar = reflexoPulpilar
+    [MutationsTypes.REFLEXO_PULPILAR](state, reflexoPulpilar) {
+        state.fichaClinica.reflexoPulpilar = reflexoPulpilar
     },
-    [MutationsTypes.PPC](state, ppc){
-        state.ppc = ppc;
+    [MutationsTypes.PPC](state, ppc) {
+        state.fichaClinica.ppc = ppc;
     },
-    [MutationsTypes.AV_MOTORA](state, avMotora){
-        state.avMotora = avMotora;
+    [MutationsTypes.AV_MOTORA](state, avMotora) {
+        state.fichaClinica.avMotora = avMotora;
     },
-    [MutationsTypes.RESERVAS_FUSIONAIS](state, reservasFusionais){
-        state.reservasFusionais = reservasFusionais;
+    [MutationsTypes.RESERVAS_FUSIONAIS](state, reservasFusionais) {
+        state.fichaClinica.reservasFusionais = reservasFusionais;
     },
-    [MutationsTypes.FLEXIBILIDADE_ACOMODACAO](state, flexiDeAcomodacao){
-        state.flexiDeAcomodacao = flexiDeAcomodacao
+    [MutationsTypes.FLEXIBILIDADE_ACOMODACAO](state, flexiDeAcomodacao) {
+        state.fichaClinica.flexiDeAcomodacao = flexiDeAcomodacao
     },
-    [MutationsTypes.RETINOSCOPIA](state, retinoscopia){
-        state.retinoscopia = retinoscopia
+    [MutationsTypes.RETINOSCOPIA](state, retinoscopia) {
+        state.fichaClinica.retinoscopia = retinoscopia
     },
-    [MutationsTypes.FOROMETRIA](state, forometria){
-        state.forometria = forometria;
+    [MutationsTypes.FOROMETRIA](state, forometria) {
+        state.fichaClinica.forometria = forometria;
     },
-    [MutationsTypes.SUBJETIVO](state, subjetivo){
-        state.subjetivo = subjetivo
+    [MutationsTypes.SUBJETIVO](state, subjetivo) {
+        state.fichaClinica.subjetivo = subjetivo
     },
-    [MutationsTypes.TESTE_AMBULATORIAL](state, testeAmbulatorial){
-        state.testeAmbulatorial = testeAmbulatorial;
+    [MutationsTypes.TESTE_AMBULATORIAL](state, testeAmbulatorial) {
+        state.fichaClinica.testeAmbulatorial = testeAmbulatorial;
     },
-    [MutationsTypes.ADICAO](state, adicao){
-        state.adicao = adicao;
+    [MutationsTypes.ADICAO](state, adicao) {
+        state.fichaClinica.adicao = adicao;
     },
-    [MutationsTypes.RX_FINAL](state, rxFinal){
-        state.rxFinal = rxFinal;
+    [MutationsTypes.RX_FINAL](state, rxFinal) {
+        state.fichaClinica.rxFinal = rxFinal;
     },
-    [MutationsTypes.DX](state, dx){
-        state.dx = dx
+    [MutationsTypes.DX](state, dx) {
+        state.fichaClinica.dx = dx
     },
-    [MutationsTypes.ID_CONSULTA](state, idConsulta){
+    [MutationsTypes.ID_CONSULTA](state, idConsulta) {
         state.idConsulta = idConsulta;
     },
-    [MutationsTypes.LIMPAR](state, limpar){
+    [MutationsTypes.LIMPAR](state, limpar) {
         state.limpar = limpar
     },
-    [MutationsTypes.DADOS_CLINICA](state, dadosClinica){
+    [MutationsTypes.DADOS_CLINICA](state, dadosClinica) {
         state.dadosClinica = dadosClinica
+    },
+    [MutationsTypes.UUID_AGENDAMENTO](state, uuidAgendamento) {
+        state.uuidAgendamento = uuidAgendamento
     }
 }

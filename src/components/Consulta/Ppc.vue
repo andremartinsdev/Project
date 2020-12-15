@@ -62,6 +62,39 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    ppcProps: {
+      type: Object
+    }
+  },
+
+  watch:{
+    ppcProps(){
+      if(Object.keys(this.ppcProps).length != 0){
+        this.ppc = this.ppcProps
+        this.enviarPpc();
+      }
+    },
+    Limpar(){
+      this.ppc = {
+        SC:{
+          OR:'',
+          LUZ: '',
+          FILTRO: ''
+        },
+        CC:{
+          OR:'',
+          LUZ: '',
+          FILTRO: ''
+        }
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("PPC", {})
+    }
+  },
   data(){
     return{
       ppc: {

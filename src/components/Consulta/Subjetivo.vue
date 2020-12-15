@@ -30,6 +30,33 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    subjetivoProps: {
+      type: Object
+    }
+  },
+
+  watch:{
+    subjetivoProps(){
+      if(Object.keys(this.subjetivoProps).length != 0){
+        this.subjetivo = this.subjetivoProps
+        this.enviarSubjetivo();
+      }
+    },
+    Limpar(){
+      this.subjetivo = {
+        OD:'',
+        OE:'',
+        AV_OD:'',
+        AV_OE:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("SUBJETIVO", {})
+    }
+  },
   data(){
     return{
       subjetivo: {

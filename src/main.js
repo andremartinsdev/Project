@@ -8,10 +8,12 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import router from './routes'
 import store from './store'
 import VueSweetalert2 from 'vue-sweetalert2';
+import money from 'v-money'
 
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
- 
+import VueMask from 'v-mask'
+Vue.use(VueMask);
 Vue.use(VueSweetalert2);
 
 
@@ -20,7 +22,7 @@ Vue.use(VueSweetalert2);
 
 
 Vue.use(VueSidebarMenu)
-
+Vue.use(money, {precision: 2})
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.config.productionTip = false

@@ -46,7 +46,7 @@
                 <b-icon-gear-fill class="text-white" font-scale="1.5"></b-icon-gear-fill>
                 <span class="ml-2 text-white">Opções</span>
               </template>
-              <b-dropdown-item href="#">Action</b-dropdown-item>
+              <router-link to="/ConfiguracaoGeral"> <b-button size="sm" variant="primary" block>Configuração Geral</b-button> </router-link>
               <b-dropdown-item href="#">Another action</b-dropdown-item>
               <b-dropdown-item href="#">Something else here...</b-dropdown-item>
             </b-dropdown>
@@ -79,6 +79,12 @@ export default {
 </script>
 
 <style scoped >
+li a {
+    text-decoration: none;
+}
+router-link {
+    text-decoration: none;
+}
 @keyframes bounce {
   0%,
   20%,

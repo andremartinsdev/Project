@@ -34,6 +34,32 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    retinoscopiaProps: {
+      type: Object
+    }
+  },
+  watch:{
+    retinoscopiaProps(){
+      if(Object.keys(this.retinoscopiaProps).length != 0){
+        this.retinoscopia = this.retinoscopiaProps
+        this.enviarRetinoscopia();
+      }
+    },
+    Limpar(){
+      this.retinoscopia = {
+        OD:'',
+        OE:'',
+        AV_OD:'',
+        AV_OE:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("RETINOSCOPIA", {})
+    }
+  },
   data(){
     return{
       retinoscopia:{

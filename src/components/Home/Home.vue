@@ -665,7 +665,7 @@
 <script>
 import CardHome from "./CardHome";
 import Menu from "./Menu";
-import Calendar from "../fullCalendar/Calendar";
+import Calendar from "../Agenda/Calendar";
 import { mapState, mapActions } from "vuex";
 import ServiceClinica from '../../services/clinica'
 

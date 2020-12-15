@@ -4,6 +4,11 @@
       <b-card-group deck>
         <b-card header="Sintomas" header-tag="header">
           <div class="check">
+            <b-input
+                  type="text"
+                  
+                  hidden
+                />
             <b-form-group>
               <b-form-checkbox-group
                 v-model="anamnese"
@@ -102,7 +107,7 @@
       </b-card>
     </div>
     <div class="p-3">
-      <b-button variant="primary" @click="save" class="mr-5">Salvar</b-button>
+      <b-button variant="primary"  class="mr-5">Salvar</b-button>
       <b-button variant="primary" @click="LimparAnamnese">Limpar</b-button>
     </div>
   </b-container>
@@ -110,13 +115,12 @@
 
 <script>
 import { mapState } from "vuex";
-import Save from "../../services/saveGeneric";
 import { DateTime } from "luxon";
 
 export default {
   props: {
     propsAnamnese2: {
-      type: Array,
+      type: Object,
     },
     Visualizar: {
       type: Boolean,
@@ -200,12 +204,19 @@ export default {
     };
   },
   watch: {
+    propsAnamnese2(){
+    
+      this.anamnese = Object.keys(this.propsAnamnese2)
+      this.enviarAnamnese();
+      console.log(this.propsAnamnese2)
+    },
     Visualizar() {
       this.carregarAnamnese();
       this.visualizar = false;
     },
     LimparAnamnese() {
       this.anamnese = [];
+      this.$emit('alteraLimpar', false)
       this.$store.commit("ANAMNESE", {});
     },
   },
@@ -225,25 +236,11 @@ export default {
       this.anamnese = this.propsAnamnese2;
     },
 
-    save() {
-      if (Object.keys(this.anamneseState).length != 0) {
-        Save.save("Anamnese", this.anamneseState)
-          .then(() => {
-            this.showAlert("success", "Anamnese Salva com Sucesso");
-            this.$store.commit("ANAMNESE", {});
-          })
-          .catch((err) => {
-            this.showAlert("error", "Erro ao Salvar Anamnese " + err);
-          });
-      } else {
-        this.showAlert("error", "Preencha a Anamnese");
-      }
-    },
+    
     enviarAnamnese() {
       var anamneseSelected = {};
       this.anamnese.map((resul) => {
         anamneseSelected[resul] = true;
-        anamneseSelected.UUIDCLINICA = localStorage.getItem("dadosClinica");
         anamneseSelected.DATA = `${DateTime.local().c.year}-${DateTime.local().c.month}-${DateTime.local().c.day}`;
         anamneseSelected.IDPACIENTE = this.$store.state.pacienteSelected;
         anamneseSelected.IDCONSULTA = this.$store.state.idConsulta;

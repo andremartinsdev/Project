@@ -30,6 +30,33 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    adicaoProps:{
+      type: Object
+    }
+  },
+  watch:{
+    adicaoProps(){
+      if(Object.keys(this.adicaoProps).length != 0){
+        this.adicao = this.adicaoProps
+        this.enviarAdicao();
+      }
+    },
+    Limpar(){
+      this.adicao = {
+        OD:'',
+        OE:'',
+        AV_OD:'',
+        AV_OE:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("ADICAO", {})
+    
+    }
+  },
   data(){
     return{
       adicao:{

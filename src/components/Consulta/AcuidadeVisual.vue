@@ -129,43 +129,51 @@
 
 <script>
 export default {
+  props:{
+    Limpar: {
+      type: Boolean
+    },
+    acuidadeProps: {
+      type: [Object, Array]
+    }
+  },
   data() {
     return {
       acuidade: [
         {
           sc: {
             olhoDireito: {
-              vl:'VL olho direito',
-              vp:'VP olho direito',
-              ph:'PH olho direito',
+              vl:'',
+              vp:'',
+              ph:'',
             },
             olhoEsquerto: {
-              vl:'VL olho esquerdo',
-              vp:'VP olho esuqerdo',
-              ph:'PH olho esquerdo',
+              vl:'',
+              vp:'',
+              ph:'',
             },
              ao: {
-              vl:'VL ao',
-              vp:'VP ao',
-              ph:'PH ao',
+              vl:'',
+              vp:'',
+              ph:'',
             },
           },
 
           cc: {
             olhoDireito: {
-              vl:'VL olho direito cc',
-              vp:'VP olho direito cc',
-              ph:'PH olho direito cc',
+              vl:'',
+              vp:'',
+              ph:'',
             },
             olhoEsquerto: {
-              vl:'VL olho esquerdo cc',
-              vp:'VP olho esuqerdo cc',
-              ph:'PH olho esquerdo cc',
+              vl:'',
+              vp:'',
+              ph:'',
             },
              ao: {
-              vl:'VL ao cc',
-              vp:'VP ao cc',
-              ph:'PH ao cc',
+              vl:'',
+              vp:'',
+              ph:'',
             },
           },
         },
@@ -173,8 +181,65 @@ export default {
     };
   },
 
+watch:{
+  acuidadeProps(){
+    console.log(this.acuidadeProps)
+     if(Object.keys(this.acuidadeProps).length != 0){
+       this.acuidade = [this.acuidadeProps]
+       this.enviarAcuidade();
+     }else{
+       console.log("teeeeeeeeeeeeeeeeeeee")
+     }
+  },
+  Limpar(){
+    this.acuidade =  [
+        {
+          sc: {
+            olhoDireito: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+            olhoEsquerto: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+             ao: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+          },
+
+          cc: {
+            olhoDireito: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+            olhoEsquerto: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+             ao: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+          },
+        },
+      ]
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("ACUIDADE", [{}])
+  }
+
+  
+},
   methods:{
     enviarAcuidade(){
+      console.log(this.acuidade)
       this.$store.commit("ACUIDADE", this.acuidade)
     }
   }

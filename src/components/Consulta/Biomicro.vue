@@ -174,6 +174,58 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    biomicroProps: {
+      type: [Array, Object]
+    }
+  },
+
+  watch:{
+    biomicroProps(){
+      if(Object.keys(this.biomicroProps).length != 0){
+      this.biomicro = this.biomicroProps
+      this.enviarBiomicro()
+      }
+      
+    },
+    Limpar(){
+      this.$emit('alteraLimpar', false)
+      this.biomicro = [
+        {
+          olhoDireito: {
+            cilios: '',
+            sombrancelha: '',
+            palpebra: '',
+            conjuntiva: '',
+            esclerotica: '',
+            cornea: '',
+            iris: '',
+            pupila: '',
+            cristalina: '',
+            camaraAnterior: '',
+            obs: ''
+          },
+          olhoEsquerdo: {
+            cilios: '',
+            sombrancelha: '',
+            palpebra: '',
+            conjuntiva: '',
+            esclerotica: '',
+            cornea: '',
+            iris: '',
+            pupila: '',
+            cristalina: '',
+            camaraAnterior: '',
+            obs: ''
+          },
+        },
+      ]
+    }
+  },
+
   data() {
     return {
       biomicro: [

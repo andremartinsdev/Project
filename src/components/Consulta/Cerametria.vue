@@ -39,13 +39,41 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    cerametriaProps: {
+      type: [Array, Object]
+    }
+  },
+
+  watch:{
+    cerametriaProps(){
+      if(Object.keys(this.cerametriaProps).length != 0){
+      this.cerametria = this.cerametriaProps
+      this.enviarCerametria();
+      }
+    },
+    Limpar(){
+      this.cerametria = [
+        {
+          olhoDireito: "",
+          olhoEsquerdo: "",
+          miras: "",
+        },
+      ]
+
+      this.$emit('alteraLimpar', false)
+    }
+  },
   data() {
     return {
       cerametria: [
         {
-          olhoDireito: 1,
-          olhoEsquerdo: "cerametria olho esquerdo",
-          miras: "miras",
+          olhoDireito: "",
+          olhoEsquerdo: "",
+          miras: "",
         },
       ],
     };

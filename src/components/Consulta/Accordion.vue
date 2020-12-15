@@ -1,6 +1,7 @@
 <template>
   <div role="tablist">
-    <b-input v-model="idConsulta" hidden></b-input>
+    <b-input hidden></b-input>
+    <b-input v-model="uuidFichaProps" hidden></b-input>
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-1 variant="info"
@@ -10,7 +11,7 @@
       <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
         <Anamnese
           @Visualizar="visual"
-          :propsAnamnese2="this.anamneseProps"
+          :propsAnamnese2="this.AnamneseData"
           :Visualizar="this.Visualizar"
           :LimparAnamnese="this.Limpar"
         />
@@ -24,7 +25,11 @@
         >
       </b-card-header>
       <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
-        <PrescricaoUltimoExame :Visualizar="this.Visualizar" />
+        <PrescricaoUltimoExame
+          izar="this.Visualizar"
+          :Limpar="this.Limpar"
+          :prescricaoUltExProps="this.PrescricaoUltimoExameData"
+        />
       </b-collapse>
     </b-card>
 
@@ -35,7 +40,10 @@
         >
       </b-card-header>
       <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
-        <AcuidadeVisual />
+        <AcuidadeVisual
+          :Limpar="this.Limpar"
+          :acuidadeProps="this.AcuidadeVisualData"
+        />
       </b-collapse>
     </b-card>
 
@@ -47,7 +55,10 @@
       </b-card-header>
       <b-collapse id="accordion-4" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Cerametria />
+          <Cerametria
+            :Limpar="this.Limpar"
+            :cerametriaProps="this.CerametriaData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -60,7 +71,7 @@
       </b-card-header>
       <b-collapse id="accordion-5" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Biomicro />
+          <Biomicro :Limpar="this.Limpar" :biomicroProps="this.BiomicroData" />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -73,7 +84,10 @@
       </b-card-header>
       <b-collapse id="accordion-6" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Oftalmoscopia />
+          <Oftalmoscopia
+            :Limpar="this.Limpar"
+            :oftalmoProps="this.OftalmoscopiaData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -86,7 +100,10 @@
       </b-card-header>
       <b-collapse id="accordion-7" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Tonometria />
+          <Tonometria
+            :Limpar="this.Limpar"
+            :tonometriaProps="this.TonometriaData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -99,7 +116,10 @@
       </b-card-header>
       <b-collapse id="accordion-8" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <ReflexosPulpilares />
+          <ReflexosPulpilares
+            :Limpar="this.Limpar"
+            :reflexosProps="this.ReflexosPulpilaresData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -110,7 +130,7 @@
       </b-card-header>
       <b-collapse id="accordion-9" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Ppc />
+          <Ppc :Limpar="this.Limpar" :ppcProps="this.PpcData" />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -123,7 +143,7 @@
       </b-card-header>
       <b-collapse id="accordion-10" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <AvMotora />
+          <AvMotora :Limpar="this.Limpar" :avMotoraProps="this.AvMotoraData" />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -136,7 +156,10 @@
       </b-card-header>
       <b-collapse id="accordion-11" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <ReservasFusionais />
+          <ReservasFusionais
+            :Limpar="this.Limpar"
+            :reservasProps="this.ReservasFusionaisData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -149,7 +172,10 @@
       </b-card-header>
       <b-collapse id="accordion-12" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <AmpliAcomodacao />
+          <AmpliAcomodacao
+            :Limpar="this.Limpar"
+            :amplitudeProps="this.AmpliAcomodacaoData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -162,7 +188,10 @@
       </b-card-header>
       <b-collapse id="accordion-13" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <FlexAcomodacao />
+          <FlexAcomodacao
+            :Limpar="this.Limpar"
+            :flexProps="this.FlexAcomodacaoData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -175,7 +204,10 @@
       </b-card-header>
       <b-collapse id="accordion-14" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Retinoscopia />
+          <Retinoscopia
+            :Limpar="this.Limpar"
+            :retinoscopiaProps="this.RetinoscopiaData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -188,7 +220,10 @@
       </b-card-header>
       <b-collapse id="accordion-15" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Forometria />
+          <Forometria
+            :Limpar="this.Limpar"
+            :forometriaProps="this.ForometriaData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -201,7 +236,10 @@
       </b-card-header>
       <b-collapse id="accordion-16" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Subjetivo />
+          <Subjetivo
+            :Limpar="this.Limpar"
+            :subjetivoProps="this.SubjetivoData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -214,7 +252,10 @@
       </b-card-header>
       <b-collapse id="accordion-17" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Afinamento />
+          <Afinamento
+            :Limpar="this.Limpar"
+            :afinamentoProps="this.AfinamentoData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -227,7 +268,10 @@
       </b-card-header>
       <b-collapse id="accordion-18" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <TesteAmbulatorial />
+          <TesteAmbulatorial
+            :Limpar="this.Limpar"
+            :testeProps="this.TesteAmbulatorialData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -238,7 +282,7 @@
       </b-card-header>
       <b-collapse id="accordion-19" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Adicao />
+          <Adicao :Limpar="this.Limpar" :adicaoProps="this.AdicaoData" />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -251,7 +295,7 @@
       </b-card-header>
       <b-collapse id="accordion-20" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <RxFinal />
+          <RxFinal :Limpar="this.Limpar" :rxFinalProps="this.RxFinalData" />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -262,7 +306,11 @@
       </b-card-header>
       <b-collapse id="accordion-21" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-          <Dx />
+          <Dx
+            :Limpar="this.Limpar"
+            @alteraLimpar="alterLimpar"
+            :dxProps="this.DxData"
+          />
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -270,9 +318,29 @@
     <footer class="py-2 text-white-50 mb-4" id="sticky-footer">
       <div class="container text-center">
         <b-button
+          v-show="editar"
+          pill
+          @click="updateFicha"
+          variant="warning"
+          class="mr-2"
+        >
+          <b-icon-check-circle class="mr-3"></b-icon-check-circle>Salvar
+          Alterações
+        </b-button>
+        <b-button
+          v-show="editar"
+          pill
+          @click="novo"
+          variant="success"
+          class="mr-2"
+        >
+          <b-icon-file-plus class="mr-3"></b-icon-file-plus>Novo
+        </b-button>
+        <b-button
+          v-show="!editar"
           v-if="inicioConsulta == false"
           pill
-          @click="salvarConsulta"
+          @click="iniciarConsulta"
           variant="warning"
           class="mr-2"
         >
@@ -281,14 +349,23 @@
         <b-button
           v-else
           pill
-          @click="mudarInicio"
+          @click="finalizarConsulta"
           variant="success"
           class="mr-2"
         >
           <b-icon-check class="mr-3"></b-icon-check>Finalizar Consulta
         </b-button>
+        <b-button @click="cancelar" v-if="inicioConsulta === true" pill variant="light" class="mr-2">
+          <b-icon-x
+            class="mr-3"
+          ></b-icon-x
+          >Cancelar
+        </b-button>
         <b-button @click="limpar" pill variant="light" class="mr-2">
-          <b-icon-x class="mr-3"></b-icon-x>Limpar
+          <b-icon-arrow-counterclockwise
+            class="mr-3"
+          ></b-icon-arrow-counterclockwise
+          >Limpar
         </b-button>
       </div>
     </footer>
@@ -318,8 +395,11 @@ import Adicao from "./Adicao";
 import RxFinal from "./RxFinal";
 import Dx from "./Dx";
 
-import ServicoAnamese from "../../services/anamnese";
+//import ServicoPaciente from "../../services/paciente";
 import ServicoConsulta from "../../services/consulta";
+import AgendaService from "../../services/agenda";
+import ServicoFichaClinica from "../../services/fichaClinica";
+import ValidaObjectEmpty from "../../services/validaObjectEmpty";
 import { DateTime } from "luxon";
 
 //import axios from "axios";
@@ -327,8 +407,14 @@ import { mapState } from "vuex";
 
 export default {
   props: {
-    anamneseProps: {
-      type: Array,
+    editarProps: {
+      type: Boolean,
+    },
+    uuidFichaProps: {
+      type: String,
+    },
+    fichaClinicaProps: {
+      type: Object,
     },
     prescricaoProps: {
       type: Array,
@@ -336,13 +422,83 @@ export default {
     Visualizar: {
       type: Boolean,
     },
+    iniciarConsultaProps: {
+      type: Boolean,
+    },
   },
-
+  watch: {
+    iniciarConsultaProps() {
+      this.iniciarConsulta();
+    },
+    editarProps() {
+      this.editar = this.editarProps;
+    },
+    uuidFichaProps() {
+      console.log(this.uuidFicha);
+    },
+    fichaClinicaProps() {
+      //const json = this.fichaClinicaProps
+      console.log(this.fichaClinicaProps);
+      this.AnamneseData = this.fichaClinicaProps.anamnese;
+      this.AcuidadeVisualData = this.fichaClinicaProps.acuidade;
+      this.AfinamentoData = this.fichaClinicaProps.afinamento;
+      this.AdicaoData = this.fichaClinicaProps.adicao;
+      this.AmpliAcomodacaoData = this.fichaClinicaProps.amplitude;
+      this.AvMotoraData = this.fichaClinicaProps.avMotara;
+      this.BiomicroData = this.fichaClinicaProps.biomicro;
+      this.CerametriaData = this.fichaClinicaProps.cerametria;
+      this.DxData = this.fichaClinicaProps.dx;
+      this.FlexAcomodacaoData = this.fichaClinicaProps.flexiDeAcomodacao || {};
+      this.ForometriaData = this.fichaClinicaProps.forometria;
+      this.OftalmoscopiaData = this.fichaClinicaProps.oftalmoscopia;
+      this.PpcData = this.fichaClinicaProps.ppc;
+      this.PrescricaoUltimoExameData = this.fichaClinicaProps.prescricaoUltimoExame;
+      this.ReflexosPulpilaresData = this.fichaClinicaProps.reflexoPulpilar;
+      this.ReservasFusionaisData = this.fichaClinicaProps.reservasFusionais;
+      this.RetinoscopiaData = this.fichaClinicaProps.retinoscopia;
+      this.RxFinalData = this.fichaClinicaProps.rxFinal;
+      this.SubjetivoData = this.fichaClinicaProps.subjetivo;
+      this.TesteAmbulatorialData = this.fichaClinicaProps.testeAmbulatorial;
+      this.TonometriaData = this.fichaClinicaProps.tonometria;
+      console.log(this.FlexAcomodacaoData);
+    },
+  },
   data() {
     return {
+      idConsultaData: -1,
+      editar: false,
       Limpar: false,
       consulta: {},
       inicioConsulta: false,
+      dadosFicha: {},
+      AnamneseData: {},
+      PrescricaoUltimoExameData: {},
+      AcuidadeVisualData: [],
+      CerametriaData: {},
+      BiomicroData: [],
+      OftalmoscopiaData: [],
+      TonometriaData: {},
+      ReflexosPulpilaresData: {},
+      PpcData: {},
+      AvMotoraData: {},
+      ReservasFusionaisData: {},
+      AmpliAcomodacaoData: {},
+      FlexAcomodacaoData: {},
+      RetinoscopiaData: {},
+      ForometriaData: {},
+      SubjetivoData: {},
+      AfinamentoData: {},
+      TesteAmbulatorialData: {},
+      AdicaoData: {},
+      RxFinalData: {},
+      DxData: {},
+      dadosConsulta: {
+        idPaciente: this.idPaciente,
+        data: `${DateTime.local().c.year}-${DateTime.local().c.month}-${
+          DateTime.local().c.day
+        }`,
+        titulo: "Ficha Clínica",
+      },
     };
   },
   computed: {
@@ -350,6 +506,8 @@ export default {
       anamnese: (state) => state.anamnese,
       idConsulta: (state) => state.idConsulta,
       idPaciente: (state) => state.pacienteSelected,
+      fichaClinica: (state) => state.fichaClinica,
+      uuidAgendamento: (state) => state.uuidAgendamento,
     }),
   },
   components: {
@@ -387,6 +545,9 @@ export default {
         timer: 2500,
       });
     },
+    alterLimpar() {
+      this.Limpar = false;
+    },
     mudarInicio() {
       this.inicioConsulta = false;
       this.showAlert("success", "Consulta Finalizada com Sucesso");
@@ -395,48 +556,92 @@ export default {
       this.Visualizar = !this.Visualizar;
     },
 
+    cancelar(){
+      //this.editar = false;
+      this.inicioConsulta = false
+    },
+
+    novo() {
+      this.editar = false;
+      this.limpar();
+      this.$store.commit("PACIENTE_SELECTED", -1);
+      this.$emit("mudarEditar", false);
+      
+    },
+
     limpar() {
+      this.inicioConsulta = false;
       this.Limpar = true;
-      this.$store.commit("ANAMNESE", "");
-
-      setTimeout(() => {
-        this.Limpar = false;
-      }, 3000);
-    },
-    salvarConsulta() {
-      
-      this.consulta.UUIDCLINICA = localStorage.getItem("UUIDCLINICA");
-      this.consulta.IDPACIENTE = this.idPaciente;
-      this.consulta.IDCLINICA = localStorage.getItem("IDCLINICA");
-      this.consulta.DATA = `${DateTime.local().c.year}-${DateTime.local().c.month}-${DateTime.local().c.day}`;
-      if(this.idPaciente === -1){
-        this.showAlert("info", "Selecione o Paciente");
-      }else{
-        ServicoConsulta.save(this.consulta).then((result) => {
-        this.showAlert("success", "Tudo Certo Para começar a Consulta");
-        this.$store.commit("ID_CONSULTA", result.data.retorno[0]);
-      });
-      this.inicioConsulta = true;
-      }
-      
     },
 
-    save() {
-      if (Object.keys(this.anamnese).length != 0) {
-        if (this.idFichaClinica === -1) {
-          ServicoAnamese.save(this.anamnese).then(() => {
-            console.log(this.anamnese);
-            this.showAlert("success", "Salvo com Sucesso");
+    dataAtual() {
+      return `${DateTime.local().c.year}-${DateTime.local().c.month}-${
+        DateTime.local().c.day
+      }`;
+    },
+
+    finalizarConsulta() {
+      AgendaService.update(this.uuidAgendamento, {idConsulta: this.idConsultaData, atendido:true}).then(result =>{
+        console.log(result)
+      })
+      const dados = {
+        ...this.fichaClinica,
+      };
+      //const fichaClinica = JSON.stringify(this.fichaClinica);
+      console.log(this.fichaClinica);
+      if (ValidaObjectEmpty(dados) === true) {
+        ServicoFichaClinica.save(this.dadosFicha, this.fichaClinica)
+          .then((result) => {
+            if (result.status === 201) {
+              this.showAlert("success", "Ficha Clínica Salva com Sucesso");
+              this.inicioConsulta = false;
+            }
+          })
+          .catch(() => {
+            this.showAlert("error", "Erro ao salvar Ficha");
           });
-        } else {
-          ServicoAnamese.edit(this.anamnese, this.idFichaClinica)
-            .then(() => {
-              this.showAlert("success", "Editado");
-            })
-            .catch((err) => {
-              this.showAlert("error", "Erro ao Editar" + err);
-            });
-        }
+      } else {
+        this.showAlert("info", "Preencha a Ficha Clínica");
+      }
+    },
+
+    updateFicha() {
+      const fichaClinica = JSON.stringify(this.fichaClinica);
+     
+      ServicoFichaClinica.update(fichaClinica, this.uuidFichaProps)
+        .then((result) => {
+          if (result.status === 201) {
+            this.showAlert("success", "Ficha Clínica Editada com Sucesso");
+            this.inicioConsulta = false;
+          }
+        })
+        .catch(() => {
+          this.showAlert("error", "Erro ao Editar Ficha");
+        });
+    },
+
+    iniciarConsulta() {
+      if (this.idPaciente === -1) {
+        this.showAlert("error", "Selecione o Paciente");
+        
+      } else {
+        this.dadosConsulta.idPaciente = this.idPaciente;
+        ServicoConsulta.save(this.dadosConsulta)
+          .then((result) => {
+            if (result.status === 201) {
+              this.dadosFicha = {
+                idPaciente: this.idPaciente,
+                data: this.dataAtual(),
+                idConsulta: result.data.result.idConsulta[0],
+              };
+              this.idConsultaData = result.data.result.idConsulta[0]
+              this.inicioConsulta = true;
+              this.showAlert("success", "Consulta Iniciada");
+            }
+          })
+          .catch(() => {
+            this.showAlert("error", "Erro ao Iniciar Consulta");
+          });
       }
     },
   },

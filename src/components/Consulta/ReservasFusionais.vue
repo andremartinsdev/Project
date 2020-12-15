@@ -78,6 +78,37 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    reservasProps: {
+      type: Object
+    }
+  },
+  watch:{
+    reservasProps(){
+      if(Object.keys(this.reservasProps).length != 0){
+        this.reservasFusionais = this.reservasProps
+        this.enviarReservasFusionais();
+      }
+    },
+    Limpar(){
+      this.reservasFusionais = {
+        VL: {
+          RFN: "",
+          RFP: "",
+        },
+        VP: {
+          RFN: "",
+          RFP: "",
+        },
+        TECNICA: "",
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("RESERVAS_FUSIONAIS", {})
+    }
+  },
   data() {
     return {
       reservasFusionais: {

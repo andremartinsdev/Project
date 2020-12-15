@@ -118,6 +118,51 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    oftalmoProps: {
+      type: [Array, Object]
+    }
+  },
+watch:{
+  Limpar(){
+    this.oftalmoscopia = [
+      {
+        olhoDireito: {
+          papila: '',
+          escavacao: '',
+          macula: '',
+          fixacao: '',
+          cor: '',
+          relacaoAv: '',
+          obs: ''
+        },
+        olhoEsquerdo: {
+          papila: '',
+          escavacao: '',
+          macula: '',
+          fixacao: '',
+          cor: '',
+          relacaoAv: '',
+          obs: ''
+        }
+      }
+    ]
+    this.$emit('alteraLimpar', false)
+    this.$store.commit("OFTALMOSCOPIA", {})
+  },
+
+  oftalmoProps(){
+    if(Object.keys(this.oftalmoProps).length != 0){
+    this.oftalmoscopia = this.oftalmoProps;
+    this.enviarOftalmoscopia();
+    }
+  }
+
+},
+
 data(){
   return{
     oftalmoscopia: [

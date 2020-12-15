@@ -121,6 +121,14 @@ import Save from "../../services/saveGeneric";
 import { DateTime } from 'luxon';
 
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    prescricaoUltExProps: {
+      type: Object
+    }
+  },
   data() {
     return {
       prescricaoUltExame: {
@@ -144,6 +152,35 @@ export default {
     };
   },
   watch: {
+    prescricaoUltExProps(){
+      if(Object.keys(this.prescricaoUltExProps).length != 0){
+        this.prescricaoUltExame = this.prescricaoUltExProps
+        this. enviarPrescricaoUltExame();
+      }
+    },
+    Limpar(){
+      console.log("eeeentroooo")
+      this.prescricaoUltExame = {
+        IDPACIENTE: "",
+        UUIDCLINICA:"",
+        DATA: "",
+        OD_ESFERICO: "",
+        OD_CILINDRICO: "",
+        OD_EIXO: "",
+        OD_ADICAO: "",
+        OD_DNP: "",
+        OD_ALT: "",
+        OE_ESFERICO: "",
+        OE_CILINDRICO: "",
+        OE_EIXO: "",
+        OE_ADICAO: "",
+        OE_DNP: "",
+        OE_ALT: "",
+        IDCONSULTA: ""
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("PRESCRICAO_ULTIMO_EXAME", {});
+    },
     Visualizar() {
       this.visualizar = false;
     },

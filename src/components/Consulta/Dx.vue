@@ -149,6 +149,47 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    dxProps:{
+      type: Object
+    }
+  },
+
+  watch:{
+    dxProps(){
+      if(Object.keys(this.dxProps).length != 0){
+      this.dx = this.dxProps
+      this.enviarDx();
+      }
+    },
+    Limpar(){
+      this.dx = {
+        REFRATIVO:'',
+        MOTOR:'',
+        OCULAR:'',
+        CONDUTA:{
+          LC:'',
+          RX:'',
+          ENCAMINHAMENTO:'',
+          PLEOPTICA:'',
+          ORTOPTICA:'',
+        },
+        CONTROLE:{
+          SEMANA1:'',
+          MES1:'',
+          MES6:'',
+          ANO1:''
+        },
+        OBS:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("DX", {})
+    }
+  },
+
   data(){
     return{
       dx:{

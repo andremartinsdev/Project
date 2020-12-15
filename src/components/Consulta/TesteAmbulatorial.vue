@@ -22,6 +22,31 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    testeProps: {
+      type: Object
+    }
+  },
+  watch:{
+    testeProps(){
+      if(Object.keys(this.testeProps).length != 0){
+        this.testeAmbulatorial = this.testeProps
+        this. enviarTesteAmbulatorial();
+      }
+    },
+
+    Limpar(){
+      this.testeAmbulatorial = {
+        TEMPO:'',
+        RESULTADO:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("TESTE_AMBULATORIAL", {})
+    }
+  },
   data(){
     return{
       testeAmbulatorial:{

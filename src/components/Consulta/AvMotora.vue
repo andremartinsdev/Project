@@ -108,6 +108,36 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    avMotoraProps: {
+      type: Object
+    }
+  },
+  watch:{
+    avMotoraProps(){
+      if(Object.keys(this.avMotoraProps).length != 0)
+      this.avMotora = this.avMotoraProps
+      this.enviarAvMotora();
+    },
+    Limpar(){
+      this.avMotora = {
+        OD: {
+          KAPPA: '',
+          DUCCOES: ''
+        },
+        OE: {
+          KAPPA: '',
+          DUCCOES: ''
+        },
+        HIRSCHBERG: '',
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("AV_MOTORA", {})
+    }
+  },
   data(){
     return{
       avMotora:{
@@ -125,7 +155,7 @@ export default {
   },
   methods:{
     enviarAvMotora(){
-      this.$store.commit("AV_MOTORA", this.avMotora)
+      this.$store.commit("AV_MOTORA", {})
     }
   }
 };

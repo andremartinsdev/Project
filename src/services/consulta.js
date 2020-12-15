@@ -2,10 +2,26 @@ import { http } from './config'
 
 
 export default {
-    save: (consulta) =>{
-      return http.post('/Consulta/Save', consulta)
-    },
-    readFicha: (idFichaClinica) => {
-      return http.get(`Consulta/ReadFicha/${idFichaClinica}`)
+  save: (consulta) => {
+    const dados = {
+      data: {
+        ...consulta
+      }
+    }
+    return http.post('/consulta', dados)
+  },
+
+  update: (consulta, uuid) => {
+    const dados = {
+      data: {
+        ...consulta
+      }
+    }
+    return http.put(`/${uuid}`, dados)
+  },
+
+  readToday: (data) => {
+    return http.get(`/consulta/readToday/${data}`)
   }
+
 }

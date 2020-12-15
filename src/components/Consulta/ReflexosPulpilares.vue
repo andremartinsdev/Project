@@ -66,6 +66,38 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    reflexosProps: {
+      type: Object
+    }
+  },
+  watch:{
+    reflexosProps(){
+      if(Object.keys(this.reflexosProps).length != 0){
+      this.reflexosPulpilares = this.reflexosProps
+      this. enviarReflexosPulpilares();
+      }
+    },
+    Limpar(){
+      this.reflexosPulpilares = {
+       OD:{
+         FOTOMOTOR:'',
+         CONSENSUAL: '',
+         ACOMODATIVO: ''
+       },
+        OE:{
+         FOTOMOTOR:'',
+         CONSENSUAL: '',
+         ACOMODATIVO: ''
+       },
+     }
+     this.$emit('alteraLimpar', false)
+     this.$store.commit("REFLEXO_PULPILAR", {})
+    }
+  },
  data(){
    return{
      reflexosPulpilares:{

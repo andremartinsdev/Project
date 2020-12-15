@@ -36,6 +36,34 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    flexProps: {
+      type: Object
+    }
+  },
+
+  watch:{
+    flexProps(){
+      if(Object.keys(this.flexProps).length != 0){
+        this.flexDeAcomodacao = this.flexProps
+        this.enviarFlexDeAcomodacao();
+      }
+    },
+    Limpar(){
+      this.flexDeAcomodacao = {
+        OD:'',
+        OE:'',
+        CICLOS_OD: '',
+        CICLOS_OE:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("FLEXIBILIDADE_ACOMODACAO", {})
+    }
+  },
+
   data(){
     return{
       flexDeAcomodacao:{

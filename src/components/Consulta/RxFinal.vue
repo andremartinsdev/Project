@@ -151,6 +151,44 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    rxFinalProps: {
+      type: Object
+    }
+  },
+  watch:{
+    rxFinalProps(){
+      if(Object.keys(this.rxFinalProps).length != 0){
+        this.rxFinal = this.rxFinalProps
+        this.enviarRxFinal();
+      }
+    },
+    Limpar(){
+      this.rxFinal = {
+        OD:{
+          ESFERICO:'',
+          CILINDRICO:'',
+          EIXO:'',
+          AV:''
+        },
+         OE:{
+          ESFERICO:'',
+          CILINDRICO:'',
+          EIXO:'',
+          AV:''
+        },
+        AV_PERTO:'',
+        ADICAO:'',
+        TIPO_LENTE:'',
+        TRATAMENTO:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("RX_FINAL", {})
+    }
+  },
   data(){
     return{
       rxFinal:{

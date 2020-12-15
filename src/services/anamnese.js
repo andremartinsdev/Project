@@ -14,8 +14,8 @@ export default {
         return http.get(`Consulta/Read/${idPaciente}`)
     },
 
-    readFicha: (idFichaClinica) => {
-        return http.get(`Consulta/ReadFicha/${idFichaClinica}`)
+    read: (uuid) => {
+        return http.get(`fichaClinica/${uuid}`)
     },
 
     enviarAnamnese: (data) => {

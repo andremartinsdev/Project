@@ -39,6 +39,33 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    tonometriaProps: {
+      type: Object
+    }
+  },
+
+  watch:{
+    Limpar(){
+      this.tonometria = {
+        OD: "",
+        OE: "",
+        HORA: "",
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("TONOMETRIA", {});
+    },
+
+    tonometriaProps(){
+      if(Object.keys(this.tonometriaProps).length != 0){
+      this.tonometria = this.tonometriaProps
+      this.enviarTonometria();
+      }
+    }
+  },
   data() {
     return {
       tonometria: {

@@ -42,6 +42,41 @@
 
 <script>
 export default {
+  props:{
+    Limpar:{
+      type: Boolean
+    },
+    forometriaProps: {
+      type: Object
+    }
+  },
+
+  watch:{
+    forometriaProps(){
+      if(Object.keys(this.forometriaProps).length != 0){
+        this.forometria = this.forometriaProps
+        this.enviarForometria();
+      }
+    },
+    Limpar(){
+      this.forometria = {
+        SC:{
+          LONGE:'',
+          CM40:'',
+          CM20:''
+        },
+        CC:{
+          LONGE:'',
+          CM40:'',
+          CM20:''
+        },
+        TECNICA:''
+      }
+      this.$emit('alteraLimpar', false)
+      this.$store.commit("FOROMETRIA", {})
+    }
+  },
+
   data(){
     return{
       forometria:{
