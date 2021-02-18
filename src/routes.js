@@ -13,59 +13,110 @@ import Login from './components/Login/Login.vue'
 import CadastroClinica from './components/CadastroClinica/CadastroClinica.vue'
 
 
+import LoginService from "./services/login";
+
+
 Vue.use(Router)
 
 const routes = [
     {
         path: '/',
         component: Login,
-        beforeRouteEnter(to, from, next){
-            if(to.meta.adminOnly === true){
-                next('/')
-            }
-        }
     },
     {
         path: '/CadastroPaciente',
-        component: CadastroPaciente
+        component: CadastroPaciente,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/Consulta',
-        component: Consulta
+        component: Consulta,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/Agenda',
-        component: Agenda
+        component: Agenda,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/Relatorio',
-        component: Relatorio
+        component: Relatorio,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/ConfiguracaoGeral',
-        component: ConfigGeral
+        component: ConfigGeral,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/Financeiro',
-        component: Financeiro
+        component: Financeiro,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/Impressao/:uuid',
-        component: Impressao
+        component: Impressao,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
-        path:'/Home',
-        component: Home
+        path: '/Home',
+        component: Home,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/CadastroClinica',
-        component: CadastroClinica
+        component: CadastroClinica,
+        meta: {
+            requiresAuth: true
+        }
     }
 ]
 
 const router = new Router({
     mode: 'history',
     routes
-  })
+})
 
-  export default router;
+router.beforeEach(async (to, from, next) => {
+
+    if (to.path == '/') {
+        return next()
+    }
+
+
+
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!sessionStorage.getItem('token')) {
+            return next({
+                path: '/',
+            })
+        }
+        try {
+            const result = LoginService.logar(this.login.cpfcnpj, this.login.senha)
+            sessionStorage.setItem("token", result.data.token);
+            return next()
+        } catch (error) {
+            return next()
+        }
+    }
+
+    next()
+})
+
+export default router;

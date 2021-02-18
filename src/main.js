@@ -17,12 +17,8 @@ Vue.use(VueMask);
 Vue.use(VueSweetalert2);
 
 
-
-
-
-
 Vue.use(VueSidebarMenu)
-Vue.use(money, {precision: 2})
+Vue.use(money, { precision: 2 })
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.config.productionTip = false

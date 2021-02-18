@@ -1,5 +1,10 @@
 <template>
-  <div v-if="this.$route.path.substr(0, 11) != '/Impressao/' && this.$route.path.substr(0, 11) != '/'">
+  <div
+    v-if="
+      this.$route.path.substr(0, 11) != '/Impressao/' &&
+      this.$route.path.substr(0, 11) != '/'
+    "
+  >
     <b-navbar toggleable="sm" id="navbar2" fixed="top" class="navbar">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
@@ -58,23 +63,23 @@
             ></b-img>
             <label class="text-white">Relatorio</label>
           </router-link>
-          <a v-b-toggle.sidebar-1 class="mr-5" >
-           
-                 <b-img
+          <a v-b-toggle.sidebar-1 class="mr-5">
+            <b-img
               center
               :src="imageConfig"
               alt="Center image"
               width="35"
             ></b-img>
             <label class="text-white">Configurações</label>
-
-                
           </a>
-      
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <div id="links-fixos" v-if="this.$route.path === '/Home'" class="hidden-md-down iconeMenu">
+    <div
+      id="links-fixos"
+      v-if="this.$route.path === '/Home'"
+      class="hidden-md-down iconeMenu"
+    >
       <b-col md="6" class="mb-3">
         <b-icon
           icon="arrow-right-circle-fill"
@@ -99,7 +104,6 @@
         class="text-center mt-2"
         shadow
       >
-
         <div class="px-3 py-2">
           <router-link to="/ConfiguracaoGeral">
             <b-button size="sm" variant="primary" block
@@ -133,62 +137,72 @@
               <b-avatar :src="logoBms" size="6rem"></b-avatar>
             </div>
 
-<b-button size="sm" variant="primary" class="mb-4 mt-4" block @click="showAgendamento">Agendamentos de Hoje</b-button>
-<b-button size="sm" variant="danger" v-if="showAgendamentos === false" class="mb-4 mt-4" block @click="showDespesa">Despesas de Hoje</b-button>
-            <div v-if="showAgendamentos === true">
-
-        
-            <b-toast
-              id="example-toast"
+            <b-button
+              size="sm"
               variant="primary"
-              :title="
-                'Procedimento : ' + agendamento.procedimento.toUpperCase()
-              "
-              class="ml-2"
-              static
-              visible
-              no-auto-hide
-              v-for="agendamento in agendamentosHoje"
-              :key="agendamento.uuid"
+              class="mb-4 mt-4"
+              block
+              @click="showAgendamento"
+              >Agendamentos de Hoje</b-button
             >
-              <label for=""
-                >Nome Paciente : {{ agendamento.nomePaciente }}</label
-              ><br />
-              <label for="">Data : {{ agendamento.data }}</label
-              ><br />
-              <label for="">Horario : {{ agendamento.horario }}</label
-              ><br />
-            </b-toast>
-    </div>
-
-    <div v-if="showDespesas === true">
-
-   
-
-            <b-toast
-              id="example-toast"
+            <b-button
+              size="sm"
               variant="danger"
-              :title="'Descrição Despesa : ' + despesa.descricaoDespesa"
-              class="ml-2"
-              static
-              visible
-              no-auto-hide
-              v-for="despesa in despesasHoje"
-              :key="despesa.uuid"
+              v-if="showAgendamentos === false"
+              class="mb-4 mt-4"
+              block
+              @click="showDespesa"
+              >Despesas de Hoje</b-button
             >
-              <label for="">Data : {{ despesa.data }}</label
-              ><br />
-              <label for=""
-                >Valor :
-                {{
-                  despesa.valor.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })
-                }}</label
-              ><br />
-            </b-toast>
- </div>
+            <div v-if="showAgendamentos === true">
+              <b-toast
+                id="example-toast"
+                variant="primary"
+                :title="
+                  'Procedimento : ' + agendamento.procedimento.toUpperCase()
+                "
+                class="ml-2"
+                static
+                visible
+                no-auto-hide
+                v-for="agendamento in agendamentosHoje"
+                :key="agendamento.uuid"
+              >
+                <label for=""
+                  >Nome Paciente : {{ agendamento.nomePaciente }}</label
+                ><br />
+                <label for="">Data : {{ agendamento.data }}</label
+                ><br />
+                <label for="">Horario : {{ agendamento.horario }}</label
+                ><br />
+              </b-toast>
+            </div>
+
+            <div v-if="showDespesas === true">
+              <b-toast
+                id="example-toast"
+                variant="danger"
+                :title="'Descrição Despesa : ' + despesa.descricaoDespesa"
+                class="ml-2"
+                static
+                visible
+                no-auto-hide
+                v-for="despesa in despesasHoje"
+                :key="despesa.uuid"
+              >
+                <label for="">Data : {{ despesa.data }}</label
+                ><br />
+                <label for=""
+                  >Valor :
+                  {{
+                    despesa.valor.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
+                    })
+                  }}</label
+                ><br />
+              </b-toast>
+            </div>
             <b-button variant="primary" class="mt-4" size="sm" @click="hide"
               >Fechar <b-icon-x scale="1.5" class="mb-1"></b-icon-x
             ></b-button>
@@ -208,13 +222,13 @@ import imageRelatorio from "../../public/relatorio.png";
 import imageConfig from "../../public/configuracao.png";
 import AgendaService from "../services/agenda";
 import DespesaService from "../services/despesas";
-import logoBms from '../../src/assets/LogoBms2.jpg'
+import logoBms from "../../src/assets/LogoBms2.jpg";
 
 import moment from "moment";
 export default {
   data() {
     return {
-      logoBms:logoBms,
+      logoBms: logoBms,
       image: image,
       imageCalender: imageCalender,
       imagePaciente: imagePaciente,
@@ -248,15 +262,13 @@ export default {
         }
       );
     },
-showDespesa(){
-  this.showAgendamentos = false
-this.showDespesas = !this.showDespesas
-
-},
-    showAgendamento(){
-      this.showDespesas = false
-      this.showAgendamentos = !this.showAgendamentos
-
+    showDespesa() {
+      this.showAgendamentos = false;
+      this.showDespesas = !this.showDespesas;
+    },
+    showAgendamento() {
+      this.showDespesas = false;
+      this.showAgendamentos = !this.showAgendamentos;
     },
     readDespesas() {
       DespesaService.readDate(
