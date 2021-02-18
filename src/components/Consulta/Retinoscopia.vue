@@ -44,7 +44,14 @@ export default {
   },
   watch:{
     retinoscopiaProps(){
-      if(Object.keys(this.retinoscopiaProps).length != 0){
+      if(Object.keys(this.retinoscopiaProps).length === 0 || Object.keys(this.retinoscopiaProps) === null || Object.keys(this.retinoscopiaProps) === undefined){
+         this.retinoscopia = {
+        OD:'',
+        OE:'',
+        AV_OD:'',
+        AV_OE:''
+      }
+      }else{
         this.retinoscopia = this.retinoscopiaProps
         this.enviarRetinoscopia();
       }

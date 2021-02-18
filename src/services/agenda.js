@@ -3,13 +3,9 @@ import { http } from './config'
 
 export default {
     save: (data) => {
-        const dados = {
-            data: {
-              ...data
-            },
-          }
+        
 
-        return http.post('/Agenda/', dados)
+        return http.post('/Agenda/', {...data})
     },
     read: () => {
         return http.get(`/Agenda/`)
@@ -17,6 +13,15 @@ export default {
 
     readParams: (uuid) => {
         return http.get(`/Agenda/read/${uuid}`)
+    },
+
+    readDataPagination: (dataInicial, dataFinal) => {
+        return http.get(`Agenda/paginationAllAgenda/${dataInicial}/${dataFinal}/page`)
+    },
+
+    readDataPaginationProximo: (dataInicial, dataFinal, page) => {
+        console.log(typeof(http))
+        return http.get(`Agenda/paginationAllAgenda/${dataInicial}/${dataFinal}/page?page=${page}`)
     },
 
     readAgendaJoinPaciente: (uuid) => {
@@ -30,18 +35,47 @@ export default {
     readDateRelatorio: (dataInicial, dataFinal) => {
         return http.get(`/Agenda/readDate/Relatorio/${dataInicial}/${dataFinal}`)
     },
+
+    
+    readDateRelatorioPagination: (dataInicial, dataFinal) => {
+        return http.get(`/Agenda/readDate/Relatorio/${dataInicial}/${dataFinal}/page`)
+    },
+
+       
+    readDateRelatorioPaginationNavigation: (dataInicial, dataFinal, page) => {
+        return http.get(`/Agenda/readDate/Relatorio/${dataInicial}/${dataFinal}/page?page=${page}`)
+    },
+
+    readDateRelatorioReceita: (dataInicial, dataFinal) => {
+        return http.get(`/Agenda/readDate/Relatorio/receita/${dataInicial}/${dataFinal}`)
+    },
+
+    readDateRelatorioReceitaFormPag: (dataInicial, dataFinal, idFormaPagamento) => {
+        return http.get(`/Agenda/readDate/Relatorio/receita/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
+    },
+
+    readDateRelatorioReceber: (dataInicial, dataFinal) => {
+        return http.get(`/Agenda/readDate/Relatorio/receber/${dataInicial}/${dataFinal}`)
+    },
+
+    readDateRelatorioReceberFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
+        return http.get(`/Agenda/readDate/Relatorio/receber/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
+    },
     
     delete: (uuid) => {
         return http.delete(`/Agenda/${uuid}`)
     }, 
 
     update: (uuid, data) => {
-        const dados = {
-            data: {
-              ...data
-            },
-          }
-        return http.put(`/Agenda/${uuid}`, dados)
+        
+        return http.put(`/Agenda/${uuid}`, {...data})
+    },
+    updateIdConsultAtendido(uuid, data){
+        return http.patch(`/Agenda/updateIdConsultAtendido/${uuid}`, {...data})
+    },
+
+    updateIdConsultAtendidoDtVencimento(uuid, data){
+        return http.patch(`/Agenda/updateIdConsultAtendidoDtVencimento/${uuid}`, {...data})
     },
 
     readDatePaciente: (dataInicial, dataFinal, idPaciente) => {
@@ -52,7 +86,28 @@ export default {
         return http.get(`/Agenda/readDateInner/${data}`)
     },
 
+    readDateInnerPagination: (data) => {
+        return http.get(`/Agenda/readDateInnerPagination/${data}/page`)
+    },
+
+    readDateInnerPaginationNavigation: (data, page) => {
+        return http.get(`/Agenda/readDateInnerPagination/${data}/page?page=${page}`)
+    },
+
     readDateAgendamentoFinalizado: (dataInicial, dataFinal) => {
         return http.get(`/Agenda/readDate/Agendamento/Finalizado/${dataInicial}/${dataFinal}`)
     },
+
+    readDateAgendamentoFinalizadoPagination: (dataInicial, dataFinal) => {
+        return http.get(`/Agenda/readDate/Agendamento/Finalizado/${dataInicial}/${dataFinal}/page`)
+    },
+    
+    readDateAgendamentoFinalizadoPaginationNavigation: (dataInicial, dataFinal, page) => {
+        return http.get(`/Agenda/readDate/Agendamento/Finalizado/${dataInicial}/${dataFinal}/page?page=${page}`)
+    },
+    
+
+    readDateVencimento: (dataAtual) =>{
+        return http.get(`/Agenda/readDateVencimento/${dataAtual}`)
+    }
 }

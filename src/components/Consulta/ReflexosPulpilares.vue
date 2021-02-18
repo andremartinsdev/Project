@@ -57,10 +57,7 @@
     </table>
 
     
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+     
   </div>
 </template>
 
@@ -76,8 +73,21 @@ export default {
   },
   watch:{
     reflexosProps(){
-      if(Object.keys(this.reflexosProps).length != 0){
-      this.reflexosPulpilares = this.reflexosProps
+      if(Object.keys(this.reflexosProps).length === 0){
+       this.reflexosPulpilares = {
+       OD:{
+         FOTOMOTOR:'',
+         CONSENSUAL: '',
+         ACOMODATIVO: ''
+       },
+        OE:{
+         FOTOMOTOR:'',
+         CONSENSUAL: '',
+         ACOMODATIVO: ''
+       },
+     }
+      }else{
+        this.reflexosPulpilares = this.reflexosProps
       this. enviarReflexosPulpilares();
       }
     },

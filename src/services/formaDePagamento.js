@@ -2,12 +2,8 @@ import {http} from './config'
 
 export default {
     save: (data) => {
-        const dados = {
-            data:{
-            ...data
-        }
-        }
-        return http.post('/FormaDePagamento', dados)
+        
+        return http.post('/FormaDePagamento', {...data})
     },
 
     read: () =>{

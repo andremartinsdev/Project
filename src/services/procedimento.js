@@ -2,12 +2,8 @@ import {http} from './config'
 
 export default {
     save: (data) => {
-        const dados = {
-            data: {
-                ...data
-            }
-        }
-        return http.post('/Procedimento', dados)
+       
+        return http.post('/Procedimento', {...data})
     },
 
     readAll: () => {
@@ -23,12 +19,8 @@ export default {
     },
 
     update: (data, uuid) => {
-        const dados = {
-            data: {
-              ...data
-            }
-          }
-        return http.put(`/Procedimento/${uuid}`, dados)
+        
+        return http.put(`/Procedimento/${uuid}`, {...data})
     }
 }
 

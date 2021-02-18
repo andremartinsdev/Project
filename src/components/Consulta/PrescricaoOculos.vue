@@ -197,18 +197,24 @@ export default {
               PrescricaoService.save(this.prescricaoOculos)
                 .then((result) => {
                   if (result.status === 201) {
+                    this.prescricaoOculos.uuid = result.data.uuid.uuid
                     if (this.idConsulta === -1) {
                       this.showAlert("error", "Algo de errado ocorreu");
                     } else {
                       AgendaService.update(this.uuidAgendamento, {
                         atendido: true,
                         idConsulta: this.idConsulta,
+                        recebido: 0,
+                        valorConsulta: 0,
+                        dataPagamento: "0000-00-00",
+                        idFormaPagamento: 0
                       })
                         .then((result) => {
+                          
                           if (result.status === 201) {
                             this.showAlert(
                               "success",
-                              "Prescrição Salva com Sucesso"
+                              "Prescrição Salva com Sucdddesso"
                             );
                           }
                         })

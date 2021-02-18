@@ -50,8 +50,22 @@ export default {
 
   watch:{
     cerametriaProps(){
-      if(Object.keys(this.cerametriaProps).length != 0){
+     
+      /*if(Object.keys(this.cerametriaProps).length != 0){
       this.cerametria = this.cerametriaProps
+      this.enviarCerametria();
+      }*/
+  console.log(this.cerametriaProps[0])
+      if(Object.keys(this.cerametriaProps).length === 0){
+        this.cerametria = [
+        {
+          olhoDireito: "",
+          olhoEsquerdo: "",
+          miras: "",
+        },
+      ]
+      }else{
+         this.cerametria = this.cerametriaProps
       this.enviarCerametria();
       }
     },

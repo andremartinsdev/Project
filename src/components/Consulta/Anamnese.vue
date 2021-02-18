@@ -2,7 +2,32 @@
   <b-container fluid class="consultaAnamnese">
     <div>
       <b-card-group deck>
-        <b-card header="Sintomas" header-tag="header">
+            <b-toast
+          id="example-toast"
+          variant="light"
+          title="Sintomas"
+          static
+          visible
+          no-auto-hide
+          v-if="this.impressao === true"
+          class="ml-4"
+        >
+        <b-form-group>
+          
+              <b-form-checkbox-group
+                v-model="anamnese"
+                id="checkbox"
+                :options="sintomas"
+                class="mb-3"
+                value-field="value"
+                text-field="text"
+                disabled-field="notEnabled"
+                stacked
+                @input="enviarAnamnese"
+              ></b-form-checkbox-group>
+            </b-form-group>
+        </b-toast>
+        <b-card header="Sintomas" header-tag="header" v-else>
           <div class="check">
             <b-input
                   type="text"
@@ -10,8 +35,10 @@
                   hidden
                 />
             <b-form-group>
+          
               <b-form-checkbox-group
                 v-model="anamnese"
+                id="checkbox"
                 :options="sintomas"
                 class="mb-3"
                 value-field="value"
@@ -24,7 +51,34 @@
           </div>
         </b-card>
 
-        <b-card header="Doença Ocular" header-tag="header">
+        <b-toast
+          id="example-toast"
+         variant="light"
+          title="Doença Ocular"
+          static
+          visible
+          no-auto-hide
+          v-if="this.impressao === true"
+          class="ml-4"
+
+        >
+        
+          
+             <b-form-group>
+              <b-form-checkbox-group
+                v-model="anamnese"
+                :options="doencaOcular"
+                class="mb-3"
+                value-field="value"
+                text-field="text"
+                disabled-field="notEnabled"
+                stacked
+                @input="enviarAnamnese"
+              ></b-form-checkbox-group>
+            </b-form-group>
+        </b-toast>
+
+        <b-card header="Doença Ocular" header-tag="header" v-else>
           <div class="check">
             <b-form-group>
               <b-form-checkbox-group
@@ -41,7 +95,35 @@
           </div>
         </b-card>
 
-        <b-card header="Doença Sistema" header-tag="header">
+
+         <b-toast
+          id="example-toast"
+       variant="light"
+          title="Doença Sistemica"
+          static
+          visible
+          no-auto-hide
+          v-if="this.impressao === true"
+          class="ml-4"
+
+        >
+        
+          
+              <b-form-group>
+              <b-form-checkbox-group
+                v-model="anamnese"
+                :options="doencaSistematica"
+                class="mb-3"
+                value-field="value"
+                text-field="text"
+                disabled-field="notEnabled"
+                stacked
+                @input="enviarAnamnese"
+              ></b-form-checkbox-group>
+            </b-form-group>
+        </b-toast>
+
+        <b-card header="Doença Sistemica" header-tag="header" v-else>
           <div class="check">
             <b-form-group>
               <b-form-checkbox-group
@@ -58,7 +140,35 @@
           </div>
         </b-card>
 
-        <b-card header="Medicamento" header-tag="header">
+ <b-toast
+          id="example-toast"
+          variant="light"
+          title="Medicamento"
+          static
+          visible
+          no-auto-hide
+          class="ml-4"
+          v-if="this.impressao === true"
+        >
+        
+          
+               <b-form-group>
+              <b-form-checkbox-group
+                v-model="anamnese"
+                :options="medicamentos"
+                class="mb-3"
+                value-field="value"
+                text-field="text"
+                disabled-field="notEnabled"
+                stacked
+                @input="enviarAnamnese"
+              ></b-form-checkbox-group>
+            </b-form-group>
+        </b-toast>
+
+        
+
+        <b-card header="Medicamento" header-tag="header" v-else>
           <div class="check">
             <b-form-group>
               <b-form-checkbox-group
@@ -76,7 +186,34 @@
         </b-card>
       </b-card-group>
     </div>
-    <div class="mt-3">
+
+    <b-toast
+          id="example-toast"
+          variant="light"
+          static
+          visible
+          no-auto-hide
+          v-if="this.impressao === true"
+          class="ml-4"
+
+        >
+        
+          
+               <b-form-group>
+          <b-form-checkbox-group
+            v-model="anamnese"
+            :options="options"
+            class="mt-3"
+            value-field="value"
+            text-field="text"
+            disabled-field="notEnabled"
+            @input="enviarAnamnese"
+          ></b-form-checkbox-group>
+        </b-form-group>
+        </b-toast>
+
+        
+    <div class="mt-3" v-else>
       <b-card>
         <b-form-group>
           <b-form-checkbox-group
@@ -91,7 +228,33 @@
         </b-form-group>
       </b-card>
     </div>
-    <div class="mt-3 mb-2">
+
+    <b-toast
+          id="example-toast"
+          variant="light"
+          title="Antecedentes Familiares"
+          static
+          visible
+          no-auto-hide
+          v-if="this.impressao === true"
+          class="ml-4"
+
+        >
+        
+          
+               <b-form-group>
+          <b-form-checkbox-group
+            v-model="anamnese"
+            :options="antecedentesFamiliar"
+            class="mt-3"
+            value-field="value"
+            text-field="text"
+            disabled-field="notEnabled"
+            @input="enviarAnamnese"
+          ></b-form-checkbox-group>
+        </b-form-group>
+        </b-toast>
+    <div class="mt-3 mb-2" v-else>
       <b-card>
         <b-form-group label="Antecedentes Familiares">
           <b-form-checkbox-group
@@ -106,10 +269,7 @@
         </b-form-group>
       </b-card>
     </div>
-    <div class="p-3">
-      <b-button variant="primary"  class="mr-5">Salvar</b-button>
-      <b-button variant="primary" @click="LimparAnamnese">Limpar</b-button>
-    </div>
+    
   </b-container>
 </template>
 
@@ -121,6 +281,9 @@ export default {
   props: {
     propsAnamnese2: {
       type: Object,
+    },
+    impressao: {
+      type: Boolean,
     },
     Visualizar: {
       type: Boolean,
@@ -205,6 +368,7 @@ export default {
   },
   watch: {
     propsAnamnese2(){
+      console.log("visual anamane")
     
       this.anamnese = Object.keys(this.propsAnamnese2)
       this.enviarAnamnese();
@@ -213,6 +377,7 @@ export default {
     Visualizar() {
       this.carregarAnamnese();
       this.visualizar = false;
+      console.log("visual anamane")
     },
     LimparAnamnese() {
       this.anamnese = [];
@@ -268,5 +433,10 @@ export default {
 .check {
   display: flex;
   flex-wrap: wrap;
+  
 }
+
+
+
+
 </style>

@@ -27,10 +27,7 @@
       </tbody>
     </table>
     
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+     
   </div>
 </template>
 
@@ -47,8 +44,16 @@ export default {
 
   watch:{
     flexProps(){
-      if(Object.keys(this.flexProps).length != 0){
-        this.flexDeAcomodacao = this.flexProps
+      console.log(this.flexProps)
+      if(this.flexProps === undefined || Object.keys(this.flexProps).length === 0 ){
+        this.flexDeAcomodacao = {
+        OD:'',
+        OE:'',
+        CICLOS_OD: '',
+        CICLOS_OE:''
+      }
+      }else{
+this.flexDeAcomodacao = this.flexProps
         this.enviarFlexDeAcomodacao();
       }
     },
@@ -60,7 +65,7 @@ export default {
         CICLOS_OE:''
       }
       this.$emit('alteraLimpar', false)
-      this.$store.commit("FLEXIBILIDADE_ACOMODACAO", {})
+      this.$store.commit("FLEXIBILIDADE_ACOMODACAO", this.flexDeAcomodacao)
     }
   },
 

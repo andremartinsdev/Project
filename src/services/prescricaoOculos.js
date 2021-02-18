@@ -11,7 +11,7 @@ export default {
     if (dados.data.idPaciente === -1) {
       return "error"
     } else {
-      return http.post('prescricao/oculos', dados)
+      return http.post('prescricao/oculos', {...prescricao})
     }
   },
 
@@ -20,12 +20,8 @@ export default {
   },
 
   update: (prescricao, uuid) => {
-    const dados = {
-      data: {
-        ...prescricao
-      }
-    }
-    return http.put(`prescricao/oculos/${uuid}`, dados)
+   
+    return http.put(`prescricao/oculos/${uuid}`, {...prescricao})
   },
 
   delete: (uuid) => {

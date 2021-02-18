@@ -146,7 +146,6 @@ export default {
       },
 
       oticaParceira: {
-        idOticaParceira: 0,
         nome: "",
       },
     };

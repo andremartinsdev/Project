@@ -4,7 +4,6 @@
 
     <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
       <b-input
-        
         @change="enviarReservasFusionais"
         v-model="reservasFusionais.TECNICA"
         size="sm"
@@ -24,7 +23,6 @@
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
-                
                 v-model="reservasFusionais.VL.RFN"
                 size="sm"
                 @change="enviarReservasFusionais"
@@ -34,7 +32,6 @@
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
-                
                 v-model="reservasFusionais.VP.RFN"
                 @change="enviarReservasFusionais"
                 size="sm"
@@ -48,7 +45,6 @@
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
-                
                 v-model="reservasFusionais.VL.RFP"
                 @change="enviarReservasFusionais"
                 size="sm"
@@ -58,7 +54,6 @@
           <td>
             <b-input-group size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
-                
                 v-model="reservasFusionais.VP.RFP"
                 @change="enviarReservasFusionais"
                 size="sm"
@@ -68,32 +63,41 @@
         </tr>
       </tbody>
     </table>
+
     
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
   </div>
 </template>
 
 <script>
 export default {
-  props:{
-    Limpar:{
-      type: Boolean
+  props: {
+    Limpar: {
+      type: Boolean,
     },
     reservasProps: {
-      type: Object
-    }
+      type: Object,
+    },
   },
-  watch:{
-    reservasProps(){
-      if(Object.keys(this.reservasProps).length != 0){
-        this.reservasFusionais = this.reservasProps
+  watch: {
+    reservasProps() {
+      if (Object.keys(this.reservasProps).length === 0) {
+        this.reservasFusionais = {
+          VL: {
+            RFN: "",
+            RFP: "",
+          },
+          VP: {
+            RFN: "",
+            RFP: "",
+          },
+          TECNICA: "",
+        };
+      } else {
+        this.reservasFusionais = this.reservasProps;
         this.enviarReservasFusionais();
       }
     },
-    Limpar(){
+    Limpar() {
       this.reservasFusionais = {
         VL: {
           RFN: "",
@@ -104,10 +108,10 @@ export default {
           RFP: "",
         },
         TECNICA: "",
-      }
-      this.$emit('alteraLimpar', false)
-      this.$store.commit("RESERVAS_FUSIONAIS", {})
-    }
+      };
+      this.$emit("alteraLimpar", false);
+      this.$store.commit("RESERVAS_FUSIONAIS", {});
+    },
   },
   data() {
     return {
@@ -126,10 +130,10 @@ export default {
   },
 
   methods: {
-    enviarReservasFusionais(){
-      this.$store.commit("RESERVAS_FUSIONAIS", this.reservasFusionais)
-    }
-  }
+    enviarReservasFusionais() {
+      this.$store.commit("RESERVAS_FUSIONAIS", this.reservasFusionais);
+    },
+  },
 };
 </script>
 

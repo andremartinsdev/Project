@@ -3,12 +3,8 @@ import { http } from './config'
 
 export default {
   save: (consulta) => {
-    const dados = {
-      data: {
-        ...consulta
-      }
-    }
-    return http.post('/consulta', dados)
+    
+    return http.post('/consulta', {...consulta})
   },
 
   update: (consulta, uuid) => {

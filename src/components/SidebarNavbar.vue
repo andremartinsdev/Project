@@ -1,59 +1,201 @@
 <template>
-  <div>
+  <div v-if="this.$route.path.substr(0, 11) != '/Impressao/' && this.$route.path.substr(0, 11) != '/'">
     <b-navbar toggleable="sm" id="navbar2" fixed="top" class="navbar">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
       <div class="mb-1">
-        <b-avatar text="BV"></b-avatar>
-        <b-navbar-brand class="ml-3">BootstrapVue</b-navbar-brand>
+        <b-avatar :src="logoBms"></b-avatar>
+        <label class="ml-3 text-white"></label>
+        <b-navbar-brand class="ml-3 text-white">André Martins</b-navbar-brand>
       </div>
 
       <b-collapse id="nav-text-collapse" is-nav class="colapseContainer">
         <b-navbar-nav class="flexNav">
-          <router-link class="nav-link mr-5" to="/" style=" padding:0">
+          <router-link class="nav-link mr-5" to="/Home" style="padding: 0">
             <b-img center :src="image" alt="Center image" width="35"></b-img>
-             <label class="text-white ml-2">Inicio</label>
+            <label class="text-white ml-2">Inicio</label>
           </router-link>
-          <router-link class="nav-link mr-5" to="/Agenda" style=" padding:0">
-            <b-img center :src="imageCalender" alt="Center image" width="35"></b-img>
-             <label class="text-white">Agenda</label>
+          <router-link class="nav-link mr-5" to="/Agenda" style="padding: 0">
+            <b-img
+              center
+              :src="imageCalender"
+              alt="Center image"
+              width="35"
+            ></b-img>
+            <label class="text-white">Agenda</label>
           </router-link>
 
-          <router-link class="nav-link mr-5" to="/CadastroPaciente" style=" padding:0">
-            <b-img center :src="imagePaciente" alt="Center image" width="35"></b-img>
-             <label class="text-white">Paciente</label>
+          <router-link
+            class="nav-link mr-5"
+            to="/CadastroPaciente"
+            style="padding: 0"
+          >
+            <b-img
+              center
+              :src="imagePaciente"
+              alt="Center image"
+              width="35"
+            ></b-img>
+            <label class="text-white">Paciente</label>
           </router-link>
 
-          <router-link class="nav-link mr-5" to="/Consulta" style="padding:0">
-            <b-img center :src="imageConsulta" alt="Center image" width="35"></b-img>
+          <router-link class="nav-link mr-5" to="/Consulta" style="padding: 0">
+            <b-img
+              center
+              :src="imageConsulta"
+              alt="Center image"
+              width="35"
+            ></b-img>
             <label class="text-white">Consulta</label>
           </router-link>
 
-           <router-link class="nav-link mr-5" to="/Consulta" style="padding:0">
-            <b-img center :src="imageRelatorio" alt="Center image" width="35"></b-img>
+          <router-link class="nav-link mr-5" to="/Relatorio" style="padding: 0">
+            <b-img
+              center
+              :src="imageRelatorio"
+              alt="Center image"
+              width="35"
+            ></b-img>
             <label class="text-white">Relatorio</label>
           </router-link>
-          <div class="ml-4" style=" margin:auto 0;">
-            <b-dropdown
-              pill
-              size="md"
-              variant="transparent"
-              right
-              toggle-class="text-decoration-none"
-              no-caret
-            >
-              <template v-slot:button-content pill>
-                <b-icon-gear-fill class="text-white" font-scale="1.5"></b-icon-gear-fill>
-                <span class="ml-2 text-white">Opções</span>
-              </template>
-              <router-link to="/ConfiguracaoGeral"> <b-button size="sm" variant="primary" block>Configuração Geral</b-button> </router-link>
-              <b-dropdown-item href="#">Another action</b-dropdown-item>
-              <b-dropdown-item href="#">Something else here...</b-dropdown-item>
-            </b-dropdown>
-          </div>
+          <a v-b-toggle.sidebar-1 class="mr-5" >
+           
+                 <b-img
+              center
+              :src="imageConfig"
+              alt="Center image"
+              width="35"
+            ></b-img>
+            <label class="text-white">Configurações</label>
+
+                
+          </a>
+      
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <div id="links-fixos" v-if="this.$route.path === '/Home'" class="hidden-md-down iconeMenu">
+      <b-col md="6" class="mb-3">
+        <b-icon
+          icon="arrow-right-circle-fill"
+          v-b-toggle.sidebar-2
+          class="bg-success rounded p-1"
+          v-b-popover.hover.top="'Quadro de Lembretes'"
+          variant="light"
+          animation="cylon"
+          font-scale="2"
+        ></b-icon>
+      </b-col>
+      <b-popover target="popover-target-1" triggers="hover" placement="top">
+        <template #title>Popover Title</template>
+        I am popover <b>component</b> content!
+      </b-popover>
+    </div>
+    <div>
+      <b-sidebar
+        id="sidebar-1"
+        right
+        title="Opções"
+        class="text-center mt-2"
+        shadow
+      >
+
+        <div class="px-3 py-2">
+          <router-link to="/ConfiguracaoGeral">
+            <b-button size="sm" variant="primary" block
+              >Configuração Geral</b-button
+            >
+          </router-link>
+        </div>
+
+        <div class="px-3 py-2">
+          <router-link to="/CadastroClinica">
+            <b-button size="sm" variant="primary" block
+              >Cadastro da Clínica</b-button
+            >
+          </router-link>
+        </div>
+      </b-sidebar>
+
+      <b-sidebar
+        id="sidebar-2"
+        width="20rem"
+        class="text-center mt-2"
+        shadow
+        no-header
+        bg-variant="light"
+      >
+        <template #default="{ hide }">
+          <div class="p-3">
+            <h4 id="sidebar-no-header-title">Lembretes Para Hoje</h4>
+
+            <div class="mb-2">
+              <b-avatar :src="logoBms" size="6rem"></b-avatar>
+            </div>
+
+<b-button size="sm" variant="primary" class="mb-4 mt-4" block @click="showAgendamento">Agendamentos de Hoje</b-button>
+<b-button size="sm" variant="danger" v-if="showAgendamentos === false" class="mb-4 mt-4" block @click="showDespesa">Despesas de Hoje</b-button>
+            <div v-if="showAgendamentos === true">
+
+        
+            <b-toast
+              id="example-toast"
+              variant="primary"
+              :title="
+                'Procedimento : ' + agendamento.procedimento.toUpperCase()
+              "
+              class="ml-2"
+              static
+              visible
+              no-auto-hide
+              v-for="agendamento in agendamentosHoje"
+              :key="agendamento.uuid"
+            >
+              <label for=""
+                >Nome Paciente : {{ agendamento.nomePaciente }}</label
+              ><br />
+              <label for="">Data : {{ agendamento.data }}</label
+              ><br />
+              <label for="">Horario : {{ agendamento.horario }}</label
+              ><br />
+            </b-toast>
+    </div>
+
+    <div v-if="showDespesas === true">
+
+   
+
+            <b-toast
+              id="example-toast"
+              variant="danger"
+              :title="'Descrição Despesa : ' + despesa.descricaoDespesa"
+              class="ml-2"
+              static
+              visible
+              no-auto-hide
+              v-for="despesa in despesasHoje"
+              :key="despesa.uuid"
+            >
+              <label for="">Data : {{ despesa.data }}</label
+              ><br />
+              <label for=""
+                >Valor :
+                {{
+                  despesa.valor.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })
+                }}</label
+              ><br />
+            </b-toast>
+ </div>
+            <b-button variant="primary" class="mt-4" size="sm" @click="hide"
+              >Fechar <b-icon-x scale="1.5" class="mb-1"></b-icon-x
+            ></b-button>
+          </div>
+        </template>
+      </b-sidebar>
+    </div>
   </div>
 </template>
 
@@ -64,26 +206,80 @@ import imagePaciente from "../../public/user.png";
 import imageConsulta from "../../public/consulta.png";
 import imageRelatorio from "../../public/relatorio.png";
 import imageConfig from "../../public/configuracao.png";
+import AgendaService from "../services/agenda";
+import DespesaService from "../services/despesas";
+import logoBms from '../../src/assets/LogoBms2.jpg'
+
+import moment from "moment";
 export default {
-  data(){
-    return{
+  data() {
+    return {
+      logoBms:logoBms,
       image: image,
       imageCalender: imageCalender,
       imagePaciente: imagePaciente,
       imageConsulta: imageConsulta,
       imageRelatorio: imageRelatorio,
-      imageConfig: imageConfig
-    }
-  }
+      imageConfig: imageConfig,
+      agendamentosHoje: [],
+      despesasHoje: [],
+      showAgendamentos: false,
+      showDespesas: false,
+    };
+  },
+
+  updated() {},
+
+  mounted() {
+    this.readAgendamentos();
+    this.readDespesas();
+    console.log("entrooooou before");
+  },
+
+  methods: {
+    readAgendamentos() {
+      this.agendamentosHoje = [];
+      AgendaService.readDateInner(moment().format("YYYY-MM-DD")).then(
+        (result) => {
+          result.data.agendamentos.map((el) => {
+            el.data = moment(el.data).format("DD/MM/YYYY");
+            this.agendamentosHoje.push(el);
+          });
+        }
+      );
+    },
+showDespesa(){
+  this.showAgendamentos = false
+this.showDespesas = !this.showDespesas
+
+},
+    showAgendamento(){
+      this.showDespesas = false
+      this.showAgendamentos = !this.showAgendamentos
+
+    },
+    readDespesas() {
+      DespesaService.readDate(
+        moment().format("YYYY-MM-DD"),
+        moment().format("YYYY-MM-DD")
+      ).then((result) => {
+        result.data.result.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+          this.despesasHoje.push(el);
+        });
+        console.log(this.despesasHoje);
+      });
+    },
+  },
 };
 </script>
 
 <style scoped >
 li a {
-    text-decoration: none;
+  text-decoration: none;
 }
 router-link {
-    text-decoration: none;
+  text-decoration: none;
 }
 @keyframes bounce {
   0%,
@@ -92,7 +288,7 @@ router-link {
   100% {
     transform: translateY(0);
   }
- 
+
   80% {
     transform: translateY(-15px);
   }
@@ -117,7 +313,6 @@ img:hover {
 }
 
 .colapseContainer {
-  
   display: flex;
   justify-content: space-around;
 }
@@ -139,5 +334,19 @@ img:hover {
   /* fallback for old browsers */
   /* fallback for old browsers */
   /* fallback for old browsers */
+}
+
+#sidebar-1 {
+  background: aqua;
+}
+#links-fixos {
+  /*você pode alterar largura usando width*/
+  padding: 5px;
+  position: fixed;
+  top: 300px; /*altura da classe*/
+}
+
+.iconeMenu {
+  z-index: 1000;
 }
 </style>

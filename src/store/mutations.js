@@ -88,5 +88,8 @@ export default {
     },
     [MutationsTypes.UUID_AGENDAMENTO](state, uuidAgendamento) {
         state.uuidAgendamento = uuidAgendamento
+    },
+    [MutationsTypes.UUID_FICHACLINICA](state, uuidFichaClinica) {
+        state.uuidFichaClinica = uuidFichaClinica
     }
 }

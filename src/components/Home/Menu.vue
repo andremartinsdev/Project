@@ -30,7 +30,7 @@
 
         <div>
           <router-link class="nav-link" to="/Relatorio" >
-            <b-img center :src="imageRelatorio" alt="Center image" @click="apresentar()"></b-img>
+            <b-img center :src="imageRelatorio" alt="Center image" ></b-img>
             <label class="text-white">Relatório</label>
           </router-link>
         </div>

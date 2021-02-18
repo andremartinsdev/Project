@@ -1,7 +1,5 @@
 <template>
   <div>
-    <SideNav />
-
     <b-container fluid class="consulta">
       <div class="mb-5">
         <b-card no-body>
@@ -56,6 +54,54 @@
                     </tr>
                   </tbody>
                 </table>
+                <div class="mt-2 mb-2">
+                  <div>
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPageAgHoje"
+                      v-if="page < totalPage"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                      size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{ totalPage }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ page }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPageAgHoje"
+                      v-if="page > 1"
+                      class="mr-2 ml-2"
+                      size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                      size="sm"
+                      class="mr-2 ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
+                </div>
               </b-card>
             </b-tab>
             <b-tab title="Consulta">
@@ -71,23 +117,31 @@
                   <div>
                     <p>
                       Nome do Paciente :
-                      <i class="text-primary">{{ nomePaciente }}</i>
+                      <b-input
+                        class="text-primary"
+                        v-model="nomePaciente"
+                        disabled
+                      ></b-input>
                     </p>
                   </div>
                   <div>
                     <p>
                       Data de Nascimento:
-                      <i class="text-primary">{{
-                        dataPaciente === "Invalid date"
-                          ? "Não Informada"
-                          : dataPaciente
-                      }}</i>
+                      <b-input
+                        class="text-primary"
+                        disabled
+                        v-model="dataPaciente"
+                      ></b-input>
                     </p>
                   </div>
                   <div>
                     <p>
                       Procedimento:
-                      <i class="text-primary">{{ procedimentoConsulta }}</i>
+                      <b-input
+                        class="text-primary"
+                        disabled
+                        v-model="procedimentoConsulta"
+                      ></b-input>
                     </p>
                   </div>
                 </div>
@@ -211,6 +265,54 @@
                       </tr>
                     </tbody>
                   </table>
+                   <div class="mt-2 mb-2">
+                    <div>
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPagePesquisa"
+                      v-if="pagePesquisa < totalPagePesquisa"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                          size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{ totalPagePesquisa }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ pagePesquisa }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPagePesquisa"
+                      v-if="pagePesquisa > 1"
+                      class="mr-2  ml-2"
+                          size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                          size="sm"
+                      class="mr-2  ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
+                  </div>
                 </b-jumbotron>
               </div>
             </b-tab>
@@ -260,6 +362,7 @@
                   :editarProps="this.editar"
                   :iniciarConsultaProps="this.iniciarConsulta"
                   @mudarEditar="mudarEditar"
+                  @finalizado="limparUser"
                 />
               </b-card>
             </b-tab>
@@ -333,6 +436,54 @@
                     </tr>
                   </tbody>
                 </table>
+                   <div class="mt-2 mb-2">
+                  <div>
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPageAg"
+                      v-if="pageAg < totalPageAg"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                      size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{ totalPageAg }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ pageAg }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPageAg"
+                      v-if="pageAg > 1"
+                      class="mr-2 ml-2"
+                      size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                      size="sm"
+                      class="mr-2 ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
+                </div>
               </b-card>
             </b-tab>
             <b-tab title="Pesquisar Consultas Realizadas">
@@ -390,6 +541,54 @@
                     </tr>
                   </tbody>
                 </table>
+                 <div class="mt-2 mb-2">
+                  <div>
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPageFinalizado"
+                      v-if="pageFinalizado < totalPageFinalizado"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                      size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{ totalPageFinalizado }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ pageFinalizado }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPageFinalizado"
+                      v-if="pageFinalizado > 1"
+                      class="mr-2 ml-2"
+                      size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                      size="sm"
+                      class="mr-2 ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
+                </div>
               </b-card>
             </b-tab>
           </b-tabs>
@@ -403,7 +602,6 @@
 import Accordion from "./Accordion";
 import PrescricaoOculos from "./PrescricaoOculos";
 import PrescricaoLente from "./PrescricaoLente";
-import SideNav from "../SidebarNavbar";
 import Editor from "../editor_text/editor";
 import { mapActions, mapState } from "vuex";
 import FichaClinicaService from "../../services/fichaClinica";
@@ -422,7 +620,6 @@ export default {
     Accordion,
     PrescricaoOculos,
     PrescricaoLente,
-    SideNav,
     Editor,
   },
   data() {
@@ -437,6 +634,8 @@ export default {
       color: "primary",
       dataInicialAg: "",
       dataFinalAg: "",
+      pagePesquisa:1,
+      totalPagePesquisa:1,
       dataInicialAgFinalizado: "",
       dataFinalAgFinalizado: "",
       agendamentos: [],
@@ -452,6 +651,12 @@ export default {
       ListaPaciente: [],
       ListaConsulta: {},
       typePesquisa: {},
+      page: 1,
+      totalPage: 1,
+      pageAg: 1,
+      totalPageAg: 1,
+      pageFinalizado: 1,
+      totalPageFinalizado: 1,
       Options: [
         { text: "Prescrição Lente", value: "prescricao_lente" },
         { text: "Prescrição Óculos", value: "prescricao_oculos" },
@@ -495,13 +700,104 @@ export default {
       this.editar = false;
     },
 
+    anteriorPageAg(){
+this.pageAg = this.pageAg - 1;
+      AgendaService.readDateRelatorioPaginationNavigation(
+        this.dataInicialAg,
+        this.dataFinalAg,
+        this.pageAg
+      ).then((result) => {
+        this.agendamentosData = result.data.agendamentos.result;
+        this.agendamentosData.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+        this.agendamentos.sort(this.compararHora);
+      });
+    },
+
+    proximaPageAg(){
+this.pageAg = this.pageAg + 1;
+      AgendaService.readDateRelatorioPaginationNavigation(
+        this.dataInicialAg,
+        this.dataFinalAg,
+        this.pageAg
+      ).then((result) => {
+        this.agendamentosData = result.data.agendamentos.result;
+        this.agendamentosData.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+        this.agendamentos.sort(this.compararHora);
+      });
+    },
+
+    proximaPageAgHoje() {
+      this.page = this.page + 1;
+      AgendaService.readDateInnerPaginationNavigation(
+        moment().format("YYYY-MM-DD"),
+        this.page
+      ).then((result) => {
+        this.agendamentos = result.data.agendamentos.result;
+        this.agendamentos.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+        this.agendamentos.sort(this.compararHora);
+      });
+    },
+
+    proximaPageFinalizado(){
+      this.pageFinalizado = this.pageFinalizado + 1
+          this.agendamentosDataFinalizado = [];
+      AgendaService.readDateAgendamentoFinalizadoPaginationNavigation(
+        this.dataInicialAgFinalizado,
+        this.dataFinalAgFinalizado,
+        this.pageFinalizado
+      ).then((result) => {
+        console.log(result)
+        this.agendamentosDataFinalizado = result.data.agendamentos.result;
+        this.agendamentosDataFinalizado.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+      });
+    },
+
+     anteriorPageFinalizado(){
+      this.pageFinalizado = this.pageFinalizado - 1
+          this.agendamentosDataFinalizado = [];
+      AgendaService.readDateAgendamentoFinalizadoPaginationNavigation(
+        this.dataInicialAgFinalizado,
+        this.dataFinalAgFinalizado,
+        this.pageFinalizado
+      ).then((result) => {
+        console.log(result)
+        this.agendamentosDataFinalizado = result.data.agendamentos.result;
+        this.agendamentosDataFinalizado.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+      });
+    },
+
+    anteriorPageAgHoje() {
+      this.page = this.page - 1;
+      AgendaService.readDateInnerPaginationNavigation(
+        moment().format("YYYY-MM-DD"),
+        this.page
+      ).then((result) => {
+        this.agendamentos = result.data.agendamentos.result;
+        this.agendamentos.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+        this.agendamentos.sort(this.compararHora);
+      });
+    },
+
     listAgendamento() {
-      AgendaService.readDateRelatorio(
+      AgendaService.readDateRelatorioPagination(
         this.dataInicialAg,
         this.dataFinalAg
       ).then((result) => {
-        this.agendamentosData = result.data.agendamentos;
-        console.log(this.agendamentosData);
+        this.agendamentosData = result.data.agendamentos.result;
+        this.totalPageAg = Math.ceil(result.data.agendamentos.total[0].count / 5)
+        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosData.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
         });
@@ -514,12 +810,17 @@ export default {
     },
 
     listAgendamentoRealizado() {
+      this.totalPageFinalizado = 1
+      this.pageFinalizado = 1
       this.agendamentosDataFinalizado = [];
-      AgendaService.readDateAgendamentoFinalizado(
+      AgendaService.readDateAgendamentoFinalizadoPagination(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado
       ).then((result) => {
-        this.agendamentosDataFinalizado = result.data.agendamentos;
+        console.log(result)
+        this.agendamentosDataFinalizado = result.data.agendamentos.result;
+        this.totalPageFinalizado = Math.ceil(result.data.agendamentos.total[0].count / 5)
+        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5))
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
         });
@@ -540,7 +841,7 @@ export default {
     ) {
       console.log(idPaciente);
       if (atendido === 1) {
-        this.showAlert("info","Paciente já foi Atendido");
+        this.showAlert("info", "Paciente já foi Atendido");
       } else {
         this.$store.commit("PACIENTE_SELECTED", idPaciente);
         this.$store.commit("UUID_AGENDAMENTO", uuidAgendamento);
@@ -568,14 +869,19 @@ export default {
     },
 
     loadAgendamentos() {
-      AgendaService.readDateInner(moment().format("YYYY-MM-DD")).then(
+      this.page = 1
+      this.totalPage = 1
+      AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
-          this.agendamentos = result.data.agendamentos;
-          console.log(result.data.agendamentos);
+          this.agendamentos = result.data.agendamentos.result;
+          //this.totalPage = result.data.agendamentos.total[0].count
+          this.totalPage = Math.ceil(
+            result.data.agendamentos.total[0].count / 5
+          );
+          console.log(result.data.agendamentos.total[0].count);
           this.agendamentos.map((el) => {
             el.data = moment(el.data).format("DD/MM/YYYY");
           });
-          this.agendamentos.sort(this.compararHora);
         }
       );
     },
@@ -611,6 +917,14 @@ export default {
       }
     },
 
+    limparUser() {
+      this.nomePaciente = "";
+      this.dataPaciente = "";
+      this.abreviaNome = "";
+      this.procedimentoConsulta = "";
+      this.$store.commit("PACIENTE_SELECTED", -1);
+      this.$store.commit("UUID_AGENDAMENTO", "");
+    },
     atualizaPesquisa() {
       Pesquisa(this.typePesquisa, {
         idPaciente: this.idPaciente,
@@ -621,19 +935,37 @@ export default {
         this.ListaConsulta.titulo = this.retornaTipoConsulta();
       });
     },
-    listConsulta() {
-      this.ListaConsulta = {};
 
+proximaPagePesquisa(){
+  this.pagePesquisa = this.pagePesquisa + 1
+  FichaClinicaService.readPagination(this.idPaciente, this.dataInicial,  this.dataFinal, this.pagePesquisa).then(result => {
+   this.ListaConsulta = result.data.result.result;
+   this.ListaConsulta.titulo = this.retornaTipoConsulta();
+  })
+},
+
+anteriorPagePesquisa(){
+  this.pagePesquisa = this.pagePesquisa -1
+  FichaClinicaService.readPagination(this.idPaciente, this.dataInicial,  this.dataFinal, this.pagePesquisa).then(result => {
+   this.ListaConsulta = result.data.result.result;
+   this.ListaConsulta.titulo = this.retornaTipoConsulta();
+  })
+},
+
+    async listConsulta() {
+      this.ListaConsulta = {};
       if (this.idPaciente != -1) {
-        Pesquisa(this.typePesquisa, {
+        await Pesquisa(this.typePesquisa, {
           idPaciente: this.idPaciente,
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
         }).then((result) => {
+          console.log(result.data.result.total[0].count)
           if (Object.keys(result.data.result).length === 0) {
             this.showAlert("info", "Nenhuma Informação Encontrada");
           } else {
-            this.ListaConsulta = result.data.result;
+            this.totalPagePesquisa = Math.ceil(result.data.result.total[0].count/5)
+            this.ListaConsulta = result.data.result.result;
             console.log(this.ListaConsulta);
             this.ListaConsulta.titulo = this.retornaTipoConsulta();
           }
@@ -676,6 +1008,8 @@ export default {
           this.fichaClinica = result.data.ficha.json_fichaClinica;
           console.log(this.fichaClinica);
           this.uuidFicha = result.data.ficha.uuid;
+          this.$store.commit("UUID_FICHACLINICA", result.data.ficha.uuid);
+          console.log("ooooooooooooooooooo");
           this.tabIndex = 6;
           this.editar = true;
         });

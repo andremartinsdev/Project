@@ -2,7 +2,6 @@
   <FullCalendar
     :options="calendarOptions"
     @dateClick="handleDateClick"
-    @eventRender="teste"
     id="calendario"
   />
 </template>

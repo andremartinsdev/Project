@@ -2,12 +2,8 @@ import {http} from './config'
 
 export default {
     save: (data) => {
-        const dados = {
-            data:{
-            ...data
-        }
-        }
-        return http.post('/OticasParceiras', dados)
+        console.log(data)
+        return http.post('/OticasParceiras', {...data})
     },
 
     read: () =>{

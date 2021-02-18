@@ -7,6 +7,10 @@ import Consulta from './components/Consulta/Consulta.vue'
 import Agenda from './components/Agenda/Agenda.vue'
 import Relatorio from './components/Relatorios/Relatorio.vue'
 import ConfigGeral from './components/Configuracoes/ConfiguracoesGeral.vue'
+import Financeiro from './components/Financeiro/Financeiro.vue'
+import Impressao from './components/Impressao/ImpressaoFicha.vue'
+import Login from './components/Login/Login.vue'
+import CadastroClinica from './components/CadastroClinica/CadastroClinica.vue'
 
 
 Vue.use(Router)
@@ -14,7 +18,12 @@ Vue.use(Router)
 const routes = [
     {
         path: '/',
-        component: Home
+        component: Login,
+        beforeRouteEnter(to, from, next){
+            if(to.meta.adminOnly === true){
+                next('/')
+            }
+        }
     },
     {
         path: '/CadastroPaciente',
@@ -35,6 +44,22 @@ const routes = [
     {
         path: '/ConfiguracaoGeral',
         component: ConfigGeral
+    },
+    {
+        path: '/Financeiro',
+        component: Financeiro
+    },
+    {
+        path: '/Impressao/:uuid',
+        component: Impressao
+    },
+    {
+        path:'/Home',
+        component: Home
+    },
+    {
+        path: '/CadastroClinica',
+        component: CadastroClinica
     }
 ]
 

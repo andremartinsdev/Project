@@ -8,12 +8,15 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         limpar: false,
+        user:"",
+        token:"",
         dadosClinica: {},
         idConsulta: -1,
         paciente: [],
         option: false,
         uuidAgendamento: "",
         pacienteSelected: -1,
+        uuidFichaClinica:-1,
         fichaClinica:{
             afinamento:{},
             acuidade: {},

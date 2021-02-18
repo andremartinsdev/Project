@@ -14,6 +14,7 @@
           :propsAnamnese2="this.AnamneseData"
           :Visualizar="this.Visualizar"
           :LimparAnamnese="this.Limpar"
+          :impressao="false"
         />
       </b-collapse>
     </b-card>
@@ -26,9 +27,10 @@
       </b-card-header>
       <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
         <PrescricaoUltimoExame
-          izar="this.Visualizar"
+          :Visualizar="this.Visualizar"
           :Limpar="this.Limpar"
           :prescricaoUltExProps="this.PrescricaoUltimoExameData"
+          :impressao="false"
         />
       </b-collapse>
     </b-card>
@@ -315,6 +317,30 @@
       </b-collapse>
     </b-card>
 
+
+
+    
+    <div>
+      <b-modal id="modal-1" title="Data de Vencimento" @ok="finalizarConsulta">
+        <label for="">Data de Vencimento da Consulta</label>
+        <input type="date" v-model="dataVencimento" class="form-control" />
+        <template #modal-footer="{ ok, hide }">
+          <b-button size="sm" variant="primary" @click="ok()">
+            Salvar
+          </b-button>
+
+          <b-button
+            size="sm"
+            variant="outline-secondary"
+            @click="hide('forget')"
+          >
+            Fechar
+          </b-button>
+
+        </template>
+      </b-modal>
+    </div>
+
     <footer class="py-2 text-white-50 mb-4" id="sticky-footer">
       <div class="container text-center">
         <b-button
@@ -346,20 +372,17 @@
         >
           <b-icon-play-fill class="mr-3"></b-icon-play-fill>Iniciar Consulta
         </b-button>
-        <b-button
-          v-else
-          pill
-          @click="finalizarConsulta"
-          variant="success"
-          class="mr-2"
-        >
+        <b-button v-else pill variant="success" class="mr-2" v-b-modal.modal-1>
           <b-icon-check class="mr-3"></b-icon-check>Finalizar Consulta
         </b-button>
-        <b-button @click="cancelar" v-if="inicioConsulta === true" pill variant="light" class="mr-2">
-          <b-icon-x
-            class="mr-3"
-          ></b-icon-x
-          >Cancelar
+        <b-button
+          @click="cancelar"
+          v-if="inicioConsulta === true"
+          pill
+          variant="light"
+          class="mr-2"
+        >
+          <b-icon-x class="mr-3"></b-icon-x>Cancelar
         </b-button>
         <b-button @click="limpar" pill variant="light" class="mr-2">
           <b-icon-arrow-counterclockwise
@@ -367,6 +390,16 @@
           ></b-icon-arrow-counterclockwise
           >Limpar
         </b-button>
+      
+         <b-button
+            size="sm"
+            variant="outline-secondary"
+             v-b-modal.modal-1
+             @click="imprimir"
+          >
+            f
+          </b-button>
+      
       </div>
     </footer>
   </div>
@@ -394,6 +427,7 @@ import TesteAmbulatorial from "./TesteAmbulatorial";
 import Adicao from "./Adicao";
 import RxFinal from "./RxFinal";
 import Dx from "./Dx";
+//import ImpressaoAnamnese from '../Impressao/ImpressaoFicha'
 
 //import ServicoPaciente from "../../services/paciente";
 import ServicoConsulta from "../../services/consulta";
@@ -437,6 +471,7 @@ export default {
       console.log(this.uuidFicha);
     },
     fichaClinicaProps() {
+      this.testeProps = "andreeeeeee"
       //const json = this.fichaClinicaProps
       console.log(this.fichaClinicaProps);
       this.AnamneseData = this.fichaClinicaProps.anamnese;
@@ -444,11 +479,11 @@ export default {
       this.AfinamentoData = this.fichaClinicaProps.afinamento;
       this.AdicaoData = this.fichaClinicaProps.adicao;
       this.AmpliAcomodacaoData = this.fichaClinicaProps.amplitude;
-      this.AvMotoraData = this.fichaClinicaProps.avMotara;
+      this.AvMotoraData = this.fichaClinicaProps.avMotora;
       this.BiomicroData = this.fichaClinicaProps.biomicro;
       this.CerametriaData = this.fichaClinicaProps.cerametria;
       this.DxData = this.fichaClinicaProps.dx;
-      this.FlexAcomodacaoData = this.fichaClinicaProps.flexiDeAcomodacao || {};
+      this.FlexAcomodacaoData = this.fichaClinicaProps.flexiDeAcomodacao;
       this.ForometriaData = this.fichaClinicaProps.forometria;
       this.OftalmoscopiaData = this.fichaClinicaProps.oftalmoscopia;
       this.PpcData = this.fichaClinicaProps.ppc;
@@ -460,14 +495,16 @@ export default {
       this.SubjetivoData = this.fichaClinicaProps.subjetivo;
       this.TesteAmbulatorialData = this.fichaClinicaProps.testeAmbulatorial;
       this.TonometriaData = this.fichaClinicaProps.tonometria;
-      console.log(this.FlexAcomodacaoData);
+      console.log(this.RetinoscopiaData);
     },
   },
   data() {
     return {
       idConsultaData: -1,
+      dataVencimento:"",
       editar: false,
       Limpar: false,
+      testeProps:"",
       consulta: {},
       inicioConsulta: false,
       dadosFicha: {},
@@ -508,9 +545,11 @@ export default {
       idPaciente: (state) => state.pacienteSelected,
       fichaClinica: (state) => state.fichaClinica,
       uuidAgendamento: (state) => state.uuidAgendamento,
+      uuidFicha: (state) => state.uuidAgendamento,
     }),
   },
   components: {
+  
     Anamnese,
     PrescricaoUltimoExame,
     AcuidadeVisual,
@@ -535,6 +574,11 @@ export default {
   },
 
   methods: {
+    imprimir(){
+      //window.print(<ImpressaoAnamnese/>)
+window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=200, width=1000, height=1000");
+
+    },
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -556,9 +600,9 @@ export default {
       this.Visualizar = !this.Visualizar;
     },
 
-    cancelar(){
+    cancelar() {
       //this.editar = false;
-      this.inicioConsulta = false
+      this.inicioConsulta = false;
     },
 
     novo() {
@@ -566,12 +610,13 @@ export default {
       this.limpar();
       this.$store.commit("PACIENTE_SELECTED", -1);
       this.$emit("mudarEditar", false);
-      
     },
 
     limpar() {
       this.inicioConsulta = false;
       this.Limpar = true;
+      this.$emit("finalizado");
+
     },
 
     dataAtual() {
@@ -581,9 +626,13 @@ export default {
     },
 
     finalizarConsulta() {
-      AgendaService.update(this.uuidAgendamento, {idConsulta: this.idConsultaData, atendido:true}).then(result =>{
-        console.log(result)
-      })
+      AgendaService.updateIdConsultAtendidoDtVencimento(this.uuidAgendamento, {
+        idConsulta: this.idConsultaData,
+        atendido: true,
+        dataVencimento: this.dataVencimento
+      }).then((result) => {
+        console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
+      });
       const dados = {
         ...this.fichaClinica,
       };
@@ -594,7 +643,7 @@ export default {
           .then((result) => {
             if (result.status === 201) {
               this.showAlert("success", "Ficha Clínica Salva com Sucesso");
-              this.inicioConsulta = false;
+              this.limpar();
             }
           })
           .catch(() => {
@@ -607,12 +656,13 @@ export default {
 
     updateFicha() {
       const fichaClinica = JSON.stringify(this.fichaClinica);
-     
+console.log(fichaClinica)
       ServicoFichaClinica.update(fichaClinica, this.uuidFichaProps)
         .then((result) => {
           if (result.status === 201) {
             this.showAlert("success", "Ficha Clínica Editada com Sucesso");
             this.inicioConsulta = false;
+            
           }
         })
         .catch(() => {
@@ -623,7 +673,6 @@ export default {
     iniciarConsulta() {
       if (this.idPaciente === -1) {
         this.showAlert("error", "Selecione o Paciente");
-        
       } else {
         this.dadosConsulta.idPaciente = this.idPaciente;
         ServicoConsulta.save(this.dadosConsulta)
@@ -634,7 +683,7 @@ export default {
                 data: this.dataAtual(),
                 idConsulta: result.data.result.idConsulta[0],
               };
-              this.idConsultaData = result.data.result.idConsulta[0]
+              this.idConsultaData = result.data.result.idConsulta[0];
               this.inicioConsulta = true;
               this.showAlert("success", "Consulta Iniciada");
             }
@@ -645,6 +694,8 @@ export default {
       }
     },
   },
+
+ 
 };
 </script>
 
@@ -666,6 +717,7 @@ export default {
   background: linear-gradient(0deg, #014779 0%, #0082c8 100%);
   border-radius: 55px;
   padding: 4;
+  z-index: 1000;
 }
 
 @media (max-width: 700px) {

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <SidebarNavbar />
-
     <div class="card" id="calendario2">
       <div class="card-header text-center">
         Agenda
@@ -141,9 +139,9 @@
           <label for="exampleInputEmail1">Valor da Consulta</label>
           <b-input-group prepend="R$" class=" ">
             <b-form-input
-              id="inline-form-input-username"
-              class="col-sm-2 bg-primary text-white"
-              v-model="agendamento.valorConsulta"
+              v-model.lazy="agendamento.valorConsulta"
+              class="form-control bg-primary text-white col-sm-2"
+              v-money="money2"
             ></b-form-input>
           </b-input-group>
 
@@ -158,7 +156,11 @@
             </div>
             <div class="form-group w-50">
               <label for="exampleInputEmail1">Ótica Parceira</label>
-              <b-form-select :options="oticasParceiras" v-model="oticasParceirasSelect" size="sm"></b-form-select>
+              <b-form-select
+                :options="oticasParceiras"
+                v-model="oticasParceirasSelect"
+                size="sm"
+              ></b-form-select>
             </div>
           </div>
           <div>
@@ -173,7 +175,7 @@
           </div>
         </div>
 
-        <template #modal-footer="{  hide }">
+        <template #modal-footer="{ hide }">
           <b-button size="sm" variant="primary" @click="savePagamento()">
             Salvar
           </b-button>
@@ -371,9 +373,55 @@
                     ></b-form-select>
                   </div>
                   <div class="mt-2 mb-2">
-                    <b-button variant="primary" @click="pesquisarAgendamentos"
+                    <div>
+                    <b-button variant="primary"     size="sm" class="mr-4" @click="pesquisarAgendamentos"
                       >Pesquisar</b-button
                     >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPage"
+                      v-if="page < totalPage"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                          size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{ totalPage }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ page }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPage"
+                      v-if="page > 1"
+                      class="mr-2  ml-2"
+                          size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                          size="sm"
+                      class="mr-2  ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
                   </div>
                 </div>
                 <div class="tabela">
@@ -381,6 +429,7 @@
                     <thead>
                       <tr>
                         <th scope="col">Titúlo Agendamento</th>
+                        <th scope="col">Data Agendamento</th>
                         <th scope="col">Editar</th>
                         <th scope="col">Excluir</th>
                       </tr>
@@ -391,6 +440,7 @@
                         :key="agendamento.uuid"
                       >
                         <td>{{ agendamento.titulo }}</td>
+                        <td>{{ agendamento.data }}</td>
                         <td>
                           <b-button
                             pill
@@ -412,6 +462,7 @@
                       </tr>
                     </tbody>
                   </table>
+                  
                 </div>
               </b-tab>
             </b-tabs>
@@ -422,8 +473,7 @@
   </div>
 </template>
 <script>
-import Calendar from "./Calendar";
-import SidebarNavbar from "../SidebarNavbar";
+//import Calendar from "./Calendar";
 import PacienteService from "../../services/paciente";
 import FormaDePagamentoService from "../../services/formaDePagamento";
 import OticasParceirasServices from "../../services/oticasParceiras";
@@ -435,8 +485,7 @@ import moment from "moment";
 
 export default {
   components: {
-    Calendar,
-    SidebarNavbar,
+    Calendar: () => import("./Calendar"),
   },
   data() {
     return {
@@ -444,6 +493,12 @@ export default {
       formaDePagamento: [],
       oticasParceirasSelect: null,
       oticasParceiras: [],
+      money2: {
+        decimal: ",",
+        thousands: ".",
+        precision: 2,
+        masked: false /* doesn't work with directive */,
+      },
       money: {
         decimal: ",",
         thousands: ".",
@@ -465,6 +520,8 @@ export default {
       dataFinal: "",
       teste: "asdasdsa",
       idPacientePesquisa: -1,
+      page: 1,
+      totalPage: 0,
       agendamento: {
         uuid: "",
         procedimento: "",
@@ -476,6 +533,7 @@ export default {
         recebido: false,
         observacao: "",
         titulo: "",
+        dataPagamento: null,
       },
     };
   },
@@ -489,7 +547,7 @@ export default {
     this.list();
     this.readAllProcedimentos();
     this.readFormaPagamento();
-    this. readOticaParceira();
+    this.readOticaParceira();
   },
 
   methods: {
@@ -579,6 +637,7 @@ export default {
         observacao: "",
         atendido: false,
         titulo: "",
+        teste: "teste",
       };
     },
     list() {
@@ -662,6 +721,7 @@ export default {
           this.agendamento.valorConsulta = this.agendamento.valorConsulta
             .replace("R$", "")
             .replace(" ", "")
+            .replace(".", "")
             .replace(",", ".");
           AgendaService.save(this.agendamento)
             .then((result) => {
@@ -675,6 +735,7 @@ export default {
               this.showAlert("error", "Erro ao Realizar agendamento");
             });
         } else {
+          console.log(this.agendamento);
           AgendaService.update(this.agendamento.uuid, this.agendamento)
             .then((result) => {
               if (result.status === 201) {
@@ -691,32 +752,72 @@ export default {
 
     saveProcedimento(bvModalEvt) {
       bvModalEvt.preventDefault();
-      if (this.procedimento.uuid === "") {
-        bvModalEvt.preventDefault();
-        this.procedimento.value = this.procedimento.text;
-        ProcedimentoService.save(this.procedimento)
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Procedimento Salvo com Sucesso");
-              this.readAllProcedimentos();
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Erro ao salvar Procedimento");
-          });
+      if (this.procedimento.text != "") {
+        if (this.procedimento.uuid === "") {
+          bvModalEvt.preventDefault();
+          this.procedimento.value = this.procedimento.text;
+          ProcedimentoService.save(this.procedimento)
+            .then((result) => {
+              if (result.status === 201) {
+                this.showAlert("success", "Procedimento Salvo com Sucesso");
+                this.readAllProcedimentos();
+              }
+            })
+            .catch(() => {
+              this.showAlert("error", "Erro ao salvar Procedimento");
+            });
+        } else {
+          this.procedimento.value = this.procedimento.text;
+          ProcedimentoService.update(this.procedimento, this.procedimento.uuid)
+            .then((result) => {
+              if (result.status === 201) {
+                this.showAlert("success", "Procedimento Atualizado");
+                this.readAllProcedimentos();
+              }
+            })
+            .catch(() => {
+              this.showAlert("error", "Erro ao atualizar Procedimento");
+            });
+        }
       } else {
-        console.log("edita");
-        this.procedimento.value = this.procedimento.text;
-        ProcedimentoService.update(this.procedimento, this.procedimento.uuid)
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Procedimento Atualizado");
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Erro ao atualizar Procedimento");
-          });
+        this.showAlert(
+          "info",
+          "Ocorreu um erro de Validação, verifique se todos os campos estão preenchidos"
+        );
       }
+    },
+
+    proximaPage() {
+      this.page = this.page + 1;
+      AgendaService.readDataPaginationProximo(
+        this.dataInicial,
+        this.dataFinal,
+        this.page
+      ).then((result) => {
+        this.agendamentoPesquisa = result.data.result.result;
+        this.agendamentoPesquisa.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+        this.agendamentoPesquisa.sort((a, b) => {
+          return parseInt(a.data) - parseInt(b.data);
+        });
+      });
+    },
+    anteriorPage() {
+      this.page = this.page - 1;
+      AgendaService.readDataPaginationProximo(
+        this.dataInicial,
+        this.dataFinal,
+        this.page
+      ).then((result) => {
+        this.agendamentoPesquisa = result.data.result.result;
+        this.agendamentoPesquisa.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+        this.agendamentoPesquisa.sort((a, b) => {
+          return parseInt(a.data) - parseInt(b.data);
+        });
+      });
     },
 
     pesquisarAgendamentos() {
@@ -725,12 +826,22 @@ export default {
       } else {
         if (this.idPacientePesquisa === -1) {
           this.agendamentoPesquisa = [];
-          AgendaService.readDate(this.dataInicial, this.dataFinal)
+          AgendaService.readDataPagination(this.dataInicial, this.dataFinal)
             .then((result) => {
-              if (result.data.agendamentos.length === 0) {
+              console.log();
+              if (result.data.result.result.length === 0) {
                 this.showAlert("info", "Nenhuma informação");
               } else {
-                this.agendamentoPesquisa = result.data.agendamentos;
+                this.agendamentoPesquisa = result.data.result.result;
+                this.agendamentoPesquisa.map((el) => {
+                  el.data = moment(el.data).format("DD/MM/YYYY");
+                });
+                this.agendamentoPesquisa.sort((a, b) => {
+                  return parseInt(a.data) - parseInt(b.data);
+                }),
+                  (this.totalPage = Math.ceil(
+                    result.data.result.total[0].count / 5
+                  ));
               }
             })
             .catch(() => {
@@ -788,7 +899,7 @@ export default {
           this.agendamento.data = moment(result.data.agendamento.data).format(
             "YYYY-MM-DD"
           );
-          this.agendamento.valorConsulta = this.agendamento.valorConsulta.toLocaleString(
+          this.agendamento.valorConsulta = result.data.agendamento.valorConsulta.toLocaleString(
             "pt-br",
             { style: "currency", currency: "BRL" }
           );
@@ -798,11 +909,14 @@ export default {
               : moment(result.data.agendamento.dataNascimento).format(
                   "DD/MM/YYYY"
                 );
-           if(this.agendamento.recebido === 0){
-             this.agendamento.recebido = false
-           }else if(this.agendamento.recebido === 1){
-             this.agendamento.recebido = true
-           }    
+          if (this.agendamento.recebido === 0) {
+            this.agendamento.recebido = false;
+          } else if (this.agendamento.recebido === 1) {
+            this.agendamento.recebido = true;
+          }
+
+          this.formaPagamentoSelect = result.data.agendamento.idFormaPagamento;
+          this.oticasParceirasSelect = result.data.agendamento.idOticaParceira;
         })
         .catch(() => {
           this.showAlert(
@@ -847,25 +961,49 @@ export default {
 
     readOticaParceira() {
       OticasParceirasServices.read().then((result) => {
-        console.log(result)
+        console.log(result);
         result.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(
             this.oticaParceira(el.nome, el.idOticaParceira)
           );
         });
-        console.log(this.oticasParceiras)
+        console.log(this.oticasParceiras);
       });
     },
 
-
-    savePagamento(){
-      AgendaService.update(this.agendamento.uuid, {recebido: this.agendamento.recebido, valorConsulta: this.agendamento.valorConsulta, idFormaPagamento: this.formaPagamentoSelect, idOticaParceira: this.oticasParceirasSelect})
-      .then(result =>{
-        console.log(result)
-      })
-    }
-
-    
+    savePagamento() {
+      console.log(this.agendamento.valorConsulta);
+      if (
+        Validation.ValidaAgendamento(this.agendamento) &&
+        parseInt(this.agendamento.valorConsulta) > 0 &&
+        this.agendamento.valorConsulta != "00,00" &&
+        this.formaPagamentoSelect != null &&
+        this.agendamento.recebido === true
+      ) {
+        AgendaService.update(this.agendamento.uuid, {
+          recebido: this.agendamento.recebido,
+          valorConsulta: this.agendamento.valorConsulta
+            .replace(".", "")
+            .replace(",", "."),
+          idFormaPagamento: this.formaPagamentoSelect,
+          idOticaParceira: this.oticasParceirasSelect,
+          dataPagamento: moment().format("YYYY-MM-DD"),
+        })
+          .then((result) => {
+            if (result.status === 201) {
+              this.showAlert("success", "Pagamento Realizado com Sucesso");
+            }
+          })
+          .catch(() => {
+            this.showAlert("error", "Ocorreu um erro ao realizar pagamento");
+          });
+      } else {
+        this.showAlert(
+          "info",
+          "Ocorreu um erro, verifique se todos os campos estão preenchidos"
+        );
+      }
+    },
   },
 };
 </script>
@@ -914,7 +1052,6 @@ div {
   padding-right: 100px;
 }
 .tabela {
-  overflow: scroll;
   max-height: 300px;
 }
 @media (max-width: 700px) {

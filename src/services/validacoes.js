@@ -26,7 +26,29 @@ function ValidaAgendamento(data) {
                 allowEmpty: false,
                 message: 'O campo data não pode ficar em branco.',
             }
+        },
+        valorConsulta : {
+            presence: {
+                allowEmpty: false,
+                message: 'O campo data não pode ficar em branco.',
+            }
         }
+    }
+    return validate(data, constraints, { fullMessages: false })
+
+}
+
+function ValidaProcedimento(data) {
+    const constraints = {
+
+        text: {
+            presence: {
+                allowEmpty: false,
+                message: 'O campo Descrição não pode ficar em branco.',
+            }
+
+        }
+        
     }
     return validate(data, constraints, { fullMessages: false })
 
@@ -95,6 +117,7 @@ function ValidarPaciente(data) {
 
 export default {
     ValidarPaciente,
-    ValidaAgendamento
+    ValidaAgendamento,
+    ValidaProcedimento
 }
 

@@ -135,6 +135,9 @@ export default {
     },
     acuidadeProps: {
       type: [Object, Array]
+    },
+    Visualizar:{
+      type: Boolean
     }
   },
   data() {
@@ -183,14 +186,63 @@ export default {
 
 watch:{
   acuidadeProps(){
-    console.log(this.acuidadeProps)
+    /*console.log(this.acuidadeProps)
      if(Object.keys(this.acuidadeProps).length != 0){
        this.acuidade = [this.acuidadeProps]
        this.enviarAcuidade();
+       console.log(this.acuidade)
      }else{
        console.log("teeeeeeeeeeeeeeeeeeee")
-     }
+     }*/
+
+      this.acuidade = [this.acuidadeProps]
+      if(Object.keys(this.acuidade[0]).length === 0){
+       this.acuidade =  [
+        {
+          sc: {
+            olhoDireito: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+            olhoEsquerto: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+             ao: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+          },
+
+          cc: {
+            olhoDireito: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+            olhoEsquerto: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+             ao: {
+              vl:'',
+              vp:'',
+              ph:'',
+            },
+          },
+        },
+      ]
+      }
+       this.enviarAcuidade();
   },
+Visualizar(){
+  console.log("entrrrrou acuidade")
+},
+
   Limpar(){
     this.acuidade =  [
         {
@@ -232,7 +284,7 @@ watch:{
         },
       ]
       this.$emit('alteraLimpar', false)
-      this.$store.commit("ACUIDADE", [{}])
+      this.$store.commit("ACUIDADE", this.acuidade)
   }
 
   

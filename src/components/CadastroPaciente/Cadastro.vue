@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SidebarNavbar />
+  
     <div class="formCliente">
       <div>
         <b-card no-body>
@@ -309,14 +309,12 @@
 </template>
 
 <script>
-import SidebarNavbar from "../SidebarNavbar";
 import { mapState, mapActions } from "vuex";
 import PacienteService from "../../services/paciente";
 import ValidatorPaciente from "../../services/validacoes";
 
 export default {
   components: {
-    SidebarNavbar,
   },
   computed: {
     ...mapState({

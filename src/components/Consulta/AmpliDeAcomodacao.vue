@@ -51,10 +51,7 @@
       </tbody>
     </table>
 
-    <div class="mt-5">
-      <b-button variant="primary" class="mr-5">Salvar</b-button>
-      <b-button variant="primary">Limpar</b-button>
-    </div>
+   
   </div>
 </template>
 
@@ -70,7 +67,14 @@ export default {
   },
   watch: {
     amplitudeProps() {
-      if (Object.keys(this.amplitudeProps).length != 0) {
+      if (Object.keys(this.amplitudeProps).length === 0) {
+         this.ampliDeAcomodacao = {
+        OD: "",
+        NIVEL_OD: "",
+        OE: "",
+        NIVEL_OE: "",
+      };
+      }else{
         this.ampliDeAcomodacao = { ...this.amplitudeProps };
         this.enviarAmpliDeAcomodacao();
       }
@@ -83,7 +87,7 @@ export default {
         NIVEL_OE: "",
       };
       this.$emit('alteraLimpar', false)
-      this.$store.commit("AMPLITUDE_ACOMODACAO", {});
+      this.$store.commit("AMPLITUDE_ACOMODACAO", this.ampliDeAcomodacao);
     },
   },
   data() {

@@ -165,10 +165,7 @@
       </tbody>
     </table>
     
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+     
   </div>
 </template>
 
@@ -185,8 +182,39 @@ export default {
 
   watch:{
     biomicroProps(){
-      if(Object.keys(this.biomicroProps).length != 0){
-      this.biomicro = this.biomicroProps
+      if(Object.keys(this.biomicroProps).length === 0){
+     this.biomicro = [
+        {
+          olhoDireito: {
+            cilios: '',
+            sombrancelha: '',
+            palpebra: '',
+            conjuntiva: '',
+            esclerotica: '',
+            cornea: '',
+            iris: '',
+            pupila: '',
+            cristalina: '',
+            camaraAnterior: '',
+            obs: ''
+          },
+          olhoEsquerdo: {
+            cilios: '',
+            sombrancelha: '',
+            palpebra: '',
+            conjuntiva: '',
+            esclerotica: '',
+            cornea: '',
+            iris: '',
+            pupila: '',
+            cristalina: '',
+            camaraAnterior: '',
+            obs: ''
+          },
+        },
+      ]
+      }else{
+  this.biomicro = this.biomicroProps
       this.enviarBiomicro()
       }
       

@@ -30,10 +30,7 @@
       </b-input-group>
     </b-form>
     
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+     
   </div>
 </template>
 
@@ -56,13 +53,19 @@ export default {
         HORA: "",
       }
       this.$emit('alteraLimpar', false)
-      this.$store.commit("TONOMETRIA", {});
+      this.$store.commit("TONOMETRIA", this.tonometria);
     },
 
     tonometriaProps(){
-      if(Object.keys(this.tonometriaProps).length != 0){
-      this.tonometria = this.tonometriaProps
-      this.enviarTonometria();
+      if(Object.keys(this.tonometriaProps).length === 0){
+      this.tonometria = {
+        OD: "",
+        OE: "",
+        HORA: "",
+      }
+      }else{
+        this.tonometria = this.tonometriaProps
+        this.enviarTonometria();
       }
     }
   },

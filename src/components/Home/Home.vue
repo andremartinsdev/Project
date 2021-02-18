@@ -1,25 +1,331 @@
 <template>
   <div>
-    <div>
-      <b-navbar toggleable="sm" class="navBar" fixed="top">
-        <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
-
-        <div class="mb-1">
-          <b-avatar text="BV"></b-avatar>
-          <b-navbar-brand class="ml-3">BootstrapVue</b-navbar-brand>
-        </div>
-        <b-collapse id="nav-text-collapse" is-nav>
-          <b-navbar-nav>
-            <b-nav-text>Navbar text</b-nav-text>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-    </div>
     <b-container class="home" fluid>
-      <Menu @mostrar="showOption($event)" />
-      <CardHome class="mb-4" />
-      <b-row class="justify-content-center flex-wrap-wrap mt-5">
-        <b-col cols="12" class="teste2">
+      <CardHome
+        class="mb-4 mt-2"
+        :consultas="this.consultas"
+        :pacientesCadastrados="this.pacientesCadastrados"
+        :agendamentosDia="this.agendamentosDia"
+        :consultasMes="this.consultasMes"
+      />
+      <b-row class="justify-content-center flex-wrap-wrap mt-5 testando">
+        <b-col cols="12" class="teste2 testando">
+          <b-container>
+            <section id="team" class="pb-5">
+              <div class="container">
+                <div class="row">
+                  <!-- Team member -->
+                  <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="image-flip">
+                      <div class="mainflip flip-0">
+                        <div class="frontside">
+                          <div class="card">
+                            <div class="card-body text-center">
+                              <p>
+                                <img
+                                  class="img-fluid"
+                                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUym5JGMpWsjlPq6txVnG52Va2fR6FJLFDew&usqp=CAU"
+                                  alt="card image"
+                                />
+                              </p>
+                              <h4 class="card-title">Aniversariantes do Mês</h4>
+                              <p class="card-text">
+                                Deseje um Feliz aniversario para seus Pacientes
+                              </p>
+                              <a
+                                href="https://www.fiverr.com/share/qb8D02"
+                                class="btn btn-primary btn-sm"
+                                ><i class="fa fa-plus"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="backside shadow">
+                          <div class="card">
+                            <div class="card-body text-center mt-1">
+                              <h4 class="card-title">
+                                Aniversariante
+                                <b-badge variant="info">{{
+                                  this.aniversarianteDoMes === undefined
+                                    ? "0"
+                                    : this.aniversarianteDoMes.length
+                                }}</b-badge>
+                              </h4>
+
+                              <div
+                                class="aniversarioContent shadow"
+                                v-if="this.aniversarianteDoMes.length > 0"
+                              >
+                                <p class="card-text">
+                                  Nome do Paciente:
+                                  {{
+                                    this.aniversarianteDoMes[
+                                      this.indexAniversario
+                                    ].nomePaciente
+                                  }}
+                                </p>
+                                <p class="card-text">
+                                  Telefone/Celular:
+                                  {{
+                                    this.aniversarianteDoMes[
+                                      this.indexAniversario
+                                    ].telefone
+                                  }}
+                                </p>
+                                <p class="card-text">
+                                  Data de Nascimento:
+                                  {{
+                                    this.aniversarianteDoMes[
+                                      this.indexAniversario
+                                    ].dataNascimento
+                                  }}
+                                </p>
+                              </div>
+                              <div class="mt-4">
+                                <a>
+                                  <i
+                                    class="fa fa-facebook-square fa-2x mr-3"
+                                    style="color: rgb(0, 138, 255)"
+                                    aria-hidden="true"
+                                  ></i>
+                                </a>
+
+                                <a @click="enviarMsgWhatsapp">
+                                  <i
+                                    class="fa fa-whatsapp fa-2x"
+                                    style="color: rgb(83, 247, 68)"
+                                    aria-hidden="true"
+                                  ></i>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="flexIcon">
+                              <div>
+                                <b-icon
+                                  icon="arrow-left-circle-fill"
+                                  class="bg-info rounded p-1 icone"
+                                  variant="light"
+                                  font-scale="2"
+                                  v-b-popover.hover.top="
+                                    'Consulta Vencida Anterior'
+                                  "
+                                  @click="aniversarioAnterior"
+                                ></b-icon>
+                              </div>
+                              <div>
+                                <p class="text-info">
+                                  {{ this.indexAniversario + 1 }} de
+                                  {{ this.aniversarianteDoMes.length }}
+                                </p>
+                              </div>
+                              <div>
+                                <b-icon
+                                  icon="arrow-right-circle-fill"
+                                  class="bg-info rounded p-1 icone"
+                                  variant="light"
+                                  font-scale="2"
+                                  v-b-popover.hover.top="
+                                    'Proxima Consulta Vencida'
+                                  "
+                                  @click="aniversarioProximo"
+                                ></b-icon>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ./Team member -->
+                  <!-- Team member -->
+                  <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div
+                      class="image-flip"
+                      ontouchstart="this.classList.toggle('hover');"
+                    >
+                      <div class="mainflip">
+                        <div class="frontside">
+                          <div class="card">
+                            <div class="card-body text-center">
+                              <p>
+                                <img
+                                  class="img-fluid"
+                                  src="https://blog.acordocerto.com.br/wp-content/uploads/2020/04/rsz_novo-prazo-imposto-de-renda-2020.jpg"
+                                  alt="card image"
+                                />
+                              </p>
+                              <h4 class="card-title">Consultas Vencidas</h4>
+                              <p class="card-text">
+                                Veja os Pacientes os quais suas Consultas
+                                venceram
+                              </p>
+                              <a
+                                href="https://www.fiverr.com/share/qb8D02"
+                                class="btn btn-primary btn-sm"
+                                ><i class="fa fa-plus"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="backside shadow">
+                          <div class="card">
+                            <div
+                              class="card-body text-center mt-1"
+                              v-if="this.consultasVencidas[0] != undefined"
+                            >
+                              <h4 class="card-title">
+                                Consulta Vencida
+                                <b-badge variant="info">{{
+                                  this.consultasVencidas[0].length
+                                }}</b-badge>
+                              </h4>
+                              <div
+                                class="consultasContent shadow"
+                                v-if="this.consultasVencidas[0].length > 0"
+                              >
+                                <p class="card-text">
+                                  Nome Paciente:
+                                  {{
+                                    this.consultasVencidas[0][this.indexConsultaVencida].nomePaciente
+                                  }}
+                                </p>
+                                <p class="card-text">
+                                  Data da ultima Consulta:
+                                  {{ this.consultasVencidas[0][this.indexConsultaVencida].data }}
+                                </p>
+                                <p class="card-text">
+                                  Data de Vencimento da consulta:
+                                  {{
+                                    this.consultasVencidas[0][this.indexConsultaVencida].dataVencimento
+                                  }}
+                                </p>
+                              </div>
+                            </div>
+                            <div class="flexIcon">
+                              <div>
+                                <b-icon
+                                  icon="arrow-left-circle-fill"
+                                  class="bg-info rounded p-1 icone"
+                                  variant="light"
+                                  font-scale="2"
+                                  v-b-popover.hover.top="
+                                    'Consulta Vencida Anterior'
+                                  "
+                                  @click="anteriorConsultaVencida"
+                                ></b-icon>
+                              </div>
+                              <div>
+                                <p class="text-info">{{this.indexConsultaVencida + 1}} de {{this.consultasVencidas[0].length}}</p>
+                              </div>
+                              <div>
+                                <b-icon
+                                  icon="arrow-right-circle-fill"
+                                  class="bg-info rounded p-1 icone"
+                                  variant="light"
+                                  font-scale="2"
+                                  v-b-popover.hover.top="
+                                    'Proxima Consulta Vencida'
+                                  "
+                                  @click="proximaConsultaVencida"
+                                ></b-icon>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ./Team member -->
+                  <!-- Team member -->
+                  <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div
+                      class="image-flip"
+                      ontouchstart="this.classList.toggle('hover');"
+                    >
+                      <div class="mainflip">
+                        <div class="frontside">
+                          <div class="card">
+                            <div class="card-body text-center">
+                              <p>
+                                <img
+                                  class="img-fluid"
+                                  src="https://img.lovepik.com/photo/50112/2310.jpg_wh860.jpg"
+                                  alt="card image"
+                                />
+                              </p>
+                              <h4 class="card-title">Proximas Consultas</h4>
+                              <p class="card-text">
+                                Veja qual a Proxima consulta do dia
+                              </p>
+                              <a
+                                href="https://www.fiverr.com/share/qb8D02"
+                                class="btn btn-primary btn-sm"
+                                ><i class="fa fa-plus"></i
+                              ></a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="backside shadow">
+                          <div class="card">
+                            <div class="card-body text-center mt-1">
+                              <h4 class="card-title">
+                                Consulta <b-badge variant="info">5</b-badge>
+                              </h4>
+                              <p class="card-text">
+                                Nome do Paciente: André martins silva
+                              </p>
+                              <p class="card-text">Horario: 12:30</p>
+                              <p class="card-text">Data: 12/12/1222</p>
+                            </div>
+                            <div class="flexIcon">
+                              <div>
+                                <b-icon
+                                  icon="arrow-left-circle-fill"
+                                  class="bg-success rounded p-1 icone"
+                                  variant="light"
+                                  font-scale="2"
+                                  v-b-popover.hover.top="
+                                    'Consulta Vencida Anterior'
+                                  "
+                                ></b-icon>
+                              </div>
+                              <div>
+                                <p class="text-info">1 de 5</p>
+                              </div>
+                              <div>
+                                <b-icon
+                                  icon="arrow-right-circle-fill"
+                                  class="bg-success rounded p-1 icone"
+                                  variant="light"
+                                  font-scale="2"
+                                  v-b-popover.hover.top="
+                                    'Proxima Consulta Vencida'
+                                  "
+                                ></b-icon>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ./Team member -->
+                  <!-- Team member -->
+
+                  <!-- ./Team member -->
+                  <!-- Team member -->
+
+                  <!-- ./Team member -->
+                  <!-- Team member -->
+
+                  <!-- ./Team member -->
+                </div>
+              </div>
+            </section>
+
+            <!-- Contact-->
+          </b-container>
+
           <b-card-group deck>
             <b-card
               header-bg-variant="info"
@@ -30,9 +336,32 @@
               <template v-slot:header>
                 <h6 class="mb-0">PROXIMAS CONSULTAS</h6>
               </template>
-              <div class="card1">
-                <b-table striped hover :items="items"></b-table>
-              </div>
+              <Chart />
+              <b-card
+                header="Resumo Financeiro"
+                header-bg-variant="primary"
+                header-text-variant="light"
+                
+               
+                class="shadow"
+              >
+                <div>
+                  <label for="" class="text-success"
+                    >Total de Receita : <u class="text-dark">R$ 1000,00</u></label
+                  >
+                </div>
+                <div>
+                  <label for="" class="text-dark"
+                    >Total de Despesas : <u class="text-dark">R$ 1920,00</u></label
+                  >
+                </div>
+                <hr />
+                <div>
+                  <label for="" class="text-warning"
+                    >Total Líquido : <u class="text-dark">R$ 1920,00</u></label
+                  >
+                </div>
+              </b-card>
             </b-card>
 
             <b-card class="text-center shadow-sm bg-white rounded" id="card1">
@@ -43,575 +372,51 @@
           </b-card-group>
         </b-col>
       </b-row>
-      <b-container>
-        <section id="team" class="pb-5">
-          <div class="container">
-            <h5 class="section-title h3">FUNCIONARIOS</h5>
-            <div class="row">
-              <!-- Team member -->
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="image-flip">
-                  <div class="mainflip flip-0">
-                    <div class="frontside">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <p>
-                            <img
-                              class="img-fluid"
-                              src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_01.png"
-                              alt="card image"
-                            />
-                          </p>
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.
-                          </p>
-                          <a
-                            href="https://www.fiverr.com/share/qb8D02"
-                            class="btn btn-primary btn-sm"
-                            ><i class="fa fa-plus"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="backside">
-                      <div class="card">
-                        <div class="card-body text-center mt-4">
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.This is basic card with image
-                            on top, title, description and button.This is basic
-                            card with image on top, title, description and
-                            button.
-                          </p>
-                          <ul class="list-inline">
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-skype"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-google"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./Team member -->
-              <!-- Team member -->
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div
-                  class="image-flip"
-                  ontouchstart="this.classList.toggle('hover');"
-                >
-                  <div class="mainflip">
-                    <div class="frontside">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <p>
-                            <img
-                              class="img-fluid"
-                              src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_02.png"
-                              alt="card image"
-                            />
-                          </p>
-                          <h4 class="card-title">Cortes de Cabelo e Barbas</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.
-                          </p>
-                          <a
-                            href="https://www.fiverr.com/share/qb8D02"
-                            class="btn btn-primary btn-sm"
-                            ><i class="fa fa-plus"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="backside">
-                      <div class="card">
-                        <div class="card-body text-center mt-4">
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.This is basic card with image
-                            on top, title, description and button.This is basic
-                            card with image on top, title, description and
-                            button.
-                          </p>
-                          <ul class="list-inline">
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-skype"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-google"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./Team member -->
-              <!-- Team member -->
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div
-                  class="image-flip"
-                  ontouchstart="this.classList.toggle('hover');"
-                >
-                  <div class="mainflip">
-                    <div class="frontside">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <p>
-                            <img
-                              class="img-fluid"
-                              src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_03.png"
-                              alt="card image"
-                            />
-                          </p>
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.
-                          </p>
-                          <a
-                            href="https://www.fiverr.com/share/qb8D02"
-                            class="btn btn-primary btn-sm"
-                            ><i class="fa fa-plus"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="backside">
-                      <div class="card">
-                        <div class="card-body text-center mt-4">
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.This is basic card with image
-                            on top, title, description and button.This is basic
-                            card with image on top, title, description and
-                            button.
-                          </p>
-                          <ul class="list-inline">
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-skype"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-google"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./Team member -->
-              <!-- Team member -->
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div
-                  class="image-flip"
-                  ontouchstart="this.classList.toggle('hover');"
-                >
-                  <div class="mainflip">
-                    <div class="frontside">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <p>
-                            <img
-                              class="img-fluid"
-                              src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_04.jpg"
-                              alt="card image"
-                            />
-                          </p>
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.
-                          </p>
-                          <a
-                            href="https://www.fiverr.com/share/qb8D02"
-                            class="btn btn-primary btn-sm"
-                            ><i class="fa fa-plus"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="backside">
-                      <div class="card">
-                        <div class="card-body text-center mt-4">
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.This is basic card with image
-                            on top, title, description and button.This is basic
-                            card with image on top, title, description and
-                            button.
-                          </p>
-                          <ul class="list-inline">
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-skype"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-google"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./Team member -->
-              <!-- Team member -->
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div
-                  class="image-flip"
-                  ontouchstart="this.classList.toggle('hover');"
-                >
-                  <div class="mainflip">
-                    <div class="frontside">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <p>
-                            <img
-                              class="img-fluid"
-                              src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_05.png"
-                              alt="card image"
-                            />
-                          </p>
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.
-                          </p>
-                          <a
-                            href="https://www.fiverr.com/share/qb8D02"
-                            class="btn btn-primary btn-sm"
-                            ><i class="fa fa-plus"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="backside">
-                      <div class="card">
-                        <div class="card-body text-center mt-4">
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.This is basic card with image
-                            on top, title, description and button.This is basic
-                            card with image on top, title, description and
-                            button.
-                          </p>
-                          <ul class="list-inline">
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-skype"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-google"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./Team member -->
-              <!-- Team member -->
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div
-                  class="image-flip"
-                  ontouchstart="this.classList.toggle('hover');"
-                >
-                  <div class="mainflip">
-                    <div class="frontside">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <p>
-                            <img
-                              class="img-fluid"
-                              src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_06.jpg"
-                              alt="card image"
-                            />
-                          </p>
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.
-                          </p>
-                          <a
-                            href="https://www.fiverr.com/share/qb8D02"
-                            class="btn btn-primary btn-sm"
-                            ><i class="fa fa-plus"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="backside">
-                      <div class="card">
-                        <div class="card-body text-center mt-4">
-                          <h4 class="card-title">Sunlimetech</h4>
-                          <p class="card-text">
-                            This is basic card with image on top, title,
-                            description and button.This is basic card with image
-                            on top, title, description and button.This is basic
-                            card with image on top, title, description and
-                            button.
-                          </p>
-                          <ul class="list-inline">
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-skype"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a
-                                class="social-icon text-xs-center"
-                                target="_blank"
-                                href="https://www.fiverr.com/share/qb8D02"
-                              >
-                                <i class="fa fa-google"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ./Team member -->
-            </div>
-          </div>
-        </section>
-
-        <!-- Contact-->
-        <section class="contact-section">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-4 mb-3 mb-md-0">
-                <div class="card py-4 h-100">
-                  <div class="card-body text-center">
-                    <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-                    <h4 class="text-uppercase m-0">Endereço</h4>
-                    <hr class="my-4" />
-                    <div class="small text-black-50">
-                      4923 Rua Bom Jardim, Viçosa-MG
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3 mb-md-0">
-                <div class="card py-4 h-100">
-                  <div class="card-body text-center">
-                    <i class="fas fa-envelope text-primary mb-2"></i>
-                    <h4 class="text-uppercase m-0">Email</h4>
-                    <hr class="my-4" />
-                    <div class="small text-black-50">
-                      <a href="#!">hello@yourdomain.com</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3 mb-md-0">
-                <div class="card py-4 h-100">
-                  <div class="card-body text-center">
-                    <i class="fas fa-mobile-alt text-primary mb-2"></i>
-                    <h4 class="text-uppercase m-0">Telefone</h4>
-                    <hr class="my-4" />
-                    <div class="small text-black-50">(55) 9902-8832</div>
+      <section class="contact-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <div class="card-body text-center">
+                  <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                  <h4 class="text-uppercase m-0">Endereço</h4>
+                  <hr class="my-4" />
+                  <div class="small text-black-50">
+                    4923 Rua Bom Jardim, Viçosa-MG
                   </div>
                 </div>
               </div>
             </div>
-            <div class="social d-flex justify-content-center">
-              <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
-              <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-              <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <div class="card-body text-center">
+                  <i class="fas fa-envelope text-primary mb-2"></i>
+                  <h4 class="text-uppercase m-0">Email</h4>
+                  <hr class="my-4" />
+                  <div class="small text-black-50">
+                    <a href="#!">hello@yourdomain.com</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <div class="card-body text-center">
+                  <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                  <h4 class="text-uppercase m-0">Telefone</h4>
+                  <hr class="my-4" />
+                  <div class="small text-black-50">(55) 9902-8832</div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
-      </b-container>
+          <div class="social d-flex justify-content-center">
+            <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+            <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+            <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+      </section>
       <footer
         v-if="showOptionRelatorio == true"
         id="sticky-footer-Home"
@@ -664,15 +469,19 @@
 
 <script>
 import CardHome from "./CardHome";
-import Menu from "./Menu";
+//import Menu from "./Menu";
 import Calendar from "../Agenda/Calendar";
 import { mapState, mapActions } from "vuex";
-import ServiceClinica from '../../services/clinica'
+//import ServiceClinica from "../../services/clinica";
+import PacienteService from "../../services/paciente";
+import Chart from "../Chart/Chart";
+import moment from "moment";
+import AgendaService from "../../services/agenda";
 
 export default {
   components: {
     CardHome,
-    Menu,
+    Chart,
     Calendar,
   },
   data() {
@@ -682,7 +491,11 @@ export default {
           pacientes: (state) => state.option,
         }),
       },
+      agendamentosDia: 0,
+      consultasVencidasCard: 0,
       showOptionRelatorio: false,
+      pacientesCadastrados: 0,
+      indexConsultaVencida: 0,
       items: [
         { Paciente: 40, Data_Consulta: "10/10/2020", Nome: "Macdonald" },
         { Paciente: 21, Data_Consulta: "10/12/2020", Nome: "Shaw" },
@@ -694,6 +507,12 @@ export default {
         { Paciente: 21, Data_Consulta: "10/10/2020", Nome: "Shaw" },
         { Paciente: 89, Data_Consulta: "11/06/2020", Nome: "Wilson" },
       ],
+      consultasVencidas: [],
+      aniversarianteDoMes: [],
+      indexAniversario: 0,
+      consultas: 0,
+      consultasMes: 0,
+      message: `https://api.whatsapp.com/send?phone=55${this.aniversarianteDoMes}&text=olaa`,
     };
   },
   methods: {
@@ -705,14 +524,116 @@ export default {
     hiddenOption() {
       this.showOptionRelatorio = false;
     },
+
+    aniversarioAnterior() {
+      if (this.indexAniversario > 0) {
+        this.indexAniversario = this.indexAniversario - 1;
+      }
+    },
+
+    proximaConsultaVencida(){
+      console.log(this.consultasVencidas[0].length)
+ if (this.indexConsultaVencida < this.consultasVencidas[0].length - 1) {
+        this.indexConsultaVencida = this.indexConsultaVencida + 1;
+      }
+    },
+
+      anteriorConsultaVencida(){
+      console.log(this.consultasVencidas[0].length)
+ if (this.indexConsultaVencida > 0) {
+        this.indexConsultaVencida = this.indexConsultaVencida - 1;
+      }
+    },
+
+    aniversarioProximo() {
+      console.log(this.aniversarianteDoMes.length);
+      if (this.indexAniversario < this.aniversarianteDoMes.length - 1) {
+        this.indexAniversario = this.indexAniversario + 1;
+      }
+    },
+
+    enviarMsgWhatsapp() {
+      window.open(
+        `https://api.whatsapp.com/send?phone=55${
+          this.aniversarianteDoMes[this.indexAniversario].telefone
+        }&text=olaa`,
+        "_blank"
+      );
+    },
+
+    consultaVencida() {
+      AgendaService.readDateVencimento(moment().format("YYYY-MM-DD")).then(
+        (result) => {
+          this.consultasVencidas.push(result.data.agendamentos);
+          this.consultasVencidas[0].map((el) => {
+            el.data = moment(el.data).format("DD/MM/YYYY");
+            el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY");
+            console.log(el);
+          });
+          console.log(this.consultasVencidas);
+        }
+      );
+    },
+
+    readAgendamentosDia() {
+      AgendaService.readDateInner(moment().format("YYYY-MM-DD")).then(
+        (result) => {
+          this.agendamentosDia = result.data.agendamentos.length;
+        }
+      );
+    },
+
+    _numDias() {
+      var objData = new Date(),
+        numAno = objData.getFullYear(),
+        numMes = objData.getMonth() + 1,
+        numDias = new Date(numAno, numMes, 0).getDate();
+      return numDias;
+    },
+
+    readConsultasDia() {
+      AgendaService.readDateAgendamentoFinalizado(
+        moment().format("YYYY-MM-DD"),
+        moment().format("YYYY-MM-DD")
+      ).then((result) => {
+        console.log(result.data.agendamentos)
+        this.consultas = result.data.agendamentos.length;
+      });
+    },
+
+    readConsultasMes() {
+      AgendaService.readDateAgendamentoFinalizado(
+         `${moment().format("YYYY-MM")}-01`,
+        `${moment().format("YYYY-MM")}-${this._numDias()}`
+      ).then((result) => {
+        this.consultasMes = result.data.agendamentos.length;
+      });
+    },
+
+    aniversariantes() {
+      PacienteService.readAll().then((result) => {
+        this.pacientesCadastrados = result.data.result.length;
+        result.data.result.map((el) => {
+          if (
+            moment(el.dataNascimento).format("DD/MM/YYYY").substring(3, 5) ==
+            moment().format("DD/MM/YYYY").substring(3, 5)
+          ) {
+            el.dataNascimento = moment(el.dataNascimento).format("DD/MM/YYYY");
+            this.aniversarianteDoMes.push(el);
+            console.log(this.aniversarianteDoMes);
+          }
+        });
+      });
+    },
   },
-  created(){
-    ServiceClinica.read(1).then(result =>{
-      localStorage.setItem("UUIDCLINICA", result.data.retorno[0].UUIDCLINICA)
-      localStorage.setItem("IDCLINICA", result.data.retorno[0].IDCLINICA)
-      this.$store.commit("DADOS_CLINICA", result.data.retorno[0])
-    })
-  }
+
+  created() {
+    this.readAgendamentosDia();
+    this.consultaVencida();
+    this.aniversariantes();
+    this.readConsultasDia();
+    this.readConsultasMes();
+  },
 };
 </script>
 
@@ -722,6 +643,7 @@ export default {
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 #team {
   background: rgba(0, 0, 0, 0) !important;
+  width: 100%;
 }
 
 .btn-primary:hover,
@@ -797,6 +719,7 @@ section {
 }
 
 .backside {
+  width: 330px;
   position: absolute;
   top: 0;
   left: 0;
@@ -851,11 +774,12 @@ section {
 }
 
 .home {
-  margin-top: 90px;
+  margin-top: 110px;
 }
 
 .card1 {
   overflow: auto;
+  border: none;
 }
 
 header {
@@ -896,5 +820,66 @@ navbar {
     width: 100%;
     margin-bottom: 5px;
   }
+  .testando {
+    background: white;
+    box-shadow: none;
+  }
+  .backside {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    -webkit-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    -moz-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+  }
+}
+
+#cardteste {
+  overflow: scroll;
+  height: 100px;
+}
+.flexIcon {
+  display: flex;
+  justify-content: space-around;
+}
+
+.aniversarioContent {
+  border: 4px solid #2de2b8d7;
+  padding: 5px;
+  border-radius: 10px;
+  width: 100%;
+  color: #007b5e;
+}
+.fa-facebook {
+  color: rgb(83, 247, 68);
+}
+
+.fa-whatsapp:hover {
+  cursor: pointer;
+}
+
+.fa-facebook:hover {
+  cursor: pointer;
+}
+
+.icone:hover {
+  cursor: pointer;
+}
+
+.consultasContent {
+  border: 4px solid #2de2b8d7;
+  padding: 5px;
+  border-radius: 10px;
+  width: 100%;
+  color: #007b5e;
 }
 </style>

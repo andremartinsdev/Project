@@ -4,21 +4,13 @@ import { http } from './config'
 
 export default {
     save: (paciente) => {
-        const dados = {
-            data:{
-                ...paciente
-            }
-        }
-        return http.post("paciente/", dados)
+       
+        return http.post("paciente/", {...paciente})
     },
 
     edit: (paciente, uuid) => {
-        const dados = {
-            data:{
-                ...paciente
-            }
-        }
-        return http.put(`paciente/${uuid}`, dados)
+        
+        return http.put(`paciente/${uuid}`, {...paciente})
     },
 
     delete: (uuid) => {

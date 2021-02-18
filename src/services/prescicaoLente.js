@@ -11,7 +11,7 @@ export default {
         if (dados.data.idPaciente === -1) {
             return "erro"
         } else {
-            return http.post('prescricao/lente', dados)
+            return http.post('prescricao/lente', {...prescricao})
         }
     },
     read: (uuid) => {
@@ -23,11 +23,7 @@ export default {
     },
 
     update: (prescricao, uuid) => {
-        const dados = {
-          data: {
-            ...prescricao
-          }
-        }
-        return http.put(`prescricao/lente/${uuid}`, dados)
+       
+        return http.put(`prescricao/lente/${uuid}`, {...prescricao})
       },
 }

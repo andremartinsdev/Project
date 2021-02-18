@@ -95,7 +95,8 @@ import PrescricaoService from "../../services/prescicaoLente";
 import AgendaService from "../../services/agenda";
 
 import { mapState } from "vuex";
-import { DateTime } from "luxon";
+import moment from 'moment'
+
 export default {
   props: {
     PrescricaoLenteProps: {
@@ -112,18 +113,14 @@ export default {
       idConsulta: -1,
       dadosConsulta: {
         idPaciente: this.idPaciente,
-        data: `${DateTime.local().c.year}-${DateTime.local().c.month}-${
-          DateTime.local().c.day
-        }`,
+        data: moment().format("YYYY-MM-DD"),
         titulo: "Prescrição Lente",
       },
       prescricaoLente: {
         idConsulta: "",
         idPaciente: "",
         uuid: 0,
-        data: `${DateTime.local().c.year}-${DateTime.local().c.month}-${
-          DateTime.local().c.day
-        }`,
+        data: moment().format("YYYY-MM-DD"),
         od_esferico: "",
         od_cilindrico: "",
         od_eixo: "",
@@ -185,16 +182,20 @@ export default {
 
               PrescricaoService.save(this.prescricaoLente)
                 .then((result) => {
+                  console.log(result.data.uuid.idPrescricaoLente)
+
                   if (result.status === 201) {
+                    this.prescricaoLente.uuid = result.data.uuid.uuid;
                     if(this.idConsulta === -1){
                       this.showAlert("error", "Algo de errado ocorreu")
                     }else{
-                       AgendaService.update(this.uuidAgendamento, {
+                       AgendaService.updateIdConsultAtendido(this.uuidAgendamento, {
                       atendido: true,
                       idConsulta: this.idConsulta
                     })
                       .then((result) => {
                         if (result.status === 201) {
+                          console.log(result)
                           this.showAlert(
                             "success",
                             "Prescrição Salva com Sucesso"

@@ -1,20 +1,23 @@
 <template>
   <div id="app">
+    <SidebarNavbar/>
     
     
-     <transition name="slide-fade">
+     <transition v-if="this.$router.path != '/'" name="slide-fade">
     <router-view/>
 
   </transition>
+  
   </div>
 </template>
 
 <script>
 
-
+import SidebarNavbar from '../src/components/SidebarNavbar'
 export default {
   name: "App",
   components: {
+    SidebarNavbar
   },
 
   data() {
