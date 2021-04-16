@@ -7,5 +7,7 @@ export default function Pesquisa(type, params){
         return http.get(`/prescricao/oculos/read/${idPaciente}/${dataInicial}/${dataFinal}`)
     }else if(type === "prescricao_lente") {
         return http.get(`/prescricao/lente/read/${idPaciente}/${dataInicial}/${dataFinal}`)
+    }else if(type === "laudo"){
+        return http.get(`/Laudo/readDate/${idPaciente}/${dataInicial}/${dataFinal}/page`)
     }
 }

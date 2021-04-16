@@ -2,7 +2,8 @@
   <div
     v-if="
       this.$route.path.substr(0, 11) != '/Impressao/' &&
-      this.$route.path.substr(0, 11) != '/'
+      this.$route.path.substr(0, 11) != '/' &&
+      this.$route.path.substr(0, 11) != '/Impressao/'
     "
   >
     <b-navbar toggleable="sm" id="navbar2" fixed="top" class="navbar">
@@ -11,7 +12,7 @@
       <div class="mb-1">
         <b-avatar :src="logoBms"></b-avatar>
         <label class="ml-3 text-white"></label>
-        <b-navbar-brand class="ml-3 text-white">André Martins</b-navbar-brand>
+        <b-navbar-brand class="ml-3 text-white">{{nomeClinica}}</b-navbar-brand>
       </div>
 
       <b-collapse id="nav-text-collapse" is-nav class="colapseContainer">
@@ -223,9 +224,12 @@ import imageConfig from "../../public/configuracao.png";
 import AgendaService from "../services/agenda";
 import DespesaService from "../services/despesas";
 import logoBms from "../../src/assets/LogoBms2.jpg";
+import ClinicaService from "../services/clinica";
+
 
 import moment from "moment";
 export default {
+  
   data() {
     return {
       logoBms: logoBms,
@@ -239,16 +243,23 @@ export default {
       despesasHoje: [],
       showAgendamentos: false,
       showDespesas: false,
+      nomeClinica: ''
     };
   },
 
   updated() {},
 
   mounted() {
-    this.readAgendamentos();
-    this.readDespesas();
+   
+    if(this.$route.path.substr(0, 11) != '/' && this.$route.path){
+      this.readAgendamentos();
+      this.readDespesas();
+    }
+    
     console.log("entrooooou before");
+    this.readDadosClinica();
   },
+  
 
   methods: {
     readAgendamentos() {
@@ -262,6 +273,14 @@ export default {
         }
       );
     },
+
+async readDadosClinica(){
+      this.dadosClinica = []
+      const result = await ClinicaService.read()
+      this.nomeClinica = result.data.result[0].nomeClinica
+      
+    },
+
     showDespesa() {
       this.showAgendamentos = false;
       this.showDespesas = !this.showDespesas;

@@ -10,6 +10,8 @@ import ConfigGeral from './components/Configuracoes/ConfiguracoesGeral.vue'
 import Financeiro from './components/Financeiro/Financeiro.vue'
 import Impressao from './components/Impressao/ImpressaoFicha.vue'
 import Login from './components/Login/Login.vue'
+import ImpressaoAtestado from './components/Consulta/Atestado.vue'
+import ImpressaoLaudo from './components/Consulta/Laudo.vue'
 import CadastroClinica from './components/CadastroClinica/CadastroClinica.vue'
 
 
@@ -85,7 +87,24 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+
+    {
+        path: '/Impressao/atestado/:uuid',
+        component: ImpressaoAtestado,
+        meta: {
+            requiresAuth: true
+        }
+    },
+
+    {
+        path: '/Impressao/laudo/:uuid',
+        component: ImpressaoLaudo,
+        meta: {
+            requiresAuth: true
+        }
     }
+
 ]
 
 const router = new Router({

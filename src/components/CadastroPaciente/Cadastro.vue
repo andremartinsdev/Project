@@ -495,8 +495,13 @@ export default {
       PacienteService.delete(idPaciente).then(() => {
         this.showAlert("success", "Paciente Deletado com Sucesso");
         this.list();
-      }).catch(() => {
+      }).catch(error => {
+        if(error.response.status === 409){
+          this.showAlert("info", error.response.data.message);
+        }else{
         this.showAlert("error", "Erro eo Deletar registro de Paciente");
+        }
+        
       });
       this.acoes = false;
     },

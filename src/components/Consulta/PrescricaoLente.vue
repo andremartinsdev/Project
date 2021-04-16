@@ -169,84 +169,36 @@ export default {
       };
     },
 
-    savePrescricao() {
-      if (this.prescricaoLente.uuid === 0) {
-        ConsultaService.save(this.dadosConsulta)
-          .then((result) => {
-            if (result.status === 201) {
-              this.idConsulta = result.data.result.idConsulta[0];
-              this.uuidConsulta = result.data.result.uuid;
-              this.prescricaoLente.idConsulta =
-                result.data.result.idConsulta[0];
-              this.prescricaoLente.idPaciente = this.idPaciente;
+    async savePrescricao() {
+      try {
+        if (this.prescricaoLente.uuid === 0) {
+          this.dadosConsulta.idPaciente = this.idPaciente
+          console.log(this.dadosConsulta)
+          const resultConsulta = await ConsultaService.save(this.dadosConsulta)
+          this.idConsulta = resultConsulta.data.result.idConsulta[0];
+          this.uuidConsulta = resultConsulta.data.result.uuid;
+          this.prescricaoLente.idConsulta = resultConsulta.data.result.idConsulta[0];
+          this.prescricaoLente.idPaciente = this.idPaciente
 
-              PrescricaoService.save(this.prescricaoLente)
-                .then((result) => {
-                  console.log(result.data.uuid.idPrescricaoLente)
+          const resultPrescricao = await PrescricaoService.save(this.prescricaoLente)
+          this.prescricaoLente.uuid = resultPrescricao.data.uuid.uuid;
+  
+          await AgendaService.updateIdConsultAtendido(this.uuidAgendamento, {
+            atendido: true,
+            idConsulta: this.idConsulta
+          })
+  
+         this.showAlert("success", "Prescrição Salva com Sucesso")
+        
+        } else {
+          await PrescricaoService.update(this.prescricaoLente, this.prescricaoLente.uuid)
+          this.showAlert("success", "Prescrição Atualizada com Sucesso")
+        }
 
-                  if (result.status === 201) {
-                    this.prescricaoLente.uuid = result.data.uuid.uuid;
-                    if(this.idConsulta === -1){
-                      this.showAlert("error", "Algo de errado ocorreu")
-                    }else{
-                       AgendaService.updateIdConsultAtendido(this.uuidAgendamento, {
-                      atendido: true,
-                      idConsulta: this.idConsulta
-                    })
-                      .then((result) => {
-                        if (result.status === 201) {
-                          console.log(result)
-                          this.showAlert(
-                            "success",
-                            "Prescrição Salva com Sucesso"
-                          );
-                        }
-                      })
-                      .catch(() => {
-                        this.showAlert(
-                          "error",
-                          "Ocorreu um erro ao atualizar a status do agendamento"
-                        );
-                      });
-                    }
-                   
-                  } else {
-                    this.showAlert(
-                      "error",
-                      "Ocorreu um erro ao salvar a Prescrição"
-                    );
-                  }
-                })
-                .catch((error) => {
-                  this.showAlert("error", error);
-                });
-            } else {
-              this.showAlert("error", "Ocorreu um erro ao salvar a Consulta");
-            }
-          })
-          .catch(() => {
-            this.showAlert(
-              "error",
-              "Verifique se todos os Campos estão preenchidos corretamente"
-            );
-          });
-      } else {
-        PrescricaoService.update(
-          this.prescricaoLente,
-          this.prescricaoLente.uuid
-        )
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Prescrição Atualizada com Sucesso");
-            } else {
-              this.showAlert("error", "Ocorreu um erro ao Atualizar registro");
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Ocorreu um erro ao Atualizar registro");
-          });
+      } catch (error) {
+      this.showAlert("success", "Ops! ocorreu um erro ao Salvar Prescrição ")
       }
-    },
+    }
   },
 };
 </script>

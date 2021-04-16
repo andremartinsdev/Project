@@ -75,7 +75,7 @@
                     >
                       <template #first>
                         <b-form-select-option :value="null"
-                          >-- Selecione --</b-form-select-option
+                          >-- Forma de Pagamento --</b-form-select-option
                         >
                       </template>
                     </b-form-select>

@@ -1,74 +1,183 @@
 <template>
   <div class="containerCadastroClinica">
     <b-card header="Cadastro Clínica">
-      <div class="flexContainer">
-        <div  class="col-sm-6">
-          <label for="">Nome da Clínica</label>
-          <input
-            placeholder="Nome Clínica"
-            type="text"
-            class="form-control col-sm-12"
-          />
-        </div>
+      <input
+        placeholder="Nome Clínica"
+        type="text"
+        class="form-control col-sm-5"
+        hidden
+        v-model="clinica.uuid"
+      />
+      <b-form inline>
+        <label for="" class="mr-2 ml-2 mt-2">Nome da Clínica :</label>
+        <input
+          placeholder="Nome Clínica"
+          type="text"
+          class="form-control col-sm-5"
+          :disabled="editar"
+          v-model="clinica.nomeClinica"
+        />
+        <label for="" class="ml-2 mr-2 mt-2">CNPJ/CPF :</label>
+        <input
+          placeholder="CNPJ/CPF"
+          type="text"
+          class="form-control col-sm-2"
+          :disabled="editar"
+          v-model="clinica.cnpjcpf"
+        />
+        <label for="" class="ml-2 mr-2 mt-2">Número :</label>
+        <input
+          placeholder="Número"
+          type="text"
+          :disabled="editar"
+          v-model="clinica.numero"
+          class="form-control col-sm-1"
+        />
+      </b-form>
 
-        <div class="col-sm-6">
-          <label for="">Endereço</label>
-          <input
-            placeholder="Endereço"
-            type="text"
-            class="form-control col-sm-12"
-          />
-        </div>
+      <b-form inline class="mt-3">
+        <label for="" class="ml-2 mr-2 mt-2">Endereço :</label>
+        <input
+          placeholder="Endereço"
+          type="text"
+          class="form-control col-sm-3"
+          :disabled="editar"
+          v-model="clinica.endereco"
+        />
+        <label for="" class="ml-2 mr-2 mt-2">Bairro :</label>
+        <input
+          placeholder="Bairro"
+          type="text"
+          v-model="clinica.bairro"
+          :disabled="editar"
+          class="form-control col-sm-3"
+        />
+
+        <label for="" class="ml-2 mr-2 mt-2">Cidade :</label>
+        <input
+          placeholder="Cidade"
+          type="text"
+          v-model="clinica.cidade"
+          :disabled="editar"
+          class="form-control col-sm-3"
+        />
+      </b-form>
+      <b-form inline class="mt-3">
+        <label for="" class="ml-2 mr-2 mt-2">CEP :</label>
+        <input
+          placeholder="CEP"
+          type="text"
+          v-model="clinica.cep"
+          :disabled="editar"
+          class="form-control col-sm-1"
+        />
+        <label for="" class="ml-2 mr-2 mt-2">Telefone :</label>
+        <input
+          v-model="clinica.telefone"
+          placeholder="Telefone"
+          type="text"
+          class="form-control col-sm-5"
+          :disabled="editar"
+        />
+      </b-form>
+
+      <b-avatar-group size="5rem" class="avat"> </b-avatar-group>
+      <div class="mt-4 mb-4">
+        <b-avatar class="ml-4" size="6rem" :src="clinica.logo"></b-avatar>
       </div>
 
-      <div class="flexContainer">
-        <div  class="col-sm-6">
-          <label for="">Telefone/Celular</label>
-          <input
-            placeholder="Telefone"
-            type="text"
-            class="form-control col-sm-12"
-          />
-        </div>
+      <div class="avat"></div>
 
-        <div class="col-sm-6">
-          <label for="">CNPJ/CPF</label>
-          <input
-            placeholder="CNPJ/CPF"
-            type="text"
-            class="form-control col-sm-12"
-          />
-        </div>
-      </div>
+      <label for="" class="text-center ml-3"
+        ><small>Url da Imagem : (exemplo: http://imagemLogo.png)</small></label
+      >
 
-      <b-card header="Confiração de Logo" class="logo mt-4">
-          <div class="logoFlex">
-          <div>
-          <b-avatar size="4rem" :src="logoClinica"></b-avatar>
-          </div>
-          <div  class="col-sm-11">
-          <label for="" class="text-center ml-3"><small>Url da Imagem : (exemplo: http://imagemLogo.png)</small></label>
-
-          <input
-            placeholder="Url"
-            type="text"
-            class="form-control "
-            v-model="logoClinica"
-          />
-          </div>
-          </div>
-      </b-card>
+      <input
+        placeholder="Url"
+        type="text"
+        class="form-control"
+        v-model="clinica.logo"
+        :disabled="editar"
+      />
+      <b-button variant="primary" class="mt-4" @click="saveClinica" block
+        >Salvar</b-button
+      >
+      <b-button variant="primary" @click="editar = false" block
+        >Editar</b-button
+      >
     </b-card>
   </div>
 </template>
 
 <script>
+import ClinicaService from "../../services/clinica";
 export default {
-    data(){
-        return{
-            logoClinica:""
+  data() {
+    return {
+      clinica: {
+        uuid: "",
+        nomeClinica: "",
+        cnpjcpf: "",
+        telefone: "",
+        endereco: "",
+        bairro: "",
+        numero: "",
+        cep: "",
+        logo:
+          "https://thumbs.dreamstime.com/b/%C3%ADcone-do-avatar-usu%C3%A1rio-bot%C3%A3o-s%C3%ADmbolo-perfil-liso-da-pessoa-vetor-131363829.jpg",
+      },
+
+      editar: true,
+    };
+  },
+
+  mounted() {
+    this.read();
+  },
+
+  methods: {
+    showAlert(icon, title) {
+      // Use sweetalert2
+
+      this.$swal({
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    },
+
+    async read() {
+      try {
+        const result = await ClinicaService.read();
+        this.clinica = result.data.result[0];
+      } catch (error) {
+        console.log("erro");
+      }
+    },
+
+    async saveClinica() {
+      if (this.clinica.uuid) {
+        try {
+          const result = await ClinicaService.update(this.clinica, this.clinica.uuid);
+           this.showAlert("success", "Registro Atualizado com Sucesso");
+           this.editar = true;
+          console.log(result)
+        } catch (error) {
+          this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
         }
-    }
+      } else {
+        try {
+          const result = await ClinicaService.save(this.clinica);
+          this.clinica.uuid = result.data.result.uuid;
+          this.showAlert("success", "Registro Salvo com Sucesso");
+          this.editar = true;
+        } catch (error) {
+          this.showAlert("error", "Ops! ocorreu um erro o Salvar Registro");
+        }
+      }
+    },
+  },
 };
 </script>
 
@@ -82,15 +191,18 @@ export default {
 .flexContainer {
   display: flex;
   margin: 10px;
-
+  border: 1px solid black;
 }
-.logo{
-    width: 50%;
-    margin: 0 auto;
-    
+.logo {
+  width: 50%;
+  margin: 0 auto;
 }
 
-.logoFlex{
-display: flex;
+.logoFlex {
+  width: 100%;
+}
+
+.avat {
+  margin: 0 auto;
 }
 </style>

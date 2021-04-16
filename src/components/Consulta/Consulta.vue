@@ -265,53 +265,55 @@
                       </tr>
                     </tbody>
                   </table>
-                   <div class="mt-2 mb-2">
+                  <div class="mt-2 mb-2">
                     <div>
-                    <b-button
-                      pill
-                      variant="primary"
-                      class="mr-2"
-                      @click="proximaPagePesquisa"
-                      v-if="pagePesquisa < totalPagePesquisa"
-                      size="sm"
-                      >Proxima Pagina</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      class="mr-2"
-                      disabled
-                          size="sm"
-                      v-else
-                      >Proxima Pagina</b-button
-                    >
-                    <label>
-                      Total de Páginas
-                      <b-badge variant="primary">{{ totalPagePesquisa }}</b-badge>
-                    </label>
-                    <label class="ml-4">
-                      Página Atual
-                      <b-badge variant="primary">{{ pagePesquisa }}</b-badge>
-                    </label>
-                    <b-button
-                      pill
-                      variant="primary"
-                      @click="anteriorPagePesquisa"
-                      v-if="pagePesquisa > 1"
-                      class="mr-2  ml-2"
-                          size="sm"
-                      >Pagina Anterior</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      disabled
-                      v-else
-                          size="sm"
-                      class="mr-2  ml-2"
-                      >Pagina Anterior</b-button
-                    >
-                  </div>
+                      <b-button
+                        pill
+                        variant="primary"
+                        class="mr-2"
+                        @click="proximaPagePesquisa"
+                        v-if="pagePesquisa < totalPagePesquisa"
+                        size="sm"
+                        >Proxima Pagina</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        class="mr-2"
+                        disabled
+                        size="sm"
+                        v-else
+                        >Proxima Pagina</b-button
+                      >
+                      <label>
+                        Total de Páginas
+                        <b-badge variant="primary">{{
+                          totalPagePesquisa
+                        }}</b-badge>
+                      </label>
+                      <label class="ml-4">
+                        Página Atual
+                        <b-badge variant="primary">{{ pagePesquisa }}</b-badge>
+                      </label>
+                      <b-button
+                        pill
+                        variant="primary"
+                        @click="anteriorPagePesquisa"
+                        v-if="pagePesquisa > 1"
+                        class="mr-2 ml-2"
+                        size="sm"
+                        >Pagina Anterior</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        disabled
+                        v-else
+                        size="sm"
+                        class="mr-2 ml-2"
+                        >Pagina Anterior</b-button
+                      >
+                    </div>
                   </div>
                 </b-jumbotron>
               </div>
@@ -335,12 +337,94 @@
             </b-tab>
             <b-tab title="Laudo">
               <b-card class="prescricao">
-                <Editor />
+                <div>
+                  <b-card-group deck class="mb-3">
+                    <b-card header-tag="header" footer-tag="footer">
+                      <template #header>
+                        <h6 class="mb-0">OLHO DIREITO</h6>
+                      </template>
+                      <label for="">LONGE: S/C = </label>
+                      <b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.od_longe_sc"
+                        size="sm"
+                      /><br />
+                      <label for="">LONGE: C/C = </label
+                      ><b-input
+                        type="text"
+                        name=""
+                        size="sm"
+                        v-model="laudo.od_longe_cc"
+                      /><br />
+                      <label for="">PERTO: S/C = </label
+                      ><b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.od_perto_sc"
+                        size="sm"
+                      /><br />
+                      <label for="">PERTO: C/C = </label
+                      ><b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.od_perto_cc"
+                        size="sm"
+                      />
+                    </b-card>
+
+                    <b-card header-tag="header" footer-tag="footer">
+                      <template #header>
+                        <h6 class="mb-0">OLHO ESQUERDO</h6>
+                      </template>
+
+                      <label for="">LONGE: S/C = </label>
+                      <b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.oe_longe_sc"
+                        size="sm"
+                      /><br />
+                      <label for="">LONGE: C/C = </label
+                      ><b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.oe_longe_cc"
+                        size="sm"
+                      /><br />
+                      <label for="">PERTO: S/C = </label
+                      ><b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.oe_perto_sc"
+                        size="sm"
+                      /><br />
+                      <label for="">PERTO: C/C = </label
+                      ><b-input
+                        type="text"
+                        name=""
+                        v-model="laudo.oe_perto_cc"
+                        size="sm"
+                      />
+                    </b-card>
+                  </b-card-group>
+                  <div class="mt-2 mb-3 text-center">
+                    <b-button pill variant="primary" @click="saveLaudo"
+                      >Salvar Laudo</b-button
+                    >
+                  </div>
+                </div>
+
+                <b-button variant="primary" block pill @click="gerarLaudo">
+                  Gerar Laudo
+                </b-button>
               </b-card>
             </b-tab>
             <b-tab title="Atestado">
               <b-card class="prescricao">
-                <Editor />
+                <b-button variant="primary" block pill @click="imprimirAtestado"
+                  >Gerar Atestado</b-button
+                >
               </b-card>
             </b-tab>
             <b-tab title="Declaração">
@@ -436,7 +520,7 @@
                     </tr>
                   </tbody>
                 </table>
-                   <div class="mt-2 mb-2">
+                <div class="mt-2 mb-2">
                   <div>
                     <b-button
                       pill
@@ -541,7 +625,7 @@
                     </tr>
                   </tbody>
                 </table>
-                 <div class="mt-2 mb-2">
+                <div class="mt-2 mb-2">
                   <div>
                     <b-button
                       pill
@@ -563,7 +647,9 @@
                     >
                     <label>
                       Total de Páginas
-                      <b-badge variant="primary">{{ totalPageFinalizado }}</b-badge>
+                      <b-badge variant="primary">{{
+                        totalPageFinalizado
+                      }}</b-badge>
                     </label>
                     <label class="ml-4">
                       Página Atual
@@ -602,6 +688,7 @@
 import Accordion from "./Accordion";
 import PrescricaoOculos from "./PrescricaoOculos";
 import PrescricaoLente from "./PrescricaoLente";
+//import Atestado from "./Atestado";
 import Editor from "../editor_text/editor";
 import { mapActions, mapState } from "vuex";
 import FichaClinicaService from "../../services/fichaClinica";
@@ -611,6 +698,9 @@ import PacienteService from "../../services/paciente";
 import PrescricaoLenteService from "../../services/prescicaoLente";
 import Pesquisa from "../../services/pesquisaConsulta";
 import AgendaService from "../../services/agenda";
+import ServicoConsulta from "../../services/consulta";
+
+import LaudoService from "../../services/laudo";
 
 //import { DateTime } from "luxon";
 import moment from "moment";
@@ -618,6 +708,7 @@ import moment from "moment";
 export default {
   components: {
     Accordion,
+    //Atestado,
     PrescricaoOculos,
     PrescricaoLente,
     Editor,
@@ -634,8 +725,8 @@ export default {
       color: "primary",
       dataInicialAg: "",
       dataFinalAg: "",
-      pagePesquisa:1,
-      totalPagePesquisa:1,
+      pagePesquisa: 1,
+      totalPagePesquisa: 1,
       dataInicialAgFinalizado: "",
       dataFinalAgFinalizado: "",
       agendamentos: [],
@@ -657,6 +748,11 @@ export default {
       totalPageAg: 1,
       pageFinalizado: 1,
       totalPageFinalizado: 1,
+      dadosConsulta: {
+        idPaciente: 0,
+        data: "",
+        titulo: "Laudo",
+      },
       Options: [
         { text: "Prescrição Lente", value: "prescricao_lente" },
         { text: "Prescrição Óculos", value: "prescricao_oculos" },
@@ -670,6 +766,21 @@ export default {
       tabIndex: 0,
       dataInicial: "",
       dataFinal: "",
+      uuidPaciente: "",
+      laudo: {
+        uuid: "",
+        idConsulta:"",
+        data: moment().format("YYYY-MM-DD"),
+        idPaciente: "",
+        od_perto_sc: "",
+        od_perto_cc: "",
+        od_longe_sc: "",
+        od_longe_cc: "",
+        oe_perto_sc: "",
+        oe_perto_cc: "",
+        oe_longe_sc: "",
+        oe_longe_cc: "",
+      },
       options: [
         { text: "Orange", value: "orange" },
         { text: "Apple", value: "apple" },
@@ -700,8 +811,31 @@ export default {
       this.editar = false;
     },
 
-    anteriorPageAg(){
-this.pageAg = this.pageAg - 1;
+    imprimirAtestado() {
+      if (this.uuidPaciente) {
+        window.open(
+          `/Impressao/atestado/${this.uuidPaciente}`,
+          "_blank",
+          "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=200, width=1000, height=1000"
+        );
+      } else {
+        this.showAlert("info", "Por favor selecione o Paciente");
+      }
+    },
+
+    gerarLaudo() {
+      if (this.uuidPaciente) {
+        window.open(
+          `/Impressao/laudo/${this.uuidPaciente}`,
+          "_blank",
+          "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=200, width=1000, height=1000"
+        );
+      } else {
+        this.showAlert("info", "Por favor selecione o Paciente");
+      }
+    },
+    anteriorPageAg() {
+      this.pageAg = this.pageAg - 1;
       AgendaService.readDateRelatorioPaginationNavigation(
         this.dataInicialAg,
         this.dataFinalAg,
@@ -715,8 +849,8 @@ this.pageAg = this.pageAg - 1;
       });
     },
 
-    proximaPageAg(){
-this.pageAg = this.pageAg + 1;
+    proximaPageAg() {
+      this.pageAg = this.pageAg + 1;
       AgendaService.readDateRelatorioPaginationNavigation(
         this.dataInicialAg,
         this.dataFinalAg,
@@ -744,15 +878,15 @@ this.pageAg = this.pageAg + 1;
       });
     },
 
-    proximaPageFinalizado(){
-      this.pageFinalizado = this.pageFinalizado + 1
-          this.agendamentosDataFinalizado = [];
+    proximaPageFinalizado() {
+      this.pageFinalizado = this.pageFinalizado + 1;
+      this.agendamentosDataFinalizado = [];
       AgendaService.readDateAgendamentoFinalizadoPaginationNavigation(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado,
         this.pageFinalizado
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -760,15 +894,15 @@ this.pageAg = this.pageAg + 1;
       });
     },
 
-     anteriorPageFinalizado(){
-      this.pageFinalizado = this.pageFinalizado - 1
-          this.agendamentosDataFinalizado = [];
+    anteriorPageFinalizado() {
+      this.pageFinalizado = this.pageFinalizado - 1;
+      this.agendamentosDataFinalizado = [];
       AgendaService.readDateAgendamentoFinalizadoPaginationNavigation(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado,
         this.pageFinalizado
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -796,7 +930,9 @@ this.pageAg = this.pageAg + 1;
         this.dataFinalAg
       ).then((result) => {
         this.agendamentosData = result.data.agendamentos.result;
-        this.totalPageAg = Math.ceil(result.data.agendamentos.total[0].count / 5)
+        this.totalPageAg = Math.ceil(
+          result.data.agendamentos.total[0].count / 5
+        );
         console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosData.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -810,17 +946,19 @@ this.pageAg = this.pageAg + 1;
     },
 
     listAgendamentoRealizado() {
-      this.totalPageFinalizado = 1
-      this.pageFinalizado = 1
+      this.totalPageFinalizado = 1;
+      this.pageFinalizado = 1;
       this.agendamentosDataFinalizado = [];
       AgendaService.readDateAgendamentoFinalizadoPagination(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
-        this.totalPageFinalizado = Math.ceil(result.data.agendamentos.total[0].count / 5)
-        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5))
+        this.totalPageFinalizado = Math.ceil(
+          result.data.agendamentos.total[0].count / 5
+        );
+        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
         });
@@ -847,6 +985,7 @@ this.pageAg = this.pageAg + 1;
         this.$store.commit("UUID_AGENDAMENTO", uuidAgendamento);
         this.procedimentoConsulta = procedimento;
         PacienteService.read(pacienteUuid).then((result) => {
+          this.uuidPaciente = pacienteUuid;
           this.nomePaciente = result.data.paciente.nomePaciente;
           this.dataPaciente = moment(
             result.data.paciente.dataNascimento
@@ -869,8 +1008,8 @@ this.pageAg = this.pageAg + 1;
     },
 
     loadAgendamentos() {
-      this.page = 1
-      this.totalPage = 1
+      this.page = 1;
+      this.totalPage = 1;
       AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
           this.agendamentos = result.data.agendamentos.result;
@@ -936,21 +1075,52 @@ this.pageAg = this.pageAg + 1;
       });
     },
 
-proximaPagePesquisa(){
-  this.pagePesquisa = this.pagePesquisa + 1
-  FichaClinicaService.readPagination(this.idPaciente, this.dataInicial,  this.dataFinal, this.pagePesquisa).then(result => {
-   this.ListaConsulta = result.data.result.result;
-   this.ListaConsulta.titulo = this.retornaTipoConsulta();
-  })
-},
+    proximaPagePesquisa() {
+      this.pagePesquisa = this.pagePesquisa + 1;
+      if(this.typePesquisa === "ficha_clinica"){
+        FichaClinicaService.readPagination(
+          this.idPaciente,
+          this.dataInicial,
+          this.dataFinal,
+          this.pagePesquisa
+        ).then((result) => {
+          this.ListaConsulta = result.data.result.result;
+          this.ListaConsulta.titulo = this.retornaTipoConsulta();
+        });
+      }else if(this.typePesquisa === "laudo"){
+        LaudoService.read(this.dataInicial, this.dataFinal, this.idPaciente, this.pagePesquisa).then(result =>{
+          console.log(result)
+          this.ListaConsulta = result.data.result.result;
+          this.ListaConsulta.titulo = this.retornaTipoConsulta();
 
-anteriorPagePesquisa(){
-  this.pagePesquisa = this.pagePesquisa -1
-  FichaClinicaService.readPagination(this.idPaciente, this.dataInicial,  this.dataFinal, this.pagePesquisa).then(result => {
-   this.ListaConsulta = result.data.result.result;
-   this.ListaConsulta.titulo = this.retornaTipoConsulta();
-  })
-},
+        })
+         
+      }
+    },
+
+    anteriorPagePesquisa() {
+
+      this.pagePesquisa = this.pagePesquisa - 1;
+      if(this.typePesquisa === "ficha_clinica"){
+        FichaClinicaService.readPagination(
+          this.idPaciente,
+          this.dataInicial,
+          this.dataFinal,
+          this.pagePesquisa
+        ).then((result) => {
+          this.ListaConsulta = result.data.result.result;
+          this.ListaConsulta.titulo = this.retornaTipoConsulta();
+        });
+      }else if(this.typePesquisa === "laudo"){
+        LaudoService.read(this.dataInicial, this.dataFinal, this.idPaciente, this.pagePesquisa).then(result =>{
+          console.log(result)
+          this.ListaConsulta = result.data.result.result;
+          this.ListaConsulta.titulo = this.retornaTipoConsulta();
+
+        })
+         
+      }
+    },
 
     async listConsulta() {
       this.ListaConsulta = {};
@@ -960,11 +1130,13 @@ anteriorPagePesquisa(){
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
         }).then((result) => {
-          console.log(result.data.result.total[0].count)
+          console.log(result.data.result.result);
           if (Object.keys(result.data.result).length === 0) {
             this.showAlert("info", "Nenhuma Informação Encontrada");
           } else {
-            this.totalPagePesquisa = Math.ceil(result.data.result.total[0].count/5)
+            this.totalPagePesquisa = Math.ceil(
+              result.data.result.total[0].count / 5
+            );
             this.ListaConsulta = result.data.result.result;
             console.log(this.ListaConsulta);
             this.ListaConsulta.titulo = this.retornaTipoConsulta();
@@ -992,6 +1164,7 @@ anteriorPagePesquisa(){
       this.selectVisualizar = uuid;
       if (this.typePesquisa === "prescricao_oculos") {
         PrescricaoOculosService.read(uuid).then((result) => {
+          console.log(result);
           this.prescricaoOculos = result.data.prescricao;
           this.tabIndex = 0;
           this.editar = true;
@@ -1024,7 +1197,7 @@ anteriorPagePesquisa(){
           .then((result) => {
             if (result.status === 201) {
               this.showAlert("success", "Registro Deletado com Sucesso");
-              this.atualizaPesquisa();
+              this.listConsulta();
             }
           })
           .catch(() => {
@@ -1035,7 +1208,7 @@ anteriorPagePesquisa(){
           .then((result) => {
             if (result.status === 201) {
               this.showAlert("success", "Registro Deletado com Sucesso");
-              this.atualizaPesquisa();
+              this.listConsulta();
             }
           })
           .catch(() => {
@@ -1046,7 +1219,7 @@ anteriorPagePesquisa(){
           .then((result) => {
             if (result.status === 201) {
               this.showAlert("success", "Registro Deletado com Sucesso");
-              this.atualizaPesquisa();
+              this.listConsulta();
             }
           })
           .catch(() => {
@@ -1061,10 +1234,11 @@ anteriorPagePesquisa(){
       }
     },
 
-    Paciente(text, value) {
+    Paciente(text, value, uuid) {
       return {
         text: text,
         value: value,
+        uuid: uuid,
       };
     },
 
@@ -1074,13 +1248,43 @@ anteriorPagePesquisa(){
           console.log(response);
           response.data.result.map((paciente) => {
             this.ListaPaciente.push(
-              this.Paciente(paciente.nomePaciente, paciente.idPaciente)
+              this.Paciente(
+                paciente.nomePaciente,
+                paciente.idPaciente,
+                paciente.uuid
+              )
             );
           });
         })
         .catch(() => {
           this.showAlert("error", "Ocorreu um problema ao listar pacientes");
         });
+    },
+
+    readLaudo() {
+      LaudoService.read();
+    },
+    async saveLaudo() {
+      let consulta;
+      try {
+        this.dadosConsulta.idPaciente = this.idPaciente;
+        this.dadosConsulta.data = moment().format("YYYY-MM-DD");
+        this.dadosConsulta.titulo = "Laudo";
+        consulta = await ServicoConsulta.save(this.dadosConsulta);
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um erro ao Salvar consulta");
+      }
+
+
+      try {
+        this.laudo.data = moment().format("YYYY-MM-DD");
+        this.laudo.idPaciente = this.idPaciente;
+        this.laudo.idConsulta = consulta.data.result.idConsulta[0]
+        await LaudoService.save(this.laudo);
+        this.showAlert("success", "Laudo Registrado com Sucesso");
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um erro ao Salvar Laudo");
+      }
     },
   },
   created() {
@@ -1134,5 +1338,8 @@ anteriorPagePesquisa(){
   .agendadosHoje table {
     width: 600px;
   }
+}
+.divFlex {
+  border: 1px solid black;
 }
 </style>
