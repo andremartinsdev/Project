@@ -45,7 +45,7 @@ export default {
 body {
   background: #1a2980; /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #1a2980, #26d0ce); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #1a2980, #26d0ce);
+  background-color: linear-gradient(to bottom, #1a2980, #26d0ce);
 }
 .teste3 {
 }

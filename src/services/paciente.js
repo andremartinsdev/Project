@@ -1,15 +1,11 @@
 import { http } from './config'
 
-
-
 export default {
     save: (paciente) => {
-       
         return http.post("paciente/", {...paciente})
     },
 
     edit: (paciente, uuid) => {
-        
         return http.put(`paciente/${uuid}`, {...paciente})
     },
 
@@ -25,8 +21,8 @@ export default {
         return http.get(`paciente/pagination/page?page=${page}`)
     },
 
-    list: () => {
-        return http.get(`paciente/pagination/page`)
+    list: (query) => {
+        return http.get(`paciente/pagination/page?${query}`)
     },
 
     read: (uuid) => {
