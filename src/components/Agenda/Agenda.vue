@@ -623,9 +623,7 @@ export default {
       this.loadEventos = [];
       AgendaService.read()
         .then((result) => {
-          console.log(result);
           result.data.consulta.map((resultado) => {
-            console.log(this.CreateObject(resultado));
             this.loadEventos.push(this.CreateObject(resultado));
           });
         })
@@ -635,7 +633,6 @@ export default {
     },
 
     CreateObject(dados) {
-      console.log(dados);
       return {
         id: dados.uuid,
         title: dados.titulo,
@@ -700,9 +697,7 @@ testeteste(){
         });
     },
 
-teste2(){
-console.log(this.formaPagamentoSelect)
-},
+
     editarAgendamento(uuid) {
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
@@ -787,7 +782,6 @@ console.log(this.formaPagamentoSelect)
               this.showAlert("error", "Erro ao Realizar agendamento");
             });
         } else {
-          console.log(this.agendamento);
           AgendaService.update(this.agendamento.uuid, this.agendamento)
             .then((result) => {
               if (result.status === 201) {
@@ -884,7 +878,6 @@ console.log(this.formaPagamentoSelect)
           this.agendamentoPesquisa = [];
           AgendaService.readDataPagination(this.dataInicial, this.dataFinal)
             .then((result) => {
-              console.log();
               if (result.data.result.result.length === 0) {
                 this.showAlert("info", "Nenhuma informação");
               } else {
@@ -950,7 +943,6 @@ console.log(this.formaPagamentoSelect)
     detalhesAgendamento(event) {
       AgendaService.readAgendaJoinPaciente(event.id)
         .then((result) => {
-          console.log(result.data.agendamento);
           this.agendamento = result.data.agendamento;
           this.agendamento.data = moment(result.data.agendamento.data).format(
             "YYYY-MM-DD"
@@ -1019,20 +1011,17 @@ console.log(this.formaPagamentoSelect)
 
     readOticaParceira() {
       OticasParceirasServices.read().then((result) => {
-        console.log(result);
         result.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(
             this.oticaParceira(el.nome, el.idOticaParceira)
           );
         });
-        console.log(this.oticasParceiras);
       }).catch(()=>{
         this.showAlert("error", "Erro na pesquisa ótica parceira");
       });
     },
 
     savePagamento() {
-      console.log(this.agendamento.valorConsulta);
       if (
         Validation.ValidaAgendamento(this.agendamento) &&
         parseInt(this.agendamento.valorConsulta) > 0 &&

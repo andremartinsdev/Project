@@ -159,10 +159,9 @@ export default {
     async saveClinica() {
       if (this.clinica.uuid) {
         try {
-          const result = await ClinicaService.update(this.clinica, this.clinica.uuid);
+          await ClinicaService.update(this.clinica, this.clinica.uuid);
            this.showAlert("success", "Registro Atualizado com Sucesso");
            this.editar = true;
-          console.log(result)
         } catch (error) {
           this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
         }

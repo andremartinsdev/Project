@@ -72,9 +72,7 @@ export default {
   },
   created(){
     AgendaService.read().then(result => {
-      console.log(result)
     result.data.consulta.map(resultado => {
-      console.log(this.CreateObject(resultado))
       this.calendarOptions.events.push(this.CreateObject(resultado))
     })
     })
@@ -82,7 +80,6 @@ export default {
   methods: {
    
     CreateObject(dados){
-      console.log(dados)
       return {
         id: dados.uuid,
         title: dados.titulo,

@@ -41,8 +41,8 @@
         <Anamnese :propsAnamnese2="this.anamnese" :impressao="true" />
       </div>
     </div>
-      <b-button @click="objetoEmpty.acuidade = true">Ola</b-button>
-    <div class="prescriUltExImpressao mt-4" v-if="objetoEmpty.acuidade">
+      <b-button @click="print">Ola</b-button>
+    <div class="prescriUltExImpressao mt-4" v-if="objetoEmpty.acuidade" id="printMe">
       <h6 class="mt-2 ml-4 text-center" >Prescrição Ultimo Exame</h6>
       <div class="containerPrescriUlt" v-if="flag" v-show="visualizarRelatorio[0].prescriUltEx">
         <div class="w-100">
@@ -322,6 +322,7 @@ export default {
       retinoscopia:false},
       visualizarRelatorio : [],
       acuidade: false,
+       output: null,
       sintomas: [
         { text: "Prurido", value: "PRURIDO" },
         { text: "Fotofobia", value: "FOTOFOBIA" },
@@ -341,6 +342,15 @@ export default {
   },
 
   methods: {
+    print () {
+      // Pass the element id here
+      
+        this.$htmlToPaper('printMe', null, () => {
+})
+    },
+
+  
+
     imprimir() {
       window.print();
     },
@@ -353,7 +363,6 @@ export default {
         delete this.anamnese.IDPACIENTE;
         delete this.anamnese.IDCONSULTA;
 
-        console.log(Object.keys(this.fichaClinica.avMotora).length === 0)
         if(Object.keys(this.fichaClinica.anamnese).length === 0){
           this.objetoEmpty.anamnese = true
         }
@@ -415,7 +424,6 @@ this.read();
 
   watch: {
     anamnesePropsImpressao() {
-      console.log(this.anamneseProps);
       this.anamnese.push(this.anamneseProps);
     },
     teste() {

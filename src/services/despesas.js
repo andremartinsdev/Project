@@ -3,7 +3,6 @@ import { http } from './config'
 
 export default {
     save: (despesa) => {
-       console.log(despesa)
         return http.post('/Despesa', {...despesa})
     },
 
@@ -20,7 +19,6 @@ export default {
     },
 
     update: (despesa) => {
-        console.log(despesa)
         return http.put(`Despesa/${despesa.uuid}`, {...despesa})    
     },
 

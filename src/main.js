@@ -9,13 +9,31 @@ import router from './routes'
 import store from './store'
 import VueSweetalert2 from 'vue-sweetalert2';
 import money from 'v-money'
+import VueHtmlToPaper from 'vue-html-to-paper';
+
 
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueMask from 'v-mask'
+
+const options = {
+  specs: [
+    'fullscreen=yes',
+    'titlebar=yes',
+    'scrollbars=yes'
+  ],
+  styles: [
+    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+    'https://unpkg.com/kidlat-css/css/kidlat.css'
+  ]
+}
+
+Vue.use(VueHtmlToPaper, options);
+
+// or, using the defaults with no stylesheet
+Vue.use(VueHtmlToPaper);
 Vue.use(VueMask);
 Vue.use(VueSweetalert2);
-
 
 Vue.use(VueSidebarMenu)
 Vue.use(money, { precision: 2 })

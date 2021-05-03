@@ -256,7 +256,6 @@ export default {
       this.readDespesas();
     }
     
-    console.log("entrooooou before");
     this.readDadosClinica();
   },
   
@@ -298,7 +297,6 @@ async readDadosClinica(){
           el.data = moment(el.data).format("DD/MM/YYYY");
           this.despesasHoje.push(el);
         });
-        console.log(this.despesasHoje);
       });
     },
   },
@@ -358,10 +356,7 @@ img:hover {
   margin-top: 10px;
   margin-right: 10px;
   margin-left: 10px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px; /* fallback for old browsers */
+  /* fallback for old browsers */
   /* fallback for old browsers */
   /* fallback for old browsers */
   /* fallback for old browsers */

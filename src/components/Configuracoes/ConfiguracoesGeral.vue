@@ -245,7 +245,6 @@ export default {
     },
 
     deleteFormaDePagamento(uuid) {
-      console.log("entroo delet");
       ServiceFormaDePagamento.delete(uuid)
         .then(() => {
           this.showAlert("success", "Registro Deletado")

@@ -886,7 +886,6 @@ export default {
         this.dataFinalAgFinalizado,
         this.pageFinalizado
       ).then((result) => {
-        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -902,7 +901,6 @@ export default {
         this.dataFinalAgFinalizado,
         this.pageFinalizado
       ).then((result) => {
-        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -933,7 +931,6 @@ export default {
         this.totalPageAg = Math.ceil(
           result.data.agendamentos.total[0].count / 5
         );
-        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosData.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
         });
@@ -953,12 +950,10 @@ export default {
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado
       ).then((result) => {
-        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.totalPageFinalizado = Math.ceil(
           result.data.agendamentos.total[0].count / 5
         );
-        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
         });
@@ -977,7 +972,6 @@ export default {
       procedimento,
       atendido
     ) {
-      console.log(idPaciente);
       if (atendido === 1) {
         this.showAlert("info", "Paciente já foi Atendido");
       } else {
@@ -1017,7 +1011,6 @@ export default {
           this.totalPage = Math.ceil(
             result.data.agendamentos.total[0].count / 5
           );
-          console.log(result.data.agendamentos.total[0].count);
           this.agendamentos.map((el) => {
             el.data = moment(el.data).format("DD/MM/YYYY");
           });
@@ -1089,7 +1082,6 @@ export default {
         });
       }else if(this.typePesquisa === "laudo"){
         LaudoService.read(this.dataInicial, this.dataFinal, this.idPaciente, this.pagePesquisa).then(result =>{
-          console.log(result)
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
 
@@ -1113,7 +1105,6 @@ export default {
         });
       }else if(this.typePesquisa === "laudo"){
         LaudoService.read(this.dataInicial, this.dataFinal, this.idPaciente, this.pagePesquisa).then(result =>{
-          console.log(result)
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
 
@@ -1130,7 +1121,6 @@ export default {
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
         }).then((result) => {
-          console.log(result.data.result.result);
           if (Object.keys(result.data.result).length === 0) {
             this.showAlert("info", "Nenhuma Informação Encontrada");
           } else {
@@ -1138,7 +1128,6 @@ export default {
               result.data.result.total[0].count / 5
             );
             this.ListaConsulta = result.data.result.result;
-            console.log(this.ListaConsulta);
             this.ListaConsulta.titulo = this.retornaTipoConsulta();
           }
         });
@@ -1164,7 +1153,6 @@ export default {
       this.selectVisualizar = uuid;
       if (this.typePesquisa === "prescricao_oculos") {
         PrescricaoOculosService.read(uuid).then((result) => {
-          console.log(result);
           this.prescricaoOculos = result.data.prescricao;
           this.tabIndex = 0;
           this.editar = true;
@@ -1172,17 +1160,14 @@ export default {
       } else if (this.typePesquisa === "prescricao_lente") {
         PrescricaoLenteService.read(uuid).then((result) => {
           this.prescricaoLente = result.data.prescricao;
-          console.log(result.data.prescricao);
           this.tabIndex = 1;
           this.editar = true;
         });
       } else if (this.typePesquisa === "ficha_clinica") {
         FichaClinicaService.read(uuid).then((result) => {
           this.fichaClinica = result.data.ficha.json_fichaClinica;
-          console.log(this.fichaClinica);
           this.uuidFicha = result.data.ficha.uuid;
           this.$store.commit("UUID_FICHACLINICA", result.data.ficha.uuid);
-          console.log("ooooooooooooooooooo");
           this.tabIndex = 6;
           this.editar = true;
         });

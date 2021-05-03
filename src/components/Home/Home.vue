@@ -536,7 +536,6 @@ export default {
     ...mapActions(["alterOption"]),
     showOption($event) {
       this.showOptionRelatorio = $event.showOption;
-      console.log(this.showOptionRelatorio);
     },
     hiddenOption() {
       this.showOptionRelatorio = false;
@@ -549,21 +548,18 @@ export default {
     },
 
     proximaConsultaVencida() {
-      console.log(this.consultasVencidas[0].length);
       if (this.indexConsultaVencida < this.consultasVencidas[0].length - 1) {
         this.indexConsultaVencida = this.indexConsultaVencida + 1;
       }
     },
 
     anteriorConsultaVencida() {
-      console.log(this.consultasVencidas[0].length);
       if (this.indexConsultaVencida > 0) {
         this.indexConsultaVencida = this.indexConsultaVencida - 1;
       }
     },
 
     aniversarioProximo() {
-      console.log(this.aniversarianteDoMes.length);
       if (this.indexAniversario < this.aniversarianteDoMes.length - 1) {
         this.indexAniversario = this.indexAniversario + 1;
       }
@@ -581,17 +577,14 @@ export default {
     consultaVencida() {
       AgendaService.readDateVencimento(moment().format("YYYY-MM-DD")).then(
         (result) => {
-          console.log(result)
-          console.log(result.data.agendamentos.length)
+         
           if(result.data.agendamentos.length > 0){
             this.consultasVencidas.push(result.data.agendamentos);
             this.consultasVencidas[0].map((el) => {
               el.data = moment(el.data).format("DD/MM/YYYY");
               el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY");
-              console.log(el);
               this.renderConsultasVencidas = true;
             });
-            console.log(this.consultasVencidas[0].length);
           }
         }
       );
@@ -618,7 +611,6 @@ export default {
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       ).then((result) => {
-        console.log(result.data.agendamentos);
         this.consultas = result.data.agendamentos.length;
       });
     },
@@ -644,7 +636,6 @@ export default {
           ) {
             el.dataNascimento = moment(el.dataNascimento).format("DD/MM/YYYY");
             this.aniversarianteDoMes.push(el);
-            console.log(this.aniversarianteDoMes);
           }
         });
       });

@@ -88,8 +88,6 @@ export const planetChartData = {
 async function returnValorDespesa() {
   const result = await DespesaService.readDate(`${moment().format("YYYY")}-01-01`, `${moment().format("YYYY")}-12-31`)
   result.data.result.map(el => {
-    console.log(parseInt(moment(el.data).format("MM")))
-    console.log(el.valor, planetChartData.data.datasets[0].data[parseInt(moment(el.data).format("MM"))])
     planetChartData.data.datasets[0].data[parseInt(moment(el.data).format("MM")) - 1] = (el.valor + parseFloat(planetChartData.data.datasets[0].data[parseInt(moment(el.data).format("MM")) - 1]))
   })
 
@@ -108,11 +106,8 @@ function returnValorReceitaLiquida() {
 async function returnValorReceita() {
   const result = await ReceitaService.readDate(`${moment().format("YYYY")}-01-01`, `${moment().format("YYYY")}-12-31`)
   result.data.result.map(el => {
-    console.log(parseInt(moment(el.data).format("MM")))
-    console.log(el.valor, planetChartData.data.datasets[0].data[parseInt(moment(el.data).format("MM"))])
     planetChartData.data.datasets[1].data[parseInt(moment(el.data).format("MM")) - 1] = (el.valor + parseFloat(planetChartData.data.datasets[1].data[parseInt(moment(el.data).format("MM")) - 1]))
   })
-  console.log(result.data.result)
 
 }
 returnValorDespesa().then(() => {

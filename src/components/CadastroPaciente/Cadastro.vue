@@ -356,7 +356,6 @@ export default {
   },
 
   beforeMount() {
-    console.log("teste");
   },
 
   mounted() {
@@ -554,7 +553,7 @@ table {
   margin-bottom: 4px;
   width: 35%;
   background: linear-gradient(0deg, #015ea0 0%, #0082c8 100%);
-  border-radius: 55px;
+ 
   padding: 4;
 }
 

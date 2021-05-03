@@ -687,7 +687,6 @@ export default {
     },
     detalhesConsulta(uuid, nomePaciente, dataNascimento, valorConsulta) {
       AgendaService.readParams(uuid).then((result) => {
-        console.log(result);
         this.nomePaciente = nomePaciente;
         this.horario = result.data.agendamento.horario;
         this.dataNascimento = dataNascimento;
@@ -752,13 +751,11 @@ export default {
 
     readOticaParceira() {
       OticasParceirasServices.read().then((result) => {
-        console.log(result);
         result.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(
             this.oticaParceira(el.nome, el.idOticaParceira)
           );
         });
-        console.log(this.oticasParceiras);
       });
     },
 
@@ -803,12 +800,10 @@ export default {
 
     receita() {
       this.valorReceita = 0;
-      console.log("eeeeeeeeeeeeenntro")
       AgendaService.readDateRelatorioReceita(
         this.dataInicial,
         this.dataFinal
       ).then((result) => {
-        console.log(result)
         this.atendimentos = result.data.consulta;
         this.atendimentos.map((el) => {
           el.dataPagamento = moment(el.dataPagamento).format("DD/MM/YYYY");
@@ -1189,7 +1184,6 @@ export default {
         this.consultasVencidas[0].map(el => {
           el.data = moment(el.data).format("DD/MM/YYYY")
           el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY")
-          console.log(el)
         })
       })
     },
