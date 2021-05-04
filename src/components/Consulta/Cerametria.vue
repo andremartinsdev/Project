@@ -29,60 +29,63 @@
         ></b-input>
       </b-input-group>
     </b-form>
-    
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+
+    <div class="mt-5">
+         <b-button class="m-4" variant="primary" @click=" createPDF">Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill></b-button>
+
+    </div>
   </div>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+import logoOlho from "../../assets/LogoOlho.png";
+import moldura from "../../assets/moldura.png";
 export default {
-  props:{
-    Limpar:{
-      type: Boolean
+  props: {
+    Limpar: {
+      type: Boolean,
     },
     cerametriaProps: {
-      type: [Array, Object]
-    }
+      type: [Array, Object],
+    },
   },
 
-  watch:{
-    cerametriaProps(){
-     
+  watch: {
+    cerametriaProps() {
       /*if(Object.keys(this.cerametriaProps).length != 0){
       this.cerametria = this.cerametriaProps
       this.enviarCerametria();
       }*/
-  console.log(this.cerametriaProps[0])
-      if(Object.keys(this.cerametriaProps).length === 0){
+      if (Object.keys(this.cerametriaProps).length === 0) {
         this.cerametria = [
-        {
-          olhoDireito: "",
-          olhoEsquerdo: "",
-          miras: "",
-        },
-      ]
-      }else{
-         this.cerametria = this.cerametriaProps
-      this.enviarCerametria();
+          {
+            olhoDireito: "",
+            olhoEsquerdo: "",
+            miras: "",
+          },
+        ];
+      } else {
+        this.cerametria = this.cerametriaProps;
+        this.enviarCerametria();
       }
     },
-    Limpar(){
+    Limpar() {
       this.cerametria = [
         {
           olhoDireito: "",
           olhoEsquerdo: "",
           miras: "",
         },
-      ]
+      ];
 
-      this.$emit('alteraLimpar', false)
-    }
+      this.$emit("alteraLimpar", false);
+    },
   },
   data() {
     return {
+      logoOlho: logoOlho,
+      moldura: moldura,
       cerametria: [
         {
           olhoDireito: "",
@@ -94,6 +97,34 @@ export default {
   },
 
   methods: {
+    createPDF() {
+      let pdfName = "PrescricaoUltimoExame";
+      var doc = new jsPDF();
+      var linha = 85;
+
+      doc.text("Cerametria", 105, 40, null, null, "center");
+      doc.setFontSize(12);
+      doc.text("Nome Clinica", 105, 48, null, null, "center");
+      doc.text("Técnica: AutoRefratômetro", 45, 68, null, null, "center");
+      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+      doc.text("Olho Direito", 25, linha, null, null);
+      doc.text(this.cerametria[0].olhoDireito, 25, linha+8, null, null);
+      doc.text("Olho Esquerdo", 88, linha, null, null);
+      doc.text(this.cerametria[0].olhoEsquerdo, 88, linha+8, null, null);
+      doc.text("Miras", 150, linha, null, null);
+      doc.text(this.cerametria[0].miras, 150, linha+8, null, null);
+
+
+      
+      doc.setFont("times", "italic");
+      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+
+      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
+      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      
+
+      doc.save(pdfName + ".pdf");
+    },
     enviarCerametria() {
       this.$store.commit("CERAMETRIA", this.cerametria);
     },

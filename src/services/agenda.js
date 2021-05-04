@@ -20,7 +20,6 @@ export default {
     },
 
     readDataPaginationProximo: (dataInicial, dataFinal, page) => {
-        console.log(typeof(http))
         return http.get(`Agenda/paginationAllAgenda/${dataInicial}/${dataFinal}/page?page=${page}`)
     },
 

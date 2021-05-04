@@ -1,7 +1,7 @@
 <template>
   <div class="containerPrescri">
     <b-form inline>
-      <b-input hidden v-model="prescricaoOculos.uuid"></b-input>
+      <b-input  v-model="prescricaoOculos.uuid"></b-input>
       <label for="input-with-list" class="mr-2">OD :</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
@@ -183,88 +183,34 @@ export default {
       };
     },
 
-    savePrescricao() {
-      if (this.prescricaoOculos.uuid === "") {
-        ConsultaService.save(this.dadosConsulta)
-          .then((result) => {
-            if (result.status === 201) {
-              this.idConsulta = result.data.result.idConsulta[0];
-              this.uuidConsulta = result.data.result.uuid;
-              this.prescricaoOculos.idConsulta =
-                result.data.result.idConsulta[0];
-              this.prescricaoOculos.idPaciente = this.idPaciente;
+    async savePrescricao() {
+      try {
+         if (this.prescricaoOculos.uuid === "") {
+        this.dadosConsulta.idPaciente = this.idPaciente
+        const resultConsulta = await ConsultaService.save(this.dadosConsulta);
+        this.idConsulta = resultConsulta.data.result.idConsulta[0];
+        this.uuidConsulta = resultConsulta.data.result.uuid;
+        this.prescricaoOculos.idConsulta = resultConsulta.data.result.idConsulta[0];
+        this.prescricaoOculos.idPaciente = this.idPaciente;
 
-              PrescricaoService.save(this.prescricaoOculos)
-                .then((result) => {
-                  if (result.status === 201) {
-                    this.prescricaoOculos.uuid = result.data.uuid.uuid
-                    if (this.idConsulta === -1) {
-                      this.showAlert("error", "Algo de errado ocorreu");
-                    } else {
-                      AgendaService.update(this.uuidAgendamento, {
-                        atendido: true,
-                        idConsulta: this.idConsulta,
-                        recebido: 0,
-                        valorConsulta: 0,
-                        dataPagamento: "0000-00-00",
-                        idFormaPagamento: 0
-                      })
-                        .then((result) => {
-                          
-                          if (result.status === 201) {
-                            this.showAlert(
-                              "success",
-                              "Prescrição Salva com Sucdddesso"
-                            );
-                          }
-                        })
-                        .catch(() => {
-                          this.showAlert(
-                            "error",
-                            "Ocorreu um erro ao atualizar a status do agendamento"
-                          );
-                        });
-                    }
-                  } else {
-                    this.showAlert(
-                      "error",
-                      "Ocorreu um erro ao salvar a Prescrição"
-                    );
-                  }
-                })
-                .catch(() => {
-                  this.showAlert(
-                    "error",
-                    "Ocorreu um erro ao Salvar a Prescrição"
-                  );
-                });
-            } else {
-              this.showAlert("error", "Ocorreu um erro ao salvar a Consulta");
-            }
-          })
-          .catch(() => {
-            this.showAlert(
-              "error",
-              "Erro ao salvar a consulta, verifique se todos os campos estão preenchidos corretamente"
-            );
-          });
-      } else {
-        PrescricaoService.update(
-          this.prescricaoOculos,
-          this.prescricaoOculos.uuid
-        )
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Prescrição Atualizada com Sucesso");
-            } else {
-              this.showAlert("error", "Algo de errado ocorreu");
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Algo de errado ocorreu ");
-          });
+        const resultPrescricao = await PrescricaoService.save(this.prescricaoOculos);
+        this.prescricaoOculos.uuid = resultPrescricao.data.uuid.uuid;
+
+        await AgendaService.updateIdConsultAtendido(this.uuidAgendamento, {
+        atendido: true, idConsulta: this.idConsulta, })
+                  
+        this.showAlert("success","Prescrição Salva com Sucesso")             
+      
+    }else{
+       await PrescricaoService.update(this.prescricaoOculos, this.prescricaoOculos.uuid);
+        this.showAlert("success","Prescrição Atualizada com Sucesso") 
+    }
+      } catch (error) {
+        this.showAlert("error", "errooo")
       }
-    },
+     
+    }
+
   },
 };
 </script>

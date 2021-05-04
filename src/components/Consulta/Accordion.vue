@@ -1,6 +1,7 @@
 <template>
   <div role="tablist">
     <b-input hidden></b-input>
+    <b-button @click="createPDF">olaaa</b-button>
     <b-input v-model="uuidFichaProps" hidden></b-input>
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
@@ -27,6 +28,7 @@
       </b-card-header>
       <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
         <PrescricaoUltimoExame
+          id="printMe"
           :Visualizar="this.Visualizar"
           :Limpar="this.Limpar"
           :prescricaoUltExProps="this.PrescricaoUltimoExameData"
@@ -317,9 +319,6 @@
       </b-collapse>
     </b-card>
 
-
-
-    
     <div>
       <b-modal id="modal-1" title="Data de Vencimento" @ok="finalizarConsulta">
         <label for="">Data de Vencimento da Consulta</label>
@@ -336,7 +335,6 @@
           >
             Fechar
           </b-button>
-
         </template>
       </b-modal>
     </div>
@@ -390,16 +388,15 @@
           ></b-icon-arrow-counterclockwise
           >Limpar
         </b-button>
-      
-         <b-button
-            size="sm"
-            variant="outline-secondary"
-             v-b-modal.modal-1
-             @click="imprimir"
-          >
-            f
-          </b-button>
-      
+
+        <b-button
+          size="sm"
+          variant="outline-secondary"
+          v-b-modal.modal-1
+          @click="imprimir"
+        >
+          f
+        </b-button>
       </div>
     </footer>
   </div>
@@ -435,6 +432,7 @@ import AgendaService from "../../services/agenda";
 import ServicoFichaClinica from "../../services/fichaClinica";
 import ValidaObjectEmpty from "../../services/validaObjectEmpty";
 import { DateTime } from "luxon";
+import jsPDF from "jspdf";
 
 //import axios from "axios";
 import { mapState } from "vuex";
@@ -471,9 +469,8 @@ export default {
       console.log(this.uuidFicha);
     },
     fichaClinicaProps() {
-      this.testeProps = "andreeeeeee"
+      this.testeProps = "andreeeeeee";
       //const json = this.fichaClinicaProps
-      console.log(this.fichaClinicaProps);
       this.AnamneseData = this.fichaClinicaProps.anamnese;
       this.AcuidadeVisualData = this.fichaClinicaProps.acuidade;
       this.AfinamentoData = this.fichaClinicaProps.afinamento;
@@ -495,16 +492,15 @@ export default {
       this.SubjetivoData = this.fichaClinicaProps.subjetivo;
       this.TesteAmbulatorialData = this.fichaClinicaProps.testeAmbulatorial;
       this.TonometriaData = this.fichaClinicaProps.tonometria;
-      console.log(this.RetinoscopiaData);
     },
   },
   data() {
     return {
       idConsultaData: -1,
-      dataVencimento:"",
+      dataVencimento: "",
       editar: false,
       Limpar: false,
-      testeProps:"",
+      testeProps: "",
       consulta: {},
       inicioConsulta: false,
       dadosFicha: {},
@@ -549,7 +545,6 @@ export default {
     }),
   },
   components: {
-  
     Anamnese,
     PrescricaoUltimoExame,
     AcuidadeVisual,
@@ -574,11 +569,144 @@ export default {
   },
 
   methods: {
-    imprimir(){
+    imprimir() {
       //window.print(<ImpressaoAnamnese/>)
-window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=200, width=1000, height=1000");
-
+      window.open(
+        `/Impressao/${this.uuidFichaProps}`,
+        "_blank",
+        "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=200, width=1000, height=1000"
+      );
     },
+    createPDF() {
+      let pdfName = "test";
+      var doc = new jsPDF();
+      var linha = 20;
+
+      doc.text("Ficha Clínica", 105, 10, null, null, "center");
+
+
+
+      //ANAMNESE
+      if (Object.keys(this.AnamneseData).length > 0) {
+        doc.setFontSize(12);
+        doc.text("Anamnese", 20, linha + 2, null, null);
+        delete this.AnamneseData.DATA;
+        delete this.AnamneseData.IDPACIENTE;
+        delete this.AnamneseData.IDCONSULTA;
+        Object.keys(this.AnamneseData).forEach((item) => {
+          linha += 8;
+
+          //segundo parametro e altura, terceiro é largura, quarto espaço interno
+          doc.setTextColor(100);
+          doc.setFontSize(10);
+
+          doc.text(item, 10, linha, null, null);
+          var checkBox = new jsPDF.API.AcroFormCheckBox();
+          checkBox.fieldName = "CheckBox1";
+          checkBox.Rect = [45, linha - 5, 7, 7];
+          doc.addField(checkBox);
+        });
+      }
+
+      //PRECRIÇÃO ULT EXAME
+      if (Object.keys(this.PrescricaoUltimoExameData).length > 0) {
+        var linhaPrescricao = 15;
+        doc.setFontSize(12);
+        doc.setTextColor(0);
+        doc.text(
+          "Prescrição do Último Exame",
+          100,
+          linhaPrescricao + 8,
+          null,
+          null
+        );
+        delete this.PrescricaoUltimoExameData.IDPACIENTE;
+        delete this.PrescricaoUltimoExameData.IDCONSULTA;
+        delete this.PrescricaoUltimoExameData.DATA;
+        delete this.PrescricaoUltimoExameData.UUIDCLINICA;
+        Object.keys(this.PrescricaoUltimoExameData).forEach((item) => {
+          linhaPrescricao += 8;
+          doc.setTextColor(100);
+          doc.setFontSize(10);
+
+          doc.text(
+            `${this.convertNomeColuna(item)} : ${
+              this.PrescricaoUltimoExameData[item]
+            }`,
+            100,
+            linhaPrescricao + 8,
+            null,
+            null
+          );
+        });
+      }
+
+      if (Object.keys(this.AcuidadeVisualData.cc.olhoDireito).length > 0) {
+        var linhaAcuidade = linha;
+        doc.setFontSize(12);
+        doc.setTextColor(0);
+        doc.text( "Acuidade Visual", 105,  linhaAcuidade + 20, null, null, "center");
+        doc.text(
+          "CC",
+          30,
+          linhaAcuidade + 29,
+          null,
+          null
+        );
+        doc.text(
+          "Olho Direito",
+          20,
+          linhaAcuidade + 34,
+          null,
+          null
+        );
+        linhaAcuidade += 8
+        Object.keys(this.AcuidadeVisualData.cc.olhoDireito).forEach((item) => {
+
+          linhaAcuidade += 13;
+          doc.setTextColor(100);
+          doc.setFontSize(10);
+          doc.text(
+              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}` 
+            ,
+            12,
+            linhaAcuidade + 20,
+            null,
+            null
+          );
+        });
+
+        Object.keys(this.AcuidadeVisualData.cc.olhoEsquerto).forEach((item) => {
+
+          linhaAcuidade = linha;
+          doc.setTextColor(100);
+          doc.setFontSize(10);
+          doc.text(
+              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}` 
+            ,
+            100,
+            linhaAcuidade + 20,
+            null,
+            null
+          );
+          
+        });
+
+       
+      }
+
+
+
+      doc.save(pdfName + ".pdf");
+    },
+
+
+    convertNomeColuna(coluna) {
+      if (coluna === "OD_ESFERICO") return "Olho Direito Esferico";
+      if (coluna === "OD_CILINDRICO") return "Olho Direito Cilindrico";
+    },
+
+
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -605,6 +733,11 @@ window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollb
       this.inicioConsulta = false;
     },
 
+    print() {
+      // Pass the element id here
+      this.$htmlToPaper("printMe");
+    },
+
     novo() {
       this.editar = false;
       this.limpar();
@@ -616,7 +749,6 @@ window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollb
       this.inicioConsulta = false;
       this.Limpar = true;
       this.$emit("finalizado");
-
     },
 
     dataAtual() {
@@ -629,7 +761,7 @@ window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollb
       AgendaService.updateIdConsultAtendidoDtVencimento(this.uuidAgendamento, {
         idConsulta: this.idConsultaData,
         atendido: true,
-        dataVencimento: this.dataVencimento
+        dataVencimento: this.dataVencimento,
       }).then((result) => {
         console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
       });
@@ -637,7 +769,6 @@ window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollb
         ...this.fichaClinica,
       };
       //const fichaClinica = JSON.stringify(this.fichaClinica);
-      console.log(this.fichaClinica);
       if (ValidaObjectEmpty(dados) === true) {
         ServicoFichaClinica.save(this.dadosFicha, this.fichaClinica)
           .then((result) => {
@@ -656,13 +787,11 @@ window.open(`/Impressao/${this.uuidFichaProps}`, "_blank", "toolbar=yes, scrollb
 
     updateFicha() {
       const fichaClinica = JSON.stringify(this.fichaClinica);
-console.log(fichaClinica)
       ServicoFichaClinica.update(fichaClinica, this.uuidFichaProps)
         .then((result) => {
           if (result.status === 201) {
             this.showAlert("success", "Ficha Clínica Editada com Sucesso");
             this.inicioConsulta = false;
-            
           }
         })
         .catch(() => {
@@ -694,8 +823,6 @@ console.log(fichaClinica)
       }
     },
   },
-
- 
 };
 </script>
 

@@ -95,18 +95,32 @@ export default {
         timer: 2500,
       });
     },
-    logar() {
-      if (this.login.cpfcnpj === "" || this.login.senha === "") {
-        this.showAlert("info", "Campo de Login e Senha devem ser Preenchidos");
-      } else {
-        LoginService.logar(this.login.cpfcnpj, this.login.senha)
-          .then((result) => {
-            sessionStorage.setItem("token", result.data.token);
-            setTimeout(this.$router.push("/Home"), 100);
-          })
-          .catch(() => {
-            this.showAlert("info", "Ocorreu um erro ao efetuar login");
-          });
+    async logar() {
+      try {
+        if (this.login.cpfcnpj === "" || this.login.senha === "") {
+          this.showAlert(
+            "info",
+            "Campo de Login e Senha devem ser Preenchidos"
+          );
+        } else {
+          const result = await LoginService.logar(
+            this.login.cpfcnpj,
+            this.login.senha
+          );
+          console.log(result);
+          sessionStorage.setItem("token", result.data.token);
+        
+          console.log(sessionStorage.getItem("token"))
+          this.$router.push("/Home");
+          // var a = setInterval(() => {
+          //   if(sessionStorage.getItem("token"))
+          //   
+            
+          // }, 100); 
+         
+        }
+      } catch (error) {
+        this.showAlert("info", "Ocorreu um erro ao efetuar login");
       }
     },
   },

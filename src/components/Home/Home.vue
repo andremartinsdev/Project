@@ -168,40 +168,47 @@
                           </div>
                         </div>
                         <div class="backside shadow">
-                          <div class="card">
+                          <div class="card" >
                             <div
-                              class="card-body text-center mt-1"
-                              v-if="this.consultasVencidas[0] != undefined"
+                              class="card-body text-center mt-1" v-if="this.renderConsultasVencidas"
                             >
                               <h4 class="card-title">
                                 Consulta Vencida
                                 <b-badge variant="info">{{
-                                  this.consultasVencidas[0].length
+                                  this.consultasVencidas[0].length 
                                 }}</b-badge>
                               </h4>
                               <div
                                 class="consultasContent shadow"
-                                v-if="this.consultasVencidas[0].length > 0"
+                                v-if="this.consultasVencidas[0] && this.consultasVencidas[0].length > 0"
                               >
                                 <p class="card-text">
                                   Nome Paciente:
                                   {{
-                                    this.consultasVencidas[0][this.indexConsultaVencida].nomePaciente
+                                    this.consultasVencidas[0][
+                                      this.indexConsultaVencida
+                                    ].nomePaciente
                                   }}
                                 </p>
                                 <p class="card-text">
                                   Data da ultima Consulta:
-                                  {{ this.consultasVencidas[0][this.indexConsultaVencida].data }}
+                                  {{
+                                    this.consultasVencidas[0][
+                                      this.indexConsultaVencida
+                                    ].data
+                                  }}
                                 </p>
                                 <p class="card-text">
                                   Data de Vencimento da consulta:
                                   {{
-                                    this.consultasVencidas[0][this.indexConsultaVencida].dataVencimento
+                                    this.consultasVencidas[0][
+                                      this.indexConsultaVencida
+                                    ].dataVencimento
                                   }}
                                 </p>
                               </div>
                             </div>
-                            <div class="flexIcon">
+                            <div class="flexIcon"  >
                               <div>
                                 <b-icon
                                   icon="arrow-left-circle-fill"
@@ -215,7 +222,14 @@
                                 ></b-icon>
                               </div>
                               <div>
-                                <p class="text-info">{{this.indexConsultaVencida + 1}} de {{this.consultasVencidas[0].length}}</p>
+                                <p class="text-info">
+                                  {{ this.indexConsultaVencida + 1 }} de
+                                  {{
+                                    this.consultasVencidas[0] == undefined
+                                      ? 0
+                                      : this.consultasVencidas[0].length
+                                  }}
+                                </p>
                               </div>
                               <div>
                                 <b-icon
@@ -341,18 +355,18 @@
                 header="Resumo Financeiro"
                 header-bg-variant="primary"
                 header-text-variant="light"
-                
-               
                 class="shadow"
               >
                 <div>
                   <label for="" class="text-success"
-                    >Total de Receita : <u class="text-dark">R$ 1000,00</u></label
+                    >Total de Receita :
+                    <u class="text-dark">R$ 1000,00</u></label
                   >
                 </div>
                 <div>
                   <label for="" class="text-dark"
-                    >Total de Despesas : <u class="text-dark">R$ 1920,00</u></label
+                    >Total de Despesas :
+                    <u class="text-dark">R$ 1920,00</u></label
                   >
                 </div>
                 <hr />
@@ -468,21 +482,22 @@
 </template>
 
 <script>
-import CardHome from "./CardHome";
+//import CardHome from "./CardHome";
 //import Menu from "./Menu";
-import Calendar from "../Agenda/Calendar";
+//import Calendar from "../Agenda/Calendar";
 import { mapState, mapActions } from "vuex";
 //import ServiceClinica from "../../services/clinica";
 import PacienteService from "../../services/paciente";
-import Chart from "../Chart/Chart";
+//import Chart from "../Chart/Chart";
 import moment from "moment";
 import AgendaService from "../../services/agenda";
 
+
 export default {
   components: {
-    CardHome,
-    Chart,
-    Calendar,
+    CardHome: () => import("./CardHome"),
+    Chart: () => import("../Chart/Chart"),
+    Calendar: () => import("../Agenda/Calendar"),
   },
   data() {
     return {
@@ -496,6 +511,7 @@ export default {
       showOptionRelatorio: false,
       pacientesCadastrados: 0,
       indexConsultaVencida: 0,
+      renderConsultasVencidas: false,
       items: [
         { Paciente: 40, Data_Consulta: "10/10/2020", Nome: "Macdonald" },
         { Paciente: 21, Data_Consulta: "10/12/2020", Nome: "Shaw" },
@@ -507,6 +523,7 @@ export default {
         { Paciente: 21, Data_Consulta: "10/10/2020", Nome: "Shaw" },
         { Paciente: 89, Data_Consulta: "11/06/2020", Nome: "Wilson" },
       ],
+      dadosClinica : [],
       consultasVencidas: [],
       aniversarianteDoMes: [],
       indexAniversario: 0,
@@ -519,7 +536,6 @@ export default {
     ...mapActions(["alterOption"]),
     showOption($event) {
       this.showOptionRelatorio = $event.showOption;
-      console.log(this.showOptionRelatorio);
     },
     hiddenOption() {
       this.showOptionRelatorio = false;
@@ -531,22 +547,19 @@ export default {
       }
     },
 
-    proximaConsultaVencida(){
-      console.log(this.consultasVencidas[0].length)
- if (this.indexConsultaVencida < this.consultasVencidas[0].length - 1) {
+    proximaConsultaVencida() {
+      if (this.indexConsultaVencida < this.consultasVencidas[0].length - 1) {
         this.indexConsultaVencida = this.indexConsultaVencida + 1;
       }
     },
 
-      anteriorConsultaVencida(){
-      console.log(this.consultasVencidas[0].length)
- if (this.indexConsultaVencida > 0) {
+    anteriorConsultaVencida() {
+      if (this.indexConsultaVencida > 0) {
         this.indexConsultaVencida = this.indexConsultaVencida - 1;
       }
     },
 
     aniversarioProximo() {
-      console.log(this.aniversarianteDoMes.length);
       if (this.indexAniversario < this.aniversarianteDoMes.length - 1) {
         this.indexAniversario = this.indexAniversario + 1;
       }
@@ -564,13 +577,15 @@ export default {
     consultaVencida() {
       AgendaService.readDateVencimento(moment().format("YYYY-MM-DD")).then(
         (result) => {
-          this.consultasVencidas.push(result.data.agendamentos);
-          this.consultasVencidas[0].map((el) => {
-            el.data = moment(el.data).format("DD/MM/YYYY");
-            el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY");
-            console.log(el);
-          });
-          console.log(this.consultasVencidas);
+         
+          if(result.data.agendamentos.length > 0){
+            this.consultasVencidas.push(result.data.agendamentos);
+            this.consultasVencidas[0].map((el) => {
+              el.data = moment(el.data).format("DD/MM/YYYY");
+              el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY");
+              this.renderConsultasVencidas = true;
+            });
+          }
         }
       );
     },
@@ -596,19 +611,20 @@ export default {
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       ).then((result) => {
-        console.log(result.data.agendamentos)
         this.consultas = result.data.agendamentos.length;
       });
     },
 
     readConsultasMes() {
       AgendaService.readDateAgendamentoFinalizado(
-         `${moment().format("YYYY-MM")}-01`,
+        `${moment().format("YYYY-MM")}-01`,
         `${moment().format("YYYY-MM")}-${this._numDias()}`
       ).then((result) => {
         this.consultasMes = result.data.agendamentos.length;
       });
     },
+
+    
 
     aniversariantes() {
       PacienteService.readAll().then((result) => {
@@ -620,19 +636,41 @@ export default {
           ) {
             el.dataNascimento = moment(el.dataNascimento).format("DD/MM/YYYY");
             this.aniversarianteDoMes.push(el);
-            console.log(this.aniversarianteDoMes);
           }
         });
       });
     },
   },
 
-  created() {
+  mounted(){
     this.readAgendamentosDia();
     this.consultaVencida();
     this.aniversariantes();
     this.readConsultasDia();
     this.readConsultasMes();
+    this.readDadosClinica();
+  },
+
+  created() {
+    console.log(sessionStorage.getItem('token'))
+    // if(sessionStorage.getItem('token')){
+    //   this.readAgendamentosDia();
+    //   this.consultaVencida();
+    //   this.aniversariantes();
+    //   this.readConsultasDia();
+    //   this.readConsultasMes();
+
+
+ 
+    // }else{
+    //   setTimeout(() => {
+    //   this.readAgendamentosDia();
+    //   this.consultaVencida();
+    //   this.aniversariantes();
+    //   this.readConsultasDia();
+    //   this.readConsultasMes();
+    //   }, 1000);
+    // }
   },
 };
 </script>

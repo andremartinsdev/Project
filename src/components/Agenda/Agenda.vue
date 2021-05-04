@@ -152,7 +152,13 @@
                 size="sm"
                 v-model="formaPagamentoSelect"
                 :options="formaDePagamento"
-              ></b-form-select>
+              >
+                <template #first>
+                  <b-form-select-option :value="2"
+                    >-- Forma de Pagamento --</b-form-select-option
+                  >
+                </template>
+              </b-form-select>
             </div>
             <div class="form-group w-50">
               <label for="exampleInputEmail1">Ótica Parceira</label>
@@ -160,7 +166,14 @@
                 :options="oticasParceiras"
                 v-model="oticasParceirasSelect"
                 size="sm"
-              ></b-form-select>
+                @change="testeteste"
+              >
+                <template #first>
+                  <b-form-select-option :value="2">
+                    -- Sem Convênio ---
+                  </b-form-select-option>
+                </template>
+              </b-form-select>
             </div>
           </div>
           <div>
@@ -319,13 +332,41 @@
                       v-model="agendamento.horario"
                       class="form-control bg-primary text-white col-sm-2"
                     />
-
-                    <label class="mt-2">Valor do Procedimento</label>
+                    <label class="mt-2 mr-2">Valor do Procedimento</label>
                     <b-form-input
                       v-model.lazy="agendamento.valorConsulta"
                       class="form-control bg-primary text-white col-sm-2"
                       v-money="money"
                     ></b-form-input>
+                    <b-form inline class="mt-3">
+                      <label class="mr-2">Forma de Pagamento</label>
+                      <b-form-select
+                        v-model="formaPagamentoSelect"
+                        :options="this.formaDePagamento"
+                        size="sm"
+                        class="col-3"
+                      >
+                        <template #first>
+                          <b-form-select-option :value="null"
+                            >Forma de Pagamento
+                          </b-form-select-option>
+                        </template>
+                      </b-form-select>
+
+                      <label class="mr-2 ml-4">Ótica Parceira</label>
+                      <b-form-select
+                        v-model="oticasParceirasSelect"
+                        :options="this.oticasParceiras"
+                        size="sm"
+                        class="col-3"
+                      >
+                        <template #first>
+                          <b-form-select-option :value="null"
+                            >-- Sem Convênio --</b-form-select-option
+                          >
+                        </template>
+                      </b-form-select>
+                    </b-form>
 
                     <label class="mt-2">Descrição</label>
 
@@ -593,6 +634,11 @@ export default {
         description: dados.observacao,
       };
     },
+
+testeteste(){
+  console.log(this.oticasParceirasSelect)
+},
+
     excluirProcedimento(uuid) {
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
@@ -771,6 +817,8 @@ export default {
         this.agendamentoPesquisa.sort((a, b) => {
           return parseInt(a.data) - parseInt(b.data);
         });
+      }).catch(()=>{
+        this.showAlert("error", "Erro na pesquisa dos agendamentos #pagination");
       });
     },
     anteriorPage() {
@@ -787,6 +835,8 @@ export default {
         this.agendamentoPesquisa.sort((a, b) => {
           return parseInt(a.data) - parseInt(b.data);
         });
+      }).catch(()=>{
+        this.showAlert("error", "Erro na pesquisa dos agendamentos #pagination");
       });
     },
     async pesquisarAgendamentos() {
@@ -919,6 +969,8 @@ export default {
             this.formaPagamento(el.descricao, el.uuid)
           );
         });
+      }).catch(()=>{
+        this.showAlert("error", "Erro ao carregar forma de pagamento");
       });
     },
     readOticaParceira() {
@@ -926,6 +978,8 @@ export default {
         result.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(this.oticaParceira(el.nome, el.uuid));
         });
+      }).catch(()=>{
+        this.showAlert("error", "Erro na pesquisa ótica parceira");
       });
     },
     savePagamento() {

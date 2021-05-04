@@ -6,7 +6,6 @@ export default {
     },
 
     edit: (data, idFichaClinica) => {
-        console.log(data)
         return http.post(`Consulta/Update/${idFichaClinica}`, data)
     },
 
