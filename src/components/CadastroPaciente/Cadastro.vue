@@ -1,20 +1,19 @@
 <template>
   <div>
-  
     <div class="formCliente">
       <div>
         <b-card no-body>
           <b-tabs v-model="tabIndex" pills card>
             <b-tab title="Cadastro" active class="formClienteCard">
               <b-card class="formClienteCard">
-                <b-container class="col-sm-6" fluid>
+                <b-container class="col-sm-12" fluid>
                   <h3 class="mb-2">
                     Cadastro Paciente
                     <b-icon-person-plus class="ml-3"></b-icon-person-plus>
                   </h3>
 
-                  <form @submit.prevent="salvar()">
-                    <div class="form-group">
+                  <form class="row">
+                    <div class="form-group col-sm-5">
                       <input
                         type="text"
                         v-model="paciente.uuid"
@@ -25,17 +24,15 @@
                       <b-form-input
                         id="input-live"
                         v-model="paciente.nomePaciente"
-                        :state="nameState"
                         aria-describedby="input-live-help input-live-feedback"
                         trim
+                        max="50"
                       ></b-form-input>
-
-                      <!-- This will only be shown if the preceding input has an invalid state -->
-                      <b-form-invalid-feedback id="input-live-feedback">
-                        Nome Obrigatório
-                      </b-form-invalid-feedback>
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.nomePaciente }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-3">
                       <label for="exampleInputEmail1">Data de Nascimento</label>
                       <input
                         type="date"
@@ -43,133 +40,131 @@
                         class="form-control"
                       />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-4">
                       <label for="exampleInputEmail1">Email</label>
                       <input
                         type="email"
                         v-model="paciente.email"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.email }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-3">
                       <label for="exampleInputEmail1">Telefone</label>
                       <input
                         type="text"
                         v-model="paciente.telefone"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.telefone }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Ocupação</label>
-                      <input type="text" class="form-control"  />
-                     
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-2">
                       <label for="exampleInputEmail1">CPF</label>
                       <input
-                      v-mask="'###.###.###-##'"
+                        v-mask="'###.###.###-##'"
                         type="text"
                         v-model="paciente.cpf"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.cpf }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-2">
                       <label for="exampleInputEmail1">RG</label>
                       <input
                         type="text"
                         v-model="paciente.rg"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.rg }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-5">
                       <label for="exampleInputEmail1">Endereço</label>
                       <input
                         type="text"
                         v-model="paciente.endereco"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.endereco }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-5">
                       <label for="exampleInputEmail1">Cidade</label>
                       <input
                         type="text"
                         v-model="paciente.cidade"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.cidade }}
+                      </b-form-text>
                     </div>
-                    <div class="form-group mb-5">
+                    <div class="form-group mb-5 col-sm-2">
                       <label for="exampleInputEmail1">Estado</label>
                       <input
                         type="text"
                         v-model="paciente.estado"
                         class="form-control"
                       />
+                      <b-form-text text-variant="warning" style="color: red">
+                        {{ pacienteError.estado }}
+                      </b-form-text>
                     </div>
-
-                    <footer id="sticky-footer" class="py-2 text-white-50 mb-4">
-                      <div class="container text-center">
-                        <b-button
-                          pill
-                          variant="light"
-                          class="mr-2"
-                          type="submit"
-                        >
-                          <b-icon-person-check-fill
-                            submit
-                            class="mr-3"
-                          ></b-icon-person-check-fill
-                          >Salvar
-                        </b-button>
-
-                        <b-button
-                          pill
-                          variant="light"
-                          @click="limpar()"
-                          class="mr-2"
-                        >
-                          <b-icon-arrow-clockwise
-                            class="mr-3"
-                          ></b-icon-arrow-clockwise
-                          >Limpar
-                        </b-button>
-
-                        <b-button pill variant="light" @click="tabIndex++">
-                          <b-icon-search class="mr-3"></b-icon-search>Pesquisar
-                        </b-button>
-                      </div>
-                    </footer>
                   </form>
+                  <div class="btns">
+                    <b-button
+                      variant="success"
+                      class="mr-2"
+                      type="submit"
+                      @click="salvar()"
+                    >
+                      <b-icon-person-check-fill class="mr-2">
+                      </b-icon-person-check-fill>
+                      Salvar
+                    </b-button>
+                    <b-button variant="warning" @click="limpar()" class="mr-2">
+                      <b-icon-arrow-clockwise
+                        class="mr-3"
+                      ></b-icon-arrow-clockwise
+                      >Limpar
+                    </b-button>
+                    <b-button variant="primary" @click="tabIndex++">
+                      <b-icon-search class="mr-2"></b-icon-search>Pesquisar
+                    </b-button>
+                  </div>
                 </b-container>
               </b-card>
             </b-tab>
             <b-tab title="Pesquisa">
               <b-card class="formClienteCard">
-                <div class="flex justify-content-center p-3">
-                  <div class="mr-3">
-                    <b-form-checkbox
-                      id="checkbox-1"
-                      v-model="statusPesquisa"
-                      name="checkbox-1"
-                      value="cpf"
-                    >
-                      Pesquisar por CPF
-                    </b-form-checkbox>
-                  </div>
-                  <div>
-                    <b-form-checkbox
-                      id="checkbox-2"
-                      v-model="statusPesquisa"
-                      name="checkbox-2"
-                      value="nome"
-                    >
-                      Pesquisar por NOME
-                    </b-form-checkbox>
-                  </div>
-                </div>
+                <b-form-text text-variant="warning" style="color: red">
+                  {{ campoPesquisaError }}
+                </b-form-text>
                 <b-input-group class="mt-3 mb-4">
-                  <b-form-input v-model="campoPesquisa"></b-form-input>
+                  <b-form-input
+                    v-model="campoPesquisa"
+                    size="sm"
+                    class="mr-3"
+                  ></b-form-input>
+                  <b-form-select
+                    v-model="selected"
+                    :options="options"
+                    size="sm"
+                  ></b-form-select>
                   <b-input-group-append>
-                    <b-button variant="primary" @click="readParams"
+                    <b-button
+                      variant="primary"
+                      size="sm"
+                      class="ml-3"
+                      @click="list()"
                       >Pesquisar</b-button
                     >
                   </b-input-group-append>
@@ -186,7 +181,7 @@
                     </thead>
                     <tbody>
                       <tr v-for="item in ListaPaciente" :key="item.idPaciente">
-                        <td>{{ item.nomePaciente }}</td>
+                        <td>{{ String(item.nomePaciente).toUpperCase() }}</td>
                         <td>
                           {{
                             new Date(
@@ -200,106 +195,26 @@
                         </td>
                         <td>{{ item.cpf }}</td>
                         <td>
-                          <b-button
-                            pill
-                            variant="primary"
-                            @click="MudarAcoes(item.uuid)"
-                            >Ações</b-button
-                          >
+                          <b-dropdown center text="Ações">
+                            <b-dropdown-item @click="read(item.uuid)"
+                              >Editar</b-dropdown-item
+                            >
+                            <b-dropdown-item @click="deletePaciente(item.uuid)"
+                              >Deletar</b-dropdown-item
+                            >
+                            <b-dropdown-divider></b-dropdown-divider>
+                          </b-dropdown>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-
-                  <footer
-                    v-if="acoes == true"
-                    id="sticky-footer"
-                    class="py-4 text-white-50"
-                  >
-                    <div class="container text-center">
-                      <b-button
-                        pill
-                        variant="light"
-                        @click="read(idPacienteAcoes)"
-                        class="mr-2"
-                        type="submit"
-                      >
-                        <b-icon-person-check-fill
-                          submit
-                          class="mr-3"
-                        ></b-icon-person-check-fill
-                        >Editar
-                      </b-button>
-
-                      <b-button
-                        pill
-                        variant="light"
-                        @click="deletePaciente(idPacienteAcoes)"
-                        class="mr-2"
-                      >
-                        <b-icon-arrow-clockwise
-                          submit
-                          class="mr-3"
-                        ></b-icon-arrow-clockwise
-                        >Excluir
-                      </b-button>
-
-                      <b-button pill class="mr-2" variant="light">
-                        <b-icon-x class="mr-3 mb-1"></b-icon-x>Agendar
-                      </b-button>
-                    </div>
-                  </footer>
                 </div>
               </b-card>
-              <footer class="card-footer">
-                <div class="card-footer-item">
-                  <nav
-                    class="pagination is-centered"
-                    role="navigation"
-                    aria-label="pagination"
-                  >
-                    <b-button
-                      v-if="page < totalPage"
-                      variant="primary"
-                      @click="nextPage"
-                      v-show="statePesquisa"
-                    >
-                      Proximo
-                      <b-icon-arrow-right-circle-fill>
-                      </b-icon-arrow-right-circle-fill>
-                    </b-button>
 
-                    <b-button
-                      variant="primary"
-                      @click="previousPage"
-                      class="ml-3"
-                      v-show="statePesquisa"
-                      v-if="page != 1"
-                    >
-                      <b-icon-arrow-left-circle-fill>
-                      </b-icon-arrow-left-circle-fill>
-                      Anterior
-                    </b-button>
-
-                    <b-button
-                      variant="primary"
-                      @click="limparPesquisa"
-                      v-if="statePesquisa === false"
-                    >
-                      Limpar Pesquisa
-                    </b-button>
-                  </nav>
-                </div>
-                <div class="card-footer-item mt-3" v-show="statePesquisa">
-                  <label>
-                    Total de Páginas
-                    <b-badge variant="primary">{{ totalPage }}</b-badge>
-                  </label>
-                  <label class="ml-4">
-                    Página Atual <b-badge variant="primary">{{ page }}</b-badge>
-                  </label>
-                </div>
-              </footer>
+              <b-button-group size="sm" class="mt-2">
+                <b-button @click="previousPage">Anterior</b-button>
+                <b-button @click="nextPage">Próximo</b-button>
+              </b-button-group>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -311,11 +226,10 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import PacienteService from "../../services/paciente";
-import ValidatorPaciente from "../../services/validacoes";
+import ValidatorPaciente from "../../validators/paciente";
 
 export default {
-  components: {
-  },
+  components: {},
   computed: {
     ...mapState({
       pacientes: (state) => state.paciente,
@@ -327,17 +241,10 @@ export default {
   },
   data() {
     return {
-      myInputModel: '',
       campoPesquisa: "",
       pages: [],
-      statusPesquisa: "",
-      message: false,
-      acoes: false,
       ListaPaciente: {},
       tabIndex: 1,
-      idPacienteAcoes: -1,
-      idPaciente: -1,
-      statePesquisa: true,
       page: 1,
       totalPage: 0,
       paciente: {
@@ -352,16 +259,25 @@ export default {
         cidade: "",
         estado: "",
       },
+      pacienteError: {
+        nomePaciente: "",
+        dataNascimento: "",
+        email: "",
+        telefone: "",
+        cpf: "",
+        rg: "",
+        endereco: "",
+        cidade: "",
+        estado: "",
+      },
+      options: [
+        { value: "nomePaciente", text: "Nome" },
+        { value: "cpf", text: "Cpf" },
+      ],
+      selected: "nomePaciente",
+      campoPesquisaError: "",
     };
   },
-
-  beforeMount() {
-  },
-
-  mounted() {
-    this.list();
-  },
-
   methods: {
     ...mapActions([
       "savePaciente",
@@ -372,19 +288,12 @@ export default {
     ]),
 
     showAlert(icon, title) {
-      // Use sweetalert2
-
       this.$swal({
         icon: icon,
         title: title,
         showConfirmButton: false,
-        timer: 2500,
+        timer: 1500,
       });
-    },
-
-    MudarAcoes(idPaciente) {
-      this.acoes = !this.acoes;
-      this.idPacienteAcoes = idPaciente;
     },
 
     limpar() {
@@ -400,119 +309,109 @@ export default {
         cidade: "",
         estado: "",
       };
-    },
-    limparPesquisa() {
-      this.list();
-      this.statePesquisa = true;
-      this.campoPesquisa = "";
-    },
-    list() {
-      PacienteService.list().then((response) => {
-        this.ListaPaciente = response.data.result.result;
-        const totalRows = response.data.result.total[0].count;
-        this.totalPage = Math.ceil(totalRows / 10);
-        this.page = 1;
-      });
-    },
+      this.pacienteError = {
+        nomePaciente: "",
+        dataNascimento: "",
+        email: "",
+        telefone: "",
+        cpf: "",
+        rg: "",
+        endereco: "",
+        cidade: "",
+        estado: "",
+      };
 
-    previousPage() {
-      this.page = this.page - 1;
-      PacienteService.previousPage(this.page).then((response) => {
-        this.ListaPaciente = response.data.result.result;
-      });
+      this.campoPesquisaError = "";
     },
-
-    nextPage() {
-      this.page = this.page + 1;
-      PacienteService.nextPage(this.page).then((response) => {
-        this.ListaPaciente = response.data.result.result;
-      });
-    },
-
-    salvar() {
-      const error = ValidatorPaciente.ValidarPaciente(this.paciente);
-      if (error) {
-        this.showAlert("info", "Existe algum erro de preenchimento");
-      } else {
-        if (this.paciente.uuid === -1) {
-          PacienteService.save(this.paciente)
-            .then((result) => {
-              if (result.status === 201) {
-                this.showAlert("success", "Paciente Salvo com Sucesso");
-                this.paciente.uuid = result.data.uuid;
-                this.list();
-              } else {
-                this.showAlert("error", "Erro ao Salvar Paciente");
-              }
-            })
-            .catch(() => {
-              this.showAlert("error", "Erro ao Salvar Paciente");
-            });
-        } else {
-          PacienteService.edit(this.paciente, this.paciente.uuid)
-            .then((result) => {
-              if (result.status === 201) {
-                this.showAlert("success", "Paciente Editado com Sucesso");
-                this.list();
-              } else {
-                this.showAlert("error", "Erro ao Editar Paciente");
-              }
-            })
-            .catch(() => {
-              this.showAlert("error", "Erro ao Editar Paciente");
-            });
+    async list() {
+      try {
+        if (!this.selected) {
+          this.campoPesquisaError = "Selecione uma Opção para pesquisar.";
+          return;
         }
-      }
-    },
 
-    readParams() {
-      if (!this.statusPesquisa) {
-        this.showAlert(
-          "info",
-          "Selecione uma Opção para pesquisar (Nome ou CPF)"
+        if (!this.campoPesquisa) {
+          this.campoPesquisaError = "Campo de Pesquisa em branco.";
+          return;
+        }
+
+        const response = await PacienteService.list(
+          `${this.selected}=${this.campoPesquisa}&like=true&page=${this.page}`
         );
-      } else if (!this.campoPesquisa) {
-        this.showAlert("info", "Campo de Pesquisa em branco");
-      } else {
-        PacienteService.readParams(
-          this.statusPesquisa,
-          this.campoPesquisa
-        ).then((result) => {
-          if (Object.keys(result.data.result).length === 0) {
-            this.showAlert("info", "Nenhuma Informação encontrada");
-          } else {
-            this.statePesquisa = false;
-            this.ListaPaciente = result.data.result;
-          }
-        }).catch(() => {
-            this.showAlert("error", "Não foi possível realizar consulta");
-        });
+        this.ListaPaciente = response.data.result;
+        const totalRows = response.data.total[0].count;
+        this.totalPage = Math.ceil(totalRows / 10);
+        this.campoPesquisaError = "";
+      } catch (ex) {
+        console.log(ex);
       }
     },
-
-    deletePaciente(idPaciente) {
-      PacienteService.delete(idPaciente).then(() => {
-        this.showAlert("success", "Paciente Deletado com Sucesso");
+    async previousPage() {
+      try {
+        this.page -= 1
         this.list();
-      }).catch(error => {
-        if(error.response.status === 409){
-          this.showAlert("info", error.response.data.message);
-        }else{
-        this.showAlert("error", "Erro eo Deletar registro de Paciente");
-        }
-        
-      });
-      this.acoes = false;
+      } catch (ex) {
+        console.log(ex);
+      }
     },
+    async nextPage() {
+      try {
+        this.page += 1
+        this.list();
+      } catch (ex) {
+        console.log(ex);
+      }
+    },
+    async salvar() {
+      const validation = ValidatorPaciente(this.paciente);
 
+      if (validation) {
+        for (const key in validation) {
+          const err = validation[key];
+          this.pacienteError[key] = err[0];
+        }
+        this.showAlert("info", "Existe algum erro de preenchimento");
+        return;
+      }
+
+      if (this.paciente.uuid === -1) {
+        try {
+          const result = await PacienteService.save(this.paciente);
+          this.showAlert("success", "Paciente Salvo com Sucesso");
+          this.paciente.uuid = result.data.uuid;
+          this.list();
+        } catch (ex) {
+          this.showAlert("error", "Erro ao Salvar Paciente");
+        }
+        return;
+      }
+      try {
+        await PacienteService.edit(this.paciente, this.paciente.uuid);
+        this.showAlert("success", "Paciente Editado com Sucesso");
+        this.list();
+      } catch (ex) {
+        this.showAlert("error", "Erro ao Editar Paciente");
+      }
+    },
+    deletePaciente(idPaciente) {
+      PacienteService.delete(idPaciente)
+        .then(() => {
+          this.showAlert("success", "Paciente Deletado com Sucesso");
+          this.list();
+        })
+        .catch(() => {
+          this.showAlert("error", "Erro eo Deletar registro de Paciente");
+        });
+    },
     read(uuid) {
-      PacienteService.read(uuid).then((response) => {
-        this.tabIndex -= this.tabIndex;
-        this.paciente = response.data.paciente;
-      }).catch(()=> {
-        this.showAlert("error", "Erro consultar registro de Paciente");
-      });
-      this.acoes = false;
+      PacienteService.read(uuid)
+        .then((response) => {
+          this.tabIndex -= this.tabIndex;
+          this.paciente = response.data.paciente;
+        })
+        .catch(() => {
+          this.showAlert("error", "Erro consultar registro de Paciente");
+        });
     },
   },
 };
