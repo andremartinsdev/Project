@@ -29,16 +29,7 @@ export default {
         return http.get(`paciente/${uuid}`)
     },
 
-    readAll: () => {
-        return http.get(`paciente/read/all`)
+    readAllNames: () => {
+        return http.get(`paciente/read/all/names`)
     },
-
-    readParams: (type, data) => {
-        if(type === "cpf"){
-            return http.get(`paciente/readCpf/${data}`)
-        }else if (type === "nome"){
-            return http.get(`paciente/readName/${data}`)
-        }
-
-    }
 }

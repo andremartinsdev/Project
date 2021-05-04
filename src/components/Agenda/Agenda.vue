@@ -374,54 +374,58 @@
                   </div>
                   <div class="mt-2 mb-2">
                     <div>
-                    <b-button variant="primary"     size="sm" class="mr-4" @click="pesquisarAgendamentos"
-                      >Pesquisar</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      class="mr-2"
-                      @click="proximaPage"
-                      v-if="page < totalPage"
-                      size="sm"
-                      >Proxima Pagina</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      class="mr-2"
-                      disabled
-                          size="sm"
-                      v-else
-                      >Proxima Pagina</b-button
-                    >
-                    <label>
-                      Total de Páginas
-                      <b-badge variant="primary">{{ totalPage }}</b-badge>
-                    </label>
-                    <label class="ml-4">
-                      Página Atual
-                      <b-badge variant="primary">{{ page }}</b-badge>
-                    </label>
-                    <b-button
-                      pill
-                      variant="primary"
-                      @click="anteriorPage"
-                      v-if="page > 1"
-                      class="mr-2  ml-2"
-                          size="sm"
-                      >Pagina Anterior</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      disabled
-                      v-else
-                          size="sm"
-                      class="mr-2  ml-2"
-                      >Pagina Anterior</b-button
-                    >
-                  </div>
+                      <b-button
+                        variant="primary"
+                        size="sm"
+                        class="mr-4"
+                        @click="pesquisarAgendamentos"
+                        >Pesquisar</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        class="mr-2"
+                        @click="proximaPage"
+                        v-if="page < totalPage"
+                        size="sm"
+                        >Proxima Pagina</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        class="mr-2"
+                        disabled
+                        size="sm"
+                        v-else
+                        >Proxima Pagina</b-button
+                      >
+                      <label>
+                        Total de Páginas
+                        <b-badge variant="primary">{{ totalPage }}</b-badge>
+                      </label>
+                      <label class="ml-4">
+                        Página Atual
+                        <b-badge variant="primary">{{ page }}</b-badge>
+                      </label>
+                      <b-button
+                        pill
+                        variant="primary"
+                        @click="anteriorPage"
+                        v-if="page > 1"
+                        class="mr-2 ml-2"
+                        size="sm"
+                        >Pagina Anterior</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        disabled
+                        v-else
+                        size="sm"
+                        class="mr-2 ml-2"
+                        >Pagina Anterior</b-button
+                      >
+                    </div>
                   </div>
                 </div>
                 <div class="tabela">
@@ -462,7 +466,6 @@
                       </tr>
                     </tbody>
                   </table>
-                  
                 </div>
               </b-tab>
             </b-tabs>
@@ -472,8 +475,8 @@
     </div>
   </div>
 </template>
+
 <script>
-//import Calendar from "./Calendar";
 import PacienteService from "../../services/paciente";
 import FormaDePagamentoService from "../../services/formaDePagamento";
 import OticasParceirasServices from "../../services/oticasParceiras";
@@ -518,7 +521,6 @@ export default {
       optionsPro: [],
       dataInicial: "",
       dataFinal: "",
-      teste: "asdasdsa",
       idPacientePesquisa: -1,
       page: 1,
       totalPage: 0,
@@ -542,18 +544,14 @@ export default {
       idPaciente: (state) => state.pacienteSelected,
     }),
   },
-
   created() {
     this.list();
     this.readAllProcedimentos();
     this.readFormaPagamento();
     this.readOticaParceira();
   },
-
   methods: {
     showAlert(icon, title) {
-      // Use sweetalert2
-
       this.$swal({
         icon: icon,
         title: title,
@@ -561,7 +559,6 @@ export default {
         timer: 2500,
       });
     },
-
     editarProcedimento(uuid) {
       ProcedimentoService.read(uuid)
         .then((result) => {
@@ -576,14 +573,11 @@ export default {
           this.showAlert("error", "Erro ao carregar procedimento");
         });
     },
-
     loadEventos2() {
       this.loadEventos = [];
       AgendaService.read()
         .then((result) => {
-          console.log(result);
           result.data.consulta.map((resultado) => {
-            console.log(this.CreateObject(resultado));
             this.loadEventos.push(this.CreateObject(resultado));
           });
         })
@@ -591,9 +585,7 @@ export default {
           this.showAlert("error", "Erro ao carregar Eventos");
         });
     },
-
     CreateObject(dados) {
-      console.log(dados);
       return {
         id: dados.uuid,
         title: dados.titulo,
@@ -601,7 +593,6 @@ export default {
         description: dados.observacao,
       };
     },
-
     excluirProcedimento(uuid) {
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
@@ -618,11 +609,9 @@ export default {
           });
       }
     },
-
     limparProcedimento() {
       this.procedimento = { uuid: "", text: "", value: "" };
     },
-
     resetModal() {
       this.dataFinal = "";
       this.dataInicial = "";
@@ -641,11 +630,11 @@ export default {
       };
     },
     list() {
-      PacienteService.readAll()
+      PacienteService.readAllNames()
         .then((response) => {
-          response.data.result.map((paciente) => {
+          response.data.map((paciente) => {
             this.ListaPaciente.push(
-              this.Paciente(paciente.nomePaciente, paciente.idPaciente)
+              this.Paciente(paciente.nomePaciente, paciente.uuid)
             );
           });
         })
@@ -653,29 +642,21 @@ export default {
           this.showAlert("error", "Ocorreu um problema ao listar pacientes");
         });
     },
-
-    editarAgendamento(uuid) {
+    async editarAgendamento(uuid) {
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
-      } else {
-        AgendaService.readParams(uuid)
-          .then((result) => {
-            if (result.status === 201) {
-              this.agendamento = result.data.agendamento;
-              this.agendamento.data = moment(
-                result.data.agendamento.data
-              ).format("YYYY-MM-DD");
-              this.agendamento.procedimento =
-                result.data.agendamento.procedimento;
-              this.tabIndexAgendamento = 0;
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Erro ao editar Agendamento");
-          });
+        return;
+      }
+      try {
+        const result = await AgendaService.readParams(uuid);
+        this.agendamento = result.data.agendamento;
+        this.agendamento.data = moment(result.data.agendamento.data).format("YYYY-MM-DD");
+        this.agendamento.procedimento = result.data.agendamento.procedimento;
+        this.tabIndexAgendamento = 0;
+      } catch (error) {
+        this.showAlert("error", "Erro ao editar Agendamento");
       }
     },
-
     excluirAgendamento(uuid) {
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
@@ -694,62 +675,52 @@ export default {
           });
       }
     },
-
     pacienteSelect() {
       this.$store.commit("PACIENTE_SELECTED", this.agendamento.idPaciente);
     },
-
     pacienteSelectPesquisa() {
       this.$store.commit("PACIENTE_SELECTED", this.idPacientePesquisa);
     },
-
     Paciente(text, value) {
       return {
         text: text,
         value: value,
       };
     },
-
     saveAgendamento() {
-      if (Validation.ValidaAgendamento(this.agendamento)) {
-        this.showAlert(
-          "info",
-          "Ocorreu um erro de validação, verifique se os campos estão preenchidos corretamente"
-        );
-      } else {
-        if (this.agendamento.uuid === "") {
-          this.agendamento.valorConsulta = this.agendamento.valorConsulta
-            .replace("R$", "")
-            .replace(" ", "")
-            .replace(".", "")
-            .replace(",", ".");
-          AgendaService.save(this.agendamento)
-            .then((result) => {
-              if (result.status === 201) {
-                this.showAlert("success", "Agendamento Realizado com Sucesso");
-                this.loadEventos2();
-                this.resetModal();
-              }
-            })
-            .catch(() => {
-              this.showAlert("error", "Erro ao Realizar agendamento");
-            });
-        } else {
-          console.log(this.agendamento);
-          AgendaService.update(this.agendamento.uuid, this.agendamento)
-            .then((result) => {
-              if (result.status === 201) {
-                this.showAlert("success", "Agendamento Editado");
-                this.loadEventos2();
-              }
-            })
-            .catch(() => {
-              this.showAlert("error", "Erro ao Atualizar agendamento");
-            });
+      if (this.agendamento.uuid === "") {
+        if (Validation.ValidaAgendamento(this.agendamento)) {
+          this.showAlert(
+            "info",
+            "Ocorreu um erro de validação, verifique se os campos estão preenchidos corretamente"
+          );
+          return;
         }
+        this.agendamento.valorConsulta = this.agendamento.valorConsulta
+          .replace("R$", "")
+          .replace(" ", "")
+          .replace(".", "")
+          .replace(",", ".");
+        AgendaService.save(this.agendamento)
+          .then(() => {
+            this.showAlert("success", "Agendamento Realizado com Sucesso");
+            this.loadEventos2();
+            this.resetModal();
+          })
+          .catch(() => {
+            this.showAlert("error", "Erro ao Realizar agendamento");
+          });
+      } else {
+        AgendaService.update(this.agendamento.uuid, this.agendamento)
+          .then(() => {
+            this.showAlert("success", "Agendamento Editado");
+            this.loadEventos2();
+          })
+          .catch(() => {
+            this.showAlert("error", "Erro ao Atualizar agendamento");
+          });
       }
     },
-
     saveProcedimento(bvModalEvt) {
       bvModalEvt.preventDefault();
       if (this.procedimento.text != "") {
@@ -786,7 +757,6 @@ export default {
         );
       }
     },
-
     proximaPage() {
       this.page = this.page + 1;
       AgendaService.readDataPaginationProximo(
@@ -819,82 +789,79 @@ export default {
         });
       });
     },
-
-    pesquisarAgendamentos() {
+    async pesquisarAgendamentos() {
       if (this.dataInicial === "" || this.dataFinal === "") {
         this.showAlert("info", "Informe o periodo");
-      } else {
-        if (this.idPacientePesquisa === -1) {
-          this.agendamentoPesquisa = [];
-          AgendaService.readDataPagination(this.dataInicial, this.dataFinal)
-            .then((result) => {
-              console.log();
-              if (result.data.result.result.length === 0) {
-                this.showAlert("info", "Nenhuma informação");
-              } else {
-                this.agendamentoPesquisa = result.data.result.result;
-                this.agendamentoPesquisa.map((el) => {
-                  el.data = moment(el.data).format("DD/MM/YYYY");
-                });
-                this.agendamentoPesquisa.sort((a, b) => {
-                  return parseInt(a.data) - parseInt(b.data);
-                }),
-                  (this.totalPage = Math.ceil(
-                    result.data.result.total[0].count / 5
-                  ));
-              }
-            })
-            .catch(() => {
-              this.showAlert("error", "Erro na pesquisa dos agendamentos");
-            });
-        } else {
-          this.agendamentoPesquisa = [];
-          AgendaService.readDatePaciente(
+        return;
+      }
+
+      this.agendamentoPesquisa = [];
+      if (this.idPacientePesquisa === -1) {
+        try {
+          const result = await AgendaService.readDataPagination(
             this.dataInicial,
-            this.dataFinal,
-            this.idPaciente
-          )
-            .then((result) => {
-              this.agendamentoPesquisa = result.data.agendamentos;
-            })
-            .catch(() => {
-              this.showAlert("error", "Ocorreu um erro ao pesquisar");
-            });
+            this.dataFinal
+          );
+          if (result.data.result.result.length === 0) {
+            this.showAlert("info", "Nenhuma informação");
+            return;
+          }
+          this.agendamentoPesquisa = result.data.result.result;
+          this.agendamentoPesquisa.map((el) => {
+            el.data = moment(el.data).format("DD/MM/YYYY");
+          });
+          this.agendamentoPesquisa.sort((a, b) => {
+            return parseInt(a.data) - parseInt(b.data);
+          }),
+            (this.totalPage = Math.ceil(result.data.result.total[0].count / 5));
+        } catch (error) {
+          this.showAlert("error", "Erro na pesquisa dos agendamentos");
         }
+
+        return;
+      }
+
+      try {
+        const result = await AgendaService.readDatePaciente(
+          this.dataInicial,
+          this.dataFinal,
+          this.idPaciente
+        );
+
+        if (result.data.agendamentos.length === 0) {
+          this.showAlert("info", "Nenhuma informação");
+          return;
+        }
+
+        this.agendamentoPesquisa = result.data.agendamentos;
+        this.agendamentoPesquisa.map((el) => {
+          el.data = moment(el.data).format("DD/MM/YYYY");
+        });
+
+        this.agendamentoPesquisa = result.data.agendamentos;
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um erro ao pesquisar");
       }
     },
     readAllProcedimentos() {
       ProcedimentoService.readAll()
         .then((result) => {
-          if (result.status === 201) {
-            this.optionsPro = result.data.procedimento;
-          } else {
-            this.showAlert(
-              "error",
-              "Ocorreu um erro ao carregar procedimentos"
-            );
-          }
+          this.optionsPro = result.data.procedimento;
         })
         .catch(() => {
           this.showAlert("error", "Ocorreu um erro ao carregar procedimentos");
         });
     },
-
     handleOk(bvModalEvt) {
-      // Prevent modal from closing
       bvModalEvt.preventDefault();
-      // Trigger submit handler
       this.handleSubmit();
     },
-
     handleSubmit() {
-      // Exit when the form isn't valid
       this.saveAgendamento();
     },
     detalhesAgendamento(event) {
       AgendaService.readAgendaJoinPaciente(event.id)
         .then((result) => {
-          console.log(result.data.agendamento);
           this.agendamento = result.data.agendamento;
           this.agendamento.data = moment(result.data.agendamento.data).format(
             "YYYY-MM-DD"
@@ -930,79 +897,57 @@ export default {
       this.$bvModal.show("modal-lg");
       this.agendamento.data = event;
     },
-
     adicionarProcedimento() {
       this.$bvModal.show("modal-lg-addProcedimento");
     },
-
     formaPagamento(descricao, idFormaPagamento) {
       return {
         text: descricao,
         value: idFormaPagamento,
       };
     },
-
     oticaParceira(nome, idOticaParceira) {
       return {
         text: nome,
         value: idOticaParceira,
       };
     },
-
     readFormaPagamento() {
       FormaDePagamentoService.read().then((result) => {
         result.data.formasPagamento.map((el) => {
           this.formaDePagamento.push(
-            this.formaPagamento(el.descricao, el.idFormaPagamento)
+            this.formaPagamento(el.descricao, el.uuid)
           );
         });
       });
     },
-
     readOticaParceira() {
       OticasParceirasServices.read().then((result) => {
-        console.log(result);
         result.data.oticaParceira.map((el) => {
-          this.oticasParceiras.push(
-            this.oticaParceira(el.nome, el.idOticaParceira)
-          );
+          this.oticasParceiras.push(this.oticaParceira(el.nome, el.uuid));
         });
-        console.log(this.oticasParceiras);
       });
     },
-
     savePagamento() {
-      console.log(this.agendamento.valorConsulta);
-      if (
-        Validation.ValidaAgendamento(this.agendamento) &&
-        parseInt(this.agendamento.valorConsulta) > 0 &&
-        this.agendamento.valorConsulta != "00,00" &&
-        this.formaPagamentoSelect != null &&
-        this.agendamento.recebido === true
-      ) {
-        AgendaService.update(this.agendamento.uuid, {
-          recebido: this.agendamento.recebido,
-          valorConsulta: this.agendamento.valorConsulta
-            .replace(".", "")
-            .replace(",", "."),
-          idFormaPagamento: this.formaPagamentoSelect,
-          idOticaParceira: this.oticasParceirasSelect,
-          dataPagamento: moment().format("YYYY-MM-DD"),
+      AgendaService.update(this.agendamento.uuid, {
+        recebido: this.agendamento.recebido,
+        valorConsulta: this.agendamento.valorConsulta
+          .replace("R$", "")
+          .replace(" ", "")
+          .replace(".", "")
+          .replace(",", ".")
+          .trim(),
+        idFormaPagamento: this.formaPagamentoSelect,
+        idOticaParceira: this.oticasParceirasSelect,
+        dataPagamento: moment().format("YYYY-MM-DD"),
+      })
+        .then(() => {
+          this.showAlert("success", "Pagamento Realizado com Sucesso");
         })
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Pagamento Realizado com Sucesso");
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Ocorreu um erro ao realizar pagamento");
-          });
-      } else {
-        this.showAlert(
-          "info",
-          "Ocorreu um erro, verifique se todos os campos estão preenchidos"
-        );
-      }
+        .catch((ex) => {
+          console.log(ex);
+          this.showAlert("error", "Ocorreu um erro ao realizar pagamento");
+        });
     },
   },
 };

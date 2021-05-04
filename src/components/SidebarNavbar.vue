@@ -245,9 +245,8 @@ export default {
   updated() {},
 
   mounted() {
-    this.readAgendamentos();
-    this.readDespesas();
-    console.log("entrooooou before");
+    // this.readAgendamentos();
+    // this.readDespesas();
   },
 
   methods: {
@@ -279,7 +278,6 @@ export default {
           el.data = moment(el.data).format("DD/MM/YYYY");
           this.despesasHoje.push(el);
         });
-        console.log(this.despesasHoje);
       });
     },
   },

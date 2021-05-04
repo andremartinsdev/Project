@@ -265,53 +265,55 @@
                       </tr>
                     </tbody>
                   </table>
-                   <div class="mt-2 mb-2">
+                  <div class="mt-2 mb-2">
                     <div>
-                    <b-button
-                      pill
-                      variant="primary"
-                      class="mr-2"
-                      @click="proximaPagePesquisa"
-                      v-if="pagePesquisa < totalPagePesquisa"
-                      size="sm"
-                      >Proxima Pagina</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      class="mr-2"
-                      disabled
-                          size="sm"
-                      v-else
-                      >Proxima Pagina</b-button
-                    >
-                    <label>
-                      Total de Páginas
-                      <b-badge variant="primary">{{ totalPagePesquisa }}</b-badge>
-                    </label>
-                    <label class="ml-4">
-                      Página Atual
-                      <b-badge variant="primary">{{ pagePesquisa }}</b-badge>
-                    </label>
-                    <b-button
-                      pill
-                      variant="primary"
-                      @click="anteriorPagePesquisa"
-                      v-if="pagePesquisa > 1"
-                      class="mr-2  ml-2"
-                          size="sm"
-                      >Pagina Anterior</b-button
-                    >
-                    <b-button
-                      pill
-                      variant="primary"
-                      disabled
-                      v-else
-                          size="sm"
-                      class="mr-2  ml-2"
-                      >Pagina Anterior</b-button
-                    >
-                  </div>
+                      <b-button
+                        pill
+                        variant="primary"
+                        class="mr-2"
+                        @click="proximaPagePesquisa"
+                        v-if="pagePesquisa < totalPagePesquisa"
+                        size="sm"
+                        >Proxima Pagina</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        class="mr-2"
+                        disabled
+                        size="sm"
+                        v-else
+                        >Proxima Pagina</b-button
+                      >
+                      <label>
+                        Total de Páginas
+                        <b-badge variant="primary">{{
+                          totalPagePesquisa
+                        }}</b-badge>
+                      </label>
+                      <label class="ml-4">
+                        Página Atual
+                        <b-badge variant="primary">{{ pagePesquisa }}</b-badge>
+                      </label>
+                      <b-button
+                        pill
+                        variant="primary"
+                        @click="anteriorPagePesquisa"
+                        v-if="pagePesquisa > 1"
+                        class="mr-2 ml-2"
+                        size="sm"
+                        >Pagina Anterior</b-button
+                      >
+                      <b-button
+                        pill
+                        variant="primary"
+                        disabled
+                        v-else
+                        size="sm"
+                        class="mr-2 ml-2"
+                        >Pagina Anterior</b-button
+                      >
+                    </div>
                   </div>
                 </b-jumbotron>
               </div>
@@ -436,7 +438,7 @@
                     </tr>
                   </tbody>
                 </table>
-                   <div class="mt-2 mb-2">
+                <div class="mt-2 mb-2">
                   <div>
                     <b-button
                       pill
@@ -541,7 +543,7 @@
                     </tr>
                   </tbody>
                 </table>
-                 <div class="mt-2 mb-2">
+                <div class="mt-2 mb-2">
                   <div>
                     <b-button
                       pill
@@ -563,7 +565,9 @@
                     >
                     <label>
                       Total de Páginas
-                      <b-badge variant="primary">{{ totalPageFinalizado }}</b-badge>
+                      <b-badge variant="primary">{{
+                        totalPageFinalizado
+                      }}</b-badge>
                     </label>
                     <label class="ml-4">
                       Página Atual
@@ -634,8 +638,8 @@ export default {
       color: "primary",
       dataInicialAg: "",
       dataFinalAg: "",
-      pagePesquisa:1,
-      totalPagePesquisa:1,
+      pagePesquisa: 1,
+      totalPagePesquisa: 1,
       dataInicialAgFinalizado: "",
       dataFinalAgFinalizado: "",
       agendamentos: [],
@@ -700,8 +704,8 @@ export default {
       this.editar = false;
     },
 
-    anteriorPageAg(){
-this.pageAg = this.pageAg - 1;
+    anteriorPageAg() {
+      this.pageAg = this.pageAg - 1;
       AgendaService.readDateRelatorioPaginationNavigation(
         this.dataInicialAg,
         this.dataFinalAg,
@@ -715,8 +719,8 @@ this.pageAg = this.pageAg - 1;
       });
     },
 
-    proximaPageAg(){
-this.pageAg = this.pageAg + 1;
+    proximaPageAg() {
+      this.pageAg = this.pageAg + 1;
       AgendaService.readDateRelatorioPaginationNavigation(
         this.dataInicialAg,
         this.dataFinalAg,
@@ -744,15 +748,15 @@ this.pageAg = this.pageAg + 1;
       });
     },
 
-    proximaPageFinalizado(){
-      this.pageFinalizado = this.pageFinalizado + 1
-          this.agendamentosDataFinalizado = [];
+    proximaPageFinalizado() {
+      this.pageFinalizado = this.pageFinalizado + 1;
+      this.agendamentosDataFinalizado = [];
       AgendaService.readDateAgendamentoFinalizadoPaginationNavigation(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado,
         this.pageFinalizado
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -760,15 +764,15 @@ this.pageAg = this.pageAg + 1;
       });
     },
 
-     anteriorPageFinalizado(){
-      this.pageFinalizado = this.pageFinalizado - 1
-          this.agendamentosDataFinalizado = [];
+    anteriorPageFinalizado() {
+      this.pageFinalizado = this.pageFinalizado - 1;
+      this.agendamentosDataFinalizado = [];
       AgendaService.readDateAgendamentoFinalizadoPaginationNavigation(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado,
         this.pageFinalizado
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -796,7 +800,9 @@ this.pageAg = this.pageAg + 1;
         this.dataFinalAg
       ).then((result) => {
         this.agendamentosData = result.data.agendamentos.result;
-        this.totalPageAg = Math.ceil(result.data.agendamentos.total[0].count / 5)
+        this.totalPageAg = Math.ceil(
+          result.data.agendamentos.total[0].count / 5
+        );
         console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosData.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
@@ -810,17 +816,19 @@ this.pageAg = this.pageAg + 1;
     },
 
     listAgendamentoRealizado() {
-      this.totalPageFinalizado = 1
-      this.pageFinalizado = 1
+      this.totalPageFinalizado = 1;
+      this.pageFinalizado = 1;
       this.agendamentosDataFinalizado = [];
       AgendaService.readDateAgendamentoFinalizadoPagination(
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
-        this.totalPageFinalizado = Math.ceil(result.data.agendamentos.total[0].count / 5)
-        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5))
+        this.totalPageFinalizado = Math.ceil(
+          result.data.agendamentos.total[0].count / 5
+        );
+        console.log(Math.ceil(result.data.agendamentos.total[0].count / 5));
         this.agendamentosDataFinalizado.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
         });
@@ -869,8 +877,8 @@ this.pageAg = this.pageAg + 1;
     },
 
     loadAgendamentos() {
-      this.page = 1
-      this.totalPage = 1
+      this.page = 1;
+      this.totalPage = 1;
       AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
           this.agendamentos = result.data.agendamentos.result;
@@ -936,21 +944,31 @@ this.pageAg = this.pageAg + 1;
       });
     },
 
-proximaPagePesquisa(){
-  this.pagePesquisa = this.pagePesquisa + 1
-  FichaClinicaService.readPagination(this.idPaciente, this.dataInicial,  this.dataFinal, this.pagePesquisa).then(result => {
-   this.ListaConsulta = result.data.result.result;
-   this.ListaConsulta.titulo = this.retornaTipoConsulta();
-  })
-},
+    proximaPagePesquisa() {
+      this.pagePesquisa = this.pagePesquisa + 1;
+      FichaClinicaService.readPagination(
+        this.idPaciente,
+        this.dataInicial,
+        this.dataFinal,
+        this.pagePesquisa
+      ).then((result) => {
+        this.ListaConsulta = result.data.result.result;
+        this.ListaConsulta.titulo = this.retornaTipoConsulta();
+      });
+    },
 
-anteriorPagePesquisa(){
-  this.pagePesquisa = this.pagePesquisa -1
-  FichaClinicaService.readPagination(this.idPaciente, this.dataInicial,  this.dataFinal, this.pagePesquisa).then(result => {
-   this.ListaConsulta = result.data.result.result;
-   this.ListaConsulta.titulo = this.retornaTipoConsulta();
-  })
-},
+    anteriorPagePesquisa() {
+      this.pagePesquisa = this.pagePesquisa - 1;
+      FichaClinicaService.readPagination(
+        this.idPaciente,
+        this.dataInicial,
+        this.dataFinal,
+        this.pagePesquisa
+      ).then((result) => {
+        this.ListaConsulta = result.data.result.result;
+        this.ListaConsulta.titulo = this.retornaTipoConsulta();
+      });
+    },
 
     async listConsulta() {
       this.ListaConsulta = {};
@@ -960,11 +978,13 @@ anteriorPagePesquisa(){
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
         }).then((result) => {
-          console.log(result.data.result.total[0].count)
+          console.log(result.data.result.total[0].count);
           if (Object.keys(result.data.result).length === 0) {
             this.showAlert("info", "Nenhuma Informação Encontrada");
           } else {
-            this.totalPagePesquisa = Math.ceil(result.data.result.total[0].count/5)
+            this.totalPagePesquisa = Math.ceil(
+              result.data.result.total[0].count / 5
+            );
             this.ListaConsulta = result.data.result.result;
             console.log(this.ListaConsulta);
             this.ListaConsulta.titulo = this.retornaTipoConsulta();
@@ -1069,12 +1089,11 @@ anteriorPagePesquisa(){
     },
 
     list() {
-      PacienteService.readAll()
+      PacienteService.readAllNames()
         .then((response) => {
-          console.log(response);
-          response.data.result.map((paciente) => {
+          response.data.map((paciente) => {
             this.ListaPaciente.push(
-              this.Paciente(paciente.nomePaciente, paciente.idPaciente)
+              this.Paciente(paciente.nomePaciente, paciente.uuid)
             );
           });
         })
