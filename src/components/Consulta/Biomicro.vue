@@ -251,10 +251,18 @@
       </tbody>
     </table>
 
-    <div>
-      <b-button class="m-4" variant="primary" @click="createPDF"
-        >Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+    <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
       ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
     </div>
   </div>
 </template>
@@ -386,7 +394,7 @@ export default {
   },
 
   methods: {
-createPDF() {
+createPDF(download) {
       console.log(this.propsAnamnese2);
       let pdfName = "Biomicro";
       var doc = new jsPDF();
@@ -505,9 +513,12 @@ createPDF() {
 
       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      if(download){
+        doc.save(pdfName + ".pdf");
+        return;
+      }
+      window.open(doc.output("bloburl"));
       
-
-      doc.save(pdfName + ".pdf");
     },
 
     enviarBiomicro(){

@@ -3,64 +3,120 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="c_tes_amb_tem">Tempo</label>
-        <b-input type="text" @change="enviarTesteAmbulatorial" v-model="testeAmbulatorial.TEMPO" size="sm" class="form-control" />
+        <b-input
+          type="text"
+          @change="enviarTesteAmbulatorial"
+          v-model="testeAmbulatorial.TEMPO"
+          size="sm"
+          class="form-control"
+        />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label for="c_tes_amb_res">Resultado</label>
-        <b-input type="text" @change="enviarTesteAmbulatorial" v-model="testeAmbulatorial.RESULTADO" size="sm" class="form-control" />
+        <b-input
+          type="text"
+          @change="enviarTesteAmbulatorial"
+          v-model="testeAmbulatorial.RESULTADO"
+          size="sm"
+          class="form-control"
+        />
       </div>
     </div>
-    
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+    <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
+    </div>
   </div>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+import logoOlho from "../../assets/LogoOlho.png";
+import moldura from "../../assets/moldura.png";
 export default {
-  props:{
-    Limpar:{
-      type: Boolean
+  props: {
+    Limpar: {
+      type: Boolean,
     },
     testeProps: {
-      type: Object
-    }
+      type: Object,
+    },
   },
-  watch:{
-    testeProps(){
-      if(Object.keys(this.testeProps).length != 0){
-        this.testeAmbulatorial = this.testeProps
-        this. enviarTesteAmbulatorial();
+  watch: {
+    testeProps() {
+      if (Object.keys(this.testeProps).length != 0) {
+        this.testeAmbulatorial = this.testeProps;
+        this.enviarTesteAmbulatorial();
       }
     },
 
-    Limpar(){
+    Limpar() {
       this.testeAmbulatorial = {
-        TEMPO:'',
-        RESULTADO:''
-      }
-      this.$emit('alteraLimpar', false)
-      this.$store.commit("TESTE_AMBULATORIAL", {})
-    }
+        TEMPO: "",
+        RESULTADO: "",
+      };
+      this.$emit("alteraLimpar", false);
+      this.$store.commit("TESTE_AMBULATORIAL", {});
+    },
   },
-  data(){
-    return{
-      testeAmbulatorial:{
-        TEMPO:'',
-        RESULTADO:''
-      }
-    }
+  data() {
+    return {
+      logoOlho: logoOlho,
+      moldura: moldura,
+      testeAmbulatorial: {
+        TEMPO: "",
+        RESULTADO: "",
+      },
+    };
   },
 
-  methods:{
-    enviarTesteAmbulatorial(){
-      this.$store.commit("TESTE_AMBULATORIAL", this.testeAmbulatorial)
-    }
-  }
+  methods: {
+    createPDF() {
+      let pdfName = "Teste Ambulatorial";
+      var doc = new jsPDF();
+      var linha = 90;
+      //var estrutura = ["RFN", "RFP"];
+      doc.text("Teste Ambulatorial", 105, 40, null, null, "center");
+      doc.setFontSize(12);
+      doc.text("Nome Clinica", 105, 48, null, null, "center");
+      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+
+      doc
+        .setTextColor(0, 0, 255)
+        .text(`Tempo : ${this.testeAmbulatorial.TEMPO}`, 25, linha, null, null);
+      doc
+        .text(
+          `Resultado : ${this.testeAmbulatorial.RESULTADO}`,
+          145,
+          linha,
+          null,
+          null
+        )
+        .setTextColor(0);
+
+      doc.setFont("times", "italic");
+      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+
+      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
+      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+
+      doc.save(pdfName + ".pdf");
+    },
+    enviarTesteAmbulatorial() {
+      this.$store.commit("TESTE_AMBULATORIAL", this.testeAmbulatorial);
+    },
+  },
 };
 </script>
 

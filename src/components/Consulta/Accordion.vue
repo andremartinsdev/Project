@@ -1,7 +1,7 @@
 <template>
   <div role="tablist">
     <b-input hidden></b-input>
-    <b-button @click="createPDF">olaaa</b-button>
+   
     <b-input v-model="uuidFichaProps" hidden></b-input>
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
@@ -389,14 +389,7 @@
           >Limpar
         </b-button>
 
-        <b-button
-          size="sm"
-          variant="outline-secondary"
-          v-b-modal.modal-1
-          @click="imprimir"
-        >
-          f
-        </b-button>
+       
       </div>
     </footer>
   </div>

@@ -91,5 +91,25 @@ export default {
     },
     [MutationsTypes.UUID_FICHACLINICA](state, uuidFichaClinica) {
         state.uuidFichaClinica = uuidFichaClinica
-    }
+    },
+
+    [MutationsTypes.openModal](state, openModal) {
+        state.openModal = openModal
+    },
+
+    [MutationsTypes.openModal](state, pacienteSelect) {
+        state.pacienteSelect = pacienteSelect
+    }, 
+
+    [MutationsTypes.procedimentoSelect](state, procedimentoSelect) {
+        state.procedimentoSelect = procedimentoSelect
+    },
+
+    [MutationsTypes.procedimentoSelectPush](state, procedimentoSelectPush) {
+        state.procedimentoSelect.push(procedimentoSelectPush)
+    },
+
+    
+
+
 }

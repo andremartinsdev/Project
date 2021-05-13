@@ -30,7 +30,7 @@ export default {
     },
 
     readAll: () => {
-        return http.get(`paciente/read/all`)
+        return http.get(`paciente/read/all/names`)
     },
 
     readParams: (type, data) => {

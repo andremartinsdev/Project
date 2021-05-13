@@ -25,5 +25,11 @@ export default {
     afinamento({commit}, afinamento){
         return commit(MutationsType.AFINAMENTO, afinamento)
         
+    }, 
+    openModal({commit}, openModal){
+        return commit(MutationsType.openModal, openModal)
+    },
+    pacienteSelect({commit}, pacienteSelect){
+        return commit(MutationsType.pacienteSelect, pacienteSelect)
     }
 }

@@ -27,11 +27,18 @@
         ></b-input>
       </b-input-group>
     </b-form>
-    <div class="mt-2 p-4" style=" display: flex; justify-content: center;">
-      <b-button size="sm" class="mr-3" variant="primary" @click="createPDF(false)"
-        > Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+    <div class="mt-2 p-4" style="display: flex; justify-content: center">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
       ></b-button>
-      <b-link href="#foo" @click="createPDF(true)">Download PDF <b-icon-download></b-icon-download> </b-link>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
     </div>
   </div>
 </template>
@@ -112,11 +119,11 @@ export default {
 
       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
-      if(download){
-        doc.save("Tonometria.pdf")
-      }else{
-        window.open(doc.output("bloburl"));
+      if (download) {
+        doc.save("Tonometria.pdf");
+        return;
       }
+      window.open(doc.output("bloburl"));
     },
 
     enviarTonometria() {

@@ -208,7 +208,7 @@
                                 </p>
                               </div>
                             </div>
-                            <div class="flexIcon"  >
+                            <div class="flexIcon" v-if="this.renderConsultasVencidas" >
                               <div>
                                 <b-icon
                                   icon="arrow-left-circle-fill"
@@ -816,7 +816,7 @@ section {
 }
 
 .card1 {
-  overflow: auto;
+  
   border: none;
 }
 

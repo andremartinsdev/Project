@@ -102,23 +102,22 @@ export default {
             "info",
             "Campo de Login e Senha devem ser Preenchidos"
           );
-        } else {
-          const result = await LoginService.logar(
-            this.login.cpfcnpj,
-            this.login.senha
-          );
-          console.log(result);
-          sessionStorage.setItem("token", result.data.token);
-        
-          console.log(sessionStorage.getItem("token"))
-          this.$router.push("/Home");
-          // var a = setInterval(() => {
-          //   if(sessionStorage.getItem("token"))
-          //   
-            
-          // }, 100); 
-         
+          return;
         }
+        const result = await LoginService.logar(
+          this.login.cpfcnpj,
+          this.login.senha
+        );
+        console.log(result);
+        sessionStorage.setItem("token", result.data.token);
+
+        console.log(sessionStorage.getItem("token"));
+        this.$router.push("/Home");
+        // var a = setInterval(() => {
+        //   if(sessionStorage.getItem("token"))
+        //
+
+        // }, 100);
       } catch (error) {
         this.showAlert("info", "Ocorreu um erro ao efetuar login");
       }

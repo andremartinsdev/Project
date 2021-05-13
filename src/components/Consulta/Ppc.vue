@@ -75,10 +75,26 @@
         </tr>
       </tbody>
     </table>
+    <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
+    </div>
   </div>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+import logoOlho from "../../assets/LogoOlho.png";
+import moldura from "../../assets/moldura.png";
 export default {
   props: {
     Limpar: {
@@ -128,6 +144,8 @@ export default {
   },
   data() {
     return {
+      moldura: moldura,
+      logoOlho: logoOlho,
       ppc: {
         SC: {
           OR: "",
@@ -144,10 +162,78 @@ export default {
   },
 
   methods: {
+    createPDF(download) {
+      let pdfName = "Reflexos Pulpilares";
+      var doc = new jsPDF();
+      var linha = 85;
+      var estrutura = ["OR", "Luz", "Filtro"];
+      doc.text("Reflexos Pulpilares", 105, 40, null, null, "center");
+      doc.setFontSize(12);
+      doc.text("Nome Clinica", 105, 48, null, null, "center");
+      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+      doc.text("S/C", 25, linha, null, null);
+      doc.text("C/C", 150, linha, null, null);
+
+      estrutura.forEach((elemento) => {
+        linha += 8;
+        if (elemento === "Observação") {
+          doc.text(`${elemento} : `, 25, linha + 8, null, null);
+        } else {
+          doc.text(`${elemento} : `, 25, linha, null, null);
+        }
+        doc.html();
+
+        switch (elemento) {
+          case "OR":
+            doc.setTextColor(0, 0, 255);
+            doc.text(this.ppc.SC.OR, 40, linha, null, null);
+            doc.text(this.ppc.CC.OR, 165, linha, null, null);
+            doc.setTextColor(0);
+            break;
+
+          case "Luz":
+            doc.setTextColor(0, 0, 255);
+            doc.text(this.ppc.SC.LUZ, 40, linha, null, null);
+            doc.text(this.ppc.CC.LUZ, 165, linha, null, null);
+            doc.setTextColor(0);
+            break;
+
+          case "Filtro":
+            doc.setTextColor(0, 0, 255);
+            doc.text(this.ppc.SC.FILTRO, 40, linha, null, null);
+            doc.text(this.ppc.CC.FILTRO, 165, linha, null, null);
+            doc.setTextColor(0);
+            break;
+
+          default:
+            break;
+        }
+      });
+      linha = 85;
+      estrutura.forEach((elemento) => {
+        linha += 8;
+        if (elemento === "Observação") {
+          doc.text(`${elemento} : `, 147, linha + 8, null, null);
+        } else {
+          doc.text(`${elemento} : `, 150, linha, null, null);
+        }
+      });
+
+      doc.setFont("times", "italic");
+      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+
+      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
+      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      if (download) {
+        doc.save(pdfName + ".pdf");
+        return;
+      }
+      window.open(doc.output("bloburl"));
+    },
+
     enviarPpc() {
       this.$store.commit("PPC", this.ppc);
-      console.log(this.ppc)
-
+      console.log(this.ppc);
     },
   },
 };

@@ -769,7 +769,7 @@ export default {
       uuidPaciente: "",
       laudo: {
         uuid: "",
-        idConsulta:"",
+        idConsulta: "",
         data: moment().format("YYYY-MM-DD"),
         idPaciente: "",
         od_perto_sc: "",
@@ -834,6 +834,7 @@ export default {
         this.showAlert("info", "Por favor selecione o Paciente");
       }
     },
+    
     anteriorPageAg() {
       this.pageAg = this.pageAg - 1;
       AgendaService.readDateRelatorioPaginationNavigation(
@@ -1020,7 +1021,6 @@ export default {
 
     showAlert(icon, title) {
       // Use sweetalert2
-
       this.$swal({
         icon: icon,
         title: title,
@@ -1070,7 +1070,7 @@ export default {
 
     proximaPagePesquisa() {
       this.pagePesquisa = this.pagePesquisa + 1;
-      if(this.typePesquisa === "ficha_clinica"){
+      if (this.typePesquisa === "ficha_clinica") {
         FichaClinicaService.readPagination(
           this.idPaciente,
           this.dataInicial,
@@ -1080,20 +1080,22 @@ export default {
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
         });
-      }else if(this.typePesquisa === "laudo"){
-        LaudoService.read(this.dataInicial, this.dataFinal, this.idPaciente, this.pagePesquisa).then(result =>{
+      } else if (this.typePesquisa === "laudo") {
+        LaudoService.read(
+          this.dataInicial,
+          this.dataFinal,
+          this.idPaciente,
+          this.pagePesquisa
+        ).then((result) => {
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
-
-        })
-         
+        });
       }
     },
 
     anteriorPagePesquisa() {
-
       this.pagePesquisa = this.pagePesquisa - 1;
-      if(this.typePesquisa === "ficha_clinica"){
+      if (this.typePesquisa === "ficha_clinica") {
         FichaClinicaService.readPagination(
           this.idPaciente,
           this.dataInicial,
@@ -1103,13 +1105,16 @@ export default {
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
         });
-      }else if(this.typePesquisa === "laudo"){
-        LaudoService.read(this.dataInicial, this.dataFinal, this.idPaciente, this.pagePesquisa).then(result =>{
+      } else if (this.typePesquisa === "laudo") {
+        LaudoService.read(
+          this.dataInicial,
+          this.dataFinal,
+          this.idPaciente,
+          this.pagePesquisa
+        ).then((result) => {
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
-
-        })
-         
+        });
       }
     },
 
@@ -1121,6 +1126,7 @@ export default {
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
         }).then((result) => {
+          console.log(result)
           if (Object.keys(result.data.result).length === 0) {
             this.showAlert("info", "Nenhuma Informação Encontrada");
           } else {
@@ -1219,31 +1225,24 @@ export default {
       }
     },
 
-    Paciente(text, value, uuid) {
+    Paciente(text, uuid) {
       return {
         text: text,
-        value: value,
-        uuid: uuid,
+        value: uuid,
       };
     },
 
-    list() {
-      PacienteService.readAll()
-        .then((response) => {
-          console.log(response);
-          response.data.result.map((paciente) => {
-            this.ListaPaciente.push(
-              this.Paciente(
-                paciente.nomePaciente,
-                paciente.idPaciente,
-                paciente.uuid
-              )
-            );
-          });
-        })
-        .catch(() => {
-          this.showAlert("error", "Ocorreu um problema ao listar pacientes");
+    async list() {
+      try {
+        const paciente = await PacienteService.readAll();
+        paciente.data.map((paciente) => {
+          this.ListaPaciente.push(
+            this.Paciente(paciente.nomePaciente, paciente.uuid)
+          );
         });
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um problema ao lista pacientes")
+      }
     },
 
     readLaudo() {
@@ -1260,11 +1259,10 @@ export default {
         this.showAlert("error", "Ocorreu um erro ao Salvar consulta");
       }
 
-
       try {
         this.laudo.data = moment().format("YYYY-MM-DD");
         this.laudo.idPaciente = this.idPaciente;
-        this.laudo.idConsulta = consulta.data.result.idConsulta[0]
+        this.laudo.idConsulta = consulta.data.result.idConsulta[0];
         await LaudoService.save(this.laudo);
         this.showAlert("success", "Laudo Registrado com Sucesso");
       } catch (error) {
@@ -1293,6 +1291,7 @@ export default {
 .consulta {
   margin-top: 100px;
   font-family: "Monda", sans-serif;
+  height: 100%;
 }
 .check {
   display: flex;

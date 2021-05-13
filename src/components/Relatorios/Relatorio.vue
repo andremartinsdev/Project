@@ -1210,6 +1210,7 @@ export default {
   }
   .containerRelatorio {
     width: 100%;
+    height: 700px;
   }
 
   .cardTable {

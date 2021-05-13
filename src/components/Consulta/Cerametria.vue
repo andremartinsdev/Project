@@ -30,9 +30,18 @@
       </b-input-group>
     </b-form>
 
-    <div class="mt-5">
-         <b-button class="m-4" variant="primary" @click=" createPDF">Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill></b-button>
-
+     <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
     </div>
   </div>
 </template>
@@ -97,7 +106,7 @@ export default {
   },
 
   methods: {
-    createPDF() {
+    createPDF(download) {
       let pdfName = "PrescricaoUltimoExame";
       var doc = new jsPDF();
       var linha = 85;
@@ -108,22 +117,22 @@ export default {
       doc.text("Técnica: AutoRefratômetro", 45, 68, null, null, "center");
       doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
       doc.text("Olho Direito", 25, linha, null, null);
-      doc.text(this.cerametria[0].olhoDireito, 25, linha+8, null, null);
+      doc.text(this.cerametria[0].olhoDireito, 25, linha + 8, null, null);
       doc.text("Olho Esquerdo", 88, linha, null, null);
-      doc.text(this.cerametria[0].olhoEsquerdo, 88, linha+8, null, null);
+      doc.text(this.cerametria[0].olhoEsquerdo, 88, linha + 8, null, null);
       doc.text("Miras", 150, linha, null, null);
-      doc.text(this.cerametria[0].miras, 150, linha+8, null, null);
+      doc.text(this.cerametria[0].miras, 150, linha + 8, null, null);
 
-
-      
       doc.setFont("times", "italic");
       doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
 
       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
-      
-
-      doc.save(pdfName + ".pdf");
+      if (download) {
+        doc.save(pdfName + ".pdf");
+        return;
+      }
+      window.open(doc.output("bloburl"));
     },
     enviarCerametria() {
       this.$store.commit("CERAMETRIA", this.cerametria);

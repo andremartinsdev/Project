@@ -140,10 +140,19 @@
       </div>
     </div>
     
-     <div class="mt-5">
-  <b-button  variant="primary" class="mr-5">Salvar</b-button>
-  <b-button  variant="primary">Limpar</b-button>
-</div>
+     <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
+    </div>
   </div>
 </template>
 

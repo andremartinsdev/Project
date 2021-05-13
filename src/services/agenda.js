@@ -19,6 +19,10 @@ export default {
         return http.get(`Agenda/paginationAllAgenda/${dataInicial}/${dataFinal}/page`)
     },
 
+    readDatePacienteNext(dataInicial, dataFinal, idPaciente){
+        return http.get(`Agenda/readDatePaciente/${dataInicial}/${dataFinal}/${idPaciente}/page`)
+    },
+
     readDataPaginationProximo: (dataInicial, dataFinal, page) => {
         return http.get(`Agenda/paginationAllAgenda/${dataInicial}/${dataFinal}/page?page=${page}`)
     },
@@ -69,6 +73,9 @@ export default {
         
         return http.put(`/Agenda/${uuid}`, {...data})
     },
+    updatePagmento(uuid, data){
+        return http.put(`/Agenda/updatePagamento/${uuid}`, data)
+    },
     updateIdConsultAtendido(uuid, data){
         return http.patch(`/Agenda/updateIdConsultAtendido/${uuid}`, {...data})
     },
@@ -78,7 +85,7 @@ export default {
     },
 
     readDatePaciente: (dataInicial, dataFinal, idPaciente) => {
-        return http.get(`/Agenda/readDatePaciente/${dataInicial}/${dataFinal}/${idPaciente}`)
+        return http.get(`/Agenda/readDatePaciente/${dataInicial}/${dataFinal}/${idPaciente}/page`)
     },
 
     readDateInner: (data) => {

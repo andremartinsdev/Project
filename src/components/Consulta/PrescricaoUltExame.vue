@@ -144,10 +144,18 @@
       ></b-input>
     </div>
 
-    <div class="mt-5">
-          <b-button class="m-4" variant="primary" @click=" createPDF">Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill></b-button>
-
-    
+    <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
     </div>
   </div>
 </template>
@@ -255,7 +263,7 @@ export default {
       this.$store.commit("PRESCRICAO_ULTIMO_EXAME", this.prescricaoUltExame);
     },
 
-    createPDF() {
+    createPDF(download) {
       let pdfName = "PrescricaoUltimoExame";
       var doc = new jsPDF();
       var linha_oe = 85;
@@ -301,8 +309,11 @@ export default {
 
       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
-
-      doc.save(pdfName + ".pdf");
+      if (download) {
+        doc.save(pdfName + ".pdf");
+        return;
+      }
+      window.open(doc.output("bloburl"));
     },
 
     convertNomeKey(key) {

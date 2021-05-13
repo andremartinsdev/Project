@@ -423,6 +423,7 @@ export default {
   margin-top: 100px;
   border-radius: 10px;
   padding: 20px;
+  height: 699px;
 }
 .formClienteCard {
   background: rgb(241, 240, 240);

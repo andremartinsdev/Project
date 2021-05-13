@@ -1,41 +1,32 @@
 <template>
   <div id="app">
-    <SidebarNavbar/>
-    
-    
-     <transition v-if="this.$router.path != '/'" name="slide-fade">
-    <router-view/>
-
-  </transition>
-  
+    <SidebarNavbar />
+    <transition v-if="this.$router.path != '/'" name="slide-fade">
+      <router-view />
+    </transition>
   </div>
 </template>
 
 <script>
-
-import SidebarNavbar from '../src/components/SidebarNavbar'
+import SidebarNavbar from "../src/components/SidebarNavbar";
 export default {
   name: "App",
   components: {
-    SidebarNavbar
+    SidebarNavbar,
   },
 
   data() {
-    return {
-
-      
-    };
-  }
+    return {};
+  },
 };
 </script>
 
 <style>
-
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active em versões anteriores a 2.1.8 */ {
@@ -43,11 +34,10 @@ export default {
   opacity: 0;
 }
 body {
-  background: #1a2980; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #1a2980, #26d0ce); /* Chrome 10-25, Safari 5.1-6 */
-  background-color: linear-gradient(to bottom, #1a2980, #26d0ce);
-}
-.teste3 {
+  background: #000046;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #1CB5E0, #000046); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .cont {

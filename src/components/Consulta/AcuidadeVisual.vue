@@ -217,7 +217,7 @@ export default {
   data() {
     return {
       logoOlho: logoOlho,
-      moldura:moldura,
+      moldura: moldura,
       acuidade: [
         {
           sc: {
@@ -372,18 +372,18 @@ export default {
       let pdfName = "Anamnese";
       var doc = new jsPDF();
       var linha = 85;
-       doc.text("Tonometria", 105, 40, null, null, "center");
+      doc.text("Tonometria", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
       doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
       doc.setDrawColor(0, 0, 255);
-      doc.rect(25, 58+30, 40, 35); // draw red lines
-      doc.rect(25, 95+30, 40, 35); // draw red lines
-      doc.rect(25, 132+30, 40, 35); // draw red lines
+      doc.rect(25, 58 + 30, 40, 35); // draw red lines
+      doc.rect(25, 95 + 30, 40, 35); // draw red lines
+      doc.rect(25, 132 + 30, 40, 35); // draw red lines
 
-      doc.rect(150, 58+30, 40, 35); // draw red lines
-      doc.rect(150, 95+30, 40, 35); // draw red lines
-      doc.rect(150, 132+30, 40, 35); // draw red lines
+      doc.rect(150, 58 + 30, 40, 35); // draw red lines
+      doc.rect(150, 95 + 30, 40, 35); // draw red lines
+      doc.rect(150, 132 + 30, 40, 35); // draw red lines
 
       doc.text("S/C", 35, linha - 3, null, null);
       doc.text("C/C", 160, linha - 3, null, null);
@@ -491,13 +491,13 @@ export default {
       });
       doc.setFont("times", "italic");
       doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 100, 280);
-       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
+      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
       if (download) {
         doc.save(pdfName + ".pdf");
-      } else {
-        window.open(doc.output("bloburl"));
+        return;
       }
+      window.open(doc.output("bloburl"));
     },
   },
 };

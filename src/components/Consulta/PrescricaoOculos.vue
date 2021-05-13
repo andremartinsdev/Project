@@ -1,7 +1,7 @@
 <template>
   <div class="containerPrescri">
     <b-form inline>
-      <b-input  v-model="prescricaoOculos.uuid"></b-input>
+      <b-input hidden v-model="prescricaoOculos.uuid"></b-input>
       <label for="input-with-list" class="mr-2">OD :</label>
       <b-input
         class="mb-2 mr-sm-2 mb-sm-0"
@@ -84,19 +84,36 @@
         class="mt-2"
         id="textarea-rows"
         placeholder="Favor medir DNP com pupilômetro.
-Retorno com 01 Ano"
+        Retorno com 01 Ano"
         rows="4"
         v-model="prescricaoOculos.observacao"
       ></b-form-textarea>
     </div>
-    <b-button class="mr-3" pill variant="primary" @click="savePrescricao"
-      >Salvar</b-button
-    >
-    <b-button pill @click="cancelar">Cancelar</b-button>
+    <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button class="mr-3" pill variant="primary" @click="savePrescricao"
+        >Salvar</b-button
+      >
+      <b-button pill @click="cancelar">Cancelar</b-button>
+      <b-button
+        size="sm"
+        class="mr-3 ml-2"
+        variant="primary"
+        @click="createPDF(false)"
+        pill
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
+    </div>
   </div>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+import logoOlho from "../../assets/LogoOlho.png";
+import moldura from "../../assets/moldura.png";
 import ConsultaService from "../../services/consulta";
 import PrescricaoService from "../../services/prescricaoOculos";
 import AgendaService from "../../services/agenda";
@@ -117,6 +134,8 @@ export default {
   },
   data() {
     return {
+      logoOlho: logoOlho,
+      moldura: moldura,
       idConsulta: -1,
       uuidConsulta: "",
       consulta: "",
@@ -183,34 +202,124 @@ export default {
       };
     },
 
+    createPDF(download) {
+      console.log(this.propsAnamnese2);
+      let pdfName = "Prescrição Óculos";
+      var doc = new jsPDF();
+      var linha = 85;
+      var estrutura = ["Esférico", "Cilíndrico", "Eixo", "Av"];
+      doc.text("Prescrição Óculos", 105, 40, null, null, "center");
+      doc.setFontSize(12);
+      doc.text("Nome Clinica", 105, 48, null, null, "center");
+      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+      doc.text("Olho Direito", 25, linha, null, null);
+      doc.text("Olho Esquerdo", 150, linha, null, null);
+
+      estrutura.forEach((elemento) => {
+        linha += 8;
+        if (elemento === "Observação") {
+          doc.text(`${elemento} : `, 25, linha + 8, null, null);
+        } else {
+          doc.text(`${elemento} : `, 25, linha, null, null);
+          doc.text(`${elemento} : `, 150, linha, null, null);
+        }
+        doc.html();
+
+        switch (elemento) {
+          case "Esférico":
+            doc.setTextColor(0, 0, 255);
+            doc.text(this.prescricaoOculos.od_esferico, 42, linha, null, null);
+            doc.text(this.prescricaoOculos.oe_esferico, 175, linha, null, null);
+            doc.setTextColor(0);
+            break;
+
+          case "Cilíndrico":
+            doc.setTextColor(0, 0, 255);
+            doc.text(
+              this.prescricaoOculos.od_cilindrico,
+              52,
+              linha,
+              null,
+              null
+            );
+            doc.text(
+              this.prescricaoOculos.oe_cilindrico,
+              175,
+              linha,
+              null,
+              null
+            );
+            doc.setTextColor(0);
+            break;
+
+          case "Eixo":
+            doc.setTextColor(0, 0, 255);
+            doc.text(this.prescricaoOculos.od_eixo, 45, linha, null, null);
+            doc.text(this.prescricaoOculos.oe_eixo, 172, linha, null, null);
+            doc.setTextColor(0);
+            break;
+
+          default:
+            break;
+        }
+      });
+      doc.text(
+        `Adição : ${this.prescricaoOculos.adicao}`,
+        60,
+        linha + 30,
+        null,
+        null
+      );
+      doc.text(`Lente : `, 100, linha + 30, null, null);
+      doc.text(`Observação`, 70, linha + 70, null, null);
+      doc.text(this.prescricaoOculos.observacao, 70, linha + 80, null, null);
+
+      doc.setFont("times", "italic");
+      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+
+      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
+      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+
+      if (download) {
+        doc.save(pdfName + ".pdf");
+        return;
+      }
+      window.open(doc.output("bloburl"));
+    },
+
     async savePrescricao() {
       try {
-         if (this.prescricaoOculos.uuid === "") {
-        this.dadosConsulta.idPaciente = this.idPaciente
-        const resultConsulta = await ConsultaService.save(this.dadosConsulta);
-        this.idConsulta = resultConsulta.data.result.idConsulta[0];
-        this.uuidConsulta = resultConsulta.data.result.uuid;
-        this.prescricaoOculos.idConsulta = resultConsulta.data.result.idConsulta[0];
-        this.prescricaoOculos.idPaciente = this.idPaciente;
+        if (this.prescricaoOculos.uuid === "") {
+          this.dadosConsulta.idPaciente = this.idPaciente;
+          const resultConsulta = await ConsultaService.save(this.dadosConsulta);
+          this.idConsulta = resultConsulta.data.result.idConsulta[0];
+          this.uuidConsulta = resultConsulta.data.result.uuid;
+          this.prescricaoOculos.idConsulta =
+            resultConsulta.data.result.idConsulta[0];
+          this.prescricaoOculos.idPaciente = this.idPaciente;
 
-        const resultPrescricao = await PrescricaoService.save(this.prescricaoOculos);
-        this.prescricaoOculos.uuid = resultPrescricao.data.uuid.uuid;
+          const resultPrescricao = await PrescricaoService.save(
+            this.prescricaoOculos
+          );
+          this.prescricaoOculos.uuid = resultPrescricao.data.uuid.uuid;
 
-        await AgendaService.updateIdConsultAtendido(this.uuidAgendamento, {
-        atendido: true, idConsulta: this.idConsulta, })
-                  
-        this.showAlert("success","Prescrição Salva com Sucesso")             
-      
-    }else{
-       await PrescricaoService.update(this.prescricaoOculos, this.prescricaoOculos.uuid);
-        this.showAlert("success","Prescrição Atualizada com Sucesso") 
-    }
+          await AgendaService.updateIdConsultAtendido(this.uuidAgendamento, {
+            atendido: true,
+            idConsulta: this.idConsulta,
+          });
+
+          this.showAlert("success", "Prescrição Salva com Sucesso");
+        } else {
+          await PrescricaoService.update(
+            this.prescricaoOculos,
+            this.prescricaoOculos.uuid
+          );
+          this.showAlert("success", "Prescrição Atualizada com Sucesso");
+        }
       } catch (error) {
-        this.showAlert("error", "errooo")
+        this.showAlert("error", "errooo");
       }
-     
-    }
-
+    },
   },
 };
 </script>

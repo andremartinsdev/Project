@@ -10,9 +10,9 @@
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
       <div class="mb-1">
-        <b-avatar :src="logoBms"></b-avatar>
+        <b-avatar size="50" :src="logoBms"></b-avatar>
         <label class="ml-3 text-white"></label>
-        <b-navbar-brand class="ml-3 text-white">{{nomeClinica}}</b-navbar-brand>
+        <b-navbar-brand class="ml-3 text-white nomeEmpresa">Clínica Teste</b-navbar-brand>
       </div>
 
       <b-collapse id="nav-text-collapse" is-nav class="colapseContainer">
@@ -128,7 +128,7 @@
         class="text-center mt-2"
         shadow
         no-header
-        bg-variant="light"
+       
       >
         <template #default="{ hide }">
           <div class="p-3">
@@ -304,6 +304,13 @@ async readDadosClinica(){
 </script>
 
 <style scoped >
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@media (max-width: 700px) {
+  .nomeEmpresa{
+    font-size: 20px!important;
+    color: red;
+  }
+}
 li a {
   text-decoration: none;
 }
@@ -352,7 +359,10 @@ img:hover {
 }
 
 .navbar {
-  background: #0082c871;
+  background: #0000469f;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #1cb5e06b, #00004665);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #1cb5e03f, #00004667); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   margin-top: 10px;
   margin-right: 10px;
   margin-left: 10px;
@@ -372,7 +382,18 @@ img:hover {
   top: 300px; /*altura da classe*/
 }
 
+.nomeEmpresa{
+  font-family: 'Lobster', cursive;
+  font-size: 38px;
+}
 .iconeMenu {
   z-index: 1000;
+}
+
+.sidebar-2{
+  background: #0000469f;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #1cb5e06b, #00004665);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #1cb5e03f, #00004667); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 </style>

@@ -2,7 +2,7 @@ import validate from 'validate.js'
 function ValidaAgendamento(data) {
     const constraints = {
 
-        idPaciente: {
+        uuidPaciente: {
             presence: {
                 allowEmpty: false,
                 message: 'O campo idPaciente não pode ficar em branco.',

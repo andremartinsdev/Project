@@ -13,10 +13,13 @@ const store = new Vuex.Store({
         dadosClinica: {},
         idConsulta: -1,
         paciente: [],
+        pacienteSelect: [],
+        procedimentoSelect: [],
         option: false,
         uuidAgendamento: "",
         pacienteSelected: -1,
         uuidFichaClinica:-1,
+        openModal: false,
         fichaClinica:{
             afinamento:{},
             acuidade: {},
