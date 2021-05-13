@@ -105,12 +105,14 @@ export default {
         .then((result) => {
           sessionStorage.setItem("token", result.data.token);
         })
-        .catch(() => {
+        .catch((err) => {
           this.showAlert("info", "Ocorreu um erro ao efetuar login");
         })
         .finally(() => {
           setInterval(() => {
-            this.$router.push("/Home");
+            this.$router.push({
+              path: "/Home",
+            });
           }, 2000);
         });
     },
