@@ -109,11 +109,9 @@ export default {
           this.login.cpfcnpj,
           this.login.senha
         );
-        console.log(result);
+        
         sessionStorage.setItem("token", result.data.token);
-        setInterval(() => {
-          this.$router.push({ path: "/Home" });
-        }, 2000);
+        this.$router.push("/Home");
       } catch (error) {
         this.showAlert("info", "Ocorreu um erro ao efetuar login");
       }

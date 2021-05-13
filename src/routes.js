@@ -1,21 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import Home from './components/Home/Home.vue'
-import CadastroPaciente from './components/CadastroPaciente/Cadastro.vue'
-import Consulta from './components/Consulta/Consulta.vue'
 import Agenda from './components/Agenda/Agenda.vue'
-import Relatorio from './components/Relatorios/Relatorio.vue'
+import CadastroClinica from './components/CadastroClinica/CadastroClinica.vue'
+import CadastroPaciente from './components/CadastroPaciente/Cadastro.vue'
 import ConfigGeral from './components/Configuracoes/ConfiguracoesGeral.vue'
+import ImpressaoAtestado from './components/Consulta/Atestado.vue'
+import Consulta from './components/Consulta/Consulta.vue'
+import ImpressaoLaudo from './components/Consulta/Laudo.vue'
 import Financeiro from './components/Financeiro/Financeiro.vue'
+import Home from './components/Home/Home.vue'
 import Impressao from './components/Impressao/ImpressaoFicha.vue'
 import Login from './components/Login/Login.vue'
-import ImpressaoAtestado from './components/Consulta/Atestado.vue'
-import ImpressaoLaudo from './components/Consulta/Laudo.vue'
-import CadastroClinica from './components/CadastroClinica/CadastroClinica.vue'
+import Relatorio from './components/Relatorios/Relatorio.vue'
+import LoginService from "./services/login"
 
 
-import LoginService from "./services/login";
+
 
 
 Vue.use(Router)
@@ -119,7 +119,6 @@ router.beforeEach(async (to, from, next) => {
     }
 
 
-
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!sessionStorage.getItem('token')) {
             return next({
@@ -127,7 +126,7 @@ router.beforeEach(async (to, from, next) => {
             })
         }
         try {
-            const result = LoginService.logar(this.login.cpfcnpj, this.login.senha)
+            const result = await LoginService.logar(this.login.cpfcnpj, this.login.senha)
             sessionStorage.setItem("token", result.data.token);
             return next()
         } catch (error) {
