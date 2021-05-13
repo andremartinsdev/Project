@@ -97,24 +97,22 @@ export default {
       });
     },
     async logar() {
-      try {
-        if (this.login.cpfcnpj === "" || this.login.senha === "") {
-          this.showAlert(
-            "info",
-            "Campo de Login e Senha devem ser Preenchidos"
-          );
-          return;
-        }
-        const result = await LoginService.logar(
-          this.login.cpfcnpj,
-          this.login.senha
-        );
-        
-        sessionStorage.setItem("token", result.data.token);
-        this.$router.push("/Home");
-      } catch (error) {
-        this.showAlert("info", "Ocorreu um erro ao efetuar login");
+      if (this.login.cpfcnpj === "" || this.login.senha === "") {
+        this.showAlert("info", "Campo de Login e Senha devem ser Preenchidos");
+        return;
       }
+      LoginService.logar(this.login.cpfcnpj, this.login.senha)
+        .then((result) => {
+          sessionStorage.setItem("token", result.data.token);
+        })
+        .catch(() => {
+          this.showAlert("info", "Ocorreu um erro ao efetuar login");
+        })
+        .finally(() => {
+          setInterval(() => {
+            this.$router.push("/Home");
+          }, 2000);
+        });
     },
   },
 };

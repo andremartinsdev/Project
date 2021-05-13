@@ -12,7 +12,6 @@ import Home from './components/Home/Home.vue'
 import Impressao from './components/Impressao/ImpressaoFicha.vue'
 import Login from './components/Login/Login.vue'
 import Relatorio from './components/Relatorios/Relatorio.vue'
-import LoginService from "./services/login"
 
 
 
@@ -113,11 +112,9 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-
     if (to.path == '/') {
         return next()
     }
-
 
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!sessionStorage.getItem('token')) {
@@ -125,16 +122,11 @@ router.beforeEach(async (to, from, next) => {
                 path: '/',
             })
         }
-        try {
-            const result = await LoginService.logar(this.login.cpfcnpj, this.login.senha)
-            sessionStorage.setItem("token", result.data.token);
-            return next()
-        } catch (error) {
-            return next()
-        }
+
+        return next()
     }
 
-    next()
+    return next({ path: '/' })
 })
 
 export default router;
