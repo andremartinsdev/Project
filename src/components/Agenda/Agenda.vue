@@ -70,8 +70,8 @@
     </div>
   </div>
 </template>
-<script>
 
+<script>
 import AgendaService from "../../services/agenda";
 import ModalPagamento from "./ModalPagamento";
 import { mapState } from "vuex";
@@ -118,7 +118,6 @@ export default {
       optionsPro: [],
       dataInicial: "",
       dataFinal: "",
-      teste: "asdasdsa",
       idPacientePesquisa: -1,
       page: 1,
       totalPage: 0,
@@ -150,8 +149,6 @@ export default {
 
   methods: {
     showAlert(icon, title) {
-      // Use sweetalert2
-
       this.$swal({
         icon: icon,
         title: title,
@@ -173,7 +170,6 @@ export default {
           this.showAlert("error", "Erro ao carregar Eventos");
         });
     },
-
     CreateObject(dados) {
       return {
         id: dados.uuid,

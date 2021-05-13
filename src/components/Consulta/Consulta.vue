@@ -834,7 +834,7 @@ export default {
         this.showAlert("info", "Por favor selecione o Paciente");
       }
     },
-    
+
     anteriorPageAg() {
       this.pageAg = this.pageAg - 1;
       AgendaService.readDateRelatorioPaginationNavigation(
@@ -1070,27 +1070,16 @@ export default {
 
     proximaPagePesquisa() {
       this.pagePesquisa = this.pagePesquisa + 1;
-      if (this.typePesquisa === "ficha_clinica") {
-        FichaClinicaService.readPagination(
-          this.idPaciente,
-          this.dataInicial,
-          this.dataFinal,
-          this.pagePesquisa
-        ).then((result) => {
-          this.ListaConsulta = result.data.result.result;
-          this.ListaConsulta.titulo = this.retornaTipoConsulta();
-        });
-      } else if (this.typePesquisa === "laudo") {
-        LaudoService.read(
-          this.dataInicial,
-          this.dataFinal,
-          this.idPaciente,
-          this.pagePesquisa
-        ).then((result) => {
-          this.ListaConsulta = result.data.result.result;
-          this.ListaConsulta.titulo = this.retornaTipoConsulta();
-        });
-      }
+
+      FichaClinicaService.readPagination(
+        this.idPaciente,
+        this.dataInicial,
+        this.dataFinal,
+        this.pagePesquisa
+      ).then((result) => {
+        this.ListaConsulta = result.data.result.result;
+        this.ListaConsulta.titulo = this.retornaTipoConsulta();
+      });
     },
 
     anteriorPagePesquisa() {
@@ -1116,6 +1105,7 @@ export default {
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
         });
       }
+
     },
 
     async listConsulta() {

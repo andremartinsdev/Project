@@ -17,35 +17,29 @@ export default {
   components: {
     FullCalendar,
   },
-  
   props: {
-     loadEventos:{
-       type: Array
-     },
+    loadEventos: {
+      type: Array,
+    },
     consulta: {
       type: Object,
     },
   },
-
   watch: {
-    loadEventos(){
-      this.calendarOptions.events = this.loadEventos
+    loadEventos() {
+      this.calendarOptions.events = this.loadEventos;
     },
-    consulta() {
-      AgendaService.save(this.consulta)
-        .then((result) => {
-          if (result.status === 201) {
-            this.showAlert("success", "Agendamento Realizado com Sucesso");
-          }
-        })
-        .catch(() => {
-          this.showAlert("error", "Erro ao Realizar agendamento");
-        });
+    async consulta() {
+      try {
+        await AgendaService.save(this.consulta);
+        this.showAlert("success", "Agendamento Realizado com Sucesso");
+      } catch (ex) {
+        this.showAlert("error", "Erro ao Realizar agendamento");
+      }
     },
   },
   data() {
     return {
-      isModal: false,
       calendarOptions: {
         dateClick: this.handleDateClick,
         selectable: true,
@@ -53,45 +47,36 @@ export default {
         initialView: "dayGridMonth",
         locale: "pt-br",
         events: [],
-        eventColor: 'rgb(4, 56, 151)',
-       editable: true,
-       buttonText: {
-        
-        today: "Hoje",
-       
-    },
+        eventColor: "rgb(4, 56, 151)",
+        editable: true,
+        buttonText: {
+          today: "Hoje",
+        },
         selectMirror: true,
         dayMaxEvents: true,
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
-        
+        eventsSet: this.handleEvents,
       },
     };
   },
-  created(){
-    AgendaService.read().then(result => {
-    result.data.consulta.map(resultado => {
-      this.calendarOptions.events.push(this.CreateObject(resultado))
-    })
-    })
+  async created() {
+    const { data } = await AgendaService.read();
+    data.consulta.map((resultado) => {
+      this.calendarOptions.events.push(this.CreateObject(resultado));
+    });
   },
   methods: {
-   
-    CreateObject(dados){
+    CreateObject(dados) {
       return {
         id: dados.uuid,
         title: dados.titulo,
-        start: moment(dados.data).format('YYYY-MM-DD'),
-       description: dados.observacao
-      }
+        start: moment(dados.data).format("YYYY-MM-DD"),
+        description: dados.observacao,
+      };
     },
-
-    
     showAlert(icon, title) {
-      // Use sweetalert2
-
       this.$swal({
         icon: icon,
         title: title,
@@ -102,19 +87,9 @@ export default {
     handleDateClick: function (arg) {
       this.$emit("selectDate", arg.dateStr);
     },
-
     handleEventClick(clickInfo) {
-      
-        this.$emit('detalhesAgenda', clickInfo.event)
-        
-      
-    }
-   
+      this.$emit("detalhesAgenda", clickInfo.event);
+    },
   },
 };
 </script>
-
-<style>
-#calendario {
-}
-</style>
