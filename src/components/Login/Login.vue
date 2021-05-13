@@ -104,17 +104,14 @@ export default {
       LoginService.logar(this.login.cpfcnpj, this.login.senha)
         .then((result) => {
           sessionStorage.setItem("token", result.data.token);
+          this.$router.push({
+              path: "/Home",
+            })
         })
         .catch(() => {
           this.showAlert("info", "Ocorreu um erro ao efetuar login");
         })
-        .finally(() => {
-          setInterval(() => {
-            this.$router.push({
-              path: "/Home",
-            }).catch(()=>{})
-          }, 2000);
-        });
+       
     },
   },
 };
