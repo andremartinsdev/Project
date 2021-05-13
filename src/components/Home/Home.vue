@@ -482,13 +482,8 @@
 </template>
 
 <script>
-//import CardHome from "./CardHome";
-//import Menu from "./Menu";
-//import Calendar from "../Agenda/Calendar";
 import { mapState, mapActions } from "vuex";
-//import ServiceClinica from "../../services/clinica";
 import PacienteService from "../../services/paciente";
-//import Chart from "../Chart/Chart";
 import moment from "moment";
 import AgendaService from "../../services/agenda";
 
@@ -642,35 +637,16 @@ export default {
     },
   },
 
-  mounted(){
+  beforeMount(){
     this.readAgendamentosDia();
     this.consultaVencida();
     this.aniversariantes();
     this.readConsultasDia();
     this.readConsultasMes();
-    this.readDadosClinica();
   },
 
   created() {
     console.log(sessionStorage.getItem('token'))
-    // if(sessionStorage.getItem('token')){
-    //   this.readAgendamentosDia();
-    //   this.consultaVencida();
-    //   this.aniversariantes();
-    //   this.readConsultasDia();
-    //   this.readConsultasMes();
-
-
- 
-    // }else{
-    //   setTimeout(() => {
-    //   this.readAgendamentosDia();
-    //   this.consultaVencida();
-    //   this.aniversariantes();
-    //   this.readConsultasDia();
-    //   this.readConsultasMes();
-    //   }, 1000);
-    // }
   },
 };
 </script>

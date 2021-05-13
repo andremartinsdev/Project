@@ -254,9 +254,8 @@ export default {
     if(this.$route.path.substr(0, 11) != '/' && this.$route.path){
       this.readAgendamentos();
       this.readDespesas();
+      this.readDadosClinica();
     }
-    
-    this.readDadosClinica();
   },
   
 

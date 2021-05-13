@@ -69,6 +69,7 @@ import logoOlho from "../../assets/LogoOlho.png";
 import logoBms from "../../assets/LogoBms.png";
 import logoOculos from "../../assets/LogoOculos.jpg";
 import LoginService from "../../services/login";
+
 export default {
   data() {
     return {
@@ -110,14 +111,9 @@ export default {
         );
         console.log(result);
         sessionStorage.setItem("token", result.data.token);
-
-        console.log(sessionStorage.getItem("token"));
-        this.$router.push("/Home");
-        // var a = setInterval(() => {
-        //   if(sessionStorage.getItem("token"))
-        //
-
-        // }, 100);
+        setInterval(() => {
+          this.$router.push({ path: "/Home" });
+        }, 2000);
       } catch (error) {
         this.showAlert("info", "Ocorreu um erro ao efetuar login");
       }

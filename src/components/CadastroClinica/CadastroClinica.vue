@@ -130,11 +130,9 @@ export default {
       editar: true,
     };
   },
-
-  mounted() {
+  created() {
     this.read();
   },
-
   methods: {
     showAlert(icon, title) {
       // Use sweetalert2
