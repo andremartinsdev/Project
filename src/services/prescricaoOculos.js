@@ -26,5 +26,14 @@ export default {
 
   delete: (uuid) => {
     return http.delete(`prescricao/oculos/${uuid}`)
+  },
+
+  readDatePaciente: (dataInicial, dataFinal, idPaciente) => {
+    return http.get(`/prescricao/oculos/read/${idPaciente}/${dataInicial}/${dataFinal}`)
+  },
+
+  readDate: (dataInicial, dataFinal) => {
+    return http.get(`/prescricao/oculos/readDate/${dataInicial}/${dataFinal}`)
   }
+
 }

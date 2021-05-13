@@ -200,7 +200,6 @@
                         <th scope="col">Titulo</th>
                         <th scope="col">Data Cadastro</th>
                         <th scope="col">Visualizar</th>
-                        <th scope="col">Imprimir</th>
                         <th scope="col">Excluir</th>
                       </tr>
                     </thead>
@@ -237,19 +236,7 @@
                             >Visualizar
                           </b-button>
                         </td>
-                        <td>
-                          <b-button
-                            pill
-                            variant="primary"
-                            class="mr-2"
-                            type="submit"
-                          >
-                            <b-icon-file-earmark-text
-                              class="mr-3"
-                            ></b-icon-file-earmark-text
-                            >Imprimir
-                          </b-button>
-                        </td>
+                        
                         <td>
                           <b-button
                             pill
@@ -618,8 +605,8 @@
                       <td>{{ agendamento.data }}</td>
                       <td>{{ agendamento.horario }}</td>
                       <td>
-                        <b-button variant="primary" pill size="sm">
-                          Visualizar
+                        <b-button variant="primary" pill size="sm" @click="visualizar(agendamento.uuid)">
+                          Visualizaraaa
                         </b-button>
                       </td>
                     </tr>
@@ -951,6 +938,7 @@ export default {
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado
       ).then((result) => {
+        console.log(result)
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.totalPageFinalizado = Math.ceil(
           result.data.agendamentos.total[0].count / 5
@@ -1007,6 +995,7 @@ export default {
       this.totalPage = 1;
       AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
+          console.log(result)
           this.agendamentos = result.data.agendamentos.result;
           //this.totalPage = result.data.agendamentos.total[0].count
           this.totalPage = Math.ceil(
@@ -1146,7 +1135,7 @@ export default {
     },
 
     visualizar(uuid) {
-      this.selectVisualizar = uuid;
+      console.log(this.typePesquisa === {})
       if (this.typePesquisa === "prescricao_oculos") {
         PrescricaoOculosService.read(uuid).then((result) => {
           this.prescricaoOculos = result.data.prescricao;
