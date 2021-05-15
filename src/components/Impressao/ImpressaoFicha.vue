@@ -427,7 +427,7 @@ this.read();
       this.anamnese.push(this.anamneseProps);
     },
     teste() {
-      console.log("teeeste props");
+      // console.log("teeeste props");
     },
   },
 };

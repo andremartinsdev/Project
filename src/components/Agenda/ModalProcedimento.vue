@@ -132,7 +132,7 @@ export default {
     readAllProcedimentos() {
       ProcedimentoService.readAll()
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           result.data.procedimento.forEach((element) => {
             this.optionsPro.push(
               this.procedimentoGenerate(element.text, element.uuid)

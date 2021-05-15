@@ -26,6 +26,10 @@ export default {
       return http.get(`Despesa/readDate/${dataInicial}/${dataFinal}`)
     },
 
+    readValorDespesa: (dataInicial, dataFinal) =>{
+        return http.get(`Despesa/readValorDespesa/${dataInicial}/${dataFinal}`)
+      },
+
     readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
       return http.get(`Despesa/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
     }

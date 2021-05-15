@@ -168,19 +168,23 @@
                           </div>
                         </div>
                         <div class="backside shadow">
-                          <div class="card" >
+                          <div class="card">
                             <div
-                              class="card-body text-center mt-1" v-if="this.renderConsultasVencidas"
+                              class="card-body text-center mt-1"
+                              v-if="this.renderConsultasVencidas"
                             >
                               <h4 class="card-title">
                                 Consulta Vencida
                                 <b-badge variant="info">{{
-                                  this.consultasVencidas[0].length 
+                                  this.consultasVencidas[0].length
                                 }}</b-badge>
                               </h4>
                               <div
                                 class="consultasContent shadow"
-                                v-if="this.consultasVencidas[0] && this.consultasVencidas[0].length > 0"
+                                v-if="
+                                  this.consultasVencidas[0] &&
+                                  this.consultasVencidas[0].length > 0
+                                "
                               >
                                 <p class="card-text">
                                   Nome Paciente:
@@ -208,7 +212,10 @@
                                 </p>
                               </div>
                             </div>
-                            <div class="flexIcon" v-if="this.renderConsultasVencidas" >
+                            <div
+                              class="flexIcon"
+                              v-if="this.renderConsultasVencidas"
+                            >
                               <div>
                                 <b-icon
                                   icon="arrow-left-circle-fill"
@@ -360,19 +367,26 @@
                 <div>
                   <label for="" class="text-success"
                     >Total de Receita :
-                    <u class="text-dark">R$ 1000,00</u></label
+                    <u class="text-dark">{{
+                      resumoFinaceiro.totalReceber
+                    }}</u></label
                   >
                 </div>
                 <div>
                   <label for="" class="text-dark"
                     >Total de Despesas :
-                    <u class="text-dark">R$ 1920,00</u></label
+                    <u class="text-dark">{{
+                      resumoFinaceiro.totalPagar
+                    }}</u></label
                   >
                 </div>
                 <hr />
                 <div>
                   <label for="" class="text-warning"
-                    >Total Líquido : <u class="text-dark">R$ 1920,00</u></label
+                    >Total Líquido :
+                    <u class="text-dark">{{
+                      resumoFinaceiro.liquido
+                    }}</u></label
                   >
                 </div>
               </b-card>
@@ -486,7 +500,8 @@ import { mapState, mapActions } from "vuex";
 import PacienteService from "../../services/paciente";
 import moment from "moment";
 import AgendaService from "../../services/agenda";
-
+import DespesaServices from "../../services/despesas";
+import ReceitaServices from "../../services/receita";
 
 export default {
   components: {
@@ -502,6 +517,11 @@ export default {
         }),
       },
       agendamentosDia: 0,
+      resumoFinaceiro: {
+        totalReceber: 0,
+        totalPagar: 0,
+        liquido: 0,
+      },
       consultasVencidasCard: 0,
       showOptionRelatorio: false,
       pacientesCadastrados: 0,
@@ -518,7 +538,7 @@ export default {
         { Paciente: 21, Data_Consulta: "10/10/2020", Nome: "Shaw" },
         { Paciente: 89, Data_Consulta: "11/06/2020", Nome: "Wilson" },
       ],
-      dadosClinica : [],
+      dadosClinica: [],
       consultasVencidas: [],
       aniversarianteDoMes: [],
       indexAniversario: 0,
@@ -540,6 +560,31 @@ export default {
       if (this.indexAniversario > 0) {
         this.indexAniversario = this.indexAniversario - 1;
       }
+    },
+
+    async readDespesa() {
+      const valorDespesa = await DespesaServices.readValorDespesa(
+        `${moment().year()}-01-01`,
+        `${moment().year()}-12-31`
+      );
+      this.resumoFinaceiro.totalPagar = valorDespesa.data.result[0].total;
+      console.log(valorDespesa.data.result[0].total);
+    },
+
+    async readValorReceita() {
+      const valorReceita = await ReceitaServices.readValorReceita(
+        `${moment().year()}-01-01`,
+        `${moment().year()}-12-31`
+      );
+      this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total;
+    },
+
+   async readValorLiquido() {
+      await this.readValorReceita();
+      await this.readDespesa();
+      console.log( parseFloat(this.resumoFinaceiro.totalPagar) , parseFloat(this.resumoFinaceiro.totalReceber))
+      var total = parseFloat(this.resumoFinaceiro.totalPagar) - parseFloat(this.resumoFinaceiro.totalReceber);
+       this.resumoFinaceiro.liquido = total.toFixed(2)
     },
 
     proximaConsultaVencida() {
@@ -572,12 +617,13 @@ export default {
     consultaVencida() {
       AgendaService.readDateVencimento(moment().format("YYYY-MM-DD")).then(
         (result) => {
-         
-          if(result.data.agendamentos.length > 0){
+          if (result.data.agendamentos.length > 0) {
             this.consultasVencidas.push(result.data.agendamentos);
             this.consultasVencidas[0].map((el) => {
               el.data = moment(el.data).format("DD/MM/YYYY");
-              el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY");
+              el.dataVencimento = moment(el.dataVencimento).format(
+                "DD/MM/YYYY"
+              );
               this.renderConsultasVencidas = true;
             });
           }
@@ -619,8 +665,6 @@ export default {
       });
     },
 
-    
-
     aniversariantes() {
       PacienteService.readAll().then((result) => {
         this.pacientesCadastrados = result.data.result.length;
@@ -637,16 +681,13 @@ export default {
     },
   },
 
-  beforeMount(){
+  beforeMount() {
+    this.readValorLiquido();
     this.readAgendamentosDia();
     this.consultaVencida();
-    this.aniversariantes();
+    //this.aniversariantes();
     this.readConsultasDia();
     this.readConsultasMes();
-  },
-
-  created() {
-    console.log(sessionStorage.getItem('token'))
   },
 };
 </script>
@@ -792,7 +833,6 @@ section {
 }
 
 .card1 {
-  
   border: none;
 }
 

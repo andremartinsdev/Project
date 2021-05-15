@@ -38,7 +38,7 @@
         <div>
           <router-link class="nav-link" to="/Consulta">
             <b-img center :src="imageConfig" alt="Center image"></b-img>
-            <label class="text-white">Configuração</label>
+            <label class="text-white">Coniguração</label>
           </router-link>
         </div>
       </div>

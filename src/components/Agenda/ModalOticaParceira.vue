@@ -103,7 +103,6 @@ this.readOticasParceiras()
     readOticasParceiras() {
       ServiceOticasParceiras.read()
         .then((result) => {
-          console.log(result)
           this.oticaParceiraArr = result.data.oticaParceira;
         })
         .catch(() => {

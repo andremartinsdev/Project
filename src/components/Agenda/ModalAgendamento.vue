@@ -353,16 +353,16 @@ export default {
   },
   methods: {
     testeOtica() {
-      console.log(this.agendamento.idOticaParceira);
+      // console.log(this.agendamento.idOticaParceira);
     },
     testeForma() {
-      console.log(this.agendamento.idFormaPagamento);
+      // console.log(this.agendamento.idFormaPagamento);
     },
     testeidProc() {
-      console.log(this.agendamento.idProcedimento);
+      // console.log(this.agendamento.idProcedimento);
     },
     pacienteSelecionado() {
-      console.log(this.agendamento.idPaciente);
+      // (this.agendamento.idPacienteconsole.log);
     },
 
     adicionarProcedimento() {
@@ -426,7 +426,7 @@ export default {
       this.saveAgendamento();
     },
 
-    async pesquisarAgendamentos() {
+    async pesquisarAgendamentos(msg = true) {
       try {
         if (this.dataInicial === "" || this.dataFinal === "") {
           this.showAlert("info", "Informe o periodo");
@@ -438,7 +438,7 @@ export default {
             this.dataInicial,
             this.dataFinal
           );
-          console.log(agendamentos);
+          // console.log(agendamentos);
           if (agendamentos.data.result.result.length === 0) {
             this.showAlert("info", "Nenhuma informação Encontrada");
             return;
@@ -462,12 +462,12 @@ export default {
             this.dataFinal,
             this.pacientePesquisa
           );
-          console.log(agendamentos);
+          
           this.agendamentoPesquisa = agendamentos.data.agendamentos.result;
           this.agendamentoPesquisa.forEach((element) => {
             element.data = moment(element.data).format("DD/MM/YYYY");
           });
-          if (agendamentos.data.agendamentos.total[0].count > 6) {
+          if (agendamentos.data.agendamentos.total[0].count > 6 && msg === true) {
             this.showAlert(
               "info",
               "Existem mais registros, Altere o périodo caso queira ter acesso"
@@ -567,7 +567,6 @@ export default {
     async readOticaParceira() {
       try {
         const oticasParceira = await OticasParceirasServices.read();
-        console.log(oticasParceira.data.oticaParceira);
         oticasParceira.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(
             this.createOticaParceira(el.descricao, el.uuid)
@@ -582,7 +581,6 @@ export default {
       try {
         this.formaDePagamento = [];
         const formaPagamento = await FormaDePagamentoService.read();
-        console.log(formaPagamento);
         formaPagamento.data.formasPagamento.map((el) => {
           this.formaDePagamento.push(
             this.createFormaPagamento(el.descricao, el.uuid)
@@ -610,7 +608,6 @@ export default {
     list() {
       PacienteService.readAll()
         .then((response) => {
-          console.log(response);
           response.data.map((paciente) => {
             this.ListaPaciente.push(
               this.Paciente(paciente.nomePaciente, paciente.uuid)
@@ -690,7 +687,7 @@ export default {
         AgendaService.delete(uuid)
           .then(() => {
             this.showAlert("success", "Registro Deletado com Sucesso");
-            this.pesquisarAgendamentos();
+            this.pesquisarAgendamentos(false);
             this.loadEventosEmit();
             // this.resetModal();
           })
@@ -714,7 +711,6 @@ export default {
 
   watch: {
     dataAgenda() {
-      console.log(this.dataAgenda);
       this.agendamento.data = this.dataAgenda;
     },
     procedimentoSelect() {

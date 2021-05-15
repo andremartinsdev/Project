@@ -12,7 +12,9 @@
       <div class="mb-1">
         <b-avatar size="50" :src="logoBms"></b-avatar>
         <label class="ml-3 text-white"></label>
-        <b-navbar-brand class="ml-3 text-white nomeEmpresa">Clínica Teste</b-navbar-brand>
+        <b-navbar-brand class="ml-3 text-white nomeEmpresa"
+          >Clínica Teste</b-navbar-brand
+        >
       </div>
 
       <b-collapse id="nav-text-collapse" is-nav class="colapseContainer">
@@ -128,7 +130,6 @@
         class="text-center mt-2"
         shadow
         no-header
-       
       >
         <template #default="{ hide }">
           <div class="p-3">
@@ -159,9 +160,7 @@
               <b-toast
                 id="example-toast"
                 variant="primary"
-                :title="
-                  'Procedimento : ' + agendamento.procedimento.toUpperCase()
-                "
+                :title="'Procedimento : ' + agendamento.text.toUpperCase()"
                 class="ml-2"
                 static
                 visible
@@ -226,10 +225,8 @@ import DespesaService from "../services/despesas";
 import logoBms from "../../src/assets/LogoBms2.jpg";
 import ClinicaService from "../services/clinica";
 
-
 import moment from "moment";
 export default {
-  
   data() {
     return {
       logoBms: logoBms,
@@ -243,21 +240,21 @@ export default {
       despesasHoje: [],
       showAgendamentos: false,
       showDespesas: false,
-      nomeClinica: ''
+      nomeClinica: "",
     };
   },
 
-  updated() {},
-
-  mounted() {
-   
-    if(this.$route.path.substr(0, 11) != '/' && this.$route.path){
+  created() {
+    if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readAgendamentos();
       this.readDespesas();
+    }
+  },
+  mounted() {
+    if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readDadosClinica();
     }
   },
-  
 
   methods: {
     readAgendamentos() {
@@ -272,41 +269,45 @@ export default {
       );
     },
 
-async readDadosClinica(){
-      this.dadosClinica = []
-      const result = await ClinicaService.read()
-      this.nomeClinica = result.data.result[0].nomeClinica
-      
+    async readDadosClinica() {
+      this.dadosClinica = [];
+      const result = await ClinicaService.read();
+      this.nomeClinica = result.data.result[0].nomeClinica;
     },
 
     showDespesa() {
       this.showAgendamentos = false;
       this.showDespesas = !this.showDespesas;
+      console.log(this.despesasHoje);
     },
+
     showAgendamento() {
       this.showDespesas = false;
       this.showAgendamentos = !this.showAgendamentos;
     },
     readDespesas() {
+      this.despesasHoje = []
       DespesaService.readDate(
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       ).then((result) => {
+        console.log(result);
         result.data.result.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
           this.despesasHoje.push(el);
         });
       });
+      console.log(this.despesasHoje)
     },
   },
 };
 </script>
 
 <style scoped >
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @media (max-width: 700px) {
-  .nomeEmpresa{
-    font-size: 20px!important;
+  .nomeEmpresa {
+    font-size: 20px !important;
     color: red;
   }
 }
@@ -358,9 +359,17 @@ img:hover {
 }
 
 .navbar {
-  background: #0000469f;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to bottom, #1cb5e06b, #00004665);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to bottom, #1cb5e03f, #00004667); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #0000469f; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #1cb5e06b,
+    #00004665
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #1cb5e03f,
+    #00004667
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   margin-top: 10px;
   margin-right: 10px;
@@ -381,18 +390,25 @@ background: linear-gradient(to bottom, #1cb5e03f, #00004667); /* W3C, IE 10+/ Ed
   top: 300px; /*altura da classe*/
 }
 
-.nomeEmpresa{
-  font-family: 'Lobster', cursive;
+.nomeEmpresa {
+  font-family: "Lobster", cursive;
   font-size: 38px;
 }
 .iconeMenu {
   z-index: 1000;
 }
 
-.sidebar-2{
-  background: #0000469f;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to bottom, #1cb5e06b, #00004665);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to bottom, #1cb5e03f, #00004667); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+.sidebar-2 {
+  background: #0000469f; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #1cb5e06b,
+    #00004665
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #1cb5e03f,
+    #00004667
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 </style>

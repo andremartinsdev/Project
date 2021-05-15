@@ -18,6 +18,9 @@ export default {
     delete: (uuid) => {
         return http.delete(`/Receita/${uuid}`)
     },
+    readValorReceita: (dataInicial, dataFinal) =>{
+        return http.get(`Receita/readValorReceita/${dataInicial}/${dataFinal}`)
+      },
 
     update: (receita) => {
        

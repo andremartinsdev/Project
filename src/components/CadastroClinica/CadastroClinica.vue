@@ -150,7 +150,7 @@ export default {
         const result = await ClinicaService.read();
         this.clinica = result.data.result[0];
       } catch (error) {
-        console.log("erro");
+        // console.log("erro");
       }
     },
 

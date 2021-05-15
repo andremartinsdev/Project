@@ -282,7 +282,7 @@ export default {
       delete this.prescricaoUltExame.DATA;
       delete this.prescricaoUltExame.UUIDCLINICA;
 
-      console.log(this.prescricaoUltExame);
+      
       Object.keys(this.prescricaoUltExame).forEach((element) => {
         if (element.substring(0, 2) === "OD") {
           linha_od += 8;

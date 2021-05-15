@@ -938,7 +938,6 @@ export default {
         this.dataInicialAgFinalizado,
         this.dataFinalAgFinalizado
       ).then((result) => {
-        console.log(result)
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.totalPageFinalizado = Math.ceil(
           result.data.agendamentos.total[0].count / 5
@@ -995,7 +994,6 @@ export default {
       this.totalPage = 1;
       AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
-          console.log(result)
           this.agendamentos = result.data.agendamentos.result;
           //this.totalPage = result.data.agendamentos.total[0].count
           this.totalPage = Math.ceil(
@@ -1105,7 +1103,6 @@ export default {
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
         }).then((result) => {
-          console.log(result)
           if (Object.keys(result.data.result).length === 0) {
             this.showAlert("info", "Nenhuma Informação Encontrada");
           } else {
@@ -1135,7 +1132,6 @@ export default {
     },
 
     visualizar(uuid) {
-      console.log(this.typePesquisa === {})
       if (this.typePesquisa === "prescricao_oculos") {
         PrescricaoOculosService.read(uuid).then((result) => {
           this.prescricaoOculos = result.data.prescricao;
@@ -1270,8 +1266,9 @@ export default {
 .consulta {
   margin-top: 100px;
   font-family: "Monda", sans-serif;
-  height: 100%;
+  height: 1640px;
 }
+
 .check {
   display: flex;
   flex-wrap: wrap;

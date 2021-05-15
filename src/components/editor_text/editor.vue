@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <div class="atestado" v-html="content"></div>
+      
     <vue-editor v-model="content"></vue-editor>
    
   </div>

@@ -32,4 +32,8 @@ export default {
     readAll: () => {
         return http.get(`paciente/read/all/names`)
     },
+
+    readAniversariante: (mes, dia) => {
+        return http.get(`paciente/anivessariantes/mes?day=${dia}&moth=${mes}`)
+    }
 }

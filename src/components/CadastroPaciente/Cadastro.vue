@@ -343,7 +343,7 @@ export default {
         this.totalPage = Math.ceil(totalRows / 10);
         this.campoPesquisaError = "";
       } catch (ex) {
-        console.log(ex);
+        // console.log(ex);
       }
     },
     async previousPage() {
@@ -351,7 +351,7 @@ export default {
         this.page -= 1
         this.list();
       } catch (ex) {
-        console.log(ex);
+        // console.log(ex);
       }
     },
     async nextPage() {
@@ -359,7 +359,7 @@ export default {
         this.page += 1
         this.list();
       } catch (ex) {
-        console.log(ex);
+        // console.log(ex);
       }
     },
     async salvar() {

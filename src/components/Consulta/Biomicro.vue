@@ -395,7 +395,7 @@ export default {
 
   methods: {
 createPDF(download) {
-      console.log(this.propsAnamnese2);
+      // console.log(this.propsAnamnese2);
       let pdfName = "Biomicro";
       var doc = new jsPDF();
       var linha = 85;

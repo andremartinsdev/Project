@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const http = axios
     .create({
-        baseURL: 'http://localhost:3000',
+        baseURL: 'http://optobackend.bmsltda.com.br/',
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`
         }

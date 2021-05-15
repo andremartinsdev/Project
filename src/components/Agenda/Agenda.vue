@@ -180,7 +180,6 @@ export default {
     },
 
     reloadProcedimento() {
-      console.log("entroooooooooooooooooooooooooooooo");
       this.readAllProcedimentos();
     },
 
@@ -198,7 +197,6 @@ export default {
 
     
     detalhesAgendamento(event) {
-      console.log(event.id);
       this.uuidAgenda = event.id;
       setTimeout(() => {
         this.$bvModal.show("modal-lg-pagamento");

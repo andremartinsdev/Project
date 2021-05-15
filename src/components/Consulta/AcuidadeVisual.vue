@@ -316,7 +316,7 @@ export default {
       this.enviarAcuidade();
     },
     Visualizar() {
-      console.log("entrrrrou acuidade");
+      // console.log("entrrrrou acuidade");
     },
 
     Limpar() {

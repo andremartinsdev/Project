@@ -233,7 +233,6 @@ export default {
 
     enviarPpc() {
       this.$store.commit("PPC", this.ppc);
-      console.log(this.ppc);
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div role="tablist">
     <b-input hidden></b-input>
-   
+
     <b-input v-model="uuidFichaProps" hidden></b-input>
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
@@ -389,7 +389,7 @@
           >Limpar
         </b-button>
 
-       
+
       </div>
     </footer>
   </div>
@@ -459,7 +459,7 @@ export default {
       this.editar = this.editarProps;
     },
     uuidFichaProps() {
-      console.log(this.uuidFicha);
+      // console.log(this.uuidFicha);
     },
     fichaClinicaProps() {
       this.testeProps = "andreeeeeee";
@@ -660,7 +660,7 @@ export default {
           doc.setTextColor(100);
           doc.setFontSize(10);
           doc.text(
-              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}` 
+              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}`
             ,
             12,
             linhaAcuidade + 20,
@@ -675,17 +675,17 @@ export default {
           doc.setTextColor(100);
           doc.setFontSize(10);
           doc.text(
-              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}` 
+              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}`
             ,
             100,
             linhaAcuidade + 20,
             null,
             null
           );
-          
+
         });
 
-       
+
       }
 
 
@@ -755,8 +755,10 @@ export default {
         idConsulta: this.idConsultaData,
         atendido: true,
         dataVencimento: this.dataVencimento,
-      }).then((result) => {
-        console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
+      }).then(() => {
+        // console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
+      }).catch(()=>{
+        this.showAlert("error","ocorreu um erro ao finalizar consulta")
       });
       const dados = {
         ...this.fichaClinica,

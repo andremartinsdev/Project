@@ -82,7 +82,6 @@ export default {
     readPaciente() {
       Paciente.read(this.$route.params.uuid).then((result) => {
         this.nomePaciente = result.data.paciente.nomePaciente;
-        console.log(this.nomePaciente);
       }).catch(()=>{
         alert("Ocorreu um Erro ao ler os dados do Paciente")
       });

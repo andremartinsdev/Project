@@ -342,15 +342,15 @@ export default {
       const prescricao = await PrescricaoService.read(uuid);
       Object.assign(this.prescricaoOculos, prescricao.data.prescricao);
       this.$root.$emit("bv::toggle::collapse", "accordion-1");
-      console.log(prescricao);
+ 
     },
     testePaciente() {
-      console.log(this.pacienteSelected);
+      // console.log(this.pacienteSelected);
     },
     async readPaciente() {
       const pacientes = await PacienteService.readAll();
       this.pacientes = pacientes.data;
-      console.log(this.pacientes);
+    
     },
     showAlert(icon, title) {
       // Use sweetalert2
@@ -382,7 +382,6 @@ export default {
     },
 
     createPDF(download) {
-      console.log(this.propsAnamnese2);
       let pdfName = "Prescrição Óculos";
       var doc = new jsPDF();
       var linha = 85;

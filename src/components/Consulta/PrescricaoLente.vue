@@ -189,7 +189,6 @@ export default {
     },
 
     createPDF(download) {
-      console.log(this.propsAnamnese2);
       let pdfName = "Prescrição Óculos";
       var doc = new jsPDF();
       var linha = 85;
@@ -264,7 +263,6 @@ export default {
       try {
         if (this.prescricaoLente.uuid === 0) {
           this.dadosConsulta.idPaciente = this.idPaciente;
-          console.log(this.dadosConsulta);
           const resultConsulta = await ConsultaService.save(this.dadosConsulta);
           this.idConsulta = resultConsulta.data.result.idConsulta[0];
           this.uuidConsulta = resultConsulta.data.result.uuid;

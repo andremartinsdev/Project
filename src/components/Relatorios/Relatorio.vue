@@ -26,8 +26,8 @@
                     <td>{{ consulta.nomePaciente }}</td>
                     <td>{{ consulta.data }}</td>
                     <td>{{ consulta.horario }}</td>
-                    <td>{{ consulta.procedimento }}</td>
-                    <td>{{ consulta.formaDePagamento }}</td>
+                    <td>{{ consulta.text }}</td>
+                    <td>{{ consulta.descricao }}</td>
                     <td>
                       {{
                         consulta.valorConsulta.toLocaleString("pt-br", {
@@ -113,11 +113,13 @@
               </b-card>
 
               <div class="mt-3">
-                <b-card-group deck>
+                <b-card-group deck >
                   <b-card
                     header-tag="header"
                     bg-variant="success"
                     footer-tag="footer"
+                    v-b-popover.hover.bottom="'Receita : Composto por todas as receitas cadastradas e Atendimentos Finalizados'"
+                    
                   >
                     <h6 class="text-white">
                       <b-icon-arrow-up variant="light"></b-icon-arrow-up>
@@ -137,6 +139,7 @@
                     header-tag="header"
                     bg-variant="info"
                     footer-tag="footer"
+                     v-b-popover.hover.bottom="'Total à Receber : Composto por todos Atendimentos não Finalizados'"
                   >
                     <h6 class="text-white">
                       <b-icon-arrow-up variant="light"></b-icon-arrow-up> Total
@@ -156,6 +159,7 @@
                     header-tag="header"
                     bg-variant="danger"
                     footer-tag="footer"
+ v-b-popover.hover.bottom="'Despesas : Composta por todas Despesas Cadastradas'"
                   >
                     <h6 class="text-white">
                       <b-icon-arrow-down variant="light"></b-icon-arrow-down>
@@ -179,7 +183,7 @@
                 header-bg-variant="danger"
                 header-text-variant="light"
                 size="lg"
-                @hidden="resetModal"
+                @hidden="resetModalDespesa"
               >
                 <div>
                   <b-tabs content-class="mt-3" v-model="tabIndexDespesa">
@@ -214,7 +218,7 @@
                           <b-form-select
                             @change="teste"
                             size="sm"
-                            v-model="formaDePagamentoSelect"
+                            v-model="despesa.idFormaPagamento"
                             :options="formaDePagamento"
                           >
                             <template #first>
@@ -326,7 +330,7 @@
                   <b-button size="sm" variant="primary" @click="ok()">
                     Salvar
                   </b-button>
-                  <b-button size="sm" variant="primary" @click="resetModal">
+                  <b-button size="sm" variant="primary" @click="resetModalDespesa">
                     Limpar
                   </b-button>
                 </template>
@@ -339,7 +343,7 @@
                 header-bg-variant="success"
                 header-text-variant="light"
                 size="lg"
-                @hidden="resetModal"
+                @hidden="resetModalReceita"
               >
                 <div>
                   <b-tabs content-class="mt-3" v-model="tabIndexReceita">
@@ -372,9 +376,9 @@
                         <div class="form-group w-50 mr-2 mt-2">
                           <label>Forma de Pagamento</label>
                           <b-form-select
-                            @change="teste"
+                            @change="testeForma"
                             size="sm"
-                            v-model="formaDePagamentoSelect"
+                            v-model="receitaData.idFormaPagamento"
                             :options="formaDePagamento"
                           >
                             <template #first>
@@ -486,7 +490,7 @@
                   <b-button size="sm" variant="primary" @click="ok()">
                     Salvar
                   </b-button>
-                  <b-button size="sm" variant="primary" @click="resetModal">
+                  <b-button size="sm" variant="primary" @click="resetModalReceita">
                     Limpar
                   </b-button>
                 </template>
@@ -618,7 +622,7 @@ export default {
         uuid: "",
         descricaoDespesa: "",
         data: "",
-        idFormaPagamento: this.formaDePagamentoSelect,
+        idFormaPagamento: null,
         despesaPaga: false,
         valor: 0,
         observacao: "",
@@ -628,7 +632,7 @@ export default {
         uuid: "",
         descricaoReceita: "",
         data: "",
-        idFormaPagamento: this.formaDePagamentoSelect,
+        idFormaPagamento: null,
         receitaPaga: false,
         valor: 0,
         observacao: "",
@@ -667,6 +671,17 @@ export default {
     this.consultaVencida();
   },
   methods: {
+    resetModalReceita(){
+      this.receitaData = {
+        uuid: "",
+        descricaoReceita: "",
+        data: "",
+        idFormaPagamento: "",
+        receitaPaga: false,
+        valor: 0,
+        observacao: "",
+      }
+    },
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -683,7 +698,7 @@ export default {
     },
 
     teste() {
-      console.log(this.formaDePagamentoSelect);
+      console.log(this.despesa.idFormaPagamento);
     },
     detalhesConsulta(uuid, nomePaciente, dataNascimento, valorConsulta) {
       AgendaService.readParams(uuid).then((result) => {
@@ -729,10 +744,22 @@ export default {
       FormaDePagamentoService.read().then((result) => {
         result.data.formasPagamento.map((el) => {
           this.formaDePagamento.push(
-            this.formaPagamento(el.descricao, el.idFormaPagamento)
+            this.formaPagamento(el.descricao, el.uuid)
           );
         });
       });
+    },
+
+    resetModalDespesa(){
+      this.despesa = {
+        uuid: "",
+        descricaoDespesa: "",
+        data: "",
+        idFormaPagamento: null,
+        despesaPaga: false,
+        valor: 0,
+        observacao: "",
+      }
     },
 
     handleOkReceita(bvModalEvt) {
@@ -758,6 +785,11 @@ export default {
         });
       });
     },
+
+
+testeForma(){
+  console.log(this.formaDePagamento)
+},
 
     gerarRelatorio() {
       if (this.formaDePagamentoSelect != null) {
@@ -785,17 +817,29 @@ export default {
       });
     },
 
-    aniversariantes() {
-      PacienteService.readAll().then((result) => {
-        result.data.result.map((el) => {
-          if (
-            moment(el.dataNascimento).format("DD/MM/YYYY").substring(3, 5) ==
-            moment().format("DD/MM/YYYY").substring(3, 5)
-          ) {
-            this.aniversarianteDoMes.push(el);
-          }
-        });
-      });
+    async aniversariantes() {
+      try {
+        var mes = parseInt(moment().format("DD/MM/YYYY").substring(3, 5));
+        var dia = moment().format("DD/MM/YYYY").substring(0, 2);
+       const aniversariante = await PacienteService.readAniversariante(mes, dia)
+       aniversariante.data.forEach(element => {
+         element.dataNascimento = moment(element.dataNascimento).format("DD/MM/YYYY")
+         this.aniversarianteDoMes.push(element)
+       });
+      } catch (error) {
+        this.showAlert("error","ocorreu um erro ao listar Aniversariantes")
+      }
+      
+      // PacienteService.readAniversariante().then((result) => {
+      //   result.data.result.map((el) => {
+      //     if (
+      //       moment(el.dataNascimento).format("DD/MM/YYYY").substring(3, 5) ==
+      //       moment().format("DD/MM/YYYY").substring(3, 5)
+      //     ) {
+      //       this.aniversarianteDoMes.push(el);
+      //     }
+      //   });
+      // });
     },
 
     receita() {
@@ -856,18 +900,18 @@ export default {
           this.despesa.idFormaPagamento === null
         ) {
           this.showAlert("info", "Por favor preescha todos os campos");
+          console.log(this.despesa)
         } else {
           this.despesa.valor = this.despesa.valor.replace("R$", "");
           this.despesa.valor = this.despesa.valor.replace(".", "");
           this.despesa.valor = this.despesa.valor.replace(",", ".");
           delete this.despesa.uuid
-          this.despesa.idFormaPagamento = this.formaDePagamentoSelect;
           DespesaService.save(this.despesa)
             .then((result) => {
               if (result.status === 201) {
                 this.showAlert("success", "Despesa Cadastrada com Sucesso");
                 this.readDespesas();
-                this.resetModal();
+                this.resetModalDespesa();
               } else {
                 this.showAlert(
                   "error",
@@ -892,6 +936,7 @@ export default {
             if (result.status === 201) {
               this.showAlert("success", "Registro Atualizado");
               this.readDespesas();
+              this.resetModalDespesa();
             } else {
               this.showAlert(
                 "error",
@@ -936,8 +981,9 @@ export default {
             this.despesa.data = moment(result.data.despesa[0].data).format(
               "YYYY-MM-DD"
             );
-            this.formaDePagamentoSelect =
-              result.data.despesa[0].idFormaPagamento;
+            this.despesa.idFormaPagamento =
+              result.data.despesa[0].uuidFormaPagamento;
+              console.log(result.data.despesa[0].uuid)
             this.despesa.valor = result.data.despesa[0].valor.toLocaleString(
               "pt-br",
               { style: "currency", currency: "BRL" }
@@ -1036,12 +1082,13 @@ export default {
         this.receitaData.valor = this.receitaData.valor.replace("R$", "");
         this.receitaData.valor = this.receitaData.valor.replace(".", "");
         this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        this.receitaData.idFormaPagamento = this.formaDePagamentoSelect;
+        console.log(this.receitaData)
         ReceitaService.save(this.receitaData)
           .then((result) => {
             if (result.status === 201) {
               this.showAlert("success", "Receita Cadastrada com Sucesso");
               this.readReceita();
+              this.resetModalReceita();
             } else {
               this.showAlert(
                 "error",
@@ -1059,13 +1106,13 @@ export default {
         this.receitaData.valor = this.receitaData.valor.replace("R$", "");
         this.receitaData.valor = this.receitaData.valor.replace(".", "");
         this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        this.receitaData.idFormaPagamento = this.formaDePagamentoSelect;
-
+        console.log(this.receitaData)
         ReceitaService.update(this.receitaData)
           .then((result) => {
             if (result.status === 201) {
               this.showAlert("success", "Registro Atualizado");
               this.readReceita();
+              this.resetModalReceita();
             } else {
               this.showAlert(
                 "error",
@@ -1118,15 +1165,17 @@ export default {
     editarReceita(uuid) {
       ReceitaService.read(uuid)
         .then((result) => {
+          console.log(result.data.receita[0].data)
           this.receitaData.uuid = result.data.receita[0].uuid;
           this.receitaData.descricaoReceita =
             result.data.receita[0].descricaoReceita;
-          this.receitaData.data = result.data.receita[0].data;
+          this.receitaData.data = moment(result.data.receita[0].data).format("YYYY-MM-DD");
           this.receitaData.valor = result.data.receita[0].valor.toLocaleString(
             "pt-br",
             { style: "currency", currency: "BRL" }
           );
-          this.formaDePagamentoSelect = result.data.receita[0].idFormaPagamento;
+          console.log(result.data.receita[0])
+          this.receitaData.idFormaPagamento = result.data.receita[0].uuidFormaPagamento;
           this.receitaData.observacao = result.data.receita[0].observacao;
           this.receitaData.receitaPaga =
             result.data.receita[0].receitaPaga === 1 ? true : false;

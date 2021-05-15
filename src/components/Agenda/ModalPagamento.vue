@@ -128,24 +128,24 @@ export default {
           recebido: this.agendamento.recebido,
         })
           .then(() => {
-           
+
               this.showAlert("success", "Pagamento Salvo com Sucesso");
-            
+
           })
           .catch(() => {
             this.showAlert("error", "Ocorreu um erro ao realizar pagamento");
           });
-    
+
     },
 
     detalhesAgendamento() {
       if (this.uuidAgendamento === "") {
-        console.log("não passou");
+        // console.log("não passou");
         return;
       }
       AgendaService.readAgendaJoinPaciente(this.uuidAgendamento)
         .then((result) => {
-          console.log(result)
+          // console.log(result)
           this.agendamento = result.data.agendamento;
           this.agendamento.titulo =  result.data.agendamento.descricao
           this.agendamento.data = moment(result.data.agendamento.data).format(

@@ -280,7 +280,6 @@ export default {
   },
   methods: {
     createPDF(download) {
-      console.log(this.propsAnamnese2);
       let pdfName = "Oftalmoscopia";
       var doc = new jsPDF();
       var linha = 85;

@@ -82,7 +82,6 @@ export default {
 
   watch: {
     flexProps() {
-      console.log(this.flexProps);
       if (
         this.flexProps === undefined ||
         Object.keys(this.flexProps).length === 0

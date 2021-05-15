@@ -103,6 +103,7 @@ export default {
       }
       LoginService.logar(this.login.cpfcnpj, this.login.senha)
         .then((result) => {
+          console.log(result)
           sessionStorage.setItem("token", result.data.token);
           this.$router.push({
               path: "/Home",
