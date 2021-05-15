@@ -4,11 +4,11 @@
     id="modal-lg-addOticaParceira"
     header-bg-variant="light"
     title="Ótica Parceira"
-    @hidden="resetModal"
+    @hidden="resetModalOticaParceira"
   >
     <b-tabs v-model="tabIndex" content-class="mt-3">
       <b-tab title="Cadastro">
-        <label class="mt-2">Descrição da Forma de Pagamento</label>
+        <label class="mt-2">Descrição da Ótica Parceira</label>
         <b-form-input
           size="sm"
           type="text"
@@ -25,7 +25,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Descrição Procedimento</th>
+              <th scope="col">Nome Ótica Parceira</th>
               <th scope="col">Editar</th>
               <th scope="col">Excluir</th>
             </tr>
@@ -43,7 +43,11 @@
                 >
               </td>
               <td>
-                <b-button pill v-b-modal.modal-lg variant="primary"
+                <b-button
+                  pill
+                  v-b-modal.modal-lg
+                  variant="primary"
+                  @click="deleteOticaParceira(otica.uuid)"
                   >Excluir</b-button
                 >
               </td>
@@ -84,9 +88,9 @@ export default {
     };
   },
 
-created(){
-this.readOticasParceiras()
-},
+  created() {
+    this.readOticasParceiras();
+  },
 
   methods: {
     showAlert(icon, title) {
@@ -98,6 +102,13 @@ this.readOticasParceiras()
         showConfirmButton: false,
         timer: 2500,
       });
+    },
+
+    resetModalOticaParceira() {
+      this.oticaParceira = {
+        uuid: "",
+        descricao: "",
+      };
     },
 
     readOticasParceiras() {
@@ -118,6 +129,7 @@ this.readOticasParceiras()
         .then(() => {
           this.showAlert("success", "Registro Deletado");
           this.readOticasParceiras();
+          this.$emit("realoadOpticaP");
         })
         .catch((error) => {
           if (error.response.status === 409) {
@@ -136,8 +148,9 @@ this.readOticasParceiras()
         ServiceOticasParceiras.save(this.oticaParceira).then(() => {
           this.showAlert("success", "Registro Salvo com Sucesso");
           this.readOticasParceiras();
+          this.$emit("realoadOpticaP");
         });
-         return;
+        return;
       }
       ServiceOticasParceiras.update(
         this.oticaParceira.uuid,

@@ -278,7 +278,7 @@
       </b-card>
     </div>
     <ModalFormaPagamento @reloadForma="readFormaPagamento" />
-    <ModalOticaParceira />
+    <ModalOticaParceira @realoadOpticaP="readOticaParceira"/>
   </b-modal>
 </template>
 
@@ -366,6 +366,7 @@ export default {
     },
 
     adicionarProcedimento() {
+      this.$bvModal.show("modal-lg-addProcedimento");
       this.$emit("openModalProcedimento");
     },
 
@@ -566,6 +567,7 @@ export default {
 
     async readOticaParceira() {
       try {
+         this.oticasParceiras = [];
         const oticasParceira = await OticasParceirasServices.read();
         oticasParceira.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(

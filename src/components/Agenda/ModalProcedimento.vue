@@ -4,7 +4,7 @@
     id="modal-lg-addProcedimento"
     header-bg-variant="light"
     title="Novo Procedimento"
-    @hidden="resetModal"
+    @hidden="resetModalProcedimento"
   >
     <b-tabs v-model="tabIndex" content-class="mt-3">
       <b-tab title="Cadastro" active>
@@ -31,14 +31,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="procedimento in optionsPro" :key="procedimento.uuid">
+            <tr v-for="procedimento in optionsPro" :key="procedimento.value">
               <td>{{ procedimento.text }}</td>
               <td>
                 <b-button
                   pill
                   v-b-modal.modal-lg
                   variant="primary"
-                  @click="editarProcedimento(procedimento.uuid)"
+                  @click="editarProcedimento(procedimento.value)"
                   >Editar</b-button
                 >
               </td>
@@ -47,7 +47,7 @@
                   pill
                   v-b-modal.modal-lg
                   variant="primary"
-                  @click="excluirProcedimento(procedimento.uuid)"
+                  @click="excluirProcedimento(procedimento.value)"
                   >Excluir</b-button
                 >
               </td>
@@ -120,7 +120,9 @@ export default {
       }
     },
 
-    resetModal() {},
+    resetModalProcedimento() {
+       this.procedimento = { uuid: "", text: "", value: "" }
+    },
 
     procedimentoGenerate(text, value) {
       return {
@@ -130,14 +132,16 @@ export default {
     },
 
     readAllProcedimentos() {
+      this.optionsPro =[]
       ProcedimentoService.readAll()
         .then((result) => {
-          // console.log(result);
+          
           result.data.procedimento.forEach((element) => {
             this.optionsPro.push(
               this.procedimentoGenerate(element.text, element.uuid)
             );
           });
+              console.log(this.optionsPro);
           this.$store.commit("procedimentoSelect", this.optionsPro);
         })
         .catch(() => {
@@ -146,6 +150,7 @@ export default {
     },
 
     editarProcedimento(uuid) {
+    console.log(uuid)
       ProcedimentoService.read(uuid)
         .then((result) => {
           if (result.status === 201) {

@@ -25,7 +25,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Descrição Procedimento</th>
+              <th scope="col">Descrição Forma de Pagamento</th>
               <th scope="col">Editar</th>
               <th scope="col">Excluir</th>
             </tr>

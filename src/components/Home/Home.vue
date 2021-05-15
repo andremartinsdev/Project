@@ -583,8 +583,8 @@ export default {
       await this.readValorReceita();
       await this.readDespesa();
       console.log( parseFloat(this.resumoFinaceiro.totalPagar) , parseFloat(this.resumoFinaceiro.totalReceber))
-      var total = parseFloat(this.resumoFinaceiro.totalPagar) - parseFloat(this.resumoFinaceiro.totalReceber);
-       this.resumoFinaceiro.liquido = total.toFixed(2)
+      var total = parseFloat(this.resumoFinaceiro.totalReceber) - parseFloat(this.resumoFinaceiro.totalPagar);
+       this.resumoFinaceiro.liquido = !total ? 0 : total.toFixed(2)
     },
 
     proximaConsultaVencida() {

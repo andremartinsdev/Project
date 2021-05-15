@@ -107,7 +107,7 @@
         class="text-center mt-2"
         shadow
       >
-        <div class="px-3 py-2">
+        <div hidden class="px-3 py-2">
           <router-link to="/ConfiguracaoGeral">
             <b-button size="sm" variant="primary" block
               >Configuração Geral</b-button
@@ -271,8 +271,8 @@ export default {
 
     async readDadosClinica() {
       this.dadosClinica = [];
-      const result = await ClinicaService.read();
-      this.nomeClinica = result.data.result[0].nomeClinica;
+      await ClinicaService.read();
+      this.nomeClinica = "Cliníca Teste Beta";
     },
 
     showDespesa() {
