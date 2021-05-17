@@ -606,7 +606,7 @@
                       <td>{{ agendamento.horario }}</td>
                       <td>
                         <b-button variant="primary" pill size="sm" @click="visualizar(agendamento.uuid)">
-                          Visualizaraaa
+                          Visualizar
                         </b-button>
                       </td>
                     </tr>
