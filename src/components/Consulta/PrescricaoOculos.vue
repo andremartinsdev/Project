@@ -33,7 +33,7 @@
                     size="sm"
                     v-model="dataInicial"
                     class="mb-2 col-sm-3"
-                     placeholder="Data não Informada"
+                    placeholder="Data não Informada"
                   ></b-form-datepicker>
                 </div>
 
@@ -54,6 +54,14 @@
                   @click="readPrescricaoPesquisa"
                   >Pesquisar</b-button
                 >
+
+                <b-button
+                  variant="primary"
+                  size="sm"
+                  class="mb-4 mt-2 ml-2"
+                  @click="novaPesquisa"
+                  >Nova Pesquisa</b-button
+                >
               </div>
             </div>
           </div>
@@ -64,6 +72,7 @@
                 <th scope="col">Data Consulta</th>
                 <th scope="col">Visualizar</th>
                 <th scope="col">Imprimir</th>
+                <th scope="col">Excluir</th>
               </tr>
             </thead>
             <tbody>
@@ -88,6 +97,15 @@
                     Imprimir
                   </b-button>
                 </td>
+                <td>
+                  <b-button
+                    variant="primary"
+                    size="sm"
+                    @click="excluir(prescri.uuid)"
+                  >
+                    Excluir
+                  </b-button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -98,7 +116,7 @@
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-1 variant="info"
-          >Precição para Óculos</b-button
+          >Cadastro de Prescrição para Óculos</b-button
         >
       </b-card-header>
       <b-collapse
@@ -120,6 +138,7 @@
             ></b-input>
             <b-input
               size="sm"
+              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoOculos.od_cilindrico"
               placeholder="CIL"
@@ -128,6 +147,7 @@
               <b-input
                 size="sm"
                 placeholder="EIXO"
+                type="number"
                 v-model="prescricaoOculos.od_eixo"
               ></b-input>
             </b-input-group>
@@ -136,6 +156,7 @@
               size="sm"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
+              type="number"
               v-model="prescricaoOculos.od_av"
             ></b-input>
           </b-form>
@@ -153,6 +174,7 @@
               size="sm"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="CIL"
+              type="number"
               v-model="prescricaoOculos.oe_cilindrico"
             ></b-input>
             <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
@@ -160,12 +182,14 @@
                 v-model="prescricaoOculos.oe_eixo"
                 size="sm"
                 placeholder="EIXO"
+                type="number"
               ></b-input>
             </b-input-group>
 
             <b-input
               v-model="prescricaoOculos.oe_av"
               size="sm"
+              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
             ></b-input>
@@ -181,9 +205,15 @@
             ></b-input>
           </b-form>
 
-          <div class="mt-3 ml-2">
+          <div class="mt-3">
             <label class="mr-3">LENTE :</label>
-            <b-form-select size="sm" class="col-sm-6"></b-form-select>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="Lente"
+              type="text"
+              size="sm"
+              v-model="prescricaoOculos.lente"
+            ></b-input>
           </div>
 
           <div class="mt-4 mb-2">
@@ -197,7 +227,39 @@
               v-model="prescricaoOculos.observacao"
             ></b-form-textarea>
           </div>
-          <div
+          <b-row class="mt-4">
+            <b-col lg="1" class="pb-2"
+              ><b-button
+                class="mr-3"
+                pill
+                variant="primary"
+                @click="savePrescricao"
+                >Salvar</b-button
+              >
+            </b-col>
+            <b-col lg="1" class="pb-2">
+              <b-button pill @click="cancelar">Limpar</b-button>
+            </b-col>
+            <b-col lg="2" class="pb-2">
+              <b-button
+                size="sm"
+                class="mr-3 "
+                variant="primary"
+                @click="createPDF(false)"
+                pill
+              >
+                Imprimir
+                <b-icon-printer-fill
+                  class="ml-3"
+                ></b-icon-printer-fill></b-button
+            ></b-col>
+            <b-col lg="2"> 
+               <b-link href="#foo" @click="createPDF(true)"
+              >Download PDF <b-icon-download></b-icon-download>
+            </b-link>
+            </b-col>
+          </b-row>
+          <!-- <div
             class="mt-2 p-4"
             style="display: flex; justify-content: flex-end"
           >
@@ -208,7 +270,7 @@
               @click="savePrescricao"
               >Salvar</b-button
             >
-            <b-button pill @click="cancelar">Cancelar</b-button>
+            <b-button pill @click="cancelar">Limpar</b-button>
             <b-button
               size="sm"
               class="mr-3 ml-2"
@@ -221,7 +283,7 @@
             <b-link href="#foo" @click="createPDF(true)"
               >Download PDF <b-icon-download></b-icon-download>
             </b-link>
-          </div>
+          </div> -->
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -261,7 +323,7 @@ export default {
       dataFinal: "",
       pacientes: [],
       prescricoes: [],
-      pacienteSelected: [],
+      pacienteSelected: null,
       logoOlho: logoOlho,
       moldura: moldura,
       idConsulta: -1,
@@ -291,6 +353,7 @@ export default {
         oe_av: "",
         adicao: "",
         observacao: "",
+        lente: "",
       },
     };
   },
@@ -305,6 +368,23 @@ export default {
     }),
   },
   methods: {
+    async excluir(uuid) {
+      try {
+        await PrescricaoService.delete(uuid);
+        await this.readPrescricaoPesquisa();
+        this.cancelar();
+        this.showAlert("success", "Registro Deletado com Sucesso");
+      } catch (error) {
+        this.showAlert("error", "ocorreu um erro ao deletar");
+      }
+    },
+
+    novaPesquisa() {
+      this.dataInicial = "";
+      this.dataFinal = "";
+      this.pacienteSelected = null;
+    },
+
     async imprimirPrescri(uuid) {
       await this.readPrescricaoUuid(uuid);
       this.createPDF(false);
@@ -315,7 +395,7 @@ export default {
         this.showAlert("info", "Por favor Informe o Período");
         return;
       }
-      if (this.pacienteSelected.length > 0) {
+      if (this.pacienteSelected != null) {
         const prescricoes = await PrescricaoService.readDatePaciente(
           this.dataInicial,
           this.dataFinal,
@@ -342,15 +422,17 @@ export default {
       const prescricao = await PrescricaoService.read(uuid);
       Object.assign(this.prescricaoOculos, prescricao.data.prescricao);
       this.$root.$emit("bv::toggle::collapse", "accordion-1");
- 
     },
     testePaciente() {
       // console.log(this.pacienteSelected);
     },
     async readPaciente() {
-      const pacientes = await PacienteService.readAll();
-      this.pacientes = pacientes.data;
-    
+      try {
+        const pacientes = await PacienteService.readAll();
+        this.pacientes = pacientes.data;
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um erro ao listar Pacientes");
+      }
     },
     showAlert(icon, title) {
       // Use sweetalert2
@@ -367,6 +449,9 @@ export default {
       this.prescricaoOculos = {
         idConsulta: "",
         idPaciente: "",
+        data: `${DateTime.local().c.year}-${DateTime.local().c.month}-${
+          DateTime.local().c.day
+        }`,
         uuid: "",
         od_esferico: "",
         od_cilindrico: "",
@@ -406,8 +491,8 @@ export default {
         switch (elemento) {
           case "Esférico":
             doc.setTextColor(0, 0, 255);
-            doc.text(this.prescricaoOculos.od_esferico, 42, linha, null, null);
-            doc.text(this.prescricaoOculos.oe_esferico, 175, linha, null, null);
+            doc.text(this.prescricaoOculos.od_esferico, 46, linha, null, null);
+            doc.text(this.prescricaoOculos.oe_esferico, 171, linha, null, null);
             doc.setTextColor(0);
             break;
 
@@ -415,14 +500,14 @@ export default {
             doc.setTextColor(0, 0, 255);
             doc.text(
               this.prescricaoOculos.od_cilindrico,
-              52,
+              48,
               linha,
               null,
               null
             );
             doc.text(
               this.prescricaoOculos.oe_cilindrico,
-              175,
+              173,
               linha,
               null,
               null
@@ -432,8 +517,15 @@ export default {
 
           case "Eixo":
             doc.setTextColor(0, 0, 255);
-            doc.text(this.prescricaoOculos.od_eixo, 45, linha, null, null);
-            doc.text(this.prescricaoOculos.oe_eixo, 172, linha, null, null);
+            doc.text(this.prescricaoOculos.od_eixo, 40, linha, null, null);
+            doc.text(this.prescricaoOculos.oe_eixo, 164, linha, null, null);
+            doc.setTextColor(0);
+            break;
+
+          case "Av":
+            doc.setTextColor(0, 0, 255);
+            doc.text(this.prescricaoOculos.od_av, 38, linha, null, null);
+            doc.text(this.prescricaoOculos.oe_av, 162, linha, null, null);
             doc.setTextColor(0);
             break;
 
@@ -443,12 +535,12 @@ export default {
       });
       doc.text(
         `Adição : ${this.prescricaoOculos.adicao}`,
-        60,
+        50,
         linha + 30,
         null,
         null
       );
-      doc.text(`Lente : `, 100, linha + 30, null, null);
+      doc.text(`Lente : `, 120, linha + 30, null, null);
       doc.text(`Observação`, 70, linha + 70, null, null);
       doc.text(this.prescricaoOculos.observacao, 70, linha + 80, null, null);
 
@@ -467,6 +559,10 @@ export default {
 
     async savePrescricao() {
       try {
+        if(this.idPaciente === -1){
+          this.showAlert("info", "Por favor inicie a consulta na aba de agendamento")
+          return
+        }
         if (this.prescricaoOculos.uuid === "") {
           this.dadosConsulta.idPaciente = this.idPaciente;
           const resultConsulta = await ConsultaService.save(this.dadosConsulta);
@@ -475,7 +571,7 @@ export default {
           this.prescricaoOculos.idConsulta =
             resultConsulta.data.result.idConsulta[0];
           this.prescricaoOculos.idPaciente = this.idPaciente;
-
+          console.log(this.prescricaoOculos);
           const resultPrescricao = await PrescricaoService.save(
             this.prescricaoOculos
           );

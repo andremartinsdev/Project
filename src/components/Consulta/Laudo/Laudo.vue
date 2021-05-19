@@ -99,8 +99,6 @@ export default {
   width: 500px;
 }
 
-
-
 @media print {
   table {
     border: none;

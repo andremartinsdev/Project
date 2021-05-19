@@ -26,4 +26,8 @@ export default {
        
         return http.put(`prescricao/lente/${uuid}`, {...prescricao})
       },
+
+      readPrescriPacienteDate: (dataInicial, dataFinal, idPaciente) => {
+          return http.get(`prescricao/lente/read/${idPaciente}/${dataInicial}/${dataFinal}`)
+      }
 }
