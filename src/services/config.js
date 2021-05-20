@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const http = axios
     .create({
-        baseURL: 'http://localhost:3002/',
+        baseURL: process.env.BASEURL,
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`
         }
