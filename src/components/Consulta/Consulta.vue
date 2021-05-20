@@ -40,7 +40,7 @@
                           size="sm"
                           @click="
                             inicioConsulta(
-                              agendamento.idPaciente,
+                              agendamento.uuidPaciente,
                               agendamento.uuid,
                               agendamento.pacienteUuid,
                               agendamento.procedimento,
@@ -104,6 +104,235 @@
                 </div>
               </b-card>
             </b-tab>
+
+            <b-tab title="Pesquisar Agendamentos" active>
+              <b-card class="agendadosHoje">
+                <div class="flex mb-4">
+                  <div class="mr-3">
+                    <label>Data Inicial</label>
+                    <input
+                      type="date"
+                      size="sm"
+                      class="form-control col-sm-12"
+                      v-model="dataInicialAg"
+                    />
+                  </div>
+                  <div>
+                    <label>Data Final</label>
+                    <input
+                      type="date"
+                      class="form-control col-sm-12"
+                      v-model="dataFinalAg"
+                    />
+                  </div>
+
+                  <div class="ml-2">
+                    <b-button @click="listAgendamento" block variant="primary"
+                      >Pesquisar</b-button
+                    >
+                  </div>
+                </div>
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nome Paciente</th>
+                      <th scope="col">Data do Atendimento</th>
+                      <th scope="col">Horário do Atendimento</th>
+                      <th scope="col">Iniciar Consulta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="agendamento in this.agendamentosData"
+                      :key="agendamento.uuid"
+                    >
+                      <td>{{ agendamento.nomePaciente }}</td>
+                      <td>{{ agendamento.data }}</td>
+                      <td>{{ agendamento.horario }}</td>
+                      <td>
+                        <b-button
+                          variant="warning"
+                          pill
+                          size="sm"
+                          @click="
+                            inicioConsulta(
+                              agendamento.pacienteUuid,
+                              agendamento.uuid,
+                              agendamento.pacienteUuid,
+                              agendamento.procedimento
+                            )
+                          "
+                        >
+                          Consultar Paciente
+                        </b-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="mt-2 mb-2">
+                  <div>
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPageAg"
+                      v-if="pageAg < totalPageAg"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                      size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{ totalPageAg }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ pageAg }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPageAg"
+                      v-if="pageAg > 1"
+                      class="mr-2 ml-2"
+                      size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                      size="sm"
+                      class="mr-2 ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
+                </div>
+              </b-card>
+            </b-tab>
+
+            <b-tab title="Pesquisar Consultas Realizadas">
+              <b-card class="prescricao agendadosHoje">
+                <div class="flex mb-4">
+                  <div class="mr-3">
+                    <label>Data Inicial</label>
+                    <input
+                      type="date"
+                      size="sm"
+                      class="form-control col-sm-12"
+                      v-model="dataInicialAgFinalizado"
+                    />
+                  </div>
+                  <div>
+                    <label>Data Final</label>
+                    <input
+                      type="date"
+                      class="form-control col-sm-12"
+                      v-model="dataFinalAgFinalizado"
+                    />
+                  </div>
+
+                  <div class="ml-2">
+                    <b-button
+                      @click="listAgendamentoRealizado"
+                      block
+                      variant="primary"
+                      >Pesquisar</b-button
+                    >
+                  </div>
+                </div>
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nome Paciente</th>
+                      <th scope="col">Data do Atendimento</th>
+                      <th scope="col">Horário do Atendimento</th>
+                      <th scope="col">Iniciar Consulta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="agendamento in this.agendamentosDataFinalizado"
+                      :key="agendamento.uuid"
+                    >
+                      <td>{{ agendamento.nomePaciente }}</td>
+                      <td>{{ agendamento.data }}</td>
+                      <td>{{ agendamento.horario }}</td>
+                      <td>
+                        <b-button
+                          variant="primary"
+                          pill
+                          size="sm"
+                          @click="visualizar(agendamento.uuid)"
+                        >
+                          Visualizar
+                        </b-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="mt-2 mb-2">
+                  <div>
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      @click="proximaPageFinalizado"
+                      v-if="pageFinalizado < totalPageFinalizado"
+                      size="sm"
+                      >Proxima Pagina</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      class="mr-2"
+                      disabled
+                      size="sm"
+                      v-else
+                      >Proxima Pagina</b-button
+                    >
+                    <label>
+                      Total de Páginas
+                      <b-badge variant="primary">{{
+                        totalPageFinalizado
+                      }}</b-badge>
+                    </label>
+                    <label class="ml-4">
+                      Página Atual
+                      <b-badge variant="primary">{{ pageFinalizado }}</b-badge>
+                    </label>
+                    <b-button
+                      pill
+                      variant="primary"
+                      @click="anteriorPageFinalizado"
+                      v-if="pageFinalizado > 1"
+                      class="mr-2 ml-2"
+                      size="sm"
+                      >Pagina Anterior</b-button
+                    >
+                    <b-button
+                      pill
+                      variant="primary"
+                      disabled
+                      v-else
+                      size="sm"
+                      class="mr-2 ml-2"
+                      >Pagina Anterior</b-button
+                    >
+                  </div>
+                </div>
+              </b-card>
+            </b-tab>
+
             <b-tab title="Consulta">
               <b-card class="agendadosHoje">
                 <div class="dadosPaciente">
@@ -134,20 +363,11 @@
                       ></b-input>
                     </p>
                   </div>
-                  <div>
-                    <p>
-                      Procedimento:
-                      <b-input
-                        class="text-primary"
-                        disabled
-                        v-model="procedimentoConsulta"
-                      ></b-input>
-                    </p>
-                  </div>
+                 
                 </div>
               </b-card>
             </b-tab>
-            <b-tab title="Pesquisar">
+            <!-- <b-tab title="Pesquisar">
               <div class="jumb">
                 <b-jumbotron id="tabelaPac">
                   <div class="flex mb-4">
@@ -236,7 +456,7 @@
                             >Visualizar
                           </b-button>
                         </td>
-                        
+
                         <td>
                           <b-button
                             pill
@@ -304,12 +524,12 @@
                   </div>
                 </b-jumbotron>
               </div>
-            </b-tab>
+            </b-tab> -->
           </b-tabs>
         </b-card>
       </div>
 
-      <div v-if="tabIndexConsulta === 1 || tabIndexConsulta === 2">
+      <div v-if="tabIndexConsulta === 3">
         <b-card no-body>
           <b-tabs v-model="tabIndex" card>
             <b-tab title="Prescrição para Óculos" active>
@@ -323,8 +543,113 @@
               </b-card>
             </b-tab>
             <b-tab title="Laudo">
-              <b-card class="prescricao">
+<Laudo/>
+              <!-- <b-card class="prescricao">
                 <div>
+                  <b-card no-body class="mb-5">
+                    <b-card-header header-tag="header" class="p-1" role="tab">
+                      <b-button
+                        block
+                        v-b-toggle.accordionPesquisaPrescriOculos
+                        variant="info"
+                        >Pesquisar Laudo</b-button
+                      >
+                    </b-card-header>
+                    <b-collapse
+                      id="accordionPesquisaPrescriOculos"
+                      visible
+                      accordion="my-accordion"
+                      role="tabpanel"
+                    >
+                      <b-card-body>
+                        <div>
+                          <label for="">Selecione o Paciente</label>
+                          <b-form-select
+                            v-model="pacienteSelectedLaudo"
+                            :options="pacientes"
+                            size="sm"
+                            class="mb-3"
+                            value-field="uuid"
+                            text-field="nomePaciente"
+                            disabled-field="notEnabled"
+                          ></b-form-select>
+                          <div>
+                            <div style="width: 100%">
+                              <div style="width: 100%">
+                                <label for="example-datepicker"
+                                  >Data Inicial</label
+                                >
+                                <b-form-datepicker
+                                  id="example-datepicker"
+                                  size="sm"
+                                  v-model="dataInicial"
+                                  class="mb-2 col-sm-3"
+                                  placeholder="Data não Informada"
+                                ></b-form-datepicker>
+                              </div>
+
+                              <div>
+                                <label for="example-datepicker"
+                                  >Data Final</label
+                                >
+                                <b-form-datepicker
+                                  id="example-datepicker"
+                                  size="sm"
+                                  v-model="dataFinal"
+                                  class="mb-2 col-sm-3"
+                                  placeholder="Data não Informada"
+                                ></b-form-datepicker>
+                              </div>
+                              <b-button
+                                variant="primary"
+                                size="sm"
+                                class="mb-4 mt-2"
+                                >Pesquisar</b-button
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nome Paciente</th>
+                              <th scope="col">Data Consulta</th>
+                              <th scope="col">Visualizar</th>
+                              <th scope="col">Imprimir</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="prescri in this.prescricoes"
+                              :key="prescri.uuid"
+                            >
+                              <th>{{ prescri.nomePaciente }}</th>
+                              <td>{{ prescri.data }}</td>
+                              <td>
+                                <b-button
+                                  variant="primary"
+                                  size="sm"
+                                  @click="readPrescricaoUuid(prescri.uuid)"
+                                >
+                                  Visualizar
+                                </b-button>
+                              </td>
+                              <td>
+                                <b-button
+                                  variant="primary"
+                                  size="sm"
+                                  @click="imprimirPrescri(prescri.uuid)"
+                                >
+                                  Imprimir
+                                </b-button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </b-card-body>
+                    </b-collapse>
+                  </b-card>
+
                   <b-card-group deck class="mb-3">
                     <b-card header-tag="header" footer-tag="footer">
                       <template #header>
@@ -405,9 +730,108 @@
                 <b-button variant="primary" block pill @click="gerarLaudo">
                   Gerar Laudo
                 </b-button>
-              </b-card>
+              </b-card> -->
             </b-tab>
             <b-tab title="Atestado">
+              <b-card no-body class="mb-5">
+                <b-card-header header-tag="header" class="p-1" role="tab">
+                  <b-button
+                    block
+                    v-b-toggle.accordionPesquisaPrescriOculos
+                    variant="info"
+                    >Pesquisar Atestado</b-button
+                  >
+                </b-card-header>
+                <b-collapse
+                  id="accordionPesquisaPrescriOculos"
+                  visible
+                  accordion="my-accordion"
+                  role="tabpanel"
+                >
+                  <b-card-body>
+                    <div>
+                      <label for="">Selecione o Paciente</label>
+                      <b-form-select
+                        v-model="pacienteSelectedAtestado"
+                        :options="pacientes"
+                        size="sm"
+                        class="mb-3"
+                        value-field="uuid"
+                        text-field="nomePaciente"
+                        disabled-field="notEnabled"
+                      ></b-form-select>
+                      <div>
+                        <div style="width: 100%">
+                          <div style="width: 100%">
+                            <label for="example-datepicker">Data Inicial</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataInicial"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+
+                          <div>
+                            <label for="example-datepicker">Data Final</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataFinal"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            class="mb-4 mt-2"
+                            >Pesquisar</b-button
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nome Paciente</th>
+                          <th scope="col">Data Consulta</th>
+                          <th scope="col">Visualizar</th>
+                          <th scope="col">Imprimir</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="prescri in this.prescricoes"
+                          :key="prescri.uuid"
+                        >
+                          <th>{{ prescri.nomePaciente }}</th>
+                          <td>{{ prescri.data }}</td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="readPrescricaoUuid(prescri.uuid)"
+                            >
+                              Visualizar
+                            </b-button>
+                          </td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="imprimirPrescri(prescri.uuid)"
+                            >
+                              Imprimir
+                            </b-button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </b-card-body>
+                </b-collapse>
+              </b-card>
               <b-card class="prescricao">
                 <b-button variant="primary" block pill @click="imprimirAtestado"
                   >Gerar Atestado</b-button
@@ -415,16 +839,313 @@
               </b-card>
             </b-tab>
             <b-tab title="Declaração">
+              <b-card no-body class="mb-5">
+                <b-card-header header-tag="header" class="p-1" role="tab">
+                  <b-button
+                    block
+                    v-b-toggle.accordionPesquisaPrescriOculos
+                    variant="info"
+                    >Pesquisar Declaração</b-button
+                  >
+                </b-card-header>
+                <b-collapse
+                  id="accordionPesquisaPrescriOculos"
+                  visible
+                  accordion="my-accordion"
+                  role="tabpanel"
+                >
+                  <b-card-body>
+                    <div>
+                      <label for="">Selecione o Paciente</label>
+                      <b-form-select
+                        v-model="pacienteSelectedDeclaracao"
+                        :options="pacientes"
+                        size="sm"
+                        class="mb-3"
+                        value-field="uuid"
+                        text-field="nomePaciente"
+                        disabled-field="notEnabled"
+                      ></b-form-select>
+                      <div>
+                        <div style="width: 100%">
+                          <div style="width: 100%">
+                            <label for="example-datepicker">Data Inicial</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataInicial"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+
+                          <div>
+                            <label for="example-datepicker">Data Final</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataFinal"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            class="mb-4 mt-2"
+                            >Pesquisar</b-button
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nome Paciente</th>
+                          <th scope="col">Data Consulta</th>
+                          <th scope="col">Visualizar</th>
+                          <th scope="col">Imprimir</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="prescri in this.prescricoes"
+                          :key="prescri.uuid"
+                        >
+                          <th>{{ prescri.nomePaciente }}</th>
+                          <td>{{ prescri.data }}</td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="readPrescricaoUuid(prescri.uuid)"
+                            >
+                              Visualizar
+                            </b-button>
+                          </td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="imprimirPrescri(prescri.uuid)"
+                            >
+                              Imprimir
+                            </b-button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </b-card-body>
+                </b-collapse>
+              </b-card>
               <b-card class="prescricao">
                 <Editor />
               </b-card>
             </b-tab>
             <b-tab title="Encaminhamento">
+              <b-card no-body class="mb-5">
+                <b-card-header header-tag="header" class="p-1" role="tab">
+                  <b-button
+                    block
+                    v-b-toggle.accordionPesquisaPrescriOculos
+                    variant="info"
+                    >Pesquisar Encaminhamento</b-button
+                  >
+                </b-card-header>
+                <b-collapse
+                  id="accordionPesquisaPrescriOculos"
+                  visible
+                  accordion="my-accordion"
+                  role="tabpanel"
+                >
+                  <b-card-body>
+                    <div>
+                      <label for="">Selecione o Paciente</label>
+                      <b-form-select
+                        v-model="pacienteSelectedEncaminhamento"
+                        :options="pacientes"
+                        size="sm"
+                        class="mb-3"
+                        value-field="uuid"
+                        text-field="nomePaciente"
+                        disabled-field="notEnabled"
+                      ></b-form-select>
+                      <div>
+                        <div style="width: 100%">
+                          <div style="width: 100%">
+                            <label for="example-datepicker">Data Inicial</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataInicial"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+
+                          <div>
+                            <label for="example-datepicker">Data Final</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataFinal"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            class="mb-4 mt-2"
+                            >Pesquisar</b-button
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nome Paciente</th>
+                          <th scope="col">Data Consulta</th>
+                          <th scope="col">Visualizar</th>
+                          <th scope="col">Imprimir</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="prescri in this.prescricoes"
+                          :key="prescri.uuid"
+                        >
+                          <th>{{ prescri.nomePaciente }}</th>
+                          <td>{{ prescri.data }}</td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="readPrescricaoUuid(prescri.uuid)"
+                            >
+                              Visualizar
+                            </b-button>
+                          </td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="imprimirPrescri(prescri.uuid)"
+                            >
+                              Imprimir
+                            </b-button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </b-card-body>
+                </b-collapse>
+              </b-card>
               <b-card class="prescricao">
                 <Editor />
               </b-card>
             </b-tab>
             <b-tab title="Ficha Clínica">
+              <b-card no-body class="mb-5">
+                <b-card-header header-tag="header" class="p-1" role="tab">
+                  <b-button
+                    block
+                    v-b-toggle.accordionPesquisaPrescriOculos
+                    variant="info"
+                    >Pesquisar Ficha Clínica</b-button
+                  >
+                </b-card-header>
+                <b-collapse
+                  id="accordionPesquisaPrescriOculos"
+                  visible
+                  accordion="my-accordion"
+                  role="tabpanel"
+                >
+                  <b-card-body>
+                    <div>
+                      <label for="">Selecione o Paciente</label>
+                      <b-form-select
+                        v-model="pacienteSelectedFicha"
+                        :options="pacientes"
+                        size="sm"
+                        class="mb-3"
+                        value-field="uuid"
+                        text-field="nomePaciente"
+                        disabled-field="notEnabled"
+                      ></b-form-select>
+                      <div>
+                        <div style="width: 100%">
+                          <div style="width: 100%">
+                            <label for="example-datepicker">Data Inicial</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataInicial"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+
+                          <div>
+                            <label for="example-datepicker">Data Final</label>
+                            <b-form-datepicker
+                              id="example-datepicker"
+                              size="sm"
+                              v-model="dataFinal"
+                              class="mb-2 col-sm-3"
+                              placeholder="Data não Informada"
+                            ></b-form-datepicker>
+                          </div>
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            class="mb-4 mt-2"
+                            >Pesquisar</b-button
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nome Paciente</th>
+                          <th scope="col">Data Consulta</th>
+                          <th scope="col">Visualizar</th>
+                          <th scope="col">Imprimir</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="prescri in this.prescricoes"
+                          :key="prescri.uuid"
+                        >
+                          <th>{{ prescri.nomePaciente }}</th>
+                          <td>{{ prescri.data }}</td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="readPrescricaoUuid(prescri.uuid)"
+                            >
+                              Visualizar
+                            </b-button>
+                          </td>
+                          <td>
+                            <b-button
+                              variant="primary"
+                              size="sm"
+                              @click="imprimirPrescri(prescri.uuid)"
+                            >
+                              Imprimir
+                            </b-button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </b-card-body>
+                </b-collapse>
+              </b-card>
               <b-card class="fichaClinica">
                 <Accordion
                   :fichaClinicaProps="this.fichaClinica"
@@ -440,7 +1161,8 @@
           </b-tabs>
         </b-card>
       </div>
-      <div v-if="tabIndexConsulta === 0">
+      
+      <!-- <div v-if="tabIndexConsulta === 0">
         <b-card no-body>
           <b-tabs v-model="tabIndex" card>
             <b-tab title="Pesquisar Agendamentos" active>
@@ -556,8 +1278,9 @@
                   </div>
                 </div>
               </b-card>
-            </b-tab>
-            <b-tab title="Pesquisar Consultas Realizadas">
+            </b-tab> -->
+
+      <!-- <b-tab title="Pesquisar Consultas Realizadas">
               <b-card class="prescricao agendadosHoje">
                 <div class="flex mb-4">
                   <div class="mr-3">
@@ -605,8 +1328,13 @@
                       <td>{{ agendamento.data }}</td>
                       <td>{{ agendamento.horario }}</td>
                       <td>
-                        <b-button variant="primary" pill size="sm" @click="visualizar(agendamento.uuid)">
-                          Visualizaraaa
+                        <b-button
+                          variant="primary"
+                          pill
+                          size="sm"
+                          @click="visualizar(agendamento.uuid)"
+                        >
+                          Visualizar
                         </b-button>
                       </td>
                     </tr>
@@ -663,10 +1391,10 @@
                   </div>
                 </div>
               </b-card>
-            </b-tab>
-          </b-tabs>
+            </b-tab> -->
+      <!-- </b-tabs>
         </b-card>
-      </div>
+      </div> -->
     </b-container>
   </div>
 </template>
@@ -686,7 +1414,7 @@ import PrescricaoLenteService from "../../services/prescicaoLente";
 import Pesquisa from "../../services/pesquisaConsulta";
 import AgendaService from "../../services/agenda";
 import ServicoConsulta from "../../services/consulta";
-
+import Laudo from '../Consulta/Laudo/LaudoPage'
 import LaudoService from "../../services/laudo";
 
 //import { DateTime } from "luxon";
@@ -699,9 +1427,19 @@ export default {
     PrescricaoOculos,
     PrescricaoLente,
     Editor,
+    Laudo
   },
+
+
   data() {
     return {
+      prescricoes: [],
+      pacienteSelectedDeclaracao: null,
+      pacienteSelectedFicha: null,
+      pacienteSelectedAtestado: null,
+      pacienteSelectedLaudo: null,
+      pacienteSelectedEncaminhamento: null,
+      pacientes: [],
       iniciarConsulta: false,
       editar: false,
       uuidFicha: "",
@@ -915,6 +1653,7 @@ export default {
         this.dataInicialAg,
         this.dataFinalAg
       ).then((result) => {
+        console.log(result)
         this.agendamentosData = result.data.agendamentos.result;
         this.totalPageAg = Math.ceil(
           result.data.agendamentos.total[0].count / 5
@@ -960,6 +1699,7 @@ export default {
       procedimento,
       atendido
     ) {
+      console.log(idPaciente)
       if (atendido === 1) {
         this.showAlert("info", "Paciente já foi Atendido");
       } else {
@@ -994,6 +1734,7 @@ export default {
       this.totalPage = 1;
       AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
+          console.log(result);
           this.agendamentos = result.data.agendamentos.result;
           //this.totalPage = result.data.agendamentos.total[0].count
           this.totalPage = Math.ceil(
@@ -1092,7 +1833,6 @@ export default {
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
         });
       }
-
     },
 
     async listConsulta() {
@@ -1216,34 +1956,33 @@ export default {
           );
         });
       } catch (error) {
-        this.showAlert("error", "Ocorreu um problema ao lista pacientes")
+        this.showAlert("error", "Ocorreu um problema ao lista pacientes");
       }
     },
 
     readLaudo() {
       LaudoService.read();
     },
+
+
     async saveLaudo() {
-      let consulta;
       try {
         this.dadosConsulta.idPaciente = this.idPaciente;
         this.dadosConsulta.data = moment().format("YYYY-MM-DD");
         this.dadosConsulta.titulo = "Laudo";
-        consulta = await ServicoConsulta.save(this.dadosConsulta);
-      } catch (error) {
-        this.showAlert("error", "Ocorreu um erro ao Salvar consulta");
-      }
-
-      try {
+        const consulta = await ServicoConsulta.save(this.dadosConsulta);
+        console.log(consulta);
         this.laudo.data = moment().format("YYYY-MM-DD");
         this.laudo.idPaciente = this.idPaciente;
         this.laudo.idConsulta = consulta.data.result.idConsulta[0];
         await LaudoService.save(this.laudo);
         this.showAlert("success", "Laudo Registrado com Sucesso");
       } catch (error) {
-        this.showAlert("error", "Ocorreu um erro ao Salvar Laudo");
+        this.showAlert("error", "Erro ao registrar Laudo");
       }
     },
+
+
   },
   created() {
     this.loadAgendamentos();

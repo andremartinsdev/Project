@@ -287,16 +287,41 @@
                           </div>
                         </div>
                         <div class="backside shadow">
-                          <div class="card">
-                            <div class="card-body text-center mt-1">
-                              <h4 class="card-title">
-                                Consulta <b-badge variant="info">5</b-badge>
-                              </h4>
+                          <div class="card-body text-center mt-1">
+                            <h4 class="card-title">
+                              Consulta
+                              <b-badge variant="info">{{
+                                this.proximasConsultas.length
+                              }}</b-badge>
+                            </h4>
+                            <div
+                              class="card-body text-center mt-1 proximaConsulta shadow"
+                              v-if="proximaConsultaLoad"
+                            >
                               <p class="card-text">
-                                Nome do Paciente: André martins silva
+                                Nome do Paciente:
+                                {{
+                                  this.proximasConsultas[
+                                    this.indexProxiConsulta
+                                  ].nomePaciente
+                                }}
                               </p>
-                              <p class="card-text">Horario: 12:30</p>
-                              <p class="card-text">Data: 12/12/1222</p>
+                              <p class="card-text">
+                                Horario:
+                                {{
+                                  this.proximasConsultas[
+                                    this.indexProxiConsulta
+                                  ].horario
+                                }}
+                              </p>
+                              <p class="card-text">
+                                Data:
+                                {{
+                                  this.proximasConsultas[
+                                    this.indexProxiConsulta
+                                  ].data
+                                }}
+                              </p>
                             </div>
                             <div class="flexIcon">
                               <div>
@@ -305,13 +330,17 @@
                                   class="bg-success rounded p-1 icone"
                                   variant="light"
                                   font-scale="2"
+                                  @click="anteriorProxConsulta"
                                   v-b-popover.hover.top="
                                     'Consulta Vencida Anterior'
                                   "
                                 ></b-icon>
                               </div>
                               <div>
-                                <p class="text-info">1 de 5</p>
+                                <p class="text-info">
+                                  {{ this.indexProxiConsulta + 1 }} de
+                                  {{ this.proximasConsultas.length}}
+                                </p>
                               </div>
                               <div>
                                 <b-icon
@@ -319,6 +348,7 @@
                                   class="bg-success rounded p-1 icone"
                                   variant="light"
                                   font-scale="2"
+                                  @click="proximaConsultaProxConsulta"
                                   v-b-popover.hover.top="
                                     'Proxima Consulta Vencida'
                                   "
@@ -522,6 +552,7 @@ export default {
         totalPagar: 0,
         liquido: 0,
       },
+      proximaConsultaLoad: false,
       consultasVencidasCard: 0,
       showOptionRelatorio: false,
       pacientesCadastrados: 0,
@@ -539,15 +570,50 @@ export default {
         { Paciente: 89, Data_Consulta: "11/06/2020", Nome: "Wilson" },
       ],
       dadosClinica: [],
+      proximasConsultas: [],
       consultasVencidas: [],
       aniversarianteDoMes: [],
       indexAniversario: 0,
+      indexProxiConsulta: 0,
       consultas: 0,
       consultasMes: 0,
       message: `https://api.whatsapp.com/send?phone=55${this.aniversarianteDoMes}&text=olaa`,
     };
   },
   methods: {
+    proximaConsultaProxConsulta() {
+      if (this.indexProxiConsulta < this.proximasConsultas.length -1) {
+        console.log(this.indexProxiConsulta, this.proximasConsultas.length -1);
+        this.indexProxiConsulta = this.indexProxiConsulta + 1;
+      }
+      console.log(this.indexProxiConsulta);
+    },
+
+    anteriorProxConsulta(){
+      if(this.indexProxiConsulta > 0){
+        this.indexProxiConsulta = this.indexProxiConsulta -1
+      }
+    },
+
+    async readProximasConsultas() {
+      const consultas = await AgendaService.readDateProximasConsultas(
+        moment().format("YYYY-MM-DD")
+      );
+      consultas.data.consultas.forEach((element) => {
+        element.data = moment(element.data).format("DD/MM/YYYY");
+        this.proximasConsultas.push(element);
+      });
+      if( consultas.data.consultas.length > 0){
+
+        this.proximaConsultaLoad = true;
+      }
+     
+    },
+
+    async countPaciente() {
+      const countPaciente = await PacienteService.countPaciente();
+      this.pacientesCadastrados = countPaciente.data.quantidade;
+    },
     ...mapActions(["alterOption"]),
     showOption($event) {
       this.showOptionRelatorio = $event.showOption;
@@ -579,15 +645,21 @@ export default {
       this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total;
     },
 
-   async readValorLiquido() {
+    async readValorLiquido() {
       await this.readValorReceita();
       await this.readDespesa();
-      console.log( parseFloat(this.resumoFinaceiro.totalPagar) , parseFloat(this.resumoFinaceiro.totalReceber))
-      var total = parseFloat(this.resumoFinaceiro.totalReceber) - parseFloat(this.resumoFinaceiro.totalPagar);
-       this.resumoFinaceiro.liquido = !total ? 0 : total.toFixed(2)
+      console.log(
+        parseFloat(this.resumoFinaceiro.totalPagar),
+        parseFloat(this.resumoFinaceiro.totalReceber)
+      );
+      var total =
+        parseFloat(this.resumoFinaceiro.totalReceber) -
+        parseFloat(this.resumoFinaceiro.totalPagar);
+      this.resumoFinaceiro.liquido = !total ? 0 : total.toFixed(2);
     },
 
     proximaConsultaVencida() {
+      console.log("entrooou cons venc");
       if (this.indexConsultaVencida < this.consultasVencidas[0].length - 1) {
         this.indexConsultaVencida = this.indexConsultaVencida + 1;
       }
@@ -666,26 +738,26 @@ export default {
     },
 
     aniversariantes() {
-      PacienteService.readAll().then((result) => {
-        this.pacientesCadastrados = result.data.result.length;
-        result.data.result.map((el) => {
-          if (
-            moment(el.dataNascimento).format("DD/MM/YYYY").substring(3, 5) ==
-            moment().format("DD/MM/YYYY").substring(3, 5)
-          ) {
-            el.dataNascimento = moment(el.dataNascimento).format("DD/MM/YYYY");
-            this.aniversarianteDoMes.push(el);
-          }
+      var mes = parseInt(moment().format("DD/MM/YYYY").substring(3, 5));
+      var dia = moment().format("DD/MM/YYYY").substring(0, 2);
+      PacienteService.readAniversariante(mes, dia).then((result) => {
+        console.log(result);
+        result.data.map((el) => {
+          el.dataNascimento = moment(el.dataNascimento).format("DD/MM/YYYY");
+          this.aniversarianteDoMes.push(el);
         });
       });
+      console.log(this.aniversarianteDoMes);
     },
   },
 
   beforeMount() {
+    this.readProximasConsultas();
+    this.countPaciente();
     this.readValorLiquido();
     this.readAgendamentosDia();
     this.consultaVencida();
-    //this.aniversariantes();
+    this.aniversariantes();
     this.readConsultasDia();
     this.readConsultasMes();
   },
@@ -699,6 +771,13 @@ export default {
 #team {
   background: rgba(0, 0, 0, 0) !important;
   width: 100%;
+}
+
+.proximaConsulta {
+  border: 4px solid #2de2b8d7;
+  margin: 15px;
+  border-radius: 10px;
+   color: #007b5e;
 }
 
 .btn-primary:hover,
@@ -775,6 +854,7 @@ section {
 
 .backside {
   width: 330px;
+  height: 310px;
   position: absolute;
   top: 0;
   left: 0;

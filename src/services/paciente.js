@@ -35,5 +35,9 @@ export default {
 
     readAniversariante: (mes, dia) => {
         return http.get(`paciente/anivessariantes/mes?day=${dia}&moth=${mes}`)
+    },
+
+    countPaciente: () =>{
+        return http.get('paciente/pacientes/count')
     }
 }

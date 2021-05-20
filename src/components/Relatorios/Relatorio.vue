@@ -53,6 +53,7 @@
                       type="date"
                       v-model="dataInicial"
                       class="mr-2 w-1"
+                      @change="testeData"
                     ></b-form-input>
                   </div>
                   <div class="mb-2 mr-2">
@@ -72,6 +73,7 @@
                       :options="this.formaDePagamento"
                       size="sm"
                       v-model="formaDePagamentoSelect"
+                      @change="testeForma2"
                     >
                       <template #first>
                         <b-form-select-option :value="null"
@@ -465,7 +467,7 @@
                                   size="sm"
                                   variant="success"
                                   @click="editarReceita(receita.uuid)"
-                                  >Editarr</b-button
+                                  >Editar</b-button
                                 >
                               </td>
                               <td>
@@ -671,6 +673,9 @@ export default {
     this.consultaVencida();
   },
   methods: {
+    testeData(){
+      console.log(this.dataInicial)
+    },
     resetModalReceita(){
       this.receitaData = {
         uuid: "",
@@ -695,6 +700,9 @@ export default {
 
     compararHora(a, b) {
       return parseInt(a.horario) - parseInt(b.horario);
+    },
+    testeForma2(){
+      console.log(this.formaDePagamentoSelect);
     },
 
     teste() {
@@ -747,6 +755,7 @@ export default {
             this.formaPagamento(el.descricao, el.uuid)
           );
         });
+        console.log(this.formaDePagamento)
       });
     },
 
@@ -792,12 +801,15 @@ testeForma(){
 },
 
     gerarRelatorio() {
-      if (this.formaDePagamentoSelect != null) {
+    
+      if (this.formaDePagamentoSelect != null && this.dataInicial != "" && this.dataFinal != "") {
+        console.log("entrou com forma")
         this.receitaFormaPagamento();
         this.receberFormaPagamento();
         this.readValorDespesaFormaPagamento();
         this.readValorReceitaFormaPagamento();
-      } else {
+      } else if (this.dataInicial != "" && this.dataFinal != "") {
+           console.log("entrou sem forma")
         this.readReceitaData();
         this.readValorDespesa();
         this.receber();
@@ -868,12 +880,14 @@ testeForma(){
 
     receitaFormaPagamento() {
       this.valorReceita = 0;
+      console.log("entrooo receita forma")
       AgendaService.readDateRelatorioReceitaFormPag(
         this.dataInicial,
         this.dataFinal,
         this.formaDePagamentoSelect
       )
         .then((result) => {
+          console.log(result)
           if (result.status === 201) {
             this.atendimentos = result.data.consulta;
             this.atendimentos.map((el) => {
@@ -1210,7 +1224,8 @@ testeForma(){
 
     readValorReceitaFormaPagamento(){
       ReceitaService.readDateFormaPagamento(this.dataInicial, this.dataFinal, this.formaDePagamentoSelect).then(result =>{
-         if (result.status === 201) {
+        console.log(result)
+        if (result.status === 201) {
             result.data.result.map((el) => {
               this.valorReceita += el.valor;
             });

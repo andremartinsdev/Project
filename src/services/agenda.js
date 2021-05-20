@@ -115,5 +115,9 @@ export default {
 
     readDateVencimento: (dataAtual) =>{
         return http.get(`/Agenda/readDateVencimento/${dataAtual}`)
+    },
+
+    readDateProximasConsultas: (dataAtual) => {
+        return http.get(`/Agenda/readDateProximasConsultas/${dataAtual}`)
     }
 }
