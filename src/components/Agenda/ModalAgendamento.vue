@@ -406,7 +406,7 @@ export default {
 
     async saveAgendamento() {
       try {
-        if(this.agendamento.idFormaPagamento === null || this.agendamento.idOticaParceira ){
+        if(this.agendamento.idFormaPagamento === null || this.agendamento.idOticaParceira === null ){
             this.showAlert("info", "O campo de Forma de Pegamento e Ótica Parceira são Obrigatorios")
             return
         }
