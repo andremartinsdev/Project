@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const http = axios
     .create({
-        baseURL: 'http://localhost:3002/',
+        baseURL: 'https://optserver.winfit.com.br/',
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`
         }
