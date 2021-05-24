@@ -399,8 +399,13 @@ export default {
           this.showAlert("success", "Paciente Deletado com Sucesso");
           this.list();
         })
-        .catch(() => {
+        .catch((error) => {
+          if(error.response.status === 409){
+            this.showAlert("info", error.response.data.message);
+            return
+          }
           this.showAlert("error", "Erro eo Deletar registro de Paciente");
+
         });
     },
     read(uuid) {

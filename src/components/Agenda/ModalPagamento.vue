@@ -145,7 +145,7 @@ export default {
       }
       AgendaService.readAgendaJoinPaciente(this.uuidAgendamento)
         .then((result) => {
-          // console.log(result)
+          console.log(result)
           this.agendamento = result.data.agendamento;
           this.agendamento.titulo =  result.data.agendamento.descricao
           this.agendamento.data = moment(result.data.agendamento.data).format(

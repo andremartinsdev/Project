@@ -753,11 +753,11 @@
                       <label for="">Selecione o Paciente</label>
                       <b-form-select
                         v-model="pacienteSelectedAtestado"
-                        :options="pacientes"
+                        :options="ListaPaciente"
                         size="sm"
                         class="mb-3"
-                        value-field="uuid"
-                        text-field="nomePaciente"
+                        value-field="value"
+                        text-field="text"
                         disabled-field="notEnabled"
                       ></b-form-select>
                       <div>
@@ -859,11 +859,11 @@
                       <label for="">Selecione o Paciente</label>
                       <b-form-select
                         v-model="pacienteSelectedDeclaracao"
-                        :options="pacientes"
+                        :options="ListaPaciente"
                         size="sm"
                         class="mb-3"
-                        value-field="uuid"
-                        text-field="nomePaciente"
+                        value-field="value"
+                        text-field="text"
                         disabled-field="notEnabled"
                       ></b-form-select>
                       <div>
@@ -963,11 +963,11 @@
                       <label for="">Selecione o Paciente</label>
                       <b-form-select
                         v-model="pacienteSelectedEncaminhamento"
-                        :options="pacientes"
+                        :options="ListaPaciente"
                         size="sm"
                         class="mb-3"
-                        value-field="uuid"
-                        text-field="nomePaciente"
+                        value-field="value"
+                        text-field="text"
                         disabled-field="notEnabled"
                       ></b-form-select>
                       <div>
@@ -1067,11 +1067,11 @@
                       <label for="">Selecione o Paciente</label>
                       <b-form-select
                         v-model="pacienteSelectedFicha"
-                        :options="pacientes"
+                        :options="ListaPaciente"
                         size="sm"
                         class="mb-3"
-                        value-field="uuid"
-                        text-field="nomePaciente"
+                        value-field="value"
+                        text-field="text"
                         disabled-field="notEnabled"
                       ></b-form-select>
                       <div>

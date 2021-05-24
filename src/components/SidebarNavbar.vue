@@ -250,6 +250,7 @@ export default {
       this.readDespesas();
     }
   },
+  
   mounted() {
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readDadosClinica();
@@ -275,16 +276,21 @@ export default {
       this.nomeClinica = "Cliníca Teste Beta";
     },
 
-    showDespesa() {
+    async showDespesa() {
       this.showAgendamentos = false;
+      await this.readDespesas();
       this.showDespesas = !this.showDespesas;
       console.log(this.despesasHoje);
     },
 
-    showAgendamento() {
+
+   async showAgendamento() {
       this.showDespesas = false;
+      await this.readAgendamentos()
       this.showAgendamentos = !this.showAgendamentos;
     },
+
+
     readDespesas() {
       this.despesasHoje = []
       DespesaService.readDate(

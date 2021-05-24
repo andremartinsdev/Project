@@ -1,5 +1,108 @@
 <template>
-  <div class="containerCadastroClinica">
+  <div>
+    <div class="formCliente">
+      <div>
+        <b-card no-body>
+          <b-tabs  pills card>
+            <b-tab title="Cadastro" active class="formClienteCard">
+              <b-card class="formClienteCard">
+                <b-container class="col-sm-12" fluid>
+                  <h3 class="mb-2">
+                    Cadastro Clínica
+                    <b-icon-person-plus class="ml-3"></b-icon-person-plus>
+                  </h3>
+
+                  <form class="row">
+                    <div class="form-group col-sm-5">
+                      <input type="text" v-model="clinica.uuid" hidden class="form-control" />
+                      <label >Nome Clínica</label>
+                      <b-form-input
+                        v-model="clinica.nomeClinica"
+                        trim
+                        max="50"
+                      ></b-form-input>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label for="exampleInputEmail1">Email</label>
+                      <input
+                        type="email"
+                        v-model="clinica.email"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group col-sm-3">
+                      <label for="exampleInputEmail1">Telefone</label>
+                      <input
+                        type="text"
+                        v-model="clinica.telefone"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group col-sm-2">
+                      <label for="exampleInputEmail1">CNPJ/CPF</label>
+                      <input
+                        v-mask="'###.###.###-##'"
+                        type="text"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group col-sm-2">
+                      <label for="exampleInputEmail1">Endereço</label>
+                      <input
+                        type="text"
+                        v-model="clinica.endereco"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group col-sm-5">
+                      <label for="exampleInputEmail1">Bairro</label>
+                      <input
+                        type="text"
+                        v-model="clinica.bairro"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group col-sm-5">
+                      <label for="exampleInputEmail1">Cidade</label>
+                      <input
+                        type="text"
+                        v-model="clinica.cidade"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group mb-5 col-sm-2">
+                      <label for="exampleInputEmail1">Estado</label>
+                      <input
+                        type="text"
+                        v-model="clinica.estado"
+                        class="form-control"
+                      />
+                    </div>
+                  </form>
+                  <div class="btns">
+                    <b-button variant="success" @click="saveClinica" class="mr-2" type="submit">
+                      <b-icon-person-check-fill class="mr-2">
+                      </b-icon-person-check-fill>
+                      Salvar
+                    </b-button>
+                    <b-button variant="warning" class="mr-2">
+                      <b-icon-arrow-clockwise
+                        class="mr-3"
+                      ></b-icon-arrow-clockwise
+                      >Limpar
+                    </b-button>
+                  </div>
+                </b-container>
+              </b-card>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="containerCadastroClinica">
     <b-card header="Cadastro Clínica">
       <input
         placeholder="Nome Clínica"
@@ -106,7 +209,7 @@
         >Editar</b-button
       >
     </b-card>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -123,6 +226,9 @@ export default {
         bairro: "",
         numero: "",
         cep: "",
+        email: "",
+        cidade: "",
+        estado: "",
         logo:
           "https://thumbs.dreamstime.com/b/%C3%ADcone-do-avatar-usu%C3%A1rio-bot%C3%A3o-s%C3%ADmbolo-perfil-liso-da-pessoa-vetor-131363829.jpg",
       },
@@ -158,8 +264,8 @@ export default {
       if (this.clinica.uuid) {
         try {
           await ClinicaService.update(this.clinica, this.clinica.uuid);
-           this.showAlert("success", "Registro Atualizado com Sucesso");
-           this.editar = true;
+          this.showAlert("success", "Registro Atualizado com Sucesso");
+          this.editar = true;
         } catch (error) {
           this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
         }

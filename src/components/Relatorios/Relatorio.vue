@@ -115,13 +115,14 @@
               </b-card>
 
               <div class="mt-3">
-                <b-card-group deck >
+                <b-card-group deck>
                   <b-card
                     header-tag="header"
                     bg-variant="success"
                     footer-tag="footer"
-                    v-b-popover.hover.bottom="'Receita : Composto por todas as receitas cadastradas e Atendimentos Finalizados'"
-                    
+                    v-b-popover.hover.bottom="
+                      'Receita : Composto por todas as receitas cadastradas e Atendimentos Finalizados'
+                    "
                   >
                     <h6 class="text-white">
                       <b-icon-arrow-up variant="light"></b-icon-arrow-up>
@@ -141,7 +142,9 @@
                     header-tag="header"
                     bg-variant="info"
                     footer-tag="footer"
-                     v-b-popover.hover.bottom="'Total à Receber : Composto por todos Atendimentos não Finalizados'"
+                    v-b-popover.hover.bottom="
+                      'Total à Receber : Composto por todos Atendimentos não Finalizados'
+                    "
                   >
                     <h6 class="text-white">
                       <b-icon-arrow-up variant="light"></b-icon-arrow-up> Total
@@ -161,7 +164,9 @@
                     header-tag="header"
                     bg-variant="danger"
                     footer-tag="footer"
- v-b-popover.hover.bottom="'Despesas : Composta por todas Despesas Cadastradas'"
+                    v-b-popover.hover.bottom="
+                      'Despesas : Composta por todas Despesas Cadastradas'
+                    "
                   >
                     <h6 class="text-white">
                       <b-icon-arrow-down variant="light"></b-icon-arrow-down>
@@ -216,7 +221,14 @@
                           v-money="money2"
                         ></b-form-input>
                         <div class="form-group w-50 mr-2 mt-2">
-                          <label>Forma de Pagamento</label>
+                          <label class="mr-2"
+                            >Forma de Pagamento
+                          </label>
+                           <b-icon-plus-circle
+                              class="iconsAgenda ml-2"
+                              variant="primary"
+                              @click="openFormaPagamento"
+                            ></b-icon-plus-circle>
                           <b-form-select
                             @change="teste"
                             size="sm"
@@ -332,7 +344,11 @@
                   <b-button size="sm" variant="primary" @click="ok()">
                     Salvar
                   </b-button>
-                  <b-button size="sm" variant="primary" @click="resetModalDespesa">
+                  <b-button
+                    size="sm"
+                    variant="primary"
+                    @click="resetModalDespesa"
+                  >
                     Limpar
                   </b-button>
                 </template>
@@ -369,14 +385,21 @@
                           </div>
                         </div>
 
-                        <label for="" class="mt-2">Valor da Despesa</label>
+                        <label for="" class="mt-2">Valor da Receita</label>
                         <b-form-input
                           v-model.lazy="receitaData.valor"
                           class="form-control bg-success text-white col-sm-3"
                           v-money="money2"
                         ></b-form-input>
                         <div class="form-group w-50 mr-2 mt-2">
-                          <label>Forma de Pagamento</label>
+                           <label class="mr-2"
+                            >Forma de Pagamento
+                          </label>
+                            <b-icon-plus-circle
+                              class="iconsAgenda ml-2"
+                              variant="primary"
+                              @click="openFormaPagamento"
+                            ></b-icon-plus-circle>
                           <b-form-select
                             @change="testeForma"
                             size="sm"
@@ -492,7 +515,11 @@
                   <b-button size="sm" variant="primary" @click="ok()">
                     Salvar
                   </b-button>
-                  <b-button size="sm" variant="primary" @click="resetModalReceita">
+                  <b-button
+                    size="sm"
+                    variant="primary"
+                    @click="resetModalReceita"
+                  >
                     Limpar
                   </b-button>
                 </template>
@@ -562,35 +589,33 @@
             </b-card>
           </b-tab>
           <b-tab title="Consultas Vencidas">
-           <b-card class="mt-3 cardTable">
-                <table class="table table-sm">
-                  <thead>
-                    <tr>
-                      <th scope="col">Nome Paciente</th>
-                      <th scope="col">Data Consulta</th>
-                      <th scope="col">Data de Vencimento</th>
-                      <th scope="col">Procedimento</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="consulta in consultasVencidas[0]"
-                      :key="consulta.idAgendamento"
-                    >
-                     
-                      <th>{{ consulta.nomePaciente }}</th>
-                      <td>{{ consulta.data }}</td>
-                      <td>{{ consulta.dataVencimento }}</td>
-                      <td>{{ consulta.procedimento}}</td>
-                        
-                      
-                    </tr>
-                  </tbody>
-                </table>
-              </b-card>
+            <b-card class="mt-3 cardTable">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Nome Paciente</th>
+                    <th scope="col">Data Consulta</th>
+                    <th scope="col">Data de Vencimento</th>
+                    <th scope="col">Procedimento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="consulta in consultasVencidas[0]"
+                    :key="consulta.idAgendamento"
+                  >
+                    <th>{{ consulta.nomePaciente }}</th>
+                    <td>{{ consulta.data }}</td>
+                    <td>{{ consulta.dataVencimento }}</td>
+                    <td>{{ consulta.procedimento }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </b-card>
           </b-tab>
         </b-tabs>
       </b-card>
+      <ModalFormaPagamento @reloadForma="readFormaPagamento" />
     </div>
   </div>
 </template>
@@ -603,8 +628,9 @@ import FormaDePagamentoService from "../../services/formaDePagamento";
 import PacienteService from "../../services/paciente";
 import AgendaService from "../../services/agenda";
 import ReceitaService from "../../services/receita";
-import logoBms from '../../assets/LogoBms2.jpg'
+import logoBms from "../../assets/LogoBms2.jpg";
 import moment from "moment";
+import ModalFormaPagamento from '../../components/Agenda/ModalFormaPagamento'
 export default {
   data() {
     return {
@@ -662,6 +688,7 @@ export default {
   },
   components: {
     //SidebarNavbar,
+    ModalFormaPagamento
   },
   created() {
     this.readFormaPagamento();
@@ -673,19 +700,19 @@ export default {
     this.consultaVencida();
   },
   methods: {
-    testeData(){
-      console.log(this.dataInicial)
+    testeData() {
+      console.log(this.dataInicial);
     },
-    resetModalReceita(){
+    resetModalReceita() {
       this.receitaData = {
         uuid: "",
         descricaoReceita: "",
         data: "",
-        idFormaPagamento: "",
+        idFormaPagamento: null,
         receitaPaga: false,
         valor: 0,
         observacao: "",
-      }
+      };
     },
     showAlert(icon, title) {
       // Use sweetalert2
@@ -701,7 +728,7 @@ export default {
     compararHora(a, b) {
       return parseInt(a.horario) - parseInt(b.horario);
     },
-    testeForma2(){
+    testeForma2() {
       console.log(this.formaDePagamentoSelect);
     },
 
@@ -749,17 +776,18 @@ export default {
     },
 
     readFormaPagamento() {
+     this.formaDePagamento = []
       FormaDePagamentoService.read().then((result) => {
         result.data.formasPagamento.map((el) => {
           this.formaDePagamento.push(
             this.formaPagamento(el.descricao, el.uuid)
           );
         });
-        console.log(this.formaDePagamento)
+        console.log(this.formaDePagamento);
       });
     },
 
-    resetModalDespesa(){
+    resetModalDespesa() {
       this.despesa = {
         uuid: "",
         descricaoDespesa: "",
@@ -768,7 +796,7 @@ export default {
         despesaPaga: false,
         valor: 0,
         observacao: "",
-      }
+      };
     },
 
     handleOkReceita(bvModalEvt) {
@@ -795,23 +823,29 @@ export default {
       });
     },
 
-
-testeForma(){
-  console.log(this.formaDePagamento)
-},
+    testeForma() {
+      console.log(this.formaDePagamento);
+    },
 
     gerarRelatorio() {
-    
-      if (this.formaDePagamentoSelect != null && this.dataInicial != "" && this.dataFinal != "") {
-        console.log("entrou com forma")
+      if (this.dataInicial === "" || this.dataFinal === "") {
+        this.showAlert("info", "Por favor Informe o Período inicial e Final");
+        return;
+      }
+      if (
+        this.formaDePagamentoSelect != null &&
+        this.dataInicial != "" &&
+        this.dataFinal != ""
+      ) {
+        console.log("entrou com forma");
         this.receitaFormaPagamento();
         this.receberFormaPagamento();
         this.readValorDespesaFormaPagamento();
         this.readValorReceitaFormaPagamento();
       } else if (this.dataInicial != "" && this.dataFinal != "") {
-           console.log("entrou sem forma")
-        this.readReceitaData();
+        console.log("entrou sem forma");
         this.readValorDespesa();
+        this.readReceitaData();
         this.receber();
         this.receita();
       }
@@ -833,15 +867,20 @@ testeForma(){
       try {
         var mes = parseInt(moment().format("DD/MM/YYYY").substring(3, 5));
         var dia = moment().format("DD/MM/YYYY").substring(0, 2);
-       const aniversariante = await PacienteService.readAniversariante(mes, dia)
-       aniversariante.data.forEach(element => {
-         element.dataNascimento = moment(element.dataNascimento).format("DD/MM/YYYY")
-         this.aniversarianteDoMes.push(element)
-       });
+        const aniversariante = await PacienteService.readAniversariante(
+          mes,
+          dia
+        );
+        aniversariante.data.forEach((element) => {
+          element.dataNascimento = moment(element.dataNascimento).format(
+            "DD/MM/YYYY"
+          );
+          this.aniversarianteDoMes.push(element);
+        });
       } catch (error) {
-        this.showAlert("error","ocorreu um erro ao listar Aniversariantes")
+        this.showAlert("error", "ocorreu um erro ao listar Aniversariantes");
       }
-      
+
       // PacienteService.readAniversariante().then((result) => {
       //   result.data.result.map((el) => {
       //     if (
@@ -865,7 +904,6 @@ testeForma(){
           el.dataPagamento = moment(el.dataPagamento).format("DD/MM/YYYY");
         });
         result.data.consulta.map((el) => {
-          
           this.valorReceita += el.valorConsulta;
         });
       });
@@ -875,19 +913,16 @@ testeForma(){
       this.valorReceber = 0;
     },
 
-
-    
-
     receitaFormaPagamento() {
       this.valorReceita = 0;
-      console.log("entrooo receita forma")
+      console.log("entrooo receita forma");
       AgendaService.readDateRelatorioReceitaFormPag(
         this.dataInicial,
         this.dataFinal,
         this.formaDePagamentoSelect
       )
         .then((result) => {
-          console.log(result)
+          console.log(result);
           if (result.status === 201) {
             this.atendimentos = result.data.consulta;
             this.atendimentos.map((el) => {
@@ -914,12 +949,12 @@ testeForma(){
           this.despesa.idFormaPagamento === null
         ) {
           this.showAlert("info", "Por favor preescha todos os campos");
-          console.log(this.despesa)
+          console.log(this.despesa);
         } else {
           this.despesa.valor = this.despesa.valor.replace("R$", "");
           this.despesa.valor = this.despesa.valor.replace(".", "");
           this.despesa.valor = this.despesa.valor.replace(",", ".");
-          delete this.despesa.uuid
+          delete this.despesa.uuid;
           DespesaService.save(this.despesa)
             .then((result) => {
               if (result.status === 201) {
@@ -944,7 +979,6 @@ testeForma(){
         this.despesa.valor = this.despesa.valor.replace("R$", "");
         this.despesa.valor = this.despesa.valor.replace(".", "");
         this.despesa.valor = this.despesa.valor.replace(",", ".");
-        this.despesa.idFormaPagamento = this.formaDePagamentoSelect;
         DespesaService.update(this.despesa)
           .then((result) => {
             if (result.status === 201) {
@@ -965,6 +999,10 @@ testeForma(){
             );
           });
       }
+    },
+
+    openFormaPagamento(){
+this.$bvModal.show("modal-lg-addFormaPagamento");
     },
 
     readDespesas() {
@@ -997,7 +1035,7 @@ testeForma(){
             );
             this.despesa.idFormaPagamento =
               result.data.despesa[0].uuidFormaPagamento;
-              console.log(result.data.despesa[0].uuid)
+            console.log(result.data.despesa[0].uuid);
             this.despesa.valor = result.data.despesa[0].valor.toLocaleString(
               "pt-br",
               { style: "currency", currency: "BRL" }
@@ -1037,9 +1075,15 @@ testeForma(){
           });
       }
     },
-    readValorDespesaFormaPagamento(){
-      DespesaService.readDateFormaPagamento(this.dataInicial, this.dataFinal, this.formaDePagamentoSelect).then(result =>{
-         if (result.status === 201) {
+    readValorDespesaFormaPagamento() {
+      DespesaService.readDateFormaPagamento(
+        this.dataInicial,
+        this.dataFinal,
+        this.formaDePagamentoSelect
+      )
+        .then((result) => {
+          console.log(result)
+          if (result.status === 201) {
             result.data.result.map((el) => {
               this.valorDespesa += el.valor;
             });
@@ -1049,9 +1093,13 @@ testeForma(){
               "Ops! ocorreu um erro ao calcular valor das Despesas"
             );
           }
-      }).catch(()=>{
-        this.showAlert("error","Ops!! ocorreu um erro ao calcular valor das Despesas")
-      })
+        })
+        .catch(() => {
+          this.showAlert(
+            "error",
+            "Ops!! ocorreu um erro ao calcular valor das Despesas"
+          );
+        });
     },
     readValorDespesa() {
       this.valorDespesa = 0;
@@ -1096,7 +1144,7 @@ testeForma(){
         this.receitaData.valor = this.receitaData.valor.replace("R$", "");
         this.receitaData.valor = this.receitaData.valor.replace(".", "");
         this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        console.log(this.receitaData)
+        console.log(this.receitaData);
         ReceitaService.save(this.receitaData)
           .then((result) => {
             if (result.status === 201) {
@@ -1120,7 +1168,7 @@ testeForma(){
         this.receitaData.valor = this.receitaData.valor.replace("R$", "");
         this.receitaData.valor = this.receitaData.valor.replace(".", "");
         this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        console.log(this.receitaData)
+        console.log(this.receitaData);
         ReceitaService.update(this.receitaData)
           .then((result) => {
             if (result.status === 201) {
@@ -1143,9 +1191,10 @@ testeForma(){
       }
     },
 
-    readReceitaData(){
-      ReceitaService.readDate(this.dataInicial, this.dataFinal).then(result =>{
-        if (result.status === 201) {
+    readReceitaData() {
+      ReceitaService.readDate(this.dataInicial, this.dataFinal).then(
+        (result) => {
+          if (result.status === 201) {
             result.data.result.map((el) => {
               this.valorReceita += el.valor;
             });
@@ -1155,7 +1204,8 @@ testeForma(){
               "Ops! ocorreu um erro ao calcular valor das Despesas"
             );
           }
-      })
+        }
+      );
     },
 
     readReceita() {
@@ -1179,17 +1229,20 @@ testeForma(){
     editarReceita(uuid) {
       ReceitaService.read(uuid)
         .then((result) => {
-          console.log(result.data.receita[0].data)
+          console.log(result.data.receita[0].data);
           this.receitaData.uuid = result.data.receita[0].uuid;
           this.receitaData.descricaoReceita =
             result.data.receita[0].descricaoReceita;
-          this.receitaData.data = moment(result.data.receita[0].data).format("YYYY-MM-DD");
+          this.receitaData.data = moment(result.data.receita[0].data).format(
+            "YYYY-MM-DD"
+          );
           this.receitaData.valor = result.data.receita[0].valor.toLocaleString(
             "pt-br",
             { style: "currency", currency: "BRL" }
           );
-          console.log(result.data.receita[0])
-          this.receitaData.idFormaPagamento = result.data.receita[0].uuidFormaPagamento;
+          console.log(result.data.receita[0]);
+          this.receitaData.idFormaPagamento =
+            result.data.receita[0].uuidFormaPagamento;
           this.receitaData.observacao = result.data.receita[0].observacao;
           this.receitaData.receitaPaga =
             result.data.receita[0].receitaPaga === 1 ? true : false;
@@ -1222,10 +1275,15 @@ testeForma(){
       }
     },
 
-    readValorReceitaFormaPagamento(){
-      ReceitaService.readDateFormaPagamento(this.dataInicial, this.dataFinal, this.formaDePagamentoSelect).then(result =>{
-        console.log(result)
-        if (result.status === 201) {
+    readValorReceitaFormaPagamento() {
+      ReceitaService.readDateFormaPagamento(
+        this.dataInicial,
+        this.dataFinal,
+        this.formaDePagamentoSelect
+      )
+        .then((result) => {
+          console.log(result);
+          if (result.status === 201) {
             result.data.result.map((el) => {
               this.valorReceita += el.valor;
             });
@@ -1235,21 +1293,27 @@ testeForma(){
               "Ops! ocorreu um erro ao calcular valor das Receitas"
             );
           }
-      }).catch(()=>{
-        this.showAlert("error","Ops!! ocorreu um erro ao calcular valor das Receitas")
-      })
+        })
+        .catch(() => {
+          this.showAlert(
+            "error",
+            "Ops!! ocorreu um erro ao calcular valor das Receitas"
+          );
+        });
     },
 
     //--------- consultas vencidas
 
-    consultaVencida(){
-      AgendaService.readDateVencimento(moment().format("YYYY-MM-DD")).then(result =>{
-        this.consultasVencidas.push(result.data.agendamentos)
-        this.consultasVencidas[0].map(el => {
-          el.data = moment(el.data).format("DD/MM/YYYY")
-          el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY")
-        })
-      })
+    consultaVencida() {
+      AgendaService.readDateVencimento(moment().format("YYYY-MM-DD")).then(
+        (result) => {
+          this.consultasVencidas.push(result.data.agendamentos);
+          this.consultasVencidas[0].map((el) => {
+            el.data = moment(el.data).format("DD/MM/YYYY");
+            el.dataVencimento = moment(el.dataVencimento).format("DD/MM/YYYY");
+          });
+        }
+      );
     },
 
     abrirmodalDespesa() {},

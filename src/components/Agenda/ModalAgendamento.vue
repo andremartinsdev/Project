@@ -106,7 +106,6 @@
                     class="col-3"
                     @change="testeForma"
                   >
-                    
                   </b-form-select>
 
                   <label class="mr-2 ml-2"
@@ -124,7 +123,6 @@
                     class="col-3"
                     @change="testeOtica"
                   >
-                   
                   </b-form-select>
                 </b-form>
 
@@ -278,7 +276,7 @@
       </b-card>
     </div>
     <ModalFormaPagamento @reloadForma="readFormaPagamento" />
-    <ModalOticaParceira @realoadOpticaP="readOticaParceira"/>
+    <ModalOticaParceira @realoadOpticaP="readOticaParceira" />
   </b-modal>
 </template>
 
@@ -331,7 +329,7 @@ export default {
       agendamento: {
         uuid: "",
         idProcedimento: "",
-        idFormaPagamento: "",
+        idFormaPagamento: null,
         idOticaParceira: "",
         idPaciente: "",
         data: "",
@@ -385,13 +383,16 @@ export default {
 
     async saveAgendamento() {
       try {
+        console.log(this.agendamento.uuid, "sasdasd");
+
         if (this.agendamento.uuid === "") {
           this.agendamento.valorConsulta = this.agendamento.valorConsulta
             .replace("R$", "")
             .replace(" ", "")
             .replace(".", "")
             .replace(",", ".");
-          await AgendaService.save(this.agendamento);
+          const agendamento = await AgendaService.save(this.agendamento);
+          this.agendamento.uuid = agendamento.data.uuid;
           this.showAlert("success", "Agendamento Realziado Com Sucesso");
           this.loadEventosEmit();
           return;
@@ -402,11 +403,11 @@ export default {
         delete this.agendamento.uuidFormaPagamento;
         delete this.agendamento.uuidPaciente;
         delete this.agendamento.descricao;
-         this.agendamento.valorConsulta = this.agendamento.valorConsulta
-            .replace("R$", "")
-            .replace(" ", "")
-            .replace(".", "")
-            .replace(",", ".");
+        this.agendamento.valorConsulta = this.agendamento.valorConsulta
+          .replace("R$", "")
+          .replace(" ", "")
+          .replace(".", "")
+          .replace(",", ".");
         await AgendaService.update(this.agendamento.uuid, this.agendamento);
         this.showAlert("success", "Agendamento Atualizado com Sucesso");
         this.loadEventosEmit();
@@ -457,18 +458,21 @@ export default {
             ));
         } else {
           this.agendamentoPesquisa = [];
-
+          
           const agendamentos = await AgendaService.readDatePacienteNext(
             this.dataInicial,
             this.dataFinal,
             this.pacientePesquisa
           );
-          
+
           this.agendamentoPesquisa = agendamentos.data.agendamentos.result;
           this.agendamentoPesquisa.forEach((element) => {
             element.data = moment(element.data).format("DD/MM/YYYY");
           });
-          if (agendamentos.data.agendamentos.total[0].count > 6 && msg === true) {
+          if (
+            agendamentos.data.agendamentos.total[0].count > 6 &&
+            msg === true
+          ) {
             this.showAlert(
               "info",
               "Existem mais registros, Altere o périodo caso queira ter acesso"
@@ -567,7 +571,7 @@ export default {
 
     async readOticaParceira() {
       try {
-         this.oticasParceiras = [];
+        this.oticasParceiras = [];
         const oticasParceira = await OticasParceirasServices.read();
         oticasParceira.data.oticaParceira.map((el) => {
           this.oticasParceiras.push(
