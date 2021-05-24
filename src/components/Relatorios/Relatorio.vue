@@ -526,40 +526,11 @@
               </b-modal>
 
               <b-card class="mt-3 cardTable">
-                <table class="table table-sm">
-                  <thead>
-                    <tr>
-                      <th scope="col"></th>
-                      <th scope="col">Nome Paciente</th>
-                      <th scope="col">Data Pagamento</th>
-                      <th scope="col">Forma de Pagamento</th>
-                      <th scope="col">Valor da Consulta</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="atendimento in atendimentos"
-                      :key="atendimento.idAtendimento"
-                    >
-                      <th>
-                        <b-icon-arrow-up variant="success"></b-icon-arrow-up>
-                      </th>
-                      <th>{{ atendimento.nomePaciente }}</th>
-                      <td>{{ atendimento.dataPagamento }}</td>
-                      <td>{{ atendimento.descricao }}</td>
-                      <td>
-                        {{
-                          atendimento.valorConsulta.toLocaleString("pt-br", {
-                            style: "currency",
-                            currency: "BRL",
-                          })
-                        }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+               <Chart/>
               </b-card>
             </div>
+
+            
           </b-tab>
           <b-tab title="Aniversariantes">
             <h5 class="text-center mb-4">Aniversáriantes do Mês</h5>
@@ -631,6 +602,7 @@ import ReceitaService from "../../services/receita";
 import logoBms from "../../assets/LogoBms2.jpg";
 import moment from "moment";
 import ModalFormaPagamento from '../../components/Agenda/ModalFormaPagamento'
+import Chart from '../../components/Chart/Chart'
 export default {
   data() {
     return {
@@ -688,6 +660,7 @@ export default {
   },
   components: {
     //SidebarNavbar,
+    Chart,
     ModalFormaPagamento
   },
   created() {
@@ -1350,12 +1323,16 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
   }
 }
 
+.containerRelatorio{
+  height: 1000px;
+}
+
 .btnDetalher {
   justify-content: baseline;
 }
 .containerTabs {
   font-family: "Monda", sans-serif;
-  margin-top: 120px;
+  margin-top: 10px;
   padding: 20px;
   height: 670px;
 }

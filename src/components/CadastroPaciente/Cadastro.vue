@@ -380,6 +380,7 @@ export default {
           this.showAlert("success", "Paciente Salvo com Sucesso");
           this.paciente.uuid = result.data.uuid;
           this.list();
+          this.limpar()
         } catch (ex) {
           this.showAlert("error", "Erro ao Salvar Paciente");
         }
@@ -389,6 +390,7 @@ export default {
         await PacienteService.edit(this.paciente, this.paciente.uuid);
         this.showAlert("success", "Paciente Editado com Sucesso");
         this.list();
+        this.limpar();
       } catch (ex) {
         this.showAlert("error", "Erro ao Editar Paciente");
       }
@@ -398,6 +400,7 @@ export default {
         .then(() => {
           this.showAlert("success", "Paciente Deletado com Sucesso");
           this.list();
+          this.limpar();
         })
         .catch((error) => {
           if(error.response.status === 409){
@@ -425,7 +428,7 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Monda:wght@700&display=swap");
 .formCliente {
-  margin-top: 100px;
+  margin-top: 10px;
   border-radius: 10px;
   padding: 20px;
   height: 699px;

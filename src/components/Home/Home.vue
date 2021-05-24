@@ -33,106 +33,18 @@
                                 Deseje um Feliz aniversario para seus Pacientes
                               </p>
                               <a
-                                href="https://www.fiverr.com/share/qb8D02"
+                              v-b-popover.hover="'Verifique todos os Pacientes Aniversariantes do Mês'"
+                                @click="showModalAniversariante"
                                 class="btn btn-primary btn-sm"
                                 ><i class="fa fa-plus"></i
                               ></a>
                             </div>
                           </div>
                         </div>
-                        <div class="backside shadow">
-                          <div class="card">
-                            <div class="card-body text-center mt-1">
-                              <h4 class="card-title">
-                                Aniversariante
-                                <b-badge variant="info">{{
-                                  this.aniversarianteDoMes === undefined
-                                    ? "0"
-                                    : this.aniversarianteDoMes.length
-                                }}</b-badge>
-                              </h4>
 
-                              <div
-                                class="aniversarioContent shadow"
-                                v-if="this.aniversarianteDoMes.length > 0"
-                              >
-                                <p class="card-text">
-                                  Nome do Paciente:
-                                  {{
-                                    this.aniversarianteDoMes[
-                                      this.indexAniversario
-                                    ].nomePaciente
-                                  }}
-                                </p>
-                                <p class="card-text">
-                                  Telefone/Celular:
-                                  {{
-                                    this.aniversarianteDoMes[
-                                      this.indexAniversario
-                                    ].telefone
-                                  }}
-                                </p>
-                                <p class="card-text">
-                                  Data de Nascimento:
-                                  {{
-                                    this.aniversarianteDoMes[
-                                      this.indexAniversario
-                                    ].dataNascimento
-                                  }}
-                                </p>
-                              </div>
-                              <div class="mt-4">
-                                <a>
-                                  <i
-                                    class="fa fa-facebook-square fa-2x mr-3"
-                                    style="color: rgb(0, 138, 255)"
-                                    aria-hidden="true"
-                                  ></i>
-                                </a>
 
-                                <a @click="enviarMsgWhatsapp">
-                                  <i
-                                    class="fa fa-whatsapp fa-2x"
-                                    style="color: rgb(83, 247, 68)"
-                                    aria-hidden="true"
-                                  ></i>
-                                </a>
-                              </div>
-                            </div>
-                            <div class="flexIcon">
-                              <div>
-                                <b-icon
-                                  icon="arrow-left-circle-fill"
-                                  class="bg-info rounded p-1 icone"
-                                  variant="light"
-                                  font-scale="2"
-                                  v-b-popover.hover.top="
-                                    'Consulta Vencida Anterior'
-                                  "
-                                  @click="aniversarioAnterior"
-                                ></b-icon>
-                              </div>
-                              <div>
-                                <p class="text-info">
-                                  {{ this.indexAniversario + 1 }} de
-                                  {{ this.aniversarianteDoMes.length }}
-                                </p>
-                              </div>
-                              <div>
-                                <b-icon
-                                  icon="arrow-right-circle-fill"
-                                  class="bg-info rounded p-1 icone"
-                                  variant="light"
-                                  font-scale="2"
-                                  v-b-popover.hover.top="
-                                    'Proxima Consulta Vencida'
-                                  "
-                                  @click="aniversarioProximo"
-                                ></b-icon>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+
+                       
                       </div>
                     </div>
                   </div>
@@ -160,99 +72,16 @@
                                 venceram
                               </p>
                               <a
-                                href="https://www.fiverr.com/share/qb8D02"
+                              v-b-popover.hover="'Verifique todas as consultas Vencidas no dia de Hoje'"
+                                @click="$bvModal.show('my-modal-consultas')"
                                 class="btn btn-primary btn-sm"
                                 ><i class="fa fa-plus"></i
                               ></a>
                             </div>
                           </div>
                         </div>
-                        <div class="backside shadow">
-                          <div class="card">
-                            <div
-                              class="card-body text-center mt-1"
-                              v-if="this.renderConsultasVencidas"
-                            >
-                              <h4 class="card-title">
-                                Consulta Vencida
-                                <b-badge variant="info">{{
-                                  this.consultasVencidas[0].length
-                                }}</b-badge>
-                              </h4>
-                              <div
-                                class="consultasContent shadow"
-                                v-if="
-                                  this.consultasVencidas[0] &&
-                                  this.consultasVencidas[0].length > 0
-                                "
-                              >
-                                <p class="card-text">
-                                  Nome Paciente:
-                                  {{
-                                    this.consultasVencidas[0][
-                                      this.indexConsultaVencida
-                                    ].nomePaciente
-                                  }}
-                                </p>
-                                <p class="card-text">
-                                  Data da ultima Consulta:
-                                  {{
-                                    this.consultasVencidas[0][
-                                      this.indexConsultaVencida
-                                    ].data
-                                  }}
-                                </p>
-                                <p class="card-text">
-                                  Data de Vencimento da consulta:
-                                  {{
-                                    this.consultasVencidas[0][
-                                      this.indexConsultaVencida
-                                    ].dataVencimento
-                                  }}
-                                </p>
-                              </div>
-                            </div>
-                            <div
-                              class="flexIcon"
-                              v-if="this.renderConsultasVencidas"
-                            >
-                              <div>
-                                <b-icon
-                                  icon="arrow-left-circle-fill"
-                                  class="bg-info rounded p-1 icone"
-                                  variant="light"
-                                  font-scale="2"
-                                  v-b-popover.hover.top="
-                                    'Consulta Vencida Anterior'
-                                  "
-                                  @click="anteriorConsultaVencida"
-                                ></b-icon>
-                              </div>
-                              <div>
-                                <p class="text-info">
-                                  {{ this.indexConsultaVencida + 1 }} de
-                                  {{
-                                    this.consultasVencidas[0] == undefined
-                                      ? 0
-                                      : this.consultasVencidas[0].length
-                                  }}
-                                </p>
-                              </div>
-                              <div>
-                                <b-icon
-                                  icon="arrow-right-circle-fill"
-                                  class="bg-info rounded p-1 icone"
-                                  variant="light"
-                                  font-scale="2"
-                                  v-b-popover.hover.top="
-                                    'Proxima Consulta Vencida'
-                                  "
-                                  @click="proximaConsultaVencida"
-                                ></b-icon>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+
+
                       </div>
                     </div>
                   </div>
@@ -279,84 +108,15 @@
                                 Veja qual a Proxima consulta do dia
                               </p>
                               <a
-                                href="https://www.fiverr.com/share/qb8D02"
+                              v-b-popover.hover="'Verifique todas as consultas de Hoje'"
+                                @click="$bvModal.show('my-modal-proxConsultas')"
                                 class="btn btn-primary btn-sm"
                                 ><i class="fa fa-plus"></i
                               ></a>
                             </div>
                           </div>
                         </div>
-                        <div class="backside shadow">
-                          <div class="card-body text-center mt-1">
-                            <h4 class="card-title">
-                              Consulta
-                              <b-badge variant="info">{{
-                                this.proximasConsultas.length
-                              }}</b-badge>
-                            </h4>
-                            <div
-                              class="card-body text-center mt-1 proximaConsulta shadow"
-                              v-if="proximaConsultaLoad"
-                            >
-                              <p class="card-text">
-                                Nome do Paciente:
-                                {{
-                                  this.proximasConsultas[
-                                    this.indexProxiConsulta
-                                  ].nomePaciente
-                                }}
-                              </p>
-                              <p class="card-text">
-                                Horario:
-                                {{
-                                  this.proximasConsultas[
-                                    this.indexProxiConsulta
-                                  ].horario
-                                }}
-                              </p>
-                              <p class="card-text">
-                                Data:
-                                {{
-                                  this.proximasConsultas[
-                                    this.indexProxiConsulta
-                                  ].data
-                                }}
-                              </p>
-                            </div>
-                            <div class="flexIcon">
-                              <div>
-                                <b-icon
-                                  icon="arrow-left-circle-fill"
-                                  class="bg-success rounded p-1 icone"
-                                  variant="light"
-                                  font-scale="2"
-                                  @click="anteriorProxConsulta"
-                                  v-b-popover.hover.top="
-                                    'Consulta Vencida Anterior'
-                                  "
-                                ></b-icon>
-                              </div>
-                              <div>
-                                <p class="text-info">
-                                  {{ this.indexProxiConsulta + 1 }} de
-                                  {{ this.proximasConsultas.length}}
-                                </p>
-                              </div>
-                              <div>
-                                <b-icon
-                                  icon="arrow-right-circle-fill"
-                                  class="bg-success rounded p-1 icone"
-                                  variant="light"
-                                  font-scale="2"
-                                  @click="proximaConsultaProxConsulta"
-                                  v-b-popover.hover.top="
-                                    'Proxima Consulta Vencida'
-                                  "
-                                ></b-icon>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -377,57 +137,13 @@
             <!-- Contact-->
           </b-container>
 
-          <b-card-group deck>
-            <b-card
-              header-bg-variant="info"
-              header-text-variant="white"
-              header-tag="header"
-              class="text-center shadow-sm bg-white rounded"
-            >
-              <template v-slot:header>
-                <h6 class="mb-0">PROXIMAS CONSULTAS</h6>
-              </template>
-              <Chart />
-              <b-card
-                header="Resumo Financeiro"
-                header-bg-variant="primary"
-                header-text-variant="light"
-                class="shadow"
-              >
-                <div>
-                  <label for="" class="text-success"
-                    >Total de Receita :
-                    <u class="text-dark">{{
-                      resumoFinaceiro.totalReceber
-                    }}</u></label
-                  >
-                </div>
-                <div>
-                  <label for="" class="text-dark"
-                    >Total de Despesas :
-                    <u class="text-dark">{{
-                      resumoFinaceiro.totalPagar
-                    }}</u></label
-                  >
-                </div>
-                <hr />
-                <div>
-                  <label for="" class="text-warning"
-                    >Total Líquido :
-                    <u class="text-dark">{{
-                      resumoFinaceiro.liquido
-                    }}</u></label
-                  >
-                </div>
-              </b-card>
-            </b-card>
-
-            <b-card class="text-center shadow-sm bg-white rounded" id="card1">
+         
+            <b-card class="text-center shadow-sm bg-white rounded cardConteudo" >
               <div class="card1">
                 <Calendar />
               </div>
             </b-card>
-          </b-card-group>
+       
         </b-col>
       </b-row>
       <section class="contact-section">
@@ -522,6 +238,9 @@
         </div>
       </footer>
     </b-container>
+    <ModalAniversariante/>
+    <ModalConsultaVencida/>
+    <ModalProxConsultas/>
   </div>
 </template>
 
@@ -532,12 +251,17 @@ import moment from "moment";
 import AgendaService from "../../services/agenda";
 import DespesaServices from "../../services/despesas";
 import ReceitaServices from "../../services/receita";
+import ModalAniversariante from '../Home/Modals/ModalAniversariante'
+import ModalConsultaVencida from '../Home/Modals/ModalConsultaVencida'
+import ModalProxConsultas from '../Home/Modals/ModalProxConsultas'
 
 export default {
   components: {
     CardHome: () => import("./CardHome"),
-    Chart: () => import("../Chart/Chart"),
     Calendar: () => import("../Agenda/Calendar"),
+    ModalAniversariante,
+    ModalConsultaVencida,
+    ModalProxConsultas
   },
   data() {
     return {
@@ -581,6 +305,9 @@ export default {
     };
   },
   methods: {
+    showModalAniversariante(){
+ this.$bvModal.show("my-modal");
+    },
     proximaConsultaProxConsulta() {
       if (this.indexProxiConsulta < this.proximasConsultas.length -1) {
         console.log(this.indexProxiConsulta, this.proximasConsultas.length -1);
@@ -622,11 +349,11 @@ export default {
       this.showOptionRelatorio = false;
     },
 
-    aniversarioAnterior() {
-      if (this.indexAniversario > 0) {
-        this.indexAniversario = this.indexAniversario - 1;
-      }
-    },
+    // aniversarioAnterior() {
+    //   if (this.indexAniversario > 0) {
+    //     this.indexAniversario = this.indexAniversario - 1;
+    //   }
+    // },
 
     async readDespesa() {
       const valorDespesa = await DespesaServices.readValorDespesa(
@@ -813,23 +540,9 @@ section {
   background: #ffffff;
 }
 
-.image-flip:hover .backside,
-.image-flip.hover .backside {
-  -webkit-transform: rotateY(0deg);
-  -moz-transform: rotateY(0deg);
-  -o-transform: rotateY(0deg);
-  -ms-transform: rotateY(0deg);
-  transform: rotateY(0deg);
-  border-radius: 0.25rem;
-}
 
-.image-flip:hover .frontside,
-.image-flip.hover .frontside {
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  -o-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-}
+
+
 
 .mainflip {
   -webkit-transition: 1s;
@@ -908,12 +621,19 @@ section {
   border-radius: 50%;
 }
 
+.cardConteudo{
+  width: 70%;
+  margin: 0 auto;
+}
+
 .home {
-  margin-top: 110px;
+  margin-top: 10px;
 }
 
 .card1 {
   border: none;
+  width: 100%;
+  height: 100%;
 }
 
 header {

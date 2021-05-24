@@ -756,6 +756,7 @@ export default {
         atendido: true,
         dataVencimento: this.dataVencimento,
       }).then(() => {
+        
         // console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
       }).catch(()=>{
         this.showAlert("error","ocorreu um erro ao finalizar consulta")
@@ -766,11 +767,12 @@ export default {
       //const fichaClinica = JSON.stringify(this.fichaClinica);
       if (ValidaObjectEmpty(dados) === true) {
         ServicoFichaClinica.save(this.dadosFicha, this.fichaClinica)
-          .then((result) => {
-            if (result.status === 201) {
+          .then(() => {
+            
               this.showAlert("success", "Ficha Clínica Salva com Sucesso");
               this.limpar();
-            }
+              this.$emit("ConsultaFinalizada")
+            
           })
           .catch(() => {
             this.showAlert("error", "Erro ao salvar Ficha");

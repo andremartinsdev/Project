@@ -6,7 +6,7 @@
       this.$route.path.substr(0, 11) != '/Impressao/'
     "
   >
-    <b-navbar toggleable="sm" id="navbar2" fixed="top" class="navbar">
+    <b-navbar toggleable="sm" id="navbar2" class="navbar">
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
       <div class="mb-1">
@@ -250,7 +250,7 @@ export default {
       this.readDespesas();
     }
   },
-  
+
   mounted() {
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readDadosClinica();
@@ -377,9 +377,7 @@ img:hover {
     #00004667
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-  margin-top: 10px;
-  margin-right: 10px;
-  margin-left: 10px;
+
   /* fallback for old browsers */
   /* fallback for old browsers */
   /* fallback for old browsers */

@@ -15,13 +15,13 @@
         Fechar
       </b-button>
 
-      <b-button size="sm" variant="outline-danger"> Excluir </b-button>
 
       <b-button size="sm" variant="outline-success" @click="resetModal">
-        Limpar
+        Novo
       </b-button>
     </template>
     <div>
+    
       <b-card no-body>
         <b-tabs v-model="tabIndexAgendamento" pills card>
           <b-tab active>
@@ -38,7 +38,7 @@
                     hidden
                     v-model="agendamento.uuid"
                   ></b-form-input>
-                  <label>Procedimento </label>
+                  <label v-b-popover.hover="'Campo Obrigatorio, informe o Procedimento a ser realizado, caso não tenha faça o cadastro no icone ao lado ( + )'">Procedimento </label>
                   <b-icon-plus-circle
                     class="iconsAgenda h5"
                     variant="primary"
@@ -51,14 +51,18 @@
                   size="sm"
                   @change="testeidProc"
                 ></b-form-select>
-                <label class="mt-2">Titulo</label>
+                <label class="mt-2"
+                v-b-popover.hover="'Campo Obrigatorio, Esse título será exibido na Agenda como forma de indentificar o Agendamento'"
+                >Titulo</label>
 
                 <b-form-input
                   type="text"
                   size="sm"
                   v-model="agendamento.titulo"
                 ></b-form-input>
-                <label class="mt-2">Paciente</label>
+                <label class="mt-2"
+                 v-b-popover.hover="'Campo Obrigatorio, Selecione o Paciente o qual ira fazer o agendamento, caso não tenha, vá para aba de Cadastro de Paciente'"
+                >Paciente</label>
 
                 <b-form-select
                   v-model="agendamento.idPaciente"
@@ -67,7 +71,9 @@
                   @change="pacienteSelecionado"
                 ></b-form-select>
 
-                <label class="mt-2">Data do Procedimento</label>
+                <label class="mt-2"
+                 v-b-popover.hover="'Campo Obrigatorio, Informe a Data que a consulta será realizada'"
+                >Data do Procedimento</label>
 
                 <b-form-input
                   class="bg-primary text-white"
@@ -76,14 +82,18 @@
                   v-model="agendamento.data"
                 ></b-form-input>
 
-                <label class="mt-2">Horário do Procedimento</label>
+                <label class="mt-2"
+                v-b-popover.hover="'Campo Obrigatorio, Informe o Horário do Atendimento'"
+                >Horário do Procedimento</label>
                 <input
                   v-mask="'##:##'"
                   type="text"
                   v-model="agendamento.horario"
                   class="form-control bg-primary text-white col-sm-2"
                 />
-                <label class="mt-2 mr-2">Valor do Procedimento</label>
+                <label class="mt-2 mr-2"
+                v-b-popover.hover="'Campo Obrigatorio, Informe o Valor a ser pago pela consulta'"
+                >Valor do Procedimento</label>
                 <b-form-input
                   v-model.lazy="agendamento.valorConsulta"
                   class="form-control bg-primary text-white col-sm-2"
@@ -91,6 +101,7 @@
                 ></b-form-input>
                 <b-form inline class="mt-3">
                   <label class="mr-2"
+                   v-b-popover.hover.bottom="'Campo Obrigatorio, caso não tenha nenhuma Forma de Pagamento cadastre uma fictícia'"
                     >Forma de Pagamento
                     <b-icon-plus-circle
                       class="iconsAgenda h6 ml-2"
@@ -106,9 +117,15 @@
                     class="col-3"
                     @change="testeForma"
                   >
+                  <template #first>
+                        <b-form-select-option :value="null"
+                          >Sem Forma de Pagamento </b-form-select-option
+                        >
+                      </template>
                   </b-form-select>
 
                   <label class="mr-2 ml-2"
+                  v-b-popover.hover.bottom="'Campo Obrigatorio, caso não tenha nenhuma Ótica Parceira cadastre uma fictícia'"
                     >Ótica Parceira
                     <b-icon-plus-circle
                       class="iconsAgenda h6 ml-2"
@@ -123,6 +140,12 @@
                     class="col-3"
                     @change="testeOtica"
                   >
+
+                  <template #first>
+                        <b-form-select-option :value="null"
+                          >Sem Ótica Parceira </b-form-select-option
+                        >
+                      </template>
                   </b-form-select>
                 </b-form>
 
@@ -330,7 +353,7 @@ export default {
         uuid: "",
         idProcedimento: "",
         idFormaPagamento: null,
-        idOticaParceira: "",
+        idOticaParceira: null,
         idPaciente: "",
         data: "",
         valorConsulta: "00,00",
@@ -383,7 +406,10 @@ export default {
 
     async saveAgendamento() {
       try {
-        console.log(this.agendamento.uuid, "sasdasd");
+        if(this.agendamento.idFormaPagamento === null || this.agendamento.idOticaParceira ){
+            this.showAlert("info", "O campo de Forma de Pegamento e Ótica Parceira são Obrigatorios")
+            return
+        }
 
         if (this.agendamento.uuid === "") {
           this.agendamento.valorConsulta = this.agendamento.valorConsulta
@@ -632,8 +658,8 @@ export default {
       this.agendamento = {
         uuid: "",
         idProcedimento: "",
-        idFormaPagamento: "",
-        idOticaParceira: "",
+        idFormaPagamento: null,
+        idOticaParceira: null,
         idPaciente: "",
         data: "",
         valorConsulta: "00,00",

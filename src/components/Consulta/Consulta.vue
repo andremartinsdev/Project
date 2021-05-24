@@ -4,7 +4,7 @@
       <div class="mb-5">
         <b-card no-body>
           <b-tabs card v-model="tabIndexConsulta">
-            <b-tab title="Agendados para Hoje" active>
+            <b-tab title="Agendados para Hoje" >
               <b-card class="agendadosHoje">
                 <table class="table table-sm">
                   <thead>
@@ -43,7 +43,6 @@
                               agendamento.uuidPaciente,
                               agendamento.uuid,
                               agendamento.pacienteUuid,
-                              agendamento.procedimento,
                               agendamento.atendido
                             )
                           "
@@ -105,7 +104,7 @@
               </b-card>
             </b-tab>
 
-            <b-tab title="Pesquisar Agendamentos" active>
+            <b-tab title="Pesquisar Agendamentos" >
               <b-card class="agendadosHoje">
                 <div class="flex mb-4">
                   <div class="mr-3">
@@ -1155,6 +1154,7 @@
                   :iniciarConsultaProps="this.iniciarConsulta"
                   @mudarEditar="mudarEditar"
                   @finalizado="limparUser"
+                  @ConsultaFinalizada="loadAgendamentos"
                 />
               </b-card>
             </b-tab>
@@ -1429,7 +1429,8 @@ export default {
     Editor,
     Laudo
   },
-
+updated(){
+},
 
   data() {
     return {
@@ -1696,7 +1697,6 @@ export default {
       idPaciente,
       uuidAgendamento,
       pacienteUuid,
-      procedimento,
       atendido
     ) {
       console.log(idPaciente)
@@ -1705,7 +1705,6 @@ export default {
       } else {
         this.$store.commit("PACIENTE_SELECTED", idPaciente);
         this.$store.commit("UUID_AGENDAMENTO", uuidAgendamento);
-        this.procedimentoConsulta = procedimento;
         PacienteService.read(pacienteUuid).then((result) => {
           this.uuidPaciente = pacienteUuid;
           this.nomePaciente = result.data.paciente.nomePaciente;
@@ -1714,7 +1713,7 @@ export default {
           ).format("DD/MM/YYYY");
           this.abreviaNome = this.nomePaciente[0];
         });
-        this.tabIndexConsulta = 1;
+        this.tabIndexConsulta = 3;
         this.showAlert("success", "Pronto para Iniciar consulta");
       }
     },
@@ -1761,21 +1760,21 @@ export default {
       this.ListaConsulta = {};
     },
 
-    retornaTipoConsulta() {
-      if (this.typePesquisa === "prescricao_lente") {
-        return "Prescrição Lente";
-      } else if (this.typePesquisa === "prescricao_oculos") {
-        return "Prescrição Óculos";
-      } else if (this.typePesquisa === "ficha_clinica") {
-        return "Ficha Clínica";
-      } else if (this.typePesquisa === "laudo") {
-        return "Laudo";
-      } else if (this.typePesquisa === "atestado") {
-        return "Atestado";
-      } else if (this.typePesquisa === "encaminhamento") {
-        return "Encaminhamento";
-      }
-    },
+    // retornaTipoConsulta() {
+    //   if (this.typePesquisa === "prescricao_lente") {
+    //     return "Prescrição Lente";
+    //   } else if (this.typePesquisa === "prescricao_oculos") {
+    //     return "Prescrição Óculos";
+    //   } else if (this.typePesquisa === "ficha_clinica") {
+    //     return "Ficha Clínica";
+    //   } else if (this.typePesquisa === "laudo") {
+    //     return "Laudo";
+    //   } else if (this.typePesquisa === "atestado") {
+    //     return "Atestado";
+    //   } else if (this.typePesquisa === "encaminhamento") {
+    //     return "Encaminhamento";
+    //   }
+    // },
 
     limparUser() {
       this.nomePaciente = "";
@@ -1785,16 +1784,18 @@ export default {
       this.$store.commit("PACIENTE_SELECTED", -1);
       this.$store.commit("UUID_AGENDAMENTO", "");
     },
-    atualizaPesquisa() {
-      Pesquisa(this.typePesquisa, {
-        idPaciente: this.idPaciente,
-        dataInicial: this.dataInicial,
-        dataFinal: this.dataFinal,
-      }).then((result) => {
-        this.ListaConsulta = result.data.result;
-        this.ListaConsulta.titulo = this.retornaTipoConsulta();
-      });
-    },
+
+
+    // atualizaPesquisa() {
+    //   Pesquisa(this.typePesquisa, {
+    //     idPaciente: this.idPaciente,
+    //     dataInicial: this.dataInicial,
+    //     dataFinal: this.dataFinal,
+    //   }).then((result) => {
+    //     this.ListaConsulta = result.data.result;
+    //     this.ListaConsulta.titulo = this.retornaTipoConsulta();
+    //   });
+    // },
 
     proximaPagePesquisa() {
       this.pagePesquisa = this.pagePesquisa + 1;
@@ -2003,7 +2004,7 @@ export default {
 }
 
 .consulta {
-  margin-top: 100px;
+  margin-top: 10px;
   font-family: "Monda", sans-serif;
   height: 1640px;
 }

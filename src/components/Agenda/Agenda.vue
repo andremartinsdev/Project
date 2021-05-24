@@ -243,7 +243,7 @@ div {
 }
 
 #calendario2 {
-  margin-top: 100px;
+  margin-top: 10px;
   font-family: "Monda", sans-serif;
   display: flex;
 }
