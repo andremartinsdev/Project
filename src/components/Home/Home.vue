@@ -24,7 +24,7 @@
                               <p>
                                 <img
                                   class="img-fluid"
-                                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUym5JGMpWsjlPq6txVnG52Va2fR6FJLFDew&usqp=CAU"
+                                  :src="logoAaniversario"
                                   alt="card image"
                                 />
                               </p>
@@ -33,7 +33,9 @@
                                 Deseje um Feliz aniversario para seus Pacientes
                               </p>
                               <a
-                              v-b-popover.hover="'Verifique todos os Pacientes Aniversariantes do Mês'"
+                                v-b-popover.hover="
+                                  'Verifique todos os Pacientes Aniversariantes do Mês'
+                                "
                                 @click="showModalAniversariante"
                                 class="btn btn-primary btn-sm"
                                 ><i class="fa fa-plus"></i
@@ -41,10 +43,6 @@
                             </div>
                           </div>
                         </div>
-
-
-
-                       
                       </div>
                     </div>
                   </div>
@@ -62,7 +60,7 @@
                               <p>
                                 <img
                                   class="img-fluid"
-                                  src="https://blog.acordocerto.com.br/wp-content/uploads/2020/04/rsz_novo-prazo-imposto-de-renda-2020.jpg"
+                                  :src="logoCalendar"
                                   alt="card image"
                                 />
                               </p>
@@ -72,7 +70,9 @@
                                 venceram
                               </p>
                               <a
-                              v-b-popover.hover="'Verifique todas as consultas Vencidas no dia de Hoje'"
+                                v-b-popover.hover="
+                                  'Verifique todas as consultas Vencidas no dia de Hoje'
+                                "
                                 @click="$bvModal.show('my-modal-consultas')"
                                 class="btn btn-primary btn-sm"
                                 ><i class="fa fa-plus"></i
@@ -80,8 +80,6 @@
                             </div>
                           </div>
                         </div>
-
-
                       </div>
                     </div>
                   </div>
@@ -99,7 +97,7 @@
                               <p>
                                 <img
                                   class="img-fluid"
-                                  src="https://img.lovepik.com/photo/50112/2310.jpg_wh860.jpg"
+                                  :src="logoOpto"
                                   alt="card image"
                                 />
                               </p>
@@ -108,7 +106,9 @@
                                 Veja qual a Proxima consulta do dia
                               </p>
                               <a
-                              v-b-popover.hover="'Verifique todas as consultas de Hoje'"
+                                v-b-popover.hover="
+                                  'Verifique todas as consultas de Hoje'
+                                "
                                 @click="$bvModal.show('my-modal-proxConsultas')"
                                 class="btn btn-primary btn-sm"
                                 ><i class="fa fa-plus"></i
@@ -116,7 +116,6 @@
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -137,13 +136,11 @@
             <!-- Contact-->
           </b-container>
 
-         
-            <b-card class="text-center shadow-sm bg-white rounded cardConteudo" >
-              <div class="card1">
-                <Calendar />
-              </div>
-            </b-card>
-       
+          <b-card class="text-center shadow-sm bg-white rounded cardConteudo">
+            <div class="card1">
+              <Calendar />
+            </div>
+          </b-card>
         </b-col>
       </b-row>
       <section class="contact-section">
@@ -151,39 +148,57 @@
           <div class="row">
             <div class="col-md-4 mb-3 mb-md-0">
               <div class="card py-4 h-100">
-                  <p class="small text-center text-black-50">{{dataHoje}}</p>
+                <p class="small text-center text-black-50">{{ dataHoje }}</p>
                 <div class="card-body text-center">
-                  
-                    <b-icon-calendar2-date variant="primary" class="h2 mb-4"></b-icon-calendar2-date>
-             <h4 class="text-uppercase m-0 bg-primary text-light">Agendados Para Hoje</h4>
+                  <b-icon-calendar2-date
+                    variant="primary"
+                    class="h2 mb-4"
+                  ></b-icon-calendar2-date>
+                  <h4 class="text-uppercase m-0 bg-primary text-light">
+                    Agendados Para Hoje
+                  </h4>
                   <hr class="my-4" />
-                  <h3 class="text-primary">
-                    {{countAgenda}} Agendamento(s)
-                  </h3>
+                  <h3 class="text-primary">{{ countAgenda }} Agendamento(s)</h3>
                 </div>
               </div>
             </div>
             <div class="col-md-4 mb-3 mb-md-0">
               <div class="card py-4 h-100">
-                <p class="small text-center text-black-50">{{dataHoje}}</p>
+                <p class="small text-center text-black-50">{{ dataHoje }}</p>
                 <div class="card-body text-center">
-                  <b-icon-arrow-up-circle-fill class="h1 mb-4" variant="success"></b-icon-arrow-up-circle-fill>
-                  <h4 class="text-uppercase m-0 bg-success text-light">Contas a Receber</h4>
+                  <b-icon-arrow-up-circle-fill
+                    class="h1 mb-4"
+                    variant="success"
+                  ></b-icon-arrow-up-circle-fill>
+                  <h4 class="text-uppercase m-0 bg-success text-light">
+                    Contas a Receber
+                  </h4>
                   <hr class="my-4" />
-                  <div >
-                    <h3 class="text-success">{{resumoFinaceiro.totalReceber}}</h3>
+                  <div>
+                    <h3 class="text-success">
+                      {{ resumoFinaceiro.totalReceber }}
+                    </h3>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-4 mb-3 mb-md-0">
               <div class="card py-4 h-100">
-                 <p class="small text-center text-black-50">{{dataHoje}}</p>
+                <p class="small text-center text-black-50">{{ dataHoje }}</p>
                 <div class="card-body text-center">
-                  <b-icon-arrow-down-circle-fill class="h1 mb-4" variant="danger"></b-icon-arrow-down-circle-fill>
-                   <h4 class="text-uppercase m-0 bg-danger text-light">Contas a Pagar</h4>
+                  <b-icon-arrow-down-circle-fill
+                    class="h1 mb-4"
+                    variant="danger"
+                  ></b-icon-arrow-down-circle-fill>
+                  <h4 class="text-uppercase m-0 bg-danger text-light">
+                    Contas a Pagar
+                  </h4>
                   <hr class="my-4" />
-                  <div><h3 class="text-danger">{{resumoFinaceiro.totalPagar}}</h3></div>
+                  <div>
+                    <h3 class="text-danger">
+                      {{ resumoFinaceiro.totalPagar }}
+                    </h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -242,9 +257,37 @@
         </div>
       </footer>
     </b-container>
-    <ModalAniversariante/>
-    <ModalConsultaVencida/>
-    <ModalProxConsultas/>
+    <b-modal
+      id="modal-xl-t"
+      hide-footer
+      size="xl"
+      title="Seja Bem Vindo ao BMS Opto ... Temos alguns instruções para você"
+    >
+      <b-card>
+        <div>
+          <b-carousel
+            id="carousel-fade"
+            style="text-shadow: 0px 0px 2px #000"
+            fade
+            indicators
+            img-width="1024"
+            img-height="480"
+          >
+            <b-carousel-slide
+              caption="Primeiro Passo"
+              :img-src="imgTela"
+            ></b-carousel-slide>
+            <b-carousel-slide
+              caption="Segundo Passo"
+              :img-src="imgTela2"
+            ></b-carousel-slide>
+          </b-carousel>
+        </div>
+      </b-card>
+    </b-modal>
+    <ModalAniversariante />
+    <ModalConsultaVencida />
+    <ModalProxConsultas />
   </div>
 </template>
 
@@ -255,10 +298,15 @@ import moment from "moment";
 import AgendaService from "../../services/agenda";
 import DespesaServices from "../../services/despesas";
 import ReceitaServices from "../../services/receita";
-import ModalAniversariante from '../Home/Modals/ModalAniversariante'
-import ModalConsultaVencida from '../Home/Modals/ModalConsultaVencida'
-import ModalProxConsultas from '../Home/Modals/ModalProxConsultas'
-import ClinicaService from '../../services/clinica'
+import ModalAniversariante from "../Home/Modals/ModalAniversariante";
+import ModalConsultaVencida from "../Home/Modals/ModalConsultaVencida";
+import ModalProxConsultas from "../Home/Modals/ModalProxConsultas";
+import ClinicaService from "../../services/clinica";
+import imgTela from "../../assets/tela-min.png";
+import imgTela2 from "../../assets/tela2-min.png";
+import logoCalendar from "../../assets/logoCalendar.jpg";
+import logoOpto from "../../assets/logoOpto.jpg";
+import logoAaniversario from "../../assets/logoAaniversario.jpg";
 
 export default {
   components: {
@@ -268,13 +316,18 @@ export default {
     ModalConsultaVencida,
     ModalProxConsultas,
   },
+  computed: {
+    ...mapState({
+      pacientes: (state) => state.option,
+    }),
+  },
   data() {
     return {
-      computed: {
-        ...mapState({
-          pacientes: (state) => state.option,
-        }),
-      },
+      logoCalendar: logoCalendar,
+      logoOpto: logoOpto,
+      logoAaniversario:logoAaniversario,
+      imgTela: imgTela,
+      imgTela2: imgTela2,
       agendamentosDia: 0,
       resumoFinaceiro: {
         totalReceber: 0,
@@ -302,9 +355,9 @@ export default {
         email: "",
         endereco: "",
         telefone: "",
-        cidade:"",
-        bairro:"",
-        numero:""
+        cidade: "",
+        bairro: "",
+        numero: "",
       },
       dataHoje: moment().format("DD/MM/YYYY"),
       proximasConsultas: [],
@@ -319,37 +372,39 @@ export default {
     };
   },
   methods: {
-    async countAgendamento(){
-      const count = await AgendaService.countAgendamento(moment().format("YYYY-MM-DD"))
+    async countAgendamento() {
+      const count = await AgendaService.countAgendamento(
+        moment().format("YYYY-MM-DD")
+      );
       this.countAgenda = count.data.result[0].total;
     },
-async readDadosClinica() {
+    async readDadosClinica() {
       this.dadosClinica = [];
       const clinica = await ClinicaService.read();
-      if(clinica.data.result.length > 0){
-       this.dadosClinica.email =  clinica.data.result[0].email;
-       this.dadosClinica.endereco =  clinica.data.result[0].endereco;
-       this.dadosClinica.telefone =  clinica.data.result[0].telefone;
-       this.dadosClinica.bairro =  clinica.data.result[0].bairro;
-       this.dadosClinica.numero =  clinica.data.result[0].numero;
-       this.dadosClinica.cidade =  clinica.data.result[0].cidade;
+      if (clinica.data.result.length > 0) {
+        this.dadosClinica.email = clinica.data.result[0].email;
+        this.dadosClinica.endereco = clinica.data.result[0].endereco;
+        this.dadosClinica.telefone = clinica.data.result[0].telefone;
+        this.dadosClinica.bairro = clinica.data.result[0].bairro;
+        this.dadosClinica.numero = clinica.data.result[0].numero;
+        this.dadosClinica.cidade = clinica.data.result[0].cidade;
       }
     },
 
-    showModalAniversariante(){
- this.$bvModal.show("my-modal");
+    showModalAniversariante() {
+      this.$bvModal.show("my-modal");
     },
     proximaConsultaProxConsulta() {
-      if (this.indexProxiConsulta < this.proximasConsultas.length -1) {
-        console.log(this.indexProxiConsulta, this.proximasConsultas.length -1);
+      if (this.indexProxiConsulta < this.proximasConsultas.length - 1) {
+        console.log(this.indexProxiConsulta, this.proximasConsultas.length - 1);
         this.indexProxiConsulta = this.indexProxiConsulta + 1;
       }
       console.log(this.indexProxiConsulta);
     },
 
-    anteriorProxConsulta(){
-      if(this.indexProxiConsulta > 0){
-        this.indexProxiConsulta = this.indexProxiConsulta -1
+    anteriorProxConsulta() {
+      if (this.indexProxiConsulta > 0) {
+        this.indexProxiConsulta = this.indexProxiConsulta - 1;
       }
     },
 
@@ -361,11 +416,9 @@ async readDadosClinica() {
         element.data = moment(element.data).format("DD/MM/YYYY");
         this.proximasConsultas.push(element);
       });
-      if( consultas.data.consultas.length > 0){
-
+      if (consultas.data.consultas.length > 0) {
         this.proximaConsultaLoad = true;
       }
-     
     },
 
     async countPaciente() {
@@ -387,14 +440,31 @@ async readDadosClinica() {
     // },
 
     async readDespesa() {
-      const valorDespesa = await DespesaServices.readValorDespesa(moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD") );
-      this.resumoFinaceiro.totalPagar = valorDespesa.data.result[0].total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-      console.log(valorDespesa.data.result[0].total);
+      const valorDespesa = await DespesaServices.readValorDespesa(
+        moment().format("YYYY-MM-DD"),
+        moment().format("YYYY-MM-DD")
+      );
+      if(valorDespesa.data.result[0].total != null){
+        this.resumoFinaceiro.totalPagar = valorDespesa.data.result[0].total.toLocaleString(
+          "pt-br",
+          { style: "currency", currency: "BRL" }
+        );
+      }
     },
 
     async readValorReceita() {
-      const valorReceita = await ReceitaServices.readValorReceita(moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
-      this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+      const valorReceita = await ReceitaServices.readValorReceita(
+        moment().format("YYYY-MM-DD"),
+        moment().format("YYYY-MM-DD")
+      );
+     
+      if(valorReceita.data.result[0].total != null){
+this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleString(
+        "pt-br",
+        { style: "currency", currency: "BRL" }
+      );
+      }
+      
     },
 
     async readValorLiquido() {
@@ -504,7 +574,13 @@ async readDadosClinica() {
   },
 
   beforeMount() {
-    
+    if (this.$route.path === "/Home") {
+      ClinicaService.read().then((result) => {
+        if (result.data.result.length === 0) {
+          this.$bvModal.show("modal-xl-t");
+        }
+      });
+    }
     this.countAgendamento();
     this.readDadosClinica();
     this.readProximasConsultas();
@@ -532,7 +608,7 @@ async readDadosClinica() {
   border: 4px solid #2de2b8d7;
   margin: 15px;
   border-radius: 10px;
-   color: #007b5e;
+  color: #007b5e;
 }
 
 .btn-primary:hover,
@@ -567,10 +643,6 @@ section {
   border: none;
   background: #ffffff;
 }
-
-
-
-
 
 .mainflip {
   -webkit-transition: 1s;
@@ -649,7 +721,7 @@ section {
   border-radius: 50%;
 }
 
-.cardConteudo{
+.cardConteudo {
   width: 70%;
   margin: 0 auto;
 }
@@ -688,9 +760,8 @@ navbar {
 }
 
 @media (max-width: 700px) {
-  .cardConteudo{
+  .cardConteudo {
     display: none;
-
   }
   #sticky-footer-Home {
     position: unset;

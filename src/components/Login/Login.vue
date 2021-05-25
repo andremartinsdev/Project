@@ -67,7 +67,6 @@
 import logo from "../../../public/logo.png";
 import logoOlho from "../../assets/LogoOlho.png";
 import logoBms from "../../assets/LogoBms.png";
-import logoOculos from "../../assets/LogoOculos.jpg";
 import LoginService from "../../services/login";
 
 export default {
@@ -80,7 +79,6 @@ export default {
       mainProps: { width: 470, height: 450, class: "m1" },
       logo: logo,
       logoOlho: logoOlho,
-      logoOculos: logoOculos,
       logoBms: logoBms,
     };
   },

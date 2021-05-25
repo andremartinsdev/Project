@@ -599,14 +599,12 @@ import FormaDePagamentoService from "../../services/formaDePagamento";
 import PacienteService from "../../services/paciente";
 import AgendaService from "../../services/agenda";
 import ReceitaService from "../../services/receita";
-import logoBms from "../../assets/LogoBms2.jpg";
 import moment from "moment";
 import ModalFormaPagamento from '../../components/Agenda/ModalFormaPagamento'
 import Chart from '../../components/Chart/Chart'
 export default {
   data() {
     return {
-      logoBms: logoBms,
       despesaPaga: "",
       tabIndexDespesa: 0,
       tabIndexReceita: 0,

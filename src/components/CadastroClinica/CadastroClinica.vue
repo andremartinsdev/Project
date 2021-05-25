@@ -12,6 +12,8 @@
                     <b-icon-person-plus class="ml-3"></b-icon-person-plus>
                   </h3>
 
+                   <b-avatar :src="clinica.logo" style="margin-left: 45%; " class="mt-4 mb-4" size="6rem"></b-avatar>
+
                   <form class="row">
                     <div class="form-group col-sm-5">
                       <input type="text" v-model="clinica.uuid" hidden class="form-control" />
@@ -77,6 +79,16 @@
                       <input
                         type="text"
                         v-model="clinica.estado"
+                        class="form-control"
+                      />
+                    </div>
+
+                     <div class="form-group mb-5 col-sm-5">
+                      <label for="exampleInputEmail1">Logo (Url da Imagem)</label>
+                      <input
+                       v-b-popover.hover.bottom="'A Logo só sera renderizada após o recarregamento da Pagina'" 
+                        type="text"
+                        v-model="clinica.logo"
                         class="form-control"
                       />
                     </div>
@@ -230,8 +242,7 @@ export default {
         email: "",
         cidade: "",
         estado: "",
-        logo:
-          "https://thumbs.dreamstime.com/b/%C3%ADcone-do-avatar-usu%C3%A1rio-bot%C3%A3o-s%C3%ADmbolo-perfil-liso-da-pessoa-vetor-131363829.jpg",
+        logo:""
       },
 
       editar: true,

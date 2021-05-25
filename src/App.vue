@@ -1,34 +1,7 @@
 <template>
   <div id="app">
     <SidebarNavbar />
-    <b-modal
-      id="modal-xl-t"
-      hide-footer
-      size="xl"
-      title="Seja Bem Vindo ao BMS Opto ... Temos alguns instruções para você"
-    >
-      <b-card>
-        <div>
-          <b-carousel
-            id="carousel-fade"
-            style="text-shadow: 0px 0px 2px #000"
-            fade
-            indicators
-            img-width="1024"
-            img-height="480"
-          >
-            <b-carousel-slide
-              caption="Primeiro Passo"
-              :img-src="imgTela"
-            ></b-carousel-slide>
-            <b-carousel-slide
-              caption="Segundo Passo"
-              :img-src="imgTela2"
-            ></b-carousel-slide>
-          </b-carousel>
-        </div>
-      </b-card>
-    </b-modal>
+   
     <transition v-if="this.$router.path != '/'" name="slide-fade">
       <router-view />
     </transition>
@@ -37,24 +10,21 @@
 
 <script>
 import SidebarNavbar from "../src/components/SidebarNavbar";
-import imgTela from "../public/tela.png";
-import imgTela2 from "../public/tela2.png";
-import clinicaService from '../src/services/clinica'
+
 export default {
   name: "App",
   components: {
     SidebarNavbar,
   },
-  mounted() {
-    clinicaService.read().then(result =>{
-      console.log(result.data)
-    })
-    this.$bvModal.show("modal-xl-t");
+
+ 
+  beforeMount() {
+    console.log("entrrroooooo mounteds")
+   
   },
   data() {
     return {
-      imgTela: imgTela,
-      imgTela2: imgTela2,
+      
     };
   },
 };

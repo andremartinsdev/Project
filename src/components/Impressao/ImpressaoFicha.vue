@@ -256,7 +256,7 @@ import ReservasFusionais from "../Consulta/ReservasFusionais";
 import AmpliAcomodacao from "../Consulta/AmpliDeAcomodacao";
 import FlexAcomodacao from "../Consulta/FlexAcomodacao";
 import Retinoscopia from "../Consulta/Retinoscopia";
-import logoBms from '../../assets/LogoBms2.jpg'
+import logoBms from '../../assets/LogoBms.png'
 
 
 export default {

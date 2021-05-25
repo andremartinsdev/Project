@@ -10,7 +10,7 @@
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
       <div class="mb-1">
-        <b-avatar size="50" :src="logoBms"></b-avatar>
+        <b-avatar size="50" :src="logoClinica"></b-avatar>
         <label class="ml-3 text-white"></label>
         <b-navbar-brand class="ml-3 text-white nomeEmpresa"
           >{{nomeClinica}}</b-navbar-brand
@@ -214,15 +214,15 @@
 </template>
 
 <script>
-import image from "../../public/home.png";
-import imageCalender from "../../public/calender.png";
-import imagePaciente from "../../public/user.png";
-import imageConsulta from "../../public/consulta.png";
-import imageRelatorio from "../../public/relatorio.png";
-import imageConfig from "../../public/configuracao.png";
+import image from "../assets/home-min.png";
+import imageCalender from "../assets/calender-min.png"
+import imagePaciente from "../assets/user-min.png";
+import imageConsulta from "../assets/consulta-min.png";
+import imageRelatorio from "../assets/relatorio-min.png";
+import imageConfig from "../assets/configuracao-min.png";
 import AgendaService from "../services/agenda";
 import DespesaService from "../services/despesas";
-import logoBms from "../../src/assets/LogoBms2.jpg";
+import logoBms from "../assets/LogoBms.png";
 import ClinicaService from "../services/clinica";
 
 import moment from "moment";
@@ -241,6 +241,7 @@ export default {
       showAgendamentos: false,
       showDespesas: false,
       nomeClinica: "",
+      logoClinica: ""
     };
   },
 
@@ -254,7 +255,7 @@ export default {
   mounted() {
      this.readDadosClinica();
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
-      this.readDadosClinica();
+      // this.readDadosClinica();
     }
   },
 
@@ -275,7 +276,10 @@ export default {
     async readDadosClinica() {
       this.dadosClinica = [];
       const clinica = await ClinicaService.read();
-      this.nomeClinica = clinica.data.result[0].nomeClinica
+      if(clinica.data.result.length > 0){
+        this.nomeClinica = clinica.data.result[0].nomeClinica
+        this.logoClinica = clinica.data.result[0].logo
+      }
       console.log(clinica)
       
     },

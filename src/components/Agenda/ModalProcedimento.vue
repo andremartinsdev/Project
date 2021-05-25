@@ -31,14 +31,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="procedimento in optionsPro" :key="procedimento.value">
-              <td>{{ procedimento.text }}</td>
+            <tr v-for="procedimento2 in optionsPro" :key="procedimento2.uuid">
+              <td>{{ procedimento2.text }}</td>
               <td>
                 <b-button
                   pill
                   v-b-modal.modal-lg
                   variant="primary"
-                  @click="editarProcedimento(procedimento.value)"
+                  @click="editarProcedimento(procedimento2.uuid)"
                   >Editar</b-button
                 >
               </td>
@@ -47,7 +47,7 @@
                   pill
                   v-b-modal.modal-lg
                   variant="primary"
-                  @click="excluirProcedimento(procedimento.value)"
+                  @click="excluirProcedimento(procedimento2.uuid)"
                   >Excluir</b-button
                 >
               </td>
@@ -63,7 +63,7 @@
       <b-button
         size="sm"
         variant="outline-secondary"
-        @click="limparProcedimento()"
+        @click="limparProcedimento"
       >
         Novo
       </b-button>
@@ -94,6 +94,9 @@ export default {
     this.readAllProcedimentos();
   },
   methods: {
+    limparProcedimento(){
+      this.procedimento = { uuid: "", text: "", value: "" }
+    },
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -106,12 +109,14 @@ export default {
     },
 
     excluirProcedimento(uuid) {
+      console.log(this.optionsPro)
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
       } else {
         ProcedimentoService.delete(uuid)
           .then(() => {
             this.showAlert("success", "Registro deletado com Sucesso");
+            this.limparProcedimento()
             this.readAllProcedimentos();
           })
           .catch(() => {
@@ -132,13 +137,13 @@ export default {
     },
 
     readAllProcedimentos() {
-      this.optionsPro =[]
+      this.optionsPro = []
       ProcedimentoService.readAll()
         .then((result) => {
           
           result.data.procedimento.forEach((element) => {
             this.optionsPro.push(
-              this.procedimentoGenerate(element.text, element.uuid)
+             element
             );
           });
               console.log(this.optionsPro);
@@ -150,7 +155,8 @@ export default {
     },
 
     editarProcedimento(uuid) {
-    console.log(uuid)
+
+    console.log(this.optionsPro)
       ProcedimentoService.read(uuid)
         .then((result) => {
           if (result.status === 201) {
@@ -177,18 +183,17 @@ export default {
       }
       if (this.procedimento.uuid === "") {
         bvModalEvt.preventDefault();
-        this.procedimento.value = this.procedimento.text;
         ProcedimentoService.save(this.procedimento)
-          .then((result) => {
+          .then(() => {
             this.showAlert("success", "Procedimento Salvo com Sucesso");
-            this.procedimento.uuid = result.data.uuid.uuid;
+            // this.procedimento.uuid = result.data.uuid.uuid;
             this.$store.commit("procedimentoSelectPush", this.procedimento);
           })
           .catch(() => {
             this.showAlert("error", "Erro ao salvar Procedimento");
           });
       } else {
-        this.procedimento.value = this.procedimento.text;
+       
         ProcedimentoService.update(this.procedimento, this.procedimento.uuid)
           .then(() => {
             this.showAlert("success", "Procedimento Atualizado");
