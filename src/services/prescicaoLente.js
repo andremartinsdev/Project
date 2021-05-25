@@ -11,7 +11,7 @@ export default {
         if (dados.data.idPaciente === -1) {
             return "erro"
         } else {
-            return http.post('prescricao/lente', {...prescricao})
+            return http.post('prescricao/lente', { ...prescricao })
         }
     },
     read: (uuid) => {
@@ -23,11 +23,16 @@ export default {
     },
 
     update: (prescricao, uuid) => {
-       
-        return http.put(`prescricao/lente/${uuid}`, {...prescricao})
-      },
 
-      readPrescriPacienteDate: (dataInicial, dataFinal, idPaciente) => {
-          return http.get(`prescricao/lente/read/${idPaciente}/${dataInicial}/${dataFinal}`)
-      }
+        return http.put(`prescricao/lente/${uuid}`, { ...prescricao })
+    },
+
+    readPrescriPacienteDate: (dataInicial, dataFinal, idPaciente) => {
+        return http.get(`prescricao/lente/read/${idPaciente}/${dataInicial}/${dataFinal}`)
+    },
+
+    readDate: (dataInicial, dataFinal) => {
+        return http.get(`prescricao/lente/readDate/${dataInicial}/${dataFinal}`)
+    }
+
 }

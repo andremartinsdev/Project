@@ -2,9 +2,14 @@
   <div class="containerPrescri">
     <b-card no-body class="mb-5">
       <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button block v-b-toggle.accordionPesquisaPrescriOculos variant="info"
-          >Pesquisar Prescrição para Lente</b-button
-        >
+        <b-button
+          block
+          v-b-toggle.accordionPesquisaPrescriOculos
+          variant="transparent"
+          class="shadow"
+          >Pesquisar Prescrição para Lente
+          <b-icon-search class="ml-2"></b-icon-search
+        ></b-button>
       </b-card-header>
       <b-collapse
         id="accordionPesquisaPrescriOculos"
@@ -131,7 +136,7 @@
             ></b-input>
             <b-input
               size="sm"
-               type="number"
+              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoLente.od_cilindrico"
               placeholder="CIL"
@@ -139,7 +144,7 @@
             <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
                 size="sm"
-                 type="number"
+                type="number"
                 v-model="prescricaoLente.od_eixo"
                 placeholder="EIXO"
               ></b-input>
@@ -147,7 +152,7 @@
 
             <b-input
               size="sm"
-               type="number"
+              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoLente.od_av"
               placeholder="AV"
@@ -160,14 +165,13 @@
               v-model="prescricaoLente.oe_esferico"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="ESF"
-              
               type="number"
               size="sm"
             ></b-input>
             <label class="sr-only">Name</label>
             <b-input
               size="sm"
-               type="number"
+              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoLente.oe_cilindrico"
               placeholder="CIL"
@@ -177,7 +181,7 @@
             <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
                 size="sm"
-                 type="number"
+                type="number"
                 v-model="prescricaoLente.oe_eixo"
                 placeholder="EIXO"
               ></b-input>
@@ -185,14 +189,14 @@
 
             <b-input
               size="sm"
-               type="number"
+              type="number"
               v-model="prescricaoLente.oe_av"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
             ></b-input>
           </b-form>
 
-         <div class="mt-3">
+          <div class="mt-3">
             <label class="mr-3">LENTE :</label>
             <b-input
               class="mb-2 mr-sm-2 mb-sm-0"
@@ -214,7 +218,7 @@ Retorno com 01 Ano"
               rows="4"
             ></b-form-textarea>
           </div>
-            <b-row class="mt-4">
+          <b-row class="mt-4">
             <b-col lg="1" class="pb-2"
               ><b-button
                 class="mr-3"
@@ -230,7 +234,7 @@ Retorno com 01 Ano"
             <b-col lg="2" class="pb-2">
               <b-button
                 size="sm"
-                class="mr-3 "
+                class="mr-3"
                 variant="primary"
                 @click="createPDF(false)"
                 pill
@@ -240,10 +244,10 @@ Retorno com 01 Ano"
                   class="ml-3"
                 ></b-icon-printer-fill></b-button
             ></b-col>
-            <b-col lg="2"> 
-               <b-link href="#foo" @click="createPDF(true)"
-              >Download PDF <b-icon-download></b-icon-download>
-            </b-link>
+            <b-col lg="2">
+              <b-link href="#foo" @click="createPDF(true)"
+                >Download PDF <b-icon-download></b-icon-download>
+              </b-link>
             </b-col>
           </b-row>
           <!-- <div
@@ -328,7 +332,7 @@ export default {
         oe_eixo: "",
         oe_av: "",
         observacao: "",
-        lente: ""
+        lente: "",
       },
     };
   },
@@ -386,6 +390,19 @@ export default {
     async readPrescricaoLentePesquisa() {
       try {
         this.prescricoes = [];
+        console.log(this.pacienteSelected === null)
+        if (this.pacienteSelected === null) {
+          const prescricao = await PrescricaoService.readDate(
+            this.dataInicial,
+            this.dataFinal
+          );
+
+          prescricao.data.result.result.forEach((element) => {
+          element.data = moment(element.data).format("DD/MM/YYYY");
+          this.prescricoes.push(element);
+        });
+          return
+        }
         const prescricao = await PrescricaoService.readPrescriPacienteDate(
           this.dataInicial,
           this.dataFinal,
@@ -511,9 +528,12 @@ export default {
 
     async savePrescricao() {
       try {
-         if(this.idPaciente === -1){
-          this.showAlert("info", "Por favor inicie a consulta na aba de Agendados para Hoje ou Pesquisar Agendamentos")
-          return
+        if (this.idPaciente === -1) {
+          this.showAlert(
+            "info",
+            "Por favor inicie a consulta na aba de Agendados para Hoje ou Pesquisar Agendamentos"
+          );
+          return;
         }
         if (this.prescricaoLente.uuid === "") {
           this.dadosConsulta.idPaciente = this.idPaciente;

@@ -151,35 +151,39 @@
           <div class="row">
             <div class="col-md-4 mb-3 mb-md-0">
               <div class="card py-4 h-100">
+                  <p class="small text-center text-black-50">{{dataHoje}}</p>
                 <div class="card-body text-center">
-                  <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-                  <h4 class="text-uppercase m-0">Endereço</h4>
+                  
+                    <b-icon-calendar2-date variant="primary" class="h2 mb-4"></b-icon-calendar2-date>
+             <h4 class="text-uppercase m-0 bg-primary text-light">Agendados Para Hoje</h4>
                   <hr class="my-4" />
-                  <div class="small text-black-50">
-                    4923 Rua Bom Jardim, Viçosa-MG
+                  <h3 class="text-primary">
+                    {{countAgenda}} Agendamento(s)
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+              <div class="card py-4 h-100">
+                <p class="small text-center text-black-50">{{dataHoje}}</p>
+                <div class="card-body text-center">
+                  <b-icon-arrow-up-circle-fill class="h1 mb-4" variant="success"></b-icon-arrow-up-circle-fill>
+                  <h4 class="text-uppercase m-0 bg-success text-light">Contas a Receber</h4>
+                  <hr class="my-4" />
+                  <div >
+                    <h3 class="text-success">{{resumoFinaceiro.totalReceber}}</h3>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-4 mb-3 mb-md-0">
               <div class="card py-4 h-100">
+                 <p class="small text-center text-black-50">{{dataHoje}}</p>
                 <div class="card-body text-center">
-                  <i class="fas fa-envelope text-primary mb-2"></i>
-                  <h4 class="text-uppercase m-0">Email</h4>
+                  <b-icon-arrow-down-circle-fill class="h1 mb-4" variant="danger"></b-icon-arrow-down-circle-fill>
+                   <h4 class="text-uppercase m-0 bg-danger text-light">Contas a Pagar</h4>
                   <hr class="my-4" />
-                  <div class="small text-black-50">
-                    <a href="#!">hello@yourdomain.com</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3 mb-md-0">
-              <div class="card py-4 h-100">
-                <div class="card-body text-center">
-                  <i class="fas fa-mobile-alt text-primary mb-2"></i>
-                  <h4 class="text-uppercase m-0">Telefone</h4>
-                  <hr class="my-4" />
-                  <div class="small text-black-50">(55) 9902-8832</div>
+                  <div><h3 class="text-danger">{{resumoFinaceiro.totalPagar}}</h3></div>
                 </div>
               </div>
             </div>
@@ -254,6 +258,7 @@ import ReceitaServices from "../../services/receita";
 import ModalAniversariante from '../Home/Modals/ModalAniversariante'
 import ModalConsultaVencida from '../Home/Modals/ModalConsultaVencida'
 import ModalProxConsultas from '../Home/Modals/ModalProxConsultas'
+import ClinicaService from '../../services/clinica'
 
 export default {
   components: {
@@ -261,7 +266,7 @@ export default {
     Calendar: () => import("../Agenda/Calendar"),
     ModalAniversariante,
     ModalConsultaVencida,
-    ModalProxConsultas
+    ModalProxConsultas,
   },
   data() {
     return {
@@ -293,18 +298,44 @@ export default {
         { Paciente: 21, Data_Consulta: "10/10/2020", Nome: "Shaw" },
         { Paciente: 89, Data_Consulta: "11/06/2020", Nome: "Wilson" },
       ],
-      dadosClinica: [],
+      dadosClinica: {
+        email: "",
+        endereco: "",
+        telefone: "",
+        cidade:"",
+        bairro:"",
+        numero:""
+      },
+      dataHoje: moment().format("DD/MM/YYYY"),
       proximasConsultas: [],
       consultasVencidas: [],
       aniversarianteDoMes: [],
       indexAniversario: 0,
       indexProxiConsulta: 0,
       consultas: 0,
+      countAgenda: 0,
       consultasMes: 0,
       message: `https://api.whatsapp.com/send?phone=55${this.aniversarianteDoMes}&text=olaa`,
     };
   },
   methods: {
+    async countAgendamento(){
+      const count = await AgendaService.countAgendamento(moment().format("YYYY-MM-DD"))
+      this.countAgenda = count.data.result[0].total;
+    },
+async readDadosClinica() {
+      this.dadosClinica = [];
+      const clinica = await ClinicaService.read();
+      if(clinica.data.result.length > 0){
+       this.dadosClinica.email =  clinica.data.result[0].email;
+       this.dadosClinica.endereco =  clinica.data.result[0].endereco;
+       this.dadosClinica.telefone =  clinica.data.result[0].telefone;
+       this.dadosClinica.bairro =  clinica.data.result[0].bairro;
+       this.dadosClinica.numero =  clinica.data.result[0].numero;
+       this.dadosClinica.cidade =  clinica.data.result[0].cidade;
+      }
+    },
+
     showModalAniversariante(){
  this.$bvModal.show("my-modal");
     },
@@ -356,20 +387,14 @@ export default {
     // },
 
     async readDespesa() {
-      const valorDespesa = await DespesaServices.readValorDespesa(
-        `${moment().year()}-01-01`,
-        `${moment().year()}-12-31`
-      );
-      this.resumoFinaceiro.totalPagar = valorDespesa.data.result[0].total;
+      const valorDespesa = await DespesaServices.readValorDespesa(moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD") );
+      this.resumoFinaceiro.totalPagar = valorDespesa.data.result[0].total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
       console.log(valorDespesa.data.result[0].total);
     },
 
     async readValorReceita() {
-      const valorReceita = await ReceitaServices.readValorReceita(
-        `${moment().year()}-01-01`,
-        `${moment().year()}-12-31`
-      );
-      this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total;
+      const valorReceita = await ReceitaServices.readValorReceita(moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD"));
+      this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
     },
 
     async readValorLiquido() {
@@ -479,6 +504,9 @@ export default {
   },
 
   beforeMount() {
+    
+    this.countAgendamento();
+    this.readDadosClinica();
     this.readProximasConsultas();
     this.countPaciente();
     this.readValorLiquido();
@@ -660,6 +688,10 @@ navbar {
 }
 
 @media (max-width: 700px) {
+  .cardConteudo{
+    display: none;
+
+  }
   #sticky-footer-Home {
     position: unset;
     display: flex;

@@ -287,7 +287,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { DateTime } from "luxon";
+// import { DateTime } from "luxon";
 import jsPDF from "jspdf";
 import logoOlho from '../../assets/LogoOlho.png'
 import moldura from "../../assets/moldura.png";
@@ -562,9 +562,6 @@ export default {
       var anamneseSelected = {};
       this.anamnese.map((resul) => {
         anamneseSelected[resul] = true;
-        anamneseSelected.DATA = `${DateTime.local().c.year}-${DateTime.local().c.month}-${DateTime.local().c.day}`;
-        anamneseSelected.IDPACIENTE = this.$store.state.pacienteSelected;
-        anamneseSelected.IDCONSULTA = this.$store.state.idConsulta;
       });
 
       this.$store.commit("ANAMNESE", anamneseSelected);

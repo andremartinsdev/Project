@@ -488,7 +488,7 @@ table {
     width: 100%;
     padding: 0;
     margin: 0;
-    margin-top: 150px;
+    margin-top: 10px;
   }
 }
 .card-footer-item {

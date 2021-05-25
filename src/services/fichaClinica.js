@@ -27,6 +27,10 @@ export default {
 
   delete: (uuid) => {
     return http.delete(`/fichaClinica/${uuid}`)
+  },
+
+  readDate: (dataInicial, dataFinal) =>{
+    return http.get(`/fichaClinica/read/${dataInicial}/${dataFinal}`)
   }
 
 }

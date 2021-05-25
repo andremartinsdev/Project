@@ -13,7 +13,7 @@
         <b-avatar size="50" :src="logoBms"></b-avatar>
         <label class="ml-3 text-white"></label>
         <b-navbar-brand class="ml-3 text-white nomeEmpresa"
-          >Clínica Teste</b-navbar-brand
+          >{{nomeClinica}}</b-navbar-brand
         >
       </div>
 
@@ -252,12 +252,14 @@ export default {
   },
 
   mounted() {
+     this.readDadosClinica();
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readDadosClinica();
     }
   },
 
   methods: {
+
     readAgendamentos() {
       this.agendamentosHoje = [];
       AgendaService.readDateInner(moment().format("YYYY-MM-DD")).then(
@@ -272,12 +274,15 @@ export default {
 
     async readDadosClinica() {
       this.dadosClinica = [];
-      await ClinicaService.read();
-      this.nomeClinica = "Cliníca Teste Beta";
+      const clinica = await ClinicaService.read();
+      this.nomeClinica = clinica.data.result[0].nomeClinica
+      console.log(clinica)
+      
     },
 
     async showDespesa() {
       this.showAgendamentos = false;
+      console.log("neterere")
       await this.readDespesas();
       this.showDespesas = !this.showDespesas;
       console.log(this.despesasHoje);
@@ -365,18 +370,6 @@ img:hover {
 }
 
 .navbar {
-  background: #0000469f; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to bottom,
-    #1cb5e06b,
-    #00004665
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to bottom,
-    #1cb5e03f,
-    #00004667
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 
   /* fallback for old browsers */
   /* fallback for old browsers */

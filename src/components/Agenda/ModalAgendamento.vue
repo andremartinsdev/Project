@@ -374,7 +374,7 @@ export default {
   },
   methods: {
     testeOtica() {
-      // console.log(this.agendamento.idOticaParceira);
+      console.log(this.agendamento.idOticaParceira);
     },
     testeForma() {
       // console.log(this.agendamento.idFormaPagamento);

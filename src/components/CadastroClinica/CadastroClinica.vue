@@ -45,6 +45,7 @@
                         v-mask="'###.###.###-##'"
                         type="text"
                         class="form-control"
+                        v-model="clinica.cnpjcpf"
                       />
                     </div>
                     <div class="form-group col-sm-2">
@@ -254,6 +255,9 @@ export default {
     async read() {
       try {
         const result = await ClinicaService.read();
+        if(result.data.result.length === 0){
+          return
+        }
         this.clinica = result.data.result[0];
       } catch (error) {
         // console.log("erro");

@@ -5,9 +5,11 @@
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button
             block
+            
             v-b-toggle.accordionPesquisaPrescriOculos
-            variant="info"
-            >Pesquisar Laudo</b-button
+           variant="transparent"
+          class="shadow" 
+            >Pesquisar Laudo <b-icon-search class="ml-2"></b-icon-search></b-button
           >
         </b-card-header>
         <b-collapse

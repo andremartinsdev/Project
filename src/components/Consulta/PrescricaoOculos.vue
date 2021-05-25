@@ -2,8 +2,10 @@
   <div class="containerPrescri">
     <b-card no-body class="mb-5">
       <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button block v-b-toggle.accordion-pesquisa variant="info"
-          >Pesquisar Prescrições para Óculos</b-button
+        <b-button block v-b-toggle.accordion-pesquisa 
+          variant="transparent"
+          class="shadow"
+          >Pesquisar Prescrições para Óculos <b-icon-search class="ml-2"></b-icon-search></b-button
         >
       </b-card-header>
       <b-collapse

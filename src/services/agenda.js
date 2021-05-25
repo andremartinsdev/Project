@@ -119,5 +119,9 @@ export default {
 
     readDateProximasConsultas: (dataAtual) => {
         return http.get(`/Agenda/readDateProximasConsultas/${dataAtual}`)
+    },
+
+    countAgendamento: (data) => {
+        return http.get(`/Agenda/count/${data}`)
     }
 }
