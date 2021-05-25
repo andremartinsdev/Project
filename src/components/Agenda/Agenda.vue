@@ -56,8 +56,7 @@
           </div>
         </div>
       </b-modal>
-      <ModalProcedimento @reload="reloadProcedimento" />
-
+     
       <ModalAgendamento
         :dataAgenda="this.dataAgenda"
         @eventos="carregaEventos($event)"
@@ -81,7 +80,6 @@ export default {
   components: {
     Calendar: () => import("./Calendar"),
     ModalAgendamento: () => import("./ModalAgendamento"),
-    ModalProcedimento: () => import("./ModalProcedimento"),
     ModalPagamento,
   },
   data() {
@@ -142,10 +140,7 @@ export default {
       procedimentoSelect: (state) => state.procedimentoSelect,
     }),
   },
-  updated() {
-    this.readAllProcedimentos();
-  },
-  
+ 
 
   methods: {
     showAlert(icon, title) {
@@ -179,22 +174,7 @@ export default {
       };
     },
 
-    reloadProcedimento() {
-      this.readAllProcedimentos();
-    },
-
-
-    readAllProcedimentos() {
-      this.optionsPro = this.procedimentoSelect;
-      // ProcedimentoService.readAll()
-      //   .then((result) => {
-      //     this.$store.commit("procedimentoSelect", result.data.procedimento);
-      //   })
-      //   .catch(() => {
-      //     this.showAlert("error", "Ocorreu um erro ao carregar procedimentos");
-      //   });
-    },
-
+  
     
     detalhesAgendamento(event) {
       this.uuidAgenda = event.id;

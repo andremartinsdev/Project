@@ -15,13 +15,11 @@
         Fechar
       </b-button>
 
-
       <b-button size="sm" variant="outline-success" @click="resetModal">
         Novo
       </b-button>
     </template>
     <div>
-    
       <b-card no-body>
         <b-tabs v-model="tabIndexAgendamento" pills card>
           <b-tab active>
@@ -38,7 +36,12 @@
                     hidden
                     v-model="agendamento.uuid"
                   ></b-form-input>
-                  <label v-b-popover.hover="'Campo Obrigatorio, informe o Procedimento a ser realizado, caso não tenha faça o cadastro no icone ao lado ( + )'">Procedimento </label>
+                  <label
+                    v-b-popover.hover="
+                      'Campo Obrigatorio, informe o Procedimento a ser realizado, caso não tenha faça o cadastro no icone ao lado ( + )'
+                    "
+                    >Procedimento
+                  </label>
                   <b-icon-plus-circle
                     class="iconsAgenda h5"
                     variant="primary"
@@ -47,22 +50,30 @@
                 </div>
                 <b-form-select
                   v-model="agendamento.idProcedimento"
-                  :options="optionsProcedimento"
+                  :options="this.optionsProcedimento"
                   size="sm"
                   @change="testeidProc"
                 ></b-form-select>
-                <label class="mt-2"
-                v-b-popover.hover="'Campo Obrigatorio, Esse título será exibido na Agenda como forma de indentificar o Agendamento'"
-                >Titulo</label>
+                <label
+                  class="mt-2"
+                  v-b-popover.hover="
+                    'Campo Obrigatorio, Esse título será exibido na Agenda como forma de indentificar o Agendamento'
+                  "
+                  >Titulo</label
+                >
 
                 <b-form-input
                   type="text"
                   size="sm"
                   v-model="agendamento.titulo"
                 ></b-form-input>
-                <label class="mt-2"
-                 v-b-popover.hover="'Campo Obrigatorio, Selecione o Paciente o qual ira fazer o agendamento, caso não tenha, vá para aba de Cadastro de Paciente'"
-                >Paciente</label>
+                <label
+                  class="mt-2"
+                  v-b-popover.hover="
+                    'Campo Obrigatorio, Selecione o Paciente o qual ira fazer o agendamento, caso não tenha, vá para aba de Cadastro de Paciente'
+                  "
+                  >Paciente</label
+                >
 
                 <b-form-select
                   v-model="agendamento.idPaciente"
@@ -71,9 +82,13 @@
                   @change="pacienteSelecionado"
                 ></b-form-select>
 
-                <label class="mt-2"
-                 v-b-popover.hover="'Campo Obrigatorio, Informe a Data que a consulta será realizada'"
-                >Data do Procedimento</label>
+                <label
+                  class="mt-2"
+                  v-b-popover.hover="
+                    'Campo Obrigatorio, Informe a Data que a consulta será realizada'
+                  "
+                  >Data do Procedimento</label
+                >
 
                 <b-form-input
                   class="bg-primary text-white"
@@ -82,26 +97,37 @@
                   v-model="agendamento.data"
                 ></b-form-input>
 
-                <label class="mt-2"
-                v-b-popover.hover="'Campo Obrigatorio, Informe o Horário do Atendimento'"
-                >Horário do Procedimento</label>
+                <label
+                  class="mt-2"
+                  v-b-popover.hover="
+                    'Campo Obrigatorio, Informe o Horário do Atendimento'
+                  "
+                  >Horário do Procedimento</label
+                >
                 <input
                   v-mask="'##:##'"
                   type="text"
                   v-model="agendamento.horario"
                   class="form-control bg-primary text-white col-sm-2"
                 />
-                <label class="mt-2 mr-2"
-                v-b-popover.hover="'Campo Obrigatorio, Informe o Valor a ser pago pela consulta'"
-                >Valor do Procedimento</label>
+                <label
+                  class="mt-2 mr-2"
+                  v-b-popover.hover="
+                    'Campo Obrigatorio, Informe o Valor a ser pago pela consulta'
+                  "
+                  >Valor do Procedimento</label
+                >
                 <b-form-input
                   v-model.lazy="agendamento.valorConsulta"
                   class="form-control bg-primary text-white col-sm-2"
                   v-money="money"
                 ></b-form-input>
                 <b-form inline class="mt-3">
-                  <label class="mr-2"
-                   v-b-popover.hover.bottom="'Campo Obrigatorio, caso não tenha nenhuma Forma de Pagamento cadastre uma fictícia'"
+                  <label
+                    class="mr-2"
+                    v-b-popover.hover.bottom="
+                      'Campo Obrigatorio, caso não tenha nenhuma Forma de Pagamento cadastre uma fictícia'
+                    "
                     >Forma de Pagamento
                     <b-icon-plus-circle
                       class="iconsAgenda h6 ml-2"
@@ -117,15 +143,18 @@
                     class="col-3"
                     @change="testeForma"
                   >
-                  <template #first>
-                        <b-form-select-option :value="null"
-                          >Sem Forma de Pagamento </b-form-select-option
-                        >
-                      </template>
+                    <template #first>
+                      <b-form-select-option :value="null"
+                        >Sem Forma de Pagamento
+                      </b-form-select-option>
+                    </template>
                   </b-form-select>
 
-                  <label class="mr-2 ml-2"
-                  v-b-popover.hover.bottom="'Campo Obrigatorio, caso não tenha nenhuma Ótica Parceira cadastre uma fictícia'"
+                  <label
+                    class="mr-2 ml-2"
+                    v-b-popover.hover.bottom="
+                      'Campo Obrigatorio, caso não tenha nenhuma Ótica Parceira cadastre uma fictícia'
+                    "
                     >Ótica Parceira
                     <b-icon-plus-circle
                       class="iconsAgenda h6 ml-2"
@@ -140,12 +169,11 @@
                     class="col-3"
                     @change="testeOtica"
                   >
-
-                  <template #first>
-                        <b-form-select-option :value="null"
-                          >Sem Ótica Parceira </b-form-select-option
-                        >
-                      </template>
+                    <template #first>
+                      <b-form-select-option :value="null"
+                        >Sem Ótica Parceira
+                      </b-form-select-option>
+                    </template>
                   </b-form-select>
                 </b-form>
 
@@ -300,6 +328,7 @@
     </div>
     <ModalFormaPagamento @reloadForma="readFormaPagamento" />
     <ModalOticaParceira @realoadOpticaP="readOticaParceira" />
+    <ModalProcedimento />
   </b-modal>
 </template>
 
@@ -307,7 +336,7 @@
 import { mapState } from "vuex";
 import FormaDePagamentoService from "../../services/formaDePagamento";
 import PacienteService from "../../services/paciente";
-//import ProcedimentoService from "../../services/procedimento";
+import ProcedimentoService from "../../services/procedimento";
 import OticasParceirasServices from "../../services/oticasParceiras";
 import AgendaService from "../../services/agenda";
 //import Validation from "../../services/validacoes";
@@ -323,6 +352,7 @@ export default {
   components: {
     ModalFormaPagamento: () => import("./ModalFormaPagamento"),
     ModalOticaParceira: () => import("./ModalOticaParceira"),
+    ModalProcedimento: () => import("./ModalProcedimento"),
   },
   data() {
     return {
@@ -369,7 +399,7 @@ export default {
   computed: {
     ...mapState({
       pacienteSelect: (state) => state.pacienteSelect,
-      procedimentoSelect: (state) => state.procedimentoSelect,
+      // procedimentoSelect: (state) => state.procedimentoSelect,
     }),
   },
   methods: {
@@ -380,7 +410,7 @@ export default {
       // console.log(this.agendamento.idFormaPagamento);
     },
     testeidProc() {
-      // console.log(this.agendamento.idProcedimento);
+      console.log(this.agendamento.idProcedimento);
     },
     pacienteSelecionado() {
       // (this.agendamento.idPacienteconsole.log);
@@ -404,11 +434,30 @@ export default {
       };
     },
 
+    async readProcedimento() {
+      try {
+        const procedimento = await ProcedimentoService.readAll();
+        procedimento.data.procedimento.forEach((element) => {
+          this.optionsProcedimento.push(
+            this.procedimento(element.text, element.uuid)
+          );
+        });
+      } catch (error) {
+        this.showAlert("error", "erro ao ler procedimentos");
+      }
+    },
+
     async saveAgendamento() {
       try {
-        if(this.agendamento.idFormaPagamento === null || this.agendamento.idOticaParceira === null ){
-            this.showAlert("info", "O campo de Forma de Pegamento e Ótica Parceira são Obrigatorios")
-            return
+        if (
+          this.agendamento.idFormaPagamento === null ||
+          this.agendamento.idOticaParceira === null
+        ) {
+          this.showAlert(
+            "info",
+            "O campo de Forma de Pegamento e Ótica Parceira são Obrigatorios"
+          );
+          return;
         }
 
         if (this.agendamento.uuid === "") {
@@ -417,6 +466,7 @@ export default {
             .replace(" ", "")
             .replace(".", "")
             .replace(",", ".");
+          console.log(this.agendamento);
           const agendamento = await AgendaService.save(this.agendamento);
           this.agendamento.uuid = agendamento.data.uuid;
           this.showAlert("success", "Agendamento Realziado Com Sucesso");
@@ -484,7 +534,7 @@ export default {
             ));
         } else {
           this.agendamentoPesquisa = [];
-          
+
           const agendamentos = await AgendaService.readDatePacienteNext(
             this.dataInicial,
             this.dataFinal,
@@ -504,18 +554,6 @@ export default {
               "Existem mais registros, Altere o périodo caso queira ter acesso"
             );
           }
-
-          // const agendamentos = await AgendaService.readDatePaciente(
-          //   this.dataInicial,
-          //   this.dataFinal,
-          //   this.agendamento.idPaciente
-          // );
-          // this.agendamentoPesquisa = agendamentos.data.agendamentos.result;
-          // this.agendamentoPesquisa.forEach(element => {
-          //   element.data = moment(element.data).format("DD/MM/YYYY")
-          // });
-          // this.totalPage = Math.ceil(agendamentos.data.agendamentos.total[0].count / 5);
-          // console.log(this.totalPage)
         }
       } catch (error) {
         this.showAlert("error", "erro ao Pesquisar consulta");
@@ -731,10 +769,11 @@ export default {
   },
 
   updated() {
-    this.readAllProcedimentos();
+    // this.readAllProcedimentos();
   },
 
   created() {
+    this.readProcedimento();
     this.readFormaPagamento();
     this.readOticaParceira();
 
@@ -745,9 +784,7 @@ export default {
     dataAgenda() {
       this.agendamento.data = this.dataAgenda;
     },
-    procedimentoSelect() {
-      this.optionsProcedimento = this.procedimentoSelect;
-    },
+    
   },
 };
 </script>

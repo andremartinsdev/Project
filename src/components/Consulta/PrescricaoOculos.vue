@@ -261,31 +261,7 @@
             </b-link>
             </b-col>
           </b-row>
-          <!-- <div
-            class="mt-2 p-4"
-            style="display: flex; justify-content: flex-end"
-          >
-            <b-button
-              class="mr-3"
-              pill
-              variant="primary"
-              @click="savePrescricao"
-              >Salvar</b-button
-            >
-            <b-button pill @click="cancelar">Limpar</b-button>
-            <b-button
-              size="sm"
-              class="mr-3 ml-2"
-              variant="primary"
-              @click="createPDF(false)"
-              pill
-            >
-              Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
-            ></b-button>
-            <b-link href="#foo" @click="createPDF(true)"
-              >Download PDF <b-icon-download></b-icon-download>
-            </b-link>
-          </div> -->
+          
         </b-card-body>
       </b-collapse>
     </b-card>

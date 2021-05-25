@@ -184,9 +184,9 @@ export default {
       if (this.procedimento.uuid === "") {
         bvModalEvt.preventDefault();
         ProcedimentoService.save(this.procedimento)
-          .then(() => {
+          .then((result) => {
             this.showAlert("success", "Procedimento Salvo com Sucesso");
-            // this.procedimento.uuid = result.data.uuid.uuid;
+            this.procedimento.uuid = result.data.uuid.uuid;
             this.$store.commit("procedimentoSelectPush", this.procedimento);
           })
           .catch(() => {

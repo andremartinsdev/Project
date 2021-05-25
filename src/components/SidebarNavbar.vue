@@ -10,7 +10,8 @@
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
       <div class="mb-1">
-        <b-avatar size="50" :src="logoClinica"></b-avatar>
+      
+        <b-avatar size="50" href="/Home" :src="logoClinica"></b-avatar>
         <label class="ml-3 text-white"></label>
         <b-navbar-brand class="ml-3 text-white nomeEmpresa"
           >{{nomeClinica}}</b-navbar-brand

@@ -119,16 +119,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- ./Team member -->
-                  <!-- Team member -->
-
-                  <!-- ./Team member -->
-                  <!-- Team member -->
-
-                  <!-- ./Team member -->
-                  <!-- Team member -->
-
-                  <!-- ./Team member -->
+                  
                 </div>
               </div>
             </section>
