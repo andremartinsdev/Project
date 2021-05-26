@@ -549,7 +549,6 @@ export default {
           this.prescricaoOculos.idConsulta =
             resultConsulta.data.result.idConsulta[0];
           this.prescricaoOculos.idPaciente = this.idPaciente;
-          console.log(this.prescricaoOculos);
           const resultPrescricao = await PrescricaoService.save(
             this.prescricaoOculos
           );

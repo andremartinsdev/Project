@@ -326,7 +326,6 @@ export default {
 
   methods: {
     testePaciente() {
-      console.log(this.pacienteSelected);
     },
 
     async excluir(uuid) {
@@ -345,7 +344,6 @@ export default {
     },
 
     async readPrescricaoUuid(uuid) {
-      console.log(uuid);
       const prescricao = await PrescricaoService.read(uuid);
       this.prescricaoLente.uuid = prescricao.data.prescricao.uuid;
       this.prescricaoLente.data = prescricao.data.prescricao.data;
@@ -366,7 +364,6 @@ export default {
     async readPrescricaoLentePesquisa() {
       try {
         this.prescricoes = [];
-        console.log(this.pacienteSelected === null)
         if (this.pacienteSelected === null) {
           const prescricao = await PrescricaoService.readDate(
             this.dataInicial,
@@ -388,7 +385,6 @@ export default {
           element.data = moment(element.data).format("DD/MM/YYYY");
           this.prescricoes.push(element);
         });
-        console.log(prescricao);
       } catch (error) {
         this.showAlert("error", "ocorreu um erro ao listar prescrições");
       }

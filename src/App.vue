@@ -18,10 +18,7 @@ export default {
   },
 
  
-  beforeMount() {
-    console.log("entrrroooooo mounteds")
-   
-  },
+  
   data() {
     return {
       

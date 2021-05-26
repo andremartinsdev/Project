@@ -31,7 +31,6 @@ export default {
       const consultas = await AgendaService.readDateProximasConsultas(
         moment().format("YYYY-MM-DD")
       );
-      console.log(consultas)
       consultas.data.consultas.forEach(element => {
           element.data = moment(element.data).format("DD/MM/YYYY")
           this.consultas.push(element)

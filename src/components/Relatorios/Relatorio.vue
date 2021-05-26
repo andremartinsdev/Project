@@ -43,20 +43,20 @@
           </b-tab>
           <b-tab title="Relatório Financeiro">
             <div>
-              <b-card no-body class="text-center">
-                <div class="divData">
-                  <div class="mb-2 mr-2">
+             <b-card>
+   <div class="flexDiv ml-2 fluid">
+                  <div class="mb-3 mr-2">
                     <label> Data Inicial</label>
 
                     <b-form-input
                       size="sm"
                       type="date"
                       v-model="dataInicial"
-                      class="mr-2 w-1"
+                      class="mr-2"
                       @change="testeData"
                     ></b-form-input>
                   </div>
-                  <div class="mb-2 mr-2">
+                  <div class="mb-3 mr-2">
                     <label> Data Final</label>
 
                     <b-form-input
@@ -66,7 +66,7 @@
                       class="mr-2"
                     ></b-form-input>
                   </div>
-                  <div class="mb-2 mr-2">
+                  <div class="mb-3 mr-2">
                     <label> Forma de Pagamento</label>
 
                     <b-form-select
@@ -83,16 +83,16 @@
                     </b-form-select>
                   </div>
 
-                  <div class="mb-2 ml-2">
+                 <div class="ml-5">
                     <b-button
                       variant="primary"
                       @click="gerarRelatorio"
                       size="sm"
                       >Gerar Relatório</b-button
                     >
-                  </div>
+                 </div>
 
-                  <div class="mb-2 ml-5">
+                  <div class="ml-5">
                     <b-button variant="danger" size="sm" v-b-modal.modalDespesa
                       >Cadastrar Despesa
                       <b-icon-graph-down
@@ -112,7 +112,9 @@
                     </b-button>
                   </div>
                 </div>
-              </b-card>
+             </b-card>
+             
+         
 
               <div class="mt-3">
                 <b-card-group deck>
@@ -558,6 +560,14 @@
                 </tbody>
               </table>
             </b-card>
+            <b-button
+        size="sm"
+        class="mr-3 mt-4"
+        variant="primary"
+        @click="gerarRelatorioAniversario"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
           </b-tab>
           <b-tab title="Consultas Vencidas">
             <b-card class="mt-3 cardTable">
@@ -583,6 +593,8 @@
                 </tbody>
               </table>
             </b-card>
+
+            
           </b-tab>
         </b-tabs>
       </b-card>
@@ -602,6 +614,7 @@ import ReceitaService from "../../services/receita";
 import moment from "moment";
 import ModalFormaPagamento from '../../components/Agenda/ModalFormaPagamento'
 import Chart from '../../components/Chart/Chart'
+import impressao from '../Relatorios/impressaoRelatorio/impressao'
 export default {
   data() {
     return {
@@ -662,6 +675,7 @@ export default {
     ModalFormaPagamento
   },
   created() {
+    
     this.readFormaPagamento();
     this.readOticaParceira();
     this.readConsultaToday();
@@ -672,7 +686,6 @@ export default {
   },
   methods: {
     testeData() {
-      console.log(this.dataInicial);
     },
     resetModalReceita() {
       this.receitaData = {
@@ -700,11 +713,9 @@ export default {
       return parseInt(a.horario) - parseInt(b.horario);
     },
     testeForma2() {
-      console.log(this.formaDePagamentoSelect);
     },
 
     teste() {
-      console.log(this.despesa.idFormaPagamento);
     },
     detalhesConsulta(uuid, nomePaciente, dataNascimento, valorConsulta) {
       AgendaService.readParams(uuid).then((result) => {
@@ -747,6 +758,7 @@ export default {
     },
 
     readFormaPagamento() {
+     
      this.formaDePagamento = []
       FormaDePagamentoService.read().then((result) => {
         result.data.formasPagamento.map((el) => {
@@ -754,7 +766,6 @@ export default {
             this.formaPagamento(el.descricao, el.uuid)
           );
         });
-        console.log(this.formaDePagamento);
       });
     },
 
@@ -795,7 +806,6 @@ export default {
     },
 
     testeForma() {
-      console.log(this.formaDePagamento);
     },
 
     gerarRelatorio() {
@@ -808,13 +818,11 @@ export default {
         this.dataInicial != "" &&
         this.dataFinal != ""
       ) {
-        console.log("entrou com forma");
         this.receitaFormaPagamento();
         this.receberFormaPagamento();
         this.readValorDespesaFormaPagamento();
         this.readValorReceitaFormaPagamento();
       } else if (this.dataInicial != "" && this.dataFinal != "") {
-        console.log("entrou sem forma");
         this.readValorDespesa();
         this.readReceitaData();
         this.receber();
@@ -834,6 +842,11 @@ export default {
       });
     },
 
+
+    gerarRelatorioAniversario(){
+      impressao.gerarPdfAniversariante(this.aniversarianteDoMes)
+    },
+
     async aniversariantes() {
       try {
         var mes = parseInt(moment().format("DD/MM/YYYY").substring(3, 5));
@@ -848,6 +861,7 @@ export default {
           );
           this.aniversarianteDoMes.push(element);
         });
+         
       } catch (error) {
         this.showAlert("error", "ocorreu um erro ao listar Aniversariantes");
       }
@@ -886,14 +900,12 @@ export default {
 
     receitaFormaPagamento() {
       this.valorReceita = 0;
-      console.log("entrooo receita forma");
       AgendaService.readDateRelatorioReceitaFormPag(
         this.dataInicial,
         this.dataFinal,
         this.formaDePagamentoSelect
       )
         .then((result) => {
-          console.log(result);
           if (result.status === 201) {
             this.atendimentos = result.data.consulta;
             this.atendimentos.map((el) => {
@@ -920,7 +932,6 @@ export default {
           this.despesa.idFormaPagamento === null
         ) {
           this.showAlert("info", "Por favor preescha todos os campos");
-          console.log(this.despesa);
         } else {
           this.despesa.valor = this.despesa.valor.replace("R$", "");
           this.despesa.valor = this.despesa.valor.replace(".", "");
@@ -1006,7 +1017,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
             );
             this.despesa.idFormaPagamento =
               result.data.despesa[0].uuidFormaPagamento;
-            console.log(result.data.despesa[0].uuid);
             this.despesa.valor = result.data.despesa[0].valor.toLocaleString(
               "pt-br",
               { style: "currency", currency: "BRL" }
@@ -1053,7 +1063,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
         this.formaDePagamentoSelect
       )
         .then((result) => {
-          console.log(result)
           if (result.status === 201) {
             result.data.result.map((el) => {
               this.valorDespesa += el.valor;
@@ -1115,7 +1124,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
         this.receitaData.valor = this.receitaData.valor.replace("R$", "");
         this.receitaData.valor = this.receitaData.valor.replace(".", "");
         this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        console.log(this.receitaData);
         ReceitaService.save(this.receitaData)
           .then((result) => {
             if (result.status === 201) {
@@ -1139,7 +1147,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
         this.receitaData.valor = this.receitaData.valor.replace("R$", "");
         this.receitaData.valor = this.receitaData.valor.replace(".", "");
         this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        console.log(this.receitaData);
         ReceitaService.update(this.receitaData)
           .then((result) => {
             if (result.status === 201) {
@@ -1200,7 +1207,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
     editarReceita(uuid) {
       ReceitaService.read(uuid)
         .then((result) => {
-          console.log(result.data.receita[0].data);
           this.receitaData.uuid = result.data.receita[0].uuid;
           this.receitaData.descricaoReceita =
             result.data.receita[0].descricaoReceita;
@@ -1211,7 +1217,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
             "pt-br",
             { style: "currency", currency: "BRL" }
           );
-          console.log(result.data.receita[0]);
           this.receitaData.idFormaPagamento =
             result.data.receita[0].uuidFormaPagamento;
           this.receitaData.observacao = result.data.receita[0].observacao;
@@ -1253,7 +1258,6 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
         this.formaDePagamentoSelect
       )
         .then((result) => {
-          console.log(result);
           if (result.status === 201) {
             result.data.result.map((el) => {
               this.valorReceita += el.valor;
@@ -1300,7 +1304,22 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
 }
 .containerData {
 }
+
+.cardBtn{
+  display: flex;
+  
+}
+
+.flexDiv{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
 @media (max-width: 700px) {
+  
+  .flexDiv button{
+    margin-top: 5px;
+  }
   .tabsCont {
     width: 100%;
   }

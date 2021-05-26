@@ -109,7 +109,6 @@ export default {
     },
 
     excluirProcedimento(uuid) {
-      console.log(this.optionsPro)
       if (!uuid) {
         this.showAlert("info", "Selecione um Registro");
       } else {
@@ -146,7 +145,6 @@ export default {
              element
             );
           });
-              console.log(this.optionsPro);
           this.$store.commit("procedimentoSelect", this.optionsPro);
         })
         .catch(() => {
@@ -156,7 +154,6 @@ export default {
 
     editarProcedimento(uuid) {
 
-    console.log(this.optionsPro)
       ProcedimentoService.read(uuid)
         .then((result) => {
           if (result.status === 201) {

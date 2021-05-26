@@ -3,7 +3,7 @@
     <div class="formCliente">
       <div>
         <b-card no-body>
-          <b-tabs  pills card>
+          <b-tabs pills card>
             <b-tab title="Cadastro" active class="formClienteCard">
               <b-card class="formClienteCard">
                 <b-container class="col-sm-12" fluid>
@@ -12,12 +12,22 @@
                     <b-icon-person-plus class="ml-3"></b-icon-person-plus>
                   </h3>
 
-                   <b-avatar :src="clinica.logo" style="margin-left: 45%; " class="mt-4 mb-4" size="6rem"></b-avatar>
+                  <b-avatar
+                    :src="clinica.logo"
+                    style="margin-left: 45%"
+                    class="mt-4 mb-4"
+                    size="6rem"
+                  ></b-avatar>
 
                   <form class="row">
                     <div class="form-group col-sm-5">
-                      <input type="text" v-model="clinica.uuid" hidden class="form-control" />
-                      <label >Nome Clínica</label>
+                      <input
+                        type="text"
+                        v-model="clinica.uuid"
+                        hidden
+                        class="form-control"
+                      />
+                      <label>Nome Clínica</label>
                       <b-form-input
                         v-model="clinica.nomeClinica"
                         trim
@@ -42,15 +52,26 @@
                       />
                     </div>
                     <div class="form-group col-sm-2">
-                      <label for="exampleInputEmail1">CNPJ/CPF</label>
+
+                     <b-form-radio v-model="selected" :aria-describedby="ariaDescribedby" name="some-radios" value="fisica">Pessoa Física (CPF)</b-form-radio>
+                     <b-form-radio v-model="selected" :aria-describedby="ariaDescribedby" name="some-radios" class="mb-0.5" value="juridica">Pessoa Jurídica (CNPJ)</b-form-radio>
+
                       <input
+                      v-if="selected === 'fisica'"
                         v-mask="'###.###.###-##'"
                         type="text"
                         class="form-control"
                         v-model="clinica.cnpjcpf"
                       />
+                       <input
+                      v-else-if="selected === 'juridica'"
+                        v-mask="'##.###.###/####-##'"
+                        type="text"
+                        class="form-control"
+                        v-model="clinica.cnpjcpf"
+                      />
                     </div>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-2 mt-3">
                       <label for="exampleInputEmail1">Endereço</label>
                       <input
                         type="text"
@@ -58,7 +79,7 @@
                         class="form-control"
                       />
                     </div>
-                    <div class="form-group col-sm-5">
+                    <div class="form-group col-sm-5 mt-3">
                       <label for="exampleInputEmail1">Bairro</label>
                       <input
                         type="text"
@@ -83,10 +104,14 @@
                       />
                     </div>
 
-                     <div class="form-group mb-5 col-sm-5">
-                      <label for="exampleInputEmail1">Logo (Url da Imagem)</label>
+                    <div class="form-group mb-5 col-sm-5">
+                      <label for="exampleInputEmail1"
+                        >Logo (Url da Imagem)</label
+                      >
                       <input
-                       v-b-popover.hover.bottom="'A Logo só sera renderizada após o recarregamento da Pagina'" 
+                        v-b-popover.hover.bottom="
+                          'A Logo só sera renderizada após o recarregamento da Pagina'
+                        "
                         type="text"
                         v-model="clinica.logo"
                         class="form-control"
@@ -94,16 +119,28 @@
                     </div>
                   </form>
                   <div class="btns">
-                    <b-button variant="success" @click="saveClinica" class="mr-2" type="submit">
+                    <b-button
+                      variant="success"
+                      @click="saveClinica"
+                      class="mr-2"
+                      type="submit"
+                      size="sm"
+                    >
                       <b-icon-person-check-fill class="mr-2">
                       </b-icon-person-check-fill>
                       Salvar
                     </b-button>
-                    <b-button variant="warning" class="mr-2">
+                    <b-button variant="warning" size="sm" class="mr-2">
                       <b-icon-arrow-clockwise
                         class="mr-3"
                       ></b-icon-arrow-clockwise
                       >Limpar
+                    </b-button>
+                     <b-button variant="primary" size="sm" @click="aplicar" class="mr-2 float-right">
+                      <b-icon-arrow-repeat
+                        class="mr-3"
+                      ></b-icon-arrow-repeat
+                      >Aplicar Alterações
                     </b-button>
                   </div>
                 </b-container>
@@ -114,7 +151,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -122,6 +158,12 @@ import ClinicaService from "../../services/clinica";
 export default {
   data() {
     return {
+      selected: "juridica",
+      options: [
+        { text: "First radio", value: "first" },
+        { text: "Second radio", value: "second" },
+        { text: "Third radio", value: "third" },
+      ],
       clinica: {
         uuid: "",
         nomeClinica: "",
@@ -134,7 +176,7 @@ export default {
         email: "",
         cidade: "",
         estado: "",
-        logo:""
+        logo: "",
       },
 
       editar: true,
@@ -158,13 +200,17 @@ export default {
     async read() {
       try {
         const result = await ClinicaService.read();
-        if(result.data.result.length === 0){
-          return
+        if (result.data.result.length === 0) {
+          return;
         }
         this.clinica = result.data.result[0];
       } catch (error) {
         // console.log("erro");
       }
+    },
+
+    aplicar(){
+      window.location.reload();
     },
 
     async saveClinica() {

@@ -127,13 +127,14 @@
             <!-- Contact-->
           </b-container>
 
-          <b-card class="text-center shadow-sm bg-white rounded cardConteudo">
-            <div class="card1">
-              <Calendar />
-            </div>
-          </b-card>
+         
         </b-col>
       </b-row>
+       <b-card class="text-center shadow bg-white rounded cardConteudo">
+            <div class="card1">
+              <Agendamento :agendamentos="this.fake"/>
+            </div>
+          </b-card>
       <section class="contact-section">
         <div class="container">
           <div class="row">
@@ -201,7 +202,10 @@
           </div>
         </div>
       </section>
-      <footer
+      
+
+
+      <!-- <footer
         v-if="showOptionRelatorio == true"
         id="sticky-footer-Home"
         class="py-4 text-white-50"
@@ -246,13 +250,13 @@
             <b-icon-x class="mb-1"></b-icon-x>
           </b-button>
         </div>
-      </footer>
+      </footer> -->
     </b-container>
     <b-modal
       id="modal-xl-t"
       hide-footer
       size="xl"
-      title="Seja Bem Vindo ao BMS Opto ... Temos alguns instruções para você"
+      title="Seja Bem Vindo ao BMS Opto ... Temos algumas instruções para você"
     >
       <b-card>
         <div>
@@ -298,14 +302,16 @@ import imgTela2 from "../../assets/tela2-min.png";
 import logoCalendar from "../../assets/logoCalendar.jpg";
 import logoOpto from "../../assets/logoOpto.jpg";
 import logoAaniversario from "../../assets/logoAaniversario.jpg";
+import Agendamento from "../Agenda/Agendamento";
 
 export default {
   components: {
     CardHome: () => import("./CardHome"),
-    Calendar: () => import("../Agenda/Calendar"),
+    // Calendar: () => import("../Agenda/Calendar"),
     ModalAniversariante,
     ModalConsultaVencida,
     ModalProxConsultas,
+    Agendamento
   },
   computed: {
     ...mapState({
@@ -350,6 +356,7 @@ export default {
         bairro: "",
         numero: "",
       },
+      fake: [{uuid: '1212121', nomePaciente: 'Andre', horario:'12:22'}],
       dataHoje: moment().format("DD/MM/YYYY"),
       proximasConsultas: [],
       consultasVencidas: [],
@@ -387,10 +394,8 @@ export default {
     },
     proximaConsultaProxConsulta() {
       if (this.indexProxiConsulta < this.proximasConsultas.length - 1) {
-        console.log(this.indexProxiConsulta, this.proximasConsultas.length - 1);
         this.indexProxiConsulta = this.indexProxiConsulta + 1;
       }
-      console.log(this.indexProxiConsulta);
     },
 
     anteriorProxConsulta() {
@@ -461,10 +466,7 @@ this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleSt
     async readValorLiquido() {
       await this.readValorReceita();
       await this.readDespesa();
-      console.log(
-        parseFloat(this.resumoFinaceiro.totalPagar),
-        parseFloat(this.resumoFinaceiro.totalReceber)
-      );
+
       var total =
         parseFloat(this.resumoFinaceiro.totalReceber) -
         parseFloat(this.resumoFinaceiro.totalPagar);
@@ -472,7 +474,6 @@ this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleSt
     },
 
     proximaConsultaVencida() {
-      console.log("entrooou cons venc");
       if (this.indexConsultaVencida < this.consultasVencidas[0].length - 1) {
         this.indexConsultaVencida = this.indexConsultaVencida + 1;
       }
@@ -554,13 +555,11 @@ this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleSt
       var mes = parseInt(moment().format("DD/MM/YYYY").substring(3, 5));
       var dia = moment().format("DD/MM/YYYY").substring(0, 2);
       PacienteService.readAniversariante(mes, dia).then((result) => {
-        console.log(result);
         result.data.map((el) => {
           el.dataNascimento = moment(el.dataNascimento).format("DD/MM/YYYY");
           this.aniversarianteDoMes.push(el);
         });
       });
-      console.log(this.aniversarianteDoMes);
     },
   },
 
@@ -715,6 +714,7 @@ section {
 .cardConteudo {
   width: 70%;
   margin: 0 auto;
+  border-radius: 10px;
 }
 
 .home {
@@ -722,7 +722,7 @@ section {
 }
 
 .card1 {
-  border: none;
+  border-radius: 10px;
   width: 100%;
   height: 100%;
 }

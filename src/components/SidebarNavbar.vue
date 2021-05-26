@@ -10,12 +10,11 @@
       <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
       <div class="mb-1">
-      
         <b-avatar size="50" href="/Home" :src="logoClinica"></b-avatar>
         <label class="ml-3 text-white"></label>
-        <b-navbar-brand class="ml-3 text-white nomeEmpresa"
-          >{{nomeClinica}}</b-navbar-brand
-        >
+        <b-navbar-brand class="ml-3 text-white nomeEmpresa">{{
+          nomeClinica
+        }}</b-navbar-brand>
       </div>
 
       <b-collapse id="nav-text-collapse" is-nav class="colapseContainer">
@@ -137,9 +136,19 @@
             <h4 id="sidebar-no-header-title">Lembretes Para Hoje</h4>
 
             <div class="mb-2">
-              <b-avatar :src="logoBms" size="6rem"></b-avatar>
+              <b-avatar :src="logoClinica" size="6rem"></b-avatar>
             </div>
-
+            <small>{{ nomeClinica }}</small
+            ><br />
+            <small>Endereço : {{ endereco }}</small
+            ><br />
+            <!-- <b-icon-credit-card2-front variant="primary" v-b-tooltip.variant="primary" v-b-tooltip.hover title="Tooltip directive content" class="ml-3 h6"></b-icon-credit-card2-front> -->
+            <b-icon-credit-card2-front
+              variant="primary"
+              @click="editarClin"
+              v-b-popover.hover.bottom="'Editar dados da Clínica'"
+              class="ml-3 h4 mt-2"
+            ></b-icon-credit-card2-front>
             <b-button
               size="sm"
               variant="primary"
@@ -216,7 +225,7 @@
 
 <script>
 import image from "../assets/home-min.png";
-import imageCalender from "../assets/calender-min.png"
+import imageCalender from "../assets/calender-min.png";
 import imagePaciente from "../assets/user-min.png";
 import imageConsulta from "../assets/consulta-min.png";
 import imageRelatorio from "../assets/relatorio-min.png";
@@ -242,7 +251,8 @@ export default {
       showAgendamentos: false,
       showDespesas: false,
       nomeClinica: "",
-      logoClinica: ""
+      logoClinica: "",
+      endereco: "",
     };
   },
 
@@ -254,14 +264,16 @@ export default {
   },
 
   mounted() {
-     this.readDadosClinica();
+    this.readDadosClinica();
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       // this.readDadosClinica();
     }
   },
 
   methods: {
-
+    editarClin() {
+      this.$router.push("/CadastroClinica");
+    },
     readAgendamentos() {
       this.agendamentosHoje = [];
       AgendaService.readDateInner(moment().format("YYYY-MM-DD")).then(
@@ -277,43 +289,36 @@ export default {
     async readDadosClinica() {
       this.dadosClinica = [];
       const clinica = await ClinicaService.read();
-      if(clinica.data.result.length > 0){
-        this.nomeClinica = clinica.data.result[0].nomeClinica
-        this.logoClinica = clinica.data.result[0].logo
+      if (clinica.data.result.length > 0) {
+        this.nomeClinica = clinica.data.result[0].nomeClinica;
+        this.logoClinica = clinica.data.result[0].logo;
+        this.endereco = clinica.data.result[0].endereco;
       }
-      console.log(clinica)
-      
     },
 
     async showDespesa() {
       this.showAgendamentos = false;
-      console.log("neterere")
       await this.readDespesas();
       this.showDespesas = !this.showDespesas;
-      console.log(this.despesasHoje);
     },
 
-
-   async showAgendamento() {
+    async showAgendamento() {
       this.showDespesas = false;
-      await this.readAgendamentos()
+      await this.readAgendamentos();
       this.showAgendamentos = !this.showAgendamentos;
     },
 
-
     readDespesas() {
-      this.despesasHoje = []
+      this.despesasHoje = [];
       DespesaService.readDate(
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       ).then((result) => {
-        console.log(result);
         result.data.result.map((el) => {
           el.data = moment(el.data).format("DD/MM/YYYY");
           this.despesasHoje.push(el);
         });
       });
-      console.log(this.despesasHoje)
     },
   },
 };
@@ -375,7 +380,6 @@ img:hover {
 }
 
 .navbar {
-
   /* fallback for old browsers */
   /* fallback for old browsers */
   /* fallback for old browsers */
@@ -393,8 +397,7 @@ img:hover {
 }
 
 .nomeEmpresa {
-  font-family: "Lobster", cursive;
-  font-size: 38px;
+  font-size: 28px;
 }
 .iconeMenu {
   z-index: 1000;

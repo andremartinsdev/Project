@@ -31,7 +31,6 @@ export default {
       const consultas = await AgendaService.readDateVencimento(
         moment().format("YYYY-MM-DD")
       );
-      console.log(consultas);
       consultas.data.agendamentos.forEach((element) => {
         element.dataVencimento = moment(element.dataVencimento).format(
           "DD/MM/YYYY"

@@ -275,12 +275,10 @@ this.laudo = {
       try {
         const paciente = await PacienteService.readAll();
         paciente.data.map((paciente) => {
-          console.log(paciente);
           this.pacientes.push(
             this.Paciente(paciente.nomePaciente, paciente.uuid)
           );
         });
-        console.log(this.pacientes);
       } catch (error) {
         this.showAlert("error", "Ocorreu um problema ao lista pacientes");
       }
@@ -299,7 +297,6 @@ this.laudo = {
     async readLaudoUuid(uuid) {
       try {
         const laudo = await LaudoService.readUuid(uuid);
-        console.log(laudo)
         this.laudo.uuid = laudo.data.result[0].uuid;
         this.laudo.od_perto_sc = laudo.data.result[0].od_perto_sc;
         this.laudo.od_perto_cc = laudo.data.result[0].od_perto_cc;
@@ -338,13 +335,11 @@ this.laudo = {
         element.data = moment(element.data).format("DD/MM/YYYY");
       });
       this.laudos = laudos.data.result;
-      console.log(laudos)
     },
 
     async saveLaudo() {
       try {
         if (this.laudo.uuid === "") {
-          console.log(this.idPaciente);
           this.dadosConsulta.idPaciente = this.idPaciente;
           this.dadosConsulta.data = moment().format("YYYY-MM-DD");
           this.dadosConsulta.titulo = "Laudo";
@@ -357,7 +352,6 @@ this.laudo = {
           this.showAlert("success", "Laudo Registrado com Sucesso");
           return;
         }
-        console.log(this.laudo);
         await LaudoService.update(this.laudo.uuid, this.laudo);
         this.showAlert("success", "Laudo Atualizado com Sucesso");
       } catch (error) {

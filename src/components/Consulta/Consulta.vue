@@ -1461,7 +1461,6 @@ export default {
     ...mapActions(["pacienteSelected"]),
 
     mudarEditar() {
-      console.log("entrtrooo editra");
       this.editar = false;
     },
 
@@ -1582,7 +1581,6 @@ export default {
         this.dataInicialAg,
         this.dataFinalAg
       ).then((result) => {
-        console.log(result);
         this.agendamentosData = result.data.agendamentos.result;
         this.totalPageAg = Math.ceil(
           result.data.agendamentos.total[0].count / 5
@@ -1622,7 +1620,6 @@ export default {
     },
 
     inicioConsulta(idPaciente, uuidAgendamento, pacienteUuid, atendido) {
-      console.log(idPaciente);
       if (atendido === 1) {
         this.showAlert("info", "Paciente já foi Atendido");
       } else {
@@ -1656,9 +1653,7 @@ export default {
       this.totalPage = 1;
       AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
         (result) => {
-          console.log(result);
           this.agendamentos = result.data.agendamentos.result;
-          //this.totalPage = result.data.agendamentos.total[0].count
           this.totalPage = Math.ceil(
             result.data.agendamentos.total[0].count / 5
           );
@@ -1834,7 +1829,6 @@ export default {
 
     visualizar(uuid) {
       FichaClinicaService.read(uuid).then((result) => {
-        console.log(result.data.ficha[0]);
         this.fichaClinica = result.data.ficha[0].json_fichaClinica;
         this.uuidFicha = result.data.ficha[0].uuid;
         this.$store.commit("UUID_FICHACLINICA", result.data.ficha[0].uuid);
@@ -1915,7 +1909,6 @@ export default {
         this.dadosConsulta.data = moment().format("YYYY-MM-DD");
         this.dadosConsulta.titulo = "Laudo";
         const consulta = await ServicoConsulta.save(this.dadosConsulta);
-        console.log(consulta);
         this.laudo.data = moment().format("YYYY-MM-DD");
         this.laudo.idPaciente = this.idPaciente;
         this.laudo.idConsulta = consulta.data.result.idConsulta[0];
