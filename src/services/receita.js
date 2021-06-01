@@ -31,7 +31,15 @@ export default {
       return http.get(`Receita/readDate/${dataInicial}/${dataFinal}`)
     },
 
+    readDatePagas: (dataInicial, dataFinal, pago) =>{
+        return http.get(`Receita/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
+      },
+      
     readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
       return http.get(`Receita/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
-    }
+    },
+
+    readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
+        return http.get(`Receita/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
+      }
 }

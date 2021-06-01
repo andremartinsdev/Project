@@ -525,8 +525,8 @@ export default {
       doc.setFont("times", "italic");
       doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
 
-      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
-      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      doc.addImage("http://localhost:3002/Clinica/image/logo", "JPEG", 0, 230, 230, 70);
+      // doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
 
       if (download) {
         doc.save(pdfName + ".pdf");

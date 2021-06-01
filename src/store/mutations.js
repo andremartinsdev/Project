@@ -109,6 +109,14 @@ export default {
         state.procedimentoSelect.push(procedimentoSelectPush)
     },
 
+    [MutationsTypes.dadosClinica](state, dadosClinica) {
+        state.dadosClinica.push(dadosClinica)
+    },
+
+     [MutationsTypes.uuidClinica](state, uuidClinica) {
+        state.uuidClinica = uuidClinica
+    }
+
     
 
 

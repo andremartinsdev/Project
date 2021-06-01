@@ -35,6 +35,10 @@ export default {
         return http.get(`/Agenda/readDate/${dataInicial}/${dataFinal}`)
     },
 
+    readDatePagas: (dataInicial, dataFinal, pago) => {
+        return http.get(`/Agenda/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
+    },
+
     readDateRelatorio: (dataInicial, dataFinal) => {
         return http.get(`/Agenda/readDate/Relatorio/${dataInicial}/${dataFinal}`)
     },
@@ -123,5 +127,9 @@ export default {
 
     countAgendamento: (data) => {
         return http.get(`/Agenda/count/${data}`)
-    }
+    },
+
+    readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
+        return http.get(`/Agenda/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
+    },
 }

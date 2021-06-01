@@ -11,7 +11,7 @@
                     Cadastro Clínica
                     <b-icon-person-plus class="ml-3"></b-icon-person-plus>
                   </h3>
-
+                  <b-input v-model="clinica.uuid" hidden></b-input>
                   <b-avatar
                     :src="clinica.logo"
                     style="margin-left: 45%"
@@ -52,19 +52,29 @@
                       />
                     </div>
                     <div class="form-group col-sm-2">
-
-                     <b-form-radio v-model="selected" :aria-describedby="ariaDescribedby" name="some-radios" value="fisica">Pessoa Física (CPF)</b-form-radio>
-                     <b-form-radio v-model="selected" :aria-describedby="ariaDescribedby" name="some-radios" class="mb-0.5" value="juridica">Pessoa Jurídica (CNPJ)</b-form-radio>
+                      <b-form-radio
+                        v-model="selected"
+                        name="some-radios"
+                        value="fisica"
+                        >Pessoa Física (CPF)</b-form-radio
+                      >
+                      <b-form-radio
+                        v-model="selected"
+                        name="some-radios"
+                        class="mb-0.5"
+                        value="juridica"
+                        >Pessoa Jurídica (CNPJ)</b-form-radio
+                      >
 
                       <input
-                      v-if="selected === 'fisica'"
+                        v-if="selected === 'fisica'"
                         v-mask="'###.###.###-##'"
                         type="text"
                         class="form-control"
                         v-model="clinica.cnpjcpf"
                       />
-                       <input
-                      v-else-if="selected === 'juridica'"
+                      <input
+                        v-else-if="selected === 'juridica'"
                         v-mask="'##.###.###/####-##'"
                         type="text"
                         class="form-control"
@@ -106,16 +116,24 @@
 
                     <div class="form-group mb-5 col-sm-5">
                       <label for="exampleInputEmail1"
-                        >Logo (Url da Imagem)</label
+                        >Logo (Apenas imagem .png)</label
                       >
-                      <input
+
+                      <b-form-file
+                        v-model="file"
+                        :state="Boolean(file)"
+                        placeholder="Selecione sua Logo"
+                        drop-placeholder="Drop file here..."
+                      ></b-form-file>
+
+                      <!-- <input
                         v-b-popover.hover.bottom="
                           'A Logo só sera renderizada após o recarregamento da Pagina'
                         "
                         type="text"
                         v-model="clinica.logo"
                         class="form-control"
-                      />
+                      /> -->
                     </div>
                   </form>
                   <div class="btns">
@@ -136,11 +154,14 @@
                       ></b-icon-arrow-clockwise
                       >Limpar
                     </b-button>
-                     <b-button variant="primary" size="sm" @click="aplicar" class="mr-2 float-right">
-                      <b-icon-arrow-repeat
-                        class="mr-3"
-                      ></b-icon-arrow-repeat
-                      >Aplicar Alterações
+                    <b-button
+                      variant="primary"
+                      size="sm"
+                      @click="aplicar"
+                      class="mr-2 float-right"
+                    >
+                      <b-icon-image class="mr-3"></b-icon-image
+                      >Salvar Logo
                     </b-button>
                   </div>
                 </b-container>
@@ -164,6 +185,8 @@ export default {
         { text: "Second radio", value: "second" },
         { text: "Third radio", value: "third" },
       ],
+      arquivoSelected: false,
+      file: null,
       clinica: {
         uuid: "",
         nomeClinica: "",
@@ -176,7 +199,7 @@ export default {
         email: "",
         cidade: "",
         estado: "",
-        logo: "",
+        logo: "http://localhost:3002/Clinica/image/logo",
       },
 
       editar: true,
@@ -184,6 +207,7 @@ export default {
   },
   created() {
     this.read();
+    this.readLogo();
   },
   methods: {
     showAlert(icon, title) {
@@ -203,35 +227,71 @@ export default {
         if (result.data.result.length === 0) {
           return;
         }
-        this.clinica = result.data.result[0];
+        this.clinica.nomeClinica = result.data.result[0].nomeClinica;
+        this.clinica.cnpjcpf = result.data.result[0].cnpjcpf;
+        this.clinica.uuid = result.data.result[0].uuid;
+        console.log(result.data.result[0].nomeClinica);
       } catch (error) {
         // console.log("erro");
       }
     },
 
-    aplicar(){
-      window.location.reload();
+    async aplicar() {
+      try {
+        if (this.file != null) {
+        const file = document.querySelector("input[type=file]").files[0];
+        const logo = await this.toBase64(file);
+        await ClinicaService.saveLogo(logo, this.clinica.uuid);
+        window.location.reload();
+        return;
+      }
+      this.showAlert("info", "Por favor Selecione uma Imagem");
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um erro ao Salvar Logo")
+      }
+      
     },
 
     async saveClinica() {
-      if (this.clinica.uuid) {
-        try {
-          await ClinicaService.update(this.clinica, this.clinica.uuid);
-          this.showAlert("success", "Registro Atualizado com Sucesso");
-          this.editar = true;
-        } catch (error) {
-          this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
-        }
-      } else {
-        try {
-          const result = await ClinicaService.save(this.clinica);
-          this.clinica.uuid = result.data.result.uuid;
-          this.showAlert("success", "Registro Salvo com Sucesso");
-          this.editar = true;
-        } catch (error) {
-          this.showAlert("error", "Ops! ocorreu um erro o Salvar Registro");
-        }
-      }
+      // if (this.clinica.uuid) {
+      //   try {
+      //     // this.clinica.logo = await this.toBase64(file);
+      //     await ClinicaService.update(this.clinica, this.clinica.uuid);
+      //     this.showAlert("success", "Registro Atualizado com Sucesso");
+      //     this.editar = true;
+      //   } catch (error) {
+      //     this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
+      //   }
+      // } else {
+      //   try {
+      //     const file = document.querySelector('input[type=file]').files[0]
+      //     // this.clinica.logo = await this.toBase64(file);
+      //     const result = await ClinicaService.save(this.clinica);
+      //     this.clinica.uuid = result.data.result.uuid;
+      //     this.showAlert("success", "Registro Salvo com Sucesso");
+      //     this.editar = true;
+      //   } catch (error) {
+      //     this.showAlert("error", "Ops! ocorreu um erro o Salvar Registro");
+      //   }
+      // }
+    },
+
+    async readLogo() {
+      //  const logo = await ClinicaService.readLogo()
+      //  this.clinica.logo = logo
+      //  console.log(logo)
+      //  var img = new Image();
+      //   img.src = logo.data;
+      //  console.log(img)
+    },
+
+    toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
     },
   },
 };

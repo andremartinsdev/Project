@@ -31,5 +31,11 @@ export default {
     },
     pacienteSelect({commit}, pacienteSelect){
         return commit(MutationsType.pacienteSelect, pacienteSelect)
+    },
+    dadosClinica({commit}, dadosClinica){
+        return commit(MutationsType.dadosClinica, dadosClinica)
+    },
+    uuidClinica({commit}, uuidClinica){
+        return commit(MutationsType.uuidClinica, uuidClinica)
     }
 }

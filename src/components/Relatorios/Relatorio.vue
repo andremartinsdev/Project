@@ -41,8 +41,12 @@
               </table>
             </b-card>
           </b-tab>
+
+
+
+
           <b-tab title="Relatório Financeiro">
-            <div>
+            <!-- <div>
              <b-card>
    <div class="flexDiv ml-2 fluid">
                   <div class="mb-3 mr-2">
@@ -527,10 +531,10 @@
                 </template>
               </b-modal>
 
+            </div> -->
               <b-card class="mt-3 cardTable">
                <Chart/>
               </b-card>
-            </div>
 
             
           </b-tab>
@@ -675,7 +679,6 @@ export default {
     ModalFormaPagamento
   },
   created() {
-    
     this.readFormaPagamento();
     this.readOticaParceira();
     this.readConsultaToday();
@@ -687,17 +690,17 @@ export default {
   methods: {
     testeData() {
     },
-    resetModalReceita() {
-      this.receitaData = {
-        uuid: "",
-        descricaoReceita: "",
-        data: "",
-        idFormaPagamento: null,
-        receitaPaga: false,
-        valor: 0,
-        observacao: "",
-      };
-    },
+    // resetModalReceita() {
+    //   this.receitaData = {
+    //     uuid: "",
+    //     descricaoReceita: "",
+    //     data: "",
+    //     idFormaPagamento: null,
+    //     receitaPaga: false,
+    //     valor: 0,
+    //     observacao: "",
+    //   };
+    // },
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -757,6 +760,8 @@ export default {
       };
     },
 
+
+
     readFormaPagamento() {
      
      this.formaDePagamento = []
@@ -808,27 +813,27 @@ export default {
     testeForma() {
     },
 
-    gerarRelatorio() {
-      if (this.dataInicial === "" || this.dataFinal === "") {
-        this.showAlert("info", "Por favor Informe o Período inicial e Final");
-        return;
-      }
-      if (
-        this.formaDePagamentoSelect != null &&
-        this.dataInicial != "" &&
-        this.dataFinal != ""
-      ) {
-        this.receitaFormaPagamento();
-        this.receberFormaPagamento();
-        this.readValorDespesaFormaPagamento();
-        this.readValorReceitaFormaPagamento();
-      } else if (this.dataInicial != "" && this.dataFinal != "") {
-        this.readValorDespesa();
-        this.readReceitaData();
-        this.receber();
-        this.receita();
-      }
-    },
+    // gerarRelatorio() {
+    //   if (this.dataInicial === "" || this.dataFinal === "") {
+    //     this.showAlert("info", "Por favor Informe o Período inicial e Final");
+    //     return;
+    //   }
+    //   if (
+    //     this.formaDePagamentoSelect != null &&
+    //     this.dataInicial != "" &&
+    //     this.dataFinal != ""
+    //   ) {
+    //     this.receitaFormaPagamento();
+    //     this.receberFormaPagamento();
+    //     this.readValorDespesaFormaPagamento();
+    //     this.readValorReceitaFormaPagamento();
+    //   } else if (this.dataInicial != "" && this.dataFinal != "") {
+    //     this.readValorDespesa();
+    //     this.readReceitaData();
+    //     this.receber();
+    //     this.receita();
+    //   }
+    // },
 
     receber() {
       this.valorReceber = 0;
@@ -923,139 +928,140 @@ export default {
         });
     },
 
-    saveDespesa() {
-      if (this.despesa.uuid === "") {
-        if (
-          this.despesa.descricao === "" ||
-          this.despesa.data === "" ||
-          this.despesa.valor === 0 ||
-          this.despesa.idFormaPagamento === null
-        ) {
-          this.showAlert("info", "Por favor preescha todos os campos");
-        } else {
-          this.despesa.valor = this.despesa.valor.replace("R$", "");
-          this.despesa.valor = this.despesa.valor.replace(".", "");
-          this.despesa.valor = this.despesa.valor.replace(",", ".");
-          delete this.despesa.uuid;
-          DespesaService.save(this.despesa)
-            .then((result) => {
-              if (result.status === 201) {
-                this.showAlert("success", "Despesa Cadastrada com Sucesso");
-                this.readDespesas();
-                this.resetModalDespesa();
-              } else {
-                this.showAlert(
-                  "error",
-                  "Ops! ocorreu algo de errado ao salvar "
-                );
-              }
-            })
-            .catch(() => {
-              this.showAlert(
-                "error",
-                "Ops! ocorreu algo de errado ao salvar Despesa"
-              );
-            });
-        }
-      } else if (this.despesa.uuid && this.despesa.uuid.length === 36) {
-        this.despesa.valor = this.despesa.valor.replace("R$", "");
-        this.despesa.valor = this.despesa.valor.replace(".", "");
-        this.despesa.valor = this.despesa.valor.replace(",", ".");
-        DespesaService.update(this.despesa)
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Registro Atualizado");
-              this.readDespesas();
-              this.resetModalDespesa();
-            } else {
-              this.showAlert(
-                "error",
-                "Ops! ocorreu um erro ao Atualizar Registro"
-              );
-            }
-          })
-          .catch(() => {
-            this.showAlert(
-              "error",
-              "Ops!! ocorreu um erro ao Atualizar Registro"
-            );
-          });
-      }
-    },
+    // saveDespesa() {
+    //   if (this.despesa.uuid === "") {
+    //     if (
+    //       this.despesa.descricao === "" ||
+    //       this.despesa.data === "" ||
+    //       this.despesa.valor === 0 ||
+    //       this.despesa.idFormaPagamento === null
+    //     ) {
+    //       this.showAlert("info", "Por favor preescha todos os campos");
+    //     } else {
+    //       this.despesa.valor = this.despesa.valor.replace("R$", "");
+    //       this.despesa.valor = this.despesa.valor.replace(".", "");
+    //       this.despesa.valor = this.despesa.valor.replace(",", ".");
+    //       delete this.despesa.uuid;
+    //       DespesaService.save(this.despesa)
+    //         .then((result) => {
+    //           if (result.status === 201) {
+    //             this.showAlert("success", "Despesa Cadastrada com Sucesso");
+    //             this.readDespesas();
+    //             this.resetModalDespesa();
+    //           } else {
+    //             this.showAlert(
+    //               "error",
+    //               "Ops! ocorreu algo de errado ao salvar "
+    //             );
+    //           }
+    //         })
+    //         .catch(() => {
+    //           this.showAlert(
+    //             "error",
+    //             "Ops! ocorreu algo de errado ao salvar Despesa"
+    //           );
+    //         });
+    //     }
+    //   } else if (this.despesa.uuid && this.despesa.uuid.length === 36) {
+    //     this.despesa.valor = this.despesa.valor.replace("R$", "");
+    //     this.despesa.valor = this.despesa.valor.replace(".", "");
+    //     this.despesa.valor = this.despesa.valor.replace(",", ".");
+    //     DespesaService.update(this.despesa)
+    //       .then((result) => {
+    //         if (result.status === 201) {
+    //           this.showAlert("success", "Registro Atualizado");
+    //           this.readDespesas();
+    //           this.resetModalDespesa();
+    //         } else {
+    //           this.showAlert(
+    //             "error",
+    //             "Ops! ocorreu um erro ao Atualizar Registro"
+    //           );
+    //         }
+    //       })
+    //       .catch(() => {
+    //         this.showAlert(
+    //           "error",
+    //           "Ops!! ocorreu um erro ao Atualizar Registro"
+    //         );
+    //       });
+    //   }
+    // },
 
     openFormaPagamento(){
 this.$bvModal.show("modal-lg-addFormaPagamento");
     },
 
-    readDespesas() {
-      this.despesas = [];
-      DespesaService.readAll()
-        .then((result) => {
-          if (result.status === 201) {
-            this.despesas.push(result.data.despesas);
-            this.despesas[0].map((el) => {
-              el.data = moment(el.data).format("DD/MM/YYYY");
-            });
-          } else {
-            this.showAlert("error", "Ops! ocorreu um erro ao Listar Despesas");
-          }
-        })
-        .catch(() => {
-          this.showAlert("error", "Ops! ocorreu um erro ao Listar Despesas");
-        });
-    },
+    // readDespesas() {
+    //   this.despesas = [];
+    //   DespesaService.readAll()
+    //     .then((result) => {
+    //       if (result.status === 201) {
+    //         this.despesas.push(result.data.despesas);
+    //         this.despesas[0].map((el) => {
+    //           el.data = moment(el.data).format("DD/MM/YYYY");
+    //         });
+    //       } else {
+    //         this.showAlert("error", "Ops! ocorreu um erro ao Listar Despesas");
+    //       }
+    //     })
+    //     .catch(() => {
+    //       this.showAlert("error", "Ops! ocorreu um erro ao Listar Despesas");
+    //     });
+    // },
 
-    editarDespesa(uuid) {
-      DespesaService.read(uuid)
-        .then((result) => {
-          if (result.status === 201) {
-            this.despesa.uuid = result.data.despesa[0].uuid;
-            this.despesa.descricaoDespesa =
-              result.data.despesa[0].descricaoDespesa;
-            this.despesa.data = moment(result.data.despesa[0].data).format(
-              "YYYY-MM-DD"
-            );
-            this.despesa.idFormaPagamento =
-              result.data.despesa[0].uuidFormaPagamento;
-            this.despesa.valor = result.data.despesa[0].valor.toLocaleString(
-              "pt-br",
-              { style: "currency", currency: "BRL" }
-            );
-            this.despesa.observacao = result.data.despesa[0].observacao;
-            this.despesa.despesaPaga =
-              result.data.despesa[0].despesaPaga === 1 ? true : false;
+    // editarDespesa(uuid) {
+    //   DespesaService.read(uuid)
+    //     .then((result) => {
+    //       if (result.status === 201) {
+    //         this.despesa.uuid = result.data.despesa[0].uuid;
+    //         this.despesa.descricaoDespesa =
+    //           result.data.despesa[0].descricaoDespesa;
+    //         this.despesa.data = moment(result.data.despesa[0].data).format(
+    //           "YYYY-MM-DD"
+    //         );
+    //         this.despesa.idFormaPagamento =
+    //           result.data.despesa[0].uuidFormaPagamento;
+    //         this.despesa.valor = result.data.despesa[0].valor.toLocaleString(
+    //           "pt-br",
+    //           { style: "currency", currency: "BRL" }
+    //         );
+    //         this.despesa.observacao = result.data.despesa[0].observacao;
+    //         this.despesa.despesaPaga =
+    //           result.data.despesa[0].despesaPaga === 1 ? true : false;
 
-            this.tabIndexDespesa = 0;
-          } else {
-            this.showAlert("error", "Ops! ocorreu um erro ao Editar Despesa");
-          }
-        })
-        .catch(() => {
-          this.showAlert("error", "Ops! ocorreu um erro ao Editar Despesa");
-        });
-    },
+    //         this.tabIndexDespesa = 0;
+    //       } else {
+    //         this.showAlert("error", "Ops! ocorreu um erro ao Editar Despesa");
+    //       }
+    //     })
+    //     .catch(() => {
+    //       this.showAlert("error", "Ops! ocorreu um erro ao Editar Despesa");
+    //     });
+    // },
 
-    excluirDespesa(uuid) {
-      if (!uuid && uuid.length === 36) {
-        this.showAlert("info", "Selecione um Registro");
-      } else {
-        DespesaService.delete(uuid)
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Registro de deletado com Sucesso");
-              this.readDespesas();
-            } else {
-              this.showAlert(
-                "error",
-                "Ops! ocorreu um erro ao excluir Despesa"
-              );
-            }
-          })
-          .catch(() => {
-            this.showAlert("error", "Ops!! ocorreu um erro ao excluir Despesa");
-          });
-      }
-    },
+    // excluirDespesa(uuid) {
+    //   if (!uuid && uuid.length === 36) {
+    //     this.showAlert("info", "Selecione um Registro");
+    //   } else {
+    //     DespesaService.delete(uuid)
+    //       .then((result) => {
+    //         if (result.status === 201) {
+    //           this.showAlert("success", "Registro de deletado com Sucesso");
+    //           this.readDespesas();
+    //         } else {
+    //           this.showAlert(
+    //             "error",
+    //             "Ops! ocorreu um erro ao excluir Despesa"
+    //           );
+    //         }
+    //       })
+    //       .catch(() => {
+    //         this.showAlert("error", "Ops!! ocorreu um erro ao excluir Despesa");
+    //       });
+    //   }
+    // },
+
     readValorDespesaFormaPagamento() {
       DespesaService.readDateFormaPagamento(
         this.dataInicial,
@@ -1119,55 +1125,55 @@ this.$bvModal.show("modal-lg-addFormaPagamento");
 
     //RECEITA ----------------------------------------
 
-    saveReceita() {
-      if (this.receitaData.uuid === "") {
-        this.receitaData.valor = this.receitaData.valor.replace("R$", "");
-        this.receitaData.valor = this.receitaData.valor.replace(".", "");
-        this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        ReceitaService.save(this.receitaData)
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Receita Cadastrada com Sucesso");
-              this.readReceita();
-              this.resetModalReceita();
-            } else {
-              this.showAlert(
-                "error",
-                "Ops! ocorreu um erro ao Cadastrar Receita"
-              );
-            }
-          })
-          .catch(() => {
-            this.showAlert(
-              "error",
-              "Ops!! ocorreu um erro ao Cadastrar Receita"
-            );
-          });
-      } else if (this.receitaData.uuid && this.receitaData.uuid.length === 36) {
-        this.receitaData.valor = this.receitaData.valor.replace("R$", "");
-        this.receitaData.valor = this.receitaData.valor.replace(".", "");
-        this.receitaData.valor = this.receitaData.valor.replace(",", ".");
-        ReceitaService.update(this.receitaData)
-          .then((result) => {
-            if (result.status === 201) {
-              this.showAlert("success", "Registro Atualizado");
-              this.readReceita();
-              this.resetModalReceita();
-            } else {
-              this.showAlert(
-                "error",
-                "Ops! ocorreu um erro ao Atualizar Registro"
-              );
-            }
-          })
-          .catch(() => {
-            this.showAlert(
-              "error",
-              "Ops!! ocorreu um erro ao Atualizar Registro"
-            );
-          });
-      }
-    },
+    // saveReceita() {
+    //   if (this.receitaData.uuid === "") {
+    //     this.receitaData.valor = this.receitaData.valor.replace("R$", "");
+    //     this.receitaData.valor = this.receitaData.valor.replace(".", "");
+    //     this.receitaData.valor = this.receitaData.valor.replace(",", ".");
+    //     ReceitaService.save(this.receitaData)
+    //       .then((result) => {
+    //         if (result.status === 201) {
+    //           this.showAlert("success", "Receita Cadastrada com Sucesso");
+    //           this.readReceita();
+    //           this.resetModalReceita();
+    //         } else {
+    //           this.showAlert(
+    //             "error",
+    //             "Ops! ocorreu um erro ao Cadastrar Receita"
+    //           );
+    //         }
+    //       })
+    //       .catch(() => {
+    //         this.showAlert(
+    //           "error",
+    //           "Ops!! ocorreu um erro ao Cadastrar Receita"
+    //         );
+    //       });
+    //   } else if (this.receitaData.uuid && this.receitaData.uuid.length === 36) {
+    //     this.receitaData.valor = this.receitaData.valor.replace("R$", "");
+    //     this.receitaData.valor = this.receitaData.valor.replace(".", "");
+    //     this.receitaData.valor = this.receitaData.valor.replace(",", ".");
+    //     ReceitaService.update(this.receitaData)
+    //       .then((result) => {
+    //         if (result.status === 201) {
+    //           this.showAlert("success", "Registro Atualizado");
+    //           this.readReceita();
+    //           this.resetModalReceita();
+    //         } else {
+    //           this.showAlert(
+    //             "error",
+    //             "Ops! ocorreu um erro ao Atualizar Registro"
+    //           );
+    //         }
+    //       })
+    //       .catch(() => {
+    //         this.showAlert(
+    //           "error",
+    //           "Ops!! ocorreu um erro ao Atualizar Registro"
+    //         );
+    //       });
+    //   }
+    // },
 
     readReceitaData() {
       ReceitaService.readDate(this.dataInicial, this.dataFinal).then(

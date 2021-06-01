@@ -18,13 +18,15 @@
         />
       </div>
       <div class="form-group w-50">
-        <label for="exampleInputEmail1">Data Nascimento</label>
-        <input
-          type="text"
-          v-model="agendamento.dataNascimento"
-          disabled
-          class="form-control bg-primary text-white"
-        />
+        <label for="exampleInputEmail1">Data do Pagamento</label>
+        <b-form-input
+                      class="bg-primary text-white col-sm-12"
+                      type="date"
+                      v-model="agendamento.dataPagamento"
+                      v-b-popover.hover.bottom="
+                    'Campo Obrigatorio, Informe a Data que a consulta será realizada'
+                  "
+                    ></b-form-input>
       </div>
     </div>
 
@@ -104,7 +106,8 @@ export default {
         dataNascimento: "",
         valorConsulta: "",
         recebido: false,
-        titulo: ""
+        titulo: "",
+        dataPagamento: ""
       },
       formaDePagamento: [],
       oticasParceiras: [],
@@ -124,8 +127,11 @@ export default {
       });
     },
      savePagamento() {
+       console.log( {
+          recebido: this.agendamento.recebido, dataPagamento: this.agendamento.dataPagamento
+        })
         AgendaService.updatePagmento(this.agendamento.uuid, {
-          recebido: this.agendamento.recebido,
+          recebido: this.agendamento.recebido, dataPagamento: this.agendamento.dataPagamento
         })
           .then(() => {
 
@@ -145,8 +151,10 @@ export default {
       }
       AgendaService.readAgendaJoinPaciente(this.uuidAgendamento)
         .then((result) => {
+          console.log(result)
           this.agendamento = result.data.agendamento;
           this.agendamento.titulo =  result.data.agendamento.descricao
+          this.agendamento.dataPagamento = moment(result.data.agendamento.dataPagamento).format("YYYY-MM-DD")
           this.agendamento.data = moment(result.data.agendamento.data).format(
             "YYYY-MM-DD"
           );
@@ -186,5 +194,9 @@ export default {
 
 .titulo{
   font-family: 'Lobster', cursive;
+}
+
+#modal-lg-pagamento{
+height: 85%;
 }
 </style>

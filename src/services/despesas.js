@@ -26,12 +26,21 @@ export default {
       return http.get(`Despesa/readDate/${dataInicial}/${dataFinal}`)
     },
 
+    readDatePagas: (dataInicial, dataFinal, pago) =>{
+        return http.get(`Despesa/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
+      },
+
     readValorDespesa: (dataInicial, dataFinal) =>{
         return http.get(`Despesa/readValorDespesa/${dataInicial}/${dataFinal}`)
       },
-
+      
     readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
       return http.get(`Despesa/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
-    }
+    },
+
+    readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
+        console.log(pago, "aaaaa")
+        return http.get(`Despesa/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
+      }
 
 }

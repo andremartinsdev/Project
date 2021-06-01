@@ -66,15 +66,15 @@
             ></b-img>
             <label class="text-white">Relatorio</label>
           </router-link>
-          <a v-b-toggle.sidebar-1 class="mr-5">
+          <router-link class="nav-link mr-5" to="/Financeiro" style="padding: 0">
             <b-img
               center
               :src="imageConfig"
               alt="Center image"
               width="35"
             ></b-img>
-            <label class="text-white">Configurações</label>
-          </a>
+            <label class="text-white">Financeiro</label>
+          </router-link>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -86,18 +86,15 @@
       <b-col md="6" class="mb-3">
         <b-icon
           icon="arrow-right-circle-fill"
-          v-b-toggle.sidebar-2
+          v-b-toggle.sidebar-2.show
           class="bg-success rounded p-1"
           v-b-popover.hover.top="'Quadro de Lembretes'"
           variant="light"
           animation="cylon"
           font-scale="2"
+          
         ></b-icon>
       </b-col>
-      <b-popover target="popover-target-1" triggers="hover" placement="top">
-        <template #title>Popover Title</template>
-        I am popover <b>component</b> content!
-      </b-popover>
     </div>
     <div>
       <b-sidebar
@@ -107,21 +104,7 @@
         class="text-center mt-2"
         shadow
       >
-        <div hidden class="px-3 py-2">
-          <router-link to="/ConfiguracaoGeral">
-            <b-button size="sm" variant="primary" block
-              >Configuração Geral</b-button
-            >
-          </router-link>
-        </div>
-
-        <div class="px-3 py-2">
-          <router-link to="/CadastroClinica">
-            <b-button size="sm" variant="primary" block
-              >Cadastro da Clínica</b-button
-            >
-          </router-link>
-        </div>
+        
       </b-sidebar>
 
       <b-sidebar
@@ -133,7 +116,7 @@
       >
         <template #default="{ hide }">
           <div class="p-3">
-            <h4 id="sidebar-no-header-title">Lembretes Para Hoje</h4>
+            <h4 id="sidebar-no-header-title">Seja Bem vindo</h4>
 
             <div class="mb-2">
               <b-avatar :src="logoClinica" size="6rem"></b-avatar>
@@ -213,6 +196,11 @@
                 ><br />
               </b-toast>
             </div>
+             <router-link to="/CadastroClinica">
+            <b-button size="sm" variant="primary" class="mt-2" block
+              >Cadastro da Clínica</b-button
+            >
+          </router-link>
             <b-button variant="primary" class="mt-4" size="sm" @click="hide"
               >Fechar <b-icon-x scale="1.5" class="mb-1"></b-icon-x
             ></b-button>
@@ -229,14 +217,21 @@ import imageCalender from "../assets/calender-min.png";
 import imagePaciente from "../assets/user-min.png";
 import imageConsulta from "../assets/consulta-min.png";
 import imageRelatorio from "../assets/relatorio-min.png";
-import imageConfig from "../assets/configuracao-min.png";
+import imageConfig from "../assets/lucros.png";
 import AgendaService from "../services/agenda";
 import DespesaService from "../services/despesas";
 import logoBms from "../assets/LogoBms.png";
 import ClinicaService from "../services/clinica";
+import { mapState } from "vuex"
 
 import moment from "moment";
 export default {
+  computed: {
+    ...mapState({
+      idPaciente: (state) => state.pacienteSelected,
+      procedimentoSelect: (state) => state.procedimentoSelect,
+    }),
+  },
   data() {
     return {
       logoBms: logoBms,
@@ -251,7 +246,7 @@ export default {
       showAgendamentos: false,
       showDespesas: false,
       nomeClinica: "",
-      logoClinica: "",
+      logoClinica: "http://localhost:3002/Clinica/image/logo",
       endereco: "",
     };
   },
@@ -291,7 +286,6 @@ export default {
       const clinica = await ClinicaService.read();
       if (clinica.data.result.length > 0) {
         this.nomeClinica = clinica.data.result[0].nomeClinica;
-        this.logoClinica = clinica.data.result[0].logo;
         this.endereco = clinica.data.result[0].endereco;
       }
     },

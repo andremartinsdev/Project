@@ -386,6 +386,7 @@ export default {
         this.dadosClinica.bairro = clinica.data.result[0].bairro;
         this.dadosClinica.numero = clinica.data.result[0].numero;
         this.dadosClinica.cidade = clinica.data.result[0].cidade;
+        this.$store.commit("uuidClinica", clinica.data.result[0].uuid)
       }
     },
 

@@ -62,10 +62,18 @@
                         {{ pacienteError.telefone }}
                       </b-form-text>
                     </div>
+                    <div class="form-group col-sm-1 mt-3">
+                      <b-form-select
+                        v-model="selectedPaciente"
+                        @change="mudarTipoPessoa"
+                        :options="optionsPaciente"
+                        class="mt-3"
+                      ></b-form-select>
+                    </div>
                     <div class="form-group col-sm-2">
-                      <label for="exampleInputEmail1">CPF</label>
+                      <label for="exampleInputEmail1">CPF / CNPJ</label>
                       <input
-                        v-mask="'###.###.###-##'"
+                        v-mask="mask"
                         type="text"
                         v-model="paciente.cpf"
                         class="form-control"
@@ -84,6 +92,16 @@
                       <b-form-text text-variant="warning" style="color: red">
                         {{ pacienteError.rg }}
                       </b-form-text>
+                    </div>
+                    <div class="form-group col-sm-2">
+                      <label for="exampleInputEmail1">CEP</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-mask="'#####-###'"
+                        v-model="paciente.cep"
+                        @blur="readCep"
+                      />
                     </div>
                     <div class="form-group col-sm-5">
                       <label for="exampleInputEmail1">Endereço</label>
@@ -153,21 +171,30 @@
                     v-model="campoPesquisa"
                     size="sm"
                     class="mr-3"
+                    v-mask="maskPesquisa"
                   ></b-form-input>
                   <b-form-select
                     v-model="selected"
                     :options="options"
                     size="sm"
+                    @change="mudarMaskPesquisa"
                   ></b-form-select>
                   <b-input-group-append>
                     <b-button
                       variant="primary"
                       size="sm"
                       class="ml-3"
-                      @click="list()"
+                      @click="listParams"
                       >Pesquisar</b-button
                     >
                   </b-input-group-append>
+                  <b-button
+                      variant="primary"
+                      size="sm"
+                      class="ml-3"
+                      @click="list"
+                      >Pesquisar Todos</b-button
+                    >
                 </b-input-group>
                 <div class="tablePaciente">
                   <table class="table text-center">
@@ -195,7 +222,7 @@
                         </td>
                         <td>{{ item.cpf }}</td>
                         <td>
-                          <b-dropdown center text="Ações">
+                          <b-dropdown variant="primary"  size="sm" center text="Ações">
                             <b-dropdown-item @click="read(item.uuid)"
                               >Editar</b-dropdown-item
                             >
@@ -211,9 +238,19 @@
                 </div>
               </b-card>
 
-              <b-button-group size="sm" class="mt-2">
-                <b-button @click="previousPage">Anterior</b-button>
-                <b-button @click="nextPage">Próximo</b-button>
+              <b-button-group size="sm" v-if="this.totalPage > 1" class="mt-4">
+                <b-button variant="primary" @click="previousPage"
+                  ><b-icon-arrow-left-circle-fill
+                    class="mb-1"
+                  ></b-icon-arrow-left-circle-fill>
+                  Anterior</b-button
+                >
+                <b-button variant="primary" @click="nextPage"
+                  >Próximo
+                  <b-icon-arrow-right-circle-fill
+                    class="mb-1"
+                  ></b-icon-arrow-right-circle-fill
+                ></b-button>
               </b-button-group>
             </b-tab>
           </b-tabs>
@@ -227,26 +264,33 @@
 import { mapState, mapActions } from "vuex";
 import PacienteService from "../../services/paciente";
 import ValidatorPaciente from "../../validators/paciente";
-
+import cep from "cep-promise";
+// import paciente from '../../services/paciente';
 export default {
   components: {},
+
   computed: {
     ...mapState({
       pacientes: (state) => state.paciente,
     }),
 
-    nameState() {
-      return this.paciente.nomePaciente.length > 0 ? true : false;
-    },
+    // nameState() {
+    //   console.log(this.mask)
+    //     return this.paciente.cpf.length > 11 ? this.paciente.cpf = "##.###.###/####-###" : "###.###.###-##";
+
+    // },
   },
   data() {
     return {
+      mask: "###.###.###-##",
+      selectedPaciente: "###.###.###-##",
       campoPesquisa: "",
       pages: [],
       ListaPaciente: {},
       tabIndex: 1,
       page: 1,
       totalPage: 0,
+
       paciente: {
         uuid: -1,
         nomePaciente: "",
@@ -258,7 +302,9 @@ export default {
         endereco: "",
         cidade: "",
         estado: "",
+        cep: "",
       },
+      maskPesquisa: "",
       pacienteError: {
         nomePaciente: "",
         dataNascimento: "",
@@ -270,6 +316,11 @@ export default {
         cidade: "",
         estado: "",
       },
+
+      optionsPaciente: [
+        { value: "##.###.###/####-##", text: "CNPJ" },
+        { value: "###.###.###-##", text: "CPF" },
+      ],
       options: [
         { value: "nomePaciente", text: "Nome" },
         { value: "cpf", text: "Cpf" },
@@ -278,7 +329,19 @@ export default {
       campoPesquisaError: "",
     };
   },
+  created() {
+    this.list();
+  },
+
   methods: {
+
+    mudarMaskPesquisa(){
+      if(this.selected === "cpf"){
+        this.maskPesquisa = "###.###.###-##"
+        return
+      }
+      this.maskPesquisa = ""
+    },
     ...mapActions([
       "savePaciente",
       "deletePaciente",
@@ -294,6 +357,11 @@ export default {
         showConfirmButton: false,
         timer: 1500,
       });
+    },
+
+    mudarTipoPessoa() {
+      this.mask = this.selectedPaciente;
+      console.log(this.mask);
     },
 
     limpar() {
@@ -323,7 +391,8 @@ export default {
 
       this.campoPesquisaError = "";
     },
-    async list() {
+
+       async listParams() {
       try {
         if (!this.selected) {
           this.campoPesquisaError = "Selecione uma Opção para pesquisar.";
@@ -335,9 +404,10 @@ export default {
           return;
         }
 
-        const response = await PacienteService.list(
+        const response = await PacienteService.listParams(
           `${this.selected}=${this.campoPesquisa}&like=true&page=${this.page}`
         );
+        console.log(response)
         this.ListaPaciente = response.data.result;
         const totalRows = response.data.total[0].count;
         this.totalPage = Math.ceil(totalRows / 10);
@@ -346,22 +416,58 @@ export default {
         // console.log(ex);
       }
     },
+
+
+    async list() {
+      try {
+        // if (!this.selected) {
+        //   this.campoPesquisaError = "Selecione uma Opção para pesquisar.";
+        //   return;
+        // }
+
+        // if (!this.campoPesquisa) {
+        //   this.campoPesquisaError = "Campo de Pesquisa em branco.";
+        //   return;
+        // }
+
+        const response = await PacienteService.list();
+        this.ListaPaciente = response.data.result;
+        const totalRows = response.data.total[0].count;
+        this.totalPage = Math.ceil(totalRows / 5);
+        console.log(this.totalPage);
+        this.campoPesquisaError = "";
+      } catch (ex) {
+        // console.log(ex);
+      }
+    },
+
     async previousPage() {
       try {
-        this.page -= 1
-        this.list();
+        if (this.page > 1) {
+        this.page -= 1;
+        const pacientes = await PacienteService.previousPage(this.page);
+        this.ListaPaciente = pacientes.data.result;
+        }
       } catch (ex) {
         // console.log(ex);
       }
     },
+
     async nextPage() {
       try {
-        this.page += 1
-        this.list();
+        if (this.totalPage > this.page) {
+          this.page += 1;
+          console.log(this.page);
+          const pacientes = await PacienteService.nextPage(this.page);
+          this.ListaPaciente = pacientes.data.result;
+        }
+
+        //  this.ListaPaciente = response.data.result;
       } catch (ex) {
         // console.log(ex);
       }
     },
+
     async salvar() {
       const validation = ValidatorPaciente(this.paciente);
 
@@ -380,7 +486,7 @@ export default {
           this.showAlert("success", "Paciente Salvo com Sucesso");
           this.paciente.uuid = result.data.uuid;
           this.list();
-          this.limpar()
+          this.limpar();
         } catch (ex) {
           this.showAlert("error", "Erro ao Salvar Paciente");
         }
@@ -395,6 +501,7 @@ export default {
         this.showAlert("error", "Erro ao Editar Paciente");
       }
     },
+
     deletePaciente(idPaciente) {
       PacienteService.delete(idPaciente)
         .then(() => {
@@ -403,14 +510,14 @@ export default {
           this.limpar();
         })
         .catch((error) => {
-          if(error.response.status === 409){
+          if (error.response.status === 409) {
             this.showAlert("info", error.response.data.message);
-            return
+            return;
           }
           this.showAlert("error", "Erro eo Deletar registro de Paciente");
-
         });
     },
+
     read(uuid) {
       PacienteService.read(uuid)
         .then((response) => {
@@ -419,6 +526,23 @@ export default {
         })
         .catch(() => {
           this.showAlert("error", "Erro consultar registro de Paciente");
+        });
+    },
+
+    teste22() {
+      console.log("testeeeee");
+    },
+
+    readCep() {
+      cep(this.paciente.cep)
+        .then((result) => {
+          console.log(result);
+          this.paciente.cidade = result.city;
+          this.paciente.estado = result.state;
+          this.paciente.endereco = result.street;
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
@@ -461,7 +585,7 @@ table {
   margin-bottom: 4px;
   width: 35%;
   background: linear-gradient(0deg, #015ea0 0%, #0082c8 100%);
- 
+
   padding: 4;
 }
 

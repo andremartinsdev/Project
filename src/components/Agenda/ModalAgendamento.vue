@@ -136,7 +136,7 @@
                     <b-form-input
                       id="input-1"
                       v-mask="'##:##'"
-                      type="email"
+                      type="text"
                       size="sm"
                       v-model="agendamento.horario"
                       placeholder="Horarío (00:00)"
@@ -157,9 +157,8 @@
                       id="input-1"
                       size="sm"
                       v-model.lazy="agendamento.valorConsulta"
-                      type="email"
+                      type="text"
                       v-money="money"
-                      placeholder="Enter email"
                       required
                        v-b-popover.hover.bottom="
                       'Campo Obrigatorio, Informe o Valor a ser pago pela consulta'
@@ -196,9 +195,21 @@
                 </div>
 
                 <div style="">
+                  <label
+                    class="mr-2"
+                    v-b-popover.hover.bottom="
+                      'Campo Obrigatorio, caso não tenha nenhuma Forma de Pagamento cadastre uma fictícia'
+                    "
+                    >Forma de Pagamento
+                    <b-icon-plus-circle
+                      class="iconsAgenda ml-2"
+                      variant="primary"
+                      @click="openFormaPagamento"
+                    ></b-icon-plus-circle>
+                  </label>
+
                   <b-form-group
                     id="input-group-1"
-                    label="Forma de Pagamento :"
                     label-for="input-1"
                   >
                     <b-form-select

@@ -72,7 +72,7 @@
                     Assinatura: __________________________________________<br>
                 </font>
                 <font >CID:
-                    <input type="text" class="texto" name="nome" size="20" value="Z00.1 // Z76.3">
+                    <input type="text" class="texto" name="nome" size="20" value="">
                 </font>
             </td>
             <td valign="top">

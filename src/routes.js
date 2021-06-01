@@ -7,11 +7,11 @@ import ConfigGeral from './components/Configuracoes/ConfiguracoesGeral.vue'
 import ImpressaoAtestado from './components/Consulta/Atestado.vue'
 import Consulta from './components/Consulta/Consulta.vue'
 import ImpressaoLaudo from './components/Consulta/Laudo.vue'
-import Financeiro from './components/Financeiro/Financeiro.vue'
 import Home from './components/Home/Home.vue'
 import Impressao from './components/Impressao/ImpressaoFicha.vue'
 import Login from './components/Login/Login.vue'
 import Relatorio from './components/Relatorios/Relatorio.vue'
+import Financeiro from './components/Financeiro/Financeiro.vue'
 
 
 
@@ -60,13 +60,6 @@ const routes = [
         }
     },
     {
-        path: '/Financeiro',
-        component: Financeiro,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
         path: '/Impressao/:uuid',
         component: Impressao,
         meta: {
@@ -99,6 +92,13 @@ const routes = [
     {
         path: '/Impressao/laudo/:uuid',
         component: ImpressaoLaudo,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/Financeiro',
+        component: Financeiro,
         meta: {
             requiresAuth: true
         }

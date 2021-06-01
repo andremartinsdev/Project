@@ -21,8 +21,12 @@ export default {
         return http.get(`paciente/pagination/page?page=${page}`)
     },
 
-    list: (query) => {
-        return http.get(`paciente/pagination/page?${query}`)
+    listParams: (query) => {
+        return http.get(`paciente/paginationParams/page?${query}`)
+    },
+
+    list: () => {
+        return http.get(`paciente/pagination/page`)
     },
 
     read: (uuid) => {

@@ -333,30 +333,9 @@
             </b-tab>
 
             <b-tab title="Consulta">
-              <b-card class="agendadosHoje">
-                <div class="dadosPaciente">
-                  <div class="mb-3">
-                    <b-avatar
-                      class="avt"
-                      size="4rem"
-                      variant="primary"
-                      :text="abreviaNome"
-                    ></b-avatar>
-                  </div>
-                  <div class="mt-3">
-                    <p class="noemP h4">
-                      <i class="text-primary">Nome Paciente</i> :
-                      {{ nomePaciente }}
-                    </p>
-                  </div>
-                  <div class="mt-3">
-                    <p class="noemP h4">
-                      <i class="text-primary"> Data de Nascimento </i>:
-                      {{ dataPaciente }}
-                    </p>
-                  </div>
-                </div>
-              </b-card>
+             
+                <h3 class="text-center mt-3">Consulta Optometria</h3>
+             
             </b-tab>
             <!-- <b-tab title="Pesquisar">
               <div class="jumb">
@@ -519,6 +498,23 @@
           </b-tabs>
         </b-card>
       </div>
+ <b-card-group v-if="tabIndexConsulta === 3" deck style="display: flex; justify-content: center; flex-wrap: wrap;" class="mb-4">
+     <b-card bg-variant="light"  title="Nome Paciente" class="text-center col-sm-3">
+        <b-avatar class="mr-4"></b-avatar>
+        <span class="mr-auto">{{nomePaciente}}</span>
+   
+      </b-card>
+
+      <b-card bg-variant="light" title="Data Nascimento" class="text-center col-sm-3">
+        <b-icon-calendar2-date class="h3"></b-icon-calendar2-date> 
+        <b-card-text>{{dataPaciente}}</b-card-text>
+      </b-card>
+      
+        <b-card bg-variant="light"  title="Telefone de Contato" class="text-center col-sm-3">
+          <img :src="imgWhats" @click="enviarmsg" v-b-popover.hover="'Clique para ser redirecinado ao Whatsapp do Paciente'" class="mb-1 whatsPaciente" alt="" srcset="">
+        <b-card-text>{{telefonePaciente}}</b-card-text>
+      </b-card>
+  </b-card-group>
 
       <div v-if="tabIndexConsulta === 3">
         <b-card no-body>
@@ -1332,7 +1328,7 @@ import PrescricaoLente from "./PrescricaoLente";
 import Editor from "../editor_text/editor";
 import { mapActions, mapState } from "vuex";
 import FichaClinicaService from "../../services/fichaClinica";
-//import ServicePrescricaoUltEx from "../../services/prescricaoUltEx";
+import serviceClinica from "../../services/clinica";
 import PrescricaoOculosService from "../../services/prescricaoOculos";
 import PacienteService from "../../services/paciente";
 import PrescricaoLenteService from "../../services/prescicaoLente";
@@ -1341,6 +1337,7 @@ import AgendaService from "../../services/agenda";
 import ServicoConsulta from "../../services/consulta";
 import Laudo from "../Consulta/Laudo/LaudoPage";
 import LaudoService from "../../services/laudo";
+import imgWhats from '../../assets/whatsapp.png'
 
 //import { DateTime } from "luxon";
 import moment from "moment";
@@ -1358,6 +1355,7 @@ export default {
 
   data() {
     return {
+      imgWhats:imgWhats,
       prescricoes: [],
       pacienteSelectedDeclaracao: null,
       pacienteSelectedFicha: null,
@@ -1373,6 +1371,7 @@ export default {
       uuidFicha: "",
       nomePaciente: "",
       dataPaciente: "",
+      telefonePaciente : "",
       abreviaNome: "",
       selectVisualizar: "",
       color: "primary",
@@ -1462,6 +1461,16 @@ export default {
 
     mudarEditar() {
       this.editar = false;
+    },
+
+   async readClinica(){
+     try {
+       const clinica = await serviceClinica.read();
+      this.$store.commit("dadosClinica", clinica.data.result[0]);
+     } catch (error) {
+       this.showAlert("error","Ocorreu um erro ao listar dados clinica")
+     }
+    
     },
 
     imprimirAtestado() {
@@ -1628,6 +1637,7 @@ export default {
         PacienteService.read(pacienteUuid).then((result) => {
           this.uuidPaciente = pacienteUuid;
           this.nomePaciente = result.data.paciente.nomePaciente;
+          this.telefonePaciente = result.data.paciente.telefone;
           this.dataPaciente = moment(
             result.data.paciente.dataNascimento
           ).format("DD/MM/YYYY");
@@ -1903,6 +1913,15 @@ export default {
       LaudoService.read();
     },
 
+    enviarmsg(){
+       window.open(
+        `https://api.whatsapp.com/send?phone=55${
+          this.telefonePaciente
+        }&text=""`,
+        "_blank"
+      );
+    },
+
     async saveLaudo() {
       try {
         this.dadosConsulta.idPaciente = this.idPaciente;
@@ -1922,6 +1941,7 @@ export default {
   created() {
     this.loadAgendamentos();
     this.list();
+    this.readClinica()
   },
 };
 </script>
@@ -1937,6 +1957,12 @@ export default {
 .noemP {
   font-family: "Mitr", sans-serif;
 }
+
+.whatsPaciente{
+cursor: pointer;
+}
+
+
 
 .avatar {
   display: flex;

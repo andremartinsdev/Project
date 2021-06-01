@@ -12,5 +12,13 @@ export default {
 
     update(data, uuid){
         return http.put(`/Clinica/${uuid}`, data)
+    }, 
+    
+    saveLogo : (logo, uuid) =>{
+        return http.post(`/Clinica/logo/${uuid}`, {logo})
+    },
+
+    readLogo: () =>{
+        return http.get(`/Clinica/image/logo`)
     }
 }
