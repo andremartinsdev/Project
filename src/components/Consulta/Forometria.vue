@@ -53,6 +53,10 @@
 import jsPDF from "jspdf";
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
+import { mapState } from 'vuex'
+import rodape from '../../services/rodape'
+
+
 export default {
   props:{
     Limpar:{
@@ -109,6 +113,13 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState({
+      dadosClinica: (state) => state.dadosClinica,
+      uuidClinica: (state) => state.uuidClinica
+    }),
+  },
+
   methods:{
     
      createPDF(download) {
@@ -141,11 +152,8 @@ export default {
 
       doc.text(`Técnica : ${this.forometria.TECNICA}`, 92, 150, null, null);
 
-      doc.setFont("times", "italic");
-      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+     rodape(doc, this.dadosClinica, this.uuidClinica)
 
-      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
-      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
       if(download){
         doc.save(pdfName + ".pdf");
         return;

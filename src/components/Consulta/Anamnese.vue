@@ -291,6 +291,8 @@ import { mapState } from "vuex";
 import jsPDF from "jspdf";
 import logoOlho from '../../assets/LogoOlho.png'
 import moldura from "../../assets/moldura.png";
+import rodape from '../../services/rodape';
+
 
 export default {
   props: {
@@ -312,6 +314,7 @@ export default {
       pacienteSelected: (state) => state.pacienteSelected,
       anamneseState: (state) => state.anamnese,
       dadosClinica: (state) => state.dadosClinica,
+      uuidClinica: (state) => state.uuidClinica,
       idConsulta: (state) => state.idConsulta,
     }),
   },
@@ -400,6 +403,8 @@ export default {
       this.$store.commit("ANAMNESE", {});
     },
   },
+
+  
   methods: {
     showAlert(icon, title) {
       // Use sweetalert2
@@ -545,11 +550,10 @@ export default {
 
 
       }
-       doc.setFont("times", "italic");
-      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
-
-      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
+    rodape(doc, this.dadosClinica, this.uuidClinica)
+      
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      doc.addImage(this.moldura, "JPEG", 0, 248, 230, 70);
       if(download){
         doc.save(pdfName + ".pdf");
         return;

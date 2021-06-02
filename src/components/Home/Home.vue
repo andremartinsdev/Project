@@ -379,6 +379,7 @@ export default {
     async readDadosClinica() {
       this.dadosClinica = [];
       const clinica = await ClinicaService.read();
+      console.log(clinica)
       if (clinica.data.result.length > 0) {
         this.dadosClinica.email = clinica.data.result[0].email;
         this.dadosClinica.endereco = clinica.data.result[0].endereco;
@@ -562,6 +563,14 @@ this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleSt
         });
       });
     },
+  },
+
+  mounted(){
+    this.readDadosClinica()
+  },
+
+  created(){
+    this.readDadosClinica()
   },
 
   beforeMount() {

@@ -280,6 +280,7 @@ import { mapState } from "vuex";
 import { DateTime } from "luxon";
 import moment from "moment";
 import prescricaoOculos from "../../services/prescricaoOculos";
+import rodape from '../../services/rodape';
 
 export default {
   props: {
@@ -343,6 +344,8 @@ export default {
     ...mapState({
       idPaciente: (state) => state.pacienteSelected,
       uuidAgendamento: (state) => state.uuidAgendamento,
+      uuidClinica: (state) => state.uuidClinica,
+      dadosClinica: (state) => state.dadosClinica
     }),
   },
   methods: {
@@ -522,11 +525,7 @@ export default {
       doc.text(`Observação`, 70, linha + 70, null, null);
       doc.text(this.prescricaoOculos.observacao, 70, linha + 80, null, null);
 
-      doc.setFont("times", "italic");
-      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
-
-      doc.addImage("http://localhost:3002/Clinica/image/logo", "JPEG", 0, 230, 230, 70);
-      // doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if (download) {
         doc.save(pdfName + ".pdf");

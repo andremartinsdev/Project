@@ -811,10 +811,10 @@ import moment from "moment";
 import DespesaService from "../../services/despesas";
 import ReceitaService from "../../services/receita";
 import FormaDePagamentoService from "../../services/formaDePagamento";
- import Chart from "../Chart/Chart";
+//  import Chart from "../Chart/Chart";
 export default {
   components: {
-    Chart,
+    Chart: () => import("../Chart/Chart"),
     ModalDespesa,
     ModalReceber,
   },

@@ -73,6 +73,8 @@
 import jsPDF from "jspdf";
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
+import { mapState } from 'vuex'
+import baseUrl from '../../../vue.config'
 export default {
   props: {
     Limpar: {
@@ -112,6 +114,11 @@ export default {
       },
     };
   },
+      computed:{
+    ...mapState({
+      dadosClinica: (state) => state.dadosClinica
+    })
+  },
 
   methods: {
     createPDF(download) {
@@ -137,9 +144,15 @@ export default {
       doc.text("AV : ", 145, linha+8, null, null).setTextColor(0,0,255);
       doc.text(this.afinamento.AVE, 155, linha+8, null, null).setTextColor(0);
 
-      doc.setFont("times", "italic");
-      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+       doc.setFont("times", "italic");
+      doc.text(`${this.dadosClinica.nomeClinica},`, 77, 270);
+      doc.text(`${this.dadosClinica.endereco}, ${this.dadosClinica.numero},  ${this.dadosClinica.bairro},  ${this.dadosClinica.cidade},`, 47, 277);
+      doc.text(`Telefone :  ${this.dadosClinica.telefone},`, 47, 285);
+      doc.text(`CEP : ${this.dadosClinica.cep}`, 97, 285);
 
+      doc.addImage(`${baseUrl.baseUrl}Clinica/image/logo/${this.uuidClinica}`, "JPEG", 3, 270, 40, 20);
+      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      doc.addImage(this.moldura, "JPEG", 0, 248, 230, 70);
       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
       if(download === true){

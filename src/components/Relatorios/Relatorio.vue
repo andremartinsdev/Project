@@ -533,7 +533,7 @@
 
             </div> -->
               <b-card class="mt-3 cardTable">
-               <Chart/>
+               <!-- <Chart/> -->
               </b-card>
 
             
@@ -617,7 +617,7 @@ import AgendaService from "../../services/agenda";
 import ReceitaService from "../../services/receita";
 import moment from "moment";
 import ModalFormaPagamento from '../../components/Agenda/ModalFormaPagamento'
-import Chart from '../../components/Chart/Chart'
+// import Chart from '../../components/Chart/Chart'
 import impressao from '../Relatorios/impressaoRelatorio/impressao'
 export default {
   data() {
@@ -675,7 +675,7 @@ export default {
   },
   components: {
     //SidebarNavbar,
-    Chart,
+    // Chart,
     ModalFormaPagamento
   },
   created() {

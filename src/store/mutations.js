@@ -110,6 +110,7 @@ export default {
     },
 
     [MutationsTypes.dadosClinica](state, dadosClinica) {
+        state.dadosClinica = []
         state.dadosClinica.push(dadosClinica)
     },
 

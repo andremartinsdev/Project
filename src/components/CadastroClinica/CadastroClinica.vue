@@ -176,6 +176,7 @@
 
 <script>
 import ClinicaService from "../../services/clinica";
+import baseUrl from '../../../vue.config'
 export default {
   data() {
     return {
@@ -199,7 +200,7 @@ export default {
         email: "",
         cidade: "",
         estado: "",
-        logo: "http://localhost:3002/Clinica/image/logo",
+        logo: `${baseUrl.baseUrl}/Clinica/image/logo`,
       },
 
       editar: true,

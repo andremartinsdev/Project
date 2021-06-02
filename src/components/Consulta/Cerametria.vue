@@ -48,8 +48,10 @@
 
 <script>
 import jsPDF from "jspdf";
+import rodape from '../../services/rodape'
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
+import { mapState } from 'vuex'
 export default {
   props: {
     Limpar: {
@@ -60,12 +62,15 @@ export default {
     },
   },
 
+   computed: {
+    ...mapState({
+      dadosClinica: (state) => state.dadosClinica,
+      uuidClinica: (state) => state.uuidClinica
+    }),
+  },
+
   watch: {
     cerametriaProps() {
-      /*if(Object.keys(this.cerametriaProps).length != 0){
-      this.cerametria = this.cerametriaProps
-      this.enviarCerametria();
-      }*/
       if (Object.keys(this.cerametriaProps).length === 0) {
         this.cerametria = [
           {
@@ -123,11 +128,8 @@ export default {
       doc.text("Miras", 150, linha, null, null);
       doc.text(this.cerametria[0].miras, 150, linha + 8, null, null);
 
-      doc.setFont("times", "italic");
-      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
+      rodape(doc, this.dadosClinica, this.uuidClinica)
 
-      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
-      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
       if (download) {
         doc.save(pdfName + ".pdf");
         return;

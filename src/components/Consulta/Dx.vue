@@ -157,7 +157,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+
+  computed: {
+    ...mapState({
+      dadosClinica: (state) => state.dadosClinica,
+      uuidClinica: (state) => state.uuidClinica
+    }),
+  },
   props:{
     Limpar:{
       type: Boolean
