@@ -1,328 +1,529 @@
 <template>
-  <div class="conteinerImpressao" >
-     <b-modal ref="my-modal" hide-footer title="Using Component Methods">
-      <div class="d-block text-center">
-        <h3>Exibir no Relatório</h3>
+  <b-card>
+    <b-button @click="teste">gerar</b-button>
 
-         <b-form-group>
-              <b-form-checkbox-group
-                id="checkbox2"
-                :options="optionVisualizar"
-                class="mb-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                stacked
-                v-model="visualizarRelatorio"
-              ></b-form-checkbox-group>
-            </b-form-group>
-      </div>
-     
-    </b-modal>
-<div >
-<h3 class="text-center p-3">Clínica AndréOpto <b-avatar class="ml-3" :src="logoBms"></b-avatar></h3>
-    <h3 class="text-center p-3">Ficha Clinica</h3>
-    <div class="anamneseImpressao">
-      <div>
-        <h1>{{acuidade}}</h1>
-    <b-form-checkbox
-      v-for="option in optionVisualizar" :key="option.value"
-      :v-model=option.value
-      name="checkbox-1"
-      value="true"
-    >
-     {{option.text}}
-    </b-form-checkbox>
+    <table class="table table-sm table-borderless" id="sintomas">
+      <thead>
+        <tr>
+          <th scope="col">Sintomas</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="sintoma in sintomas" :key="sintoma.value">
+          <td>{{ sintoma.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-  </div>
-   <div >
+    <table class="table table-sm table-borderless" id="doenca">
+      <thead>
+        <tr>
+          <th scope="col">Doença Ocular</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="doenca in doencaOcular" :key="doenca.value">
+          <td>{{ doenca.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-        <h6 class="mt-2 ml-4">Anamnese</h6>
-        <Anamnese :propsAnamnese2="this.anamnese" :impressao="true" />
-      </div>
-    </div>
-      <b-button @click="print">Ola</b-button>
-    <div class="prescriUltExImpressao mt-4" v-if="objetoEmpty.acuidade" id="printMe">
-      <h6 class="mt-2 ml-4 text-center" >Prescrição Ultimo Exame</h6>
-      <div class="containerPrescriUlt" v-if="flag" v-show="visualizarRelatorio[0].prescriUltEx">
-        <div class="w-100">
-          <b-card header="Olho Direito" class="col-12" v-if="visualizarRelatorio[0].prescriUltEx">
-            <label for="">ESFÉRICO: {{this.fichaClinica.prescricaoUltimoExame.OD_ESFERICO}}</label><br>
-            <label for="">CILÍNDRICO: {{this.fichaClinica.prescricaoUltimoExame.OD_CILINDRICO}}</label><br>
-            <label for="">EIXO: {{this.fichaClinica.prescricaoUltimoExame.OD_EIXO}}</label><br>
-            <label for="">ADIÇÃO: {{this.fichaClinica.prescricaoUltimoExame.OD_ADICAO}}</label><br>
-            <label for="">DNP: {{this.fichaClinica.prescricaoUltimoExame.OD_DNP}}</label><br>
-            <label for="">ALT : {{this.fichaClinica.prescricaoUltimoExame.OD_ALT}}</label>
-          </b-card>
-        </div>
-        <div class="w-100">
-          <b-card header="Olho Esquerdo" class="col-12" v-if="visualizarRelatorio[0].prescriUltEx">
-            <label for="">ESFÉRICO: {{this.fichaClinica.prescricaoUltimoExame.OE_ESFERICO}}</label><br>
-            <label for="">CILÍNDRICO: {{this.fichaClinica.prescricaoUltimoExame.OE_CILINDRICO}}</label><br>
-            <label for="">EIXO: {{this.fichaClinica.prescricaoUltimoExame.OE_EIXO}}</label><br>
-            <label for="">ADIÇÃO: {{this.fichaClinica.prescricaoUltimoExame.OE_ADICAO}}</label><br>
-            <label for="">DNP: {{this.fichaClinica.prescricaoUltimoExame.OE_DNP}}</label><br>
-            <label for="">ALT : {{this.fichaClinica.prescricaoUltimoExame.OE_ALT}}</label>
-          </b-card>
-        </div>
-      </div>
-    </div>
+    <table class="table table-sm table-borderless" id="doencaSis">
+      <thead>
+        <tr>
+          <th scope="col">Doença Sistêmica</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="doenca in doencaSistematica" :key="doenca.value">
+          <td>{{ doenca.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
+    <table class="table table-sm table-borderless" id="medicamento">
+      <thead>
+        <tr>
+          <th scope="col">Medicamento</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="medica in medicamentos" :key="medica.value">
+          <td>{{ medica.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="prescriUltExImpressao mt-4" v-if="objetoEmpty.acuidade === false">
-      <h6 class="mt-2 ml-4 text-center">Acuidade</h6>
-      <div class="containerPrescriUlt" v-if="flag" >
-        <div class="w-100">
-          <b-card header="S/C" class="col-12">
-            <label for="">Olho Direito (VL) : {{this.fichaClinica.acuidade.sc.olhoDireito.vl }}</label><br>
-            <label for="">Olho Direito (VP) : {{this.fichaClinica.acuidade.sc.olhoDireito.vp}}</label><br>
-            <label for="">Olho Direito: (PH) : {{this.fichaClinica.acuidade.sc.olhoDireito.ph}}</label><br>
-            <label for="">Olho Esquerdo (VL) : {{this.fichaClinica.acuidade.sc.olhoEsquerto.vl}}</label><br>
-            <label for="">Olho Esquerdo (VP) : {{this.fichaClinica.acuidade.sc.olhoEsquerto.vp}}</label><br>
-            <label for="">Olho Esquerdo (PH) : {{this.fichaClinica.acuidade.sc.olhoEsquerto.ph}}</label><br>
-            <label for="">AO (VL) : {{this.fichaClinica.acuidade.sc.ao.vl}}</label><br>
-            <label for="">AO (VP) : {{this.fichaClinica.acuidade.sc.ao.vp}}</label><br>
-            <label for="">AO (PH) : {{this.fichaClinica.acuidade.sc.ao.ph}}</label><br>
-          </b-card>
-        </div>
-        <div class="w-100">
-          <b-card header="C/C" class="col-12">
-           <label for="">Olho Direito (VL) : {{this.fichaClinica.acuidade.cc.olhoDireito.vl}}</label><br>
-            <label for="">Olho Direito (VP) : {{this.fichaClinica.acuidade.cc.olhoDireito.vp}}</label><br>
-            <label for="">Olho Direito: (PH) : {{this.fichaClinica.acuidade.cc.olhoDireito.ph}}</label><br>
-            <label for="">Olho Esquerdo (VL) : {{this.fichaClinica.acuidade.cc.olhoEsquerto.vl}}</label><br>
-            <label for="">Olho Esquerdo (VP) : {{this.fichaClinica.acuidade.cc.olhoEsquerto.vp}}</label><br>
-            <label for="">Olho Esquerdo (PH) : {{this.fichaClinica.acuidade.cc.olhoEsquerto.ph}}</label><br>
-            <label for="">AO (VL) : {{this.fichaClinica.acuidade.cc.ao.vl}}</label><br>
-            <label for="">AO (VP) : {{this.fichaClinica.acuidade.cc.ao.vp}}</label><br>
-            <label for="">AO (PH) : {{this.fichaClinica.acuidade.cc.ao.ph}}</label><br>
-          </b-card>
-        </div>
-      </div>
-    </div>
+    <table class="table table-sm table-borderless" id="info">
+      <thead>
+        <tr>
+          <th scope="col">Outras Infromações</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="info in options" :key="info.value">
+          <td>{{ info.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
+    <table class="table table-sm table-borderless" id="anteceFami">
+      <thead>
+        <tr>
+          <th scope="col">Antecedente Familiar</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="ateF in antecedentesFamiliar" :key="ateF.value">
+          <td>{{ ateF.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
+    <table class="table table-sm table-borderless" id="prescriUlt">
+      <thead>
+        <tr>
+          <th scope="col">prescrição Último Exame</th>
+          <th scope="col">OD</th>
+          <th scope="col">OE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="precri in prescricaoUltExame" :key="precri.text">
+          <td>{{ precri.text }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="prescriUltExImpressao mt-4" v-if="objetoEmpty.cerametria === false">
-      <h6 class="mt-2 ml-4 text-center">Cerametria</h6>
-      <div class="containerPrescriUlt" v-if="flag" >
-        <div class="w-100">
-          <b-card header="Cerametria || Técnica: AutoRefratômetro" class="col-12">
-           <label for="">Olho Direito : {{this.fichaClinica.cerametria[0].olhoDireito}}</label><br>
-            <label for="">Olho Esquerdo : {{this.fichaClinica.cerametria[0].olhoEsquerdo}}</label><br>
-            <label for="">Miras : {{this.fichaClinica.cerametria[0].miras}}</label><br>
-          </b-card>
-        </div>
-      </div>
-    </div>
+    <table class="table table-sm" id="acuidadeSC">
+      <thead>
+        <tr>
+          <th colspan="4" class="text-center">SC</th>
+        </tr>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Visão Lon.</th>
+          <th scope="col">Visão Per.</th>
+          <th scope="col">PH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr></tr>
+        <tr>
+          <td>OD</td>
+        </tr>
+        <tr>
+          <td>OE</td>
+        </tr>
+        <tr>
+          <td>AO</td>
+        </tr>
+      </tbody>
+    </table>
 
- <div class="prescriUltExImpressao mt-4" v-if="objetoEmpty.cerametria === false">
-      <h6 class="mt-2 ml-4 text-center">Cerametria</h6>
-      <div class="containerPrescriUlt" v-if="flag" >
-        <div class="w-100">
-          <b-card header="Cerametria || Técnica: AutoRefratômetro" class="col-12">
-           <label for="">Olho Direito : {{this.fichaClinica.cerametria[0].olhoDireito}}</label><br>
-            <label for="">Olho Esquerdo : {{this.fichaClinica.cerametria[0].olhoEsquerdo}}</label><br>
-            <label for="">Miras : {{this.fichaClinica.cerametria[0].miras}}</label><br>
-          </b-card>
-        </div>
-      </div>
-    </div>
+    <table class="table table-sm" id="acuidadeCC">
+      <thead>
+        <tr>
+          <th colspan="4" class="text-center">CC</th>
+        </tr>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Visão Lon.</th>
+          <th scope="col">Visão Per.</th>
+          <th scope="col">PH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr></tr>
+        <tr>
+          <td>OD</td>
+        </tr>
+        <tr>
+          <td>OE</td>
+        </tr>
+        <tr>
+          <td>AO</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div v-if="objetoEmpty.biomicro === false">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3 p-4">Biomicroscopia</h6>
-      <Biomicro :biomicroProps="this.fichaClinica.biomicro"/>
+    <table class="table table-sm" id="ceratometria">
+      <thead>
+        <tr>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+          <th scope="col">Miras</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
 
-      </div>
-    </div>
+    <table class="table table-sm" id="avMotora">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Kappa</td>
+        </tr>
+        <tr>
+          <td>Hirschberg</td>
+        </tr>
+        <tr>
+          <td>Ducções</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div v-if="objetoEmpty.oftalmo === false">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Oftalmoscopia</h6>
+    <table class="table table-sm" id="reflexPulpilar">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Fotomotor</td>
+        </tr>
+        <tr>
+          <td>Consensual</td>
+        </tr>
+        <tr>
+          <td>Acomodativo</td>
+        </tr>
+      </tbody>
+    </table>
 
-       <Oftalmoscopia :oftalmoProps="this.fichaClinica.oftalmoscopia" />
-      </div>
-    </div>
+    <table class="table table-sm" id="biomicro">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cílios</td>
+        </tr>
+        <tr>
+          <td>Sobrancelhas</td>
+        </tr>
+        <tr>
+          <td>Pálpebras</td>
+        </tr>
+        <tr>
+          <td>Conjuntiva</td>
+        </tr>
+        <tr>
+          <td>Esclerótica</td>
+        </tr>
+        <tr>
+          <td>Córnea</td>
+        </tr>
+        <tr>
+          <td>Íris</td>
+        </tr>
+        <tr>
+          <td>Pupila</td>
+        </tr>
+        <tr>
+          <td>Cristalino</td>
+        </tr>
+        <tr>
+          <td>Câmara Anterior</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div v-if="objetoEmpty.tonometria === false" class="mb-4">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Tonometria</h6>
-        <Tonometria  :tonometriaProps="this.fichaClinica.tonometria"/>
-      </div>
-    </div>
+    <table class="table table-sm" id="oftalmo">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Papila</td>
+        </tr>
+        <tr>
+          <td>Escavação</td>
+        </tr>
+        <tr>
+          <td>Mácula</td>
+        </tr>
+        <tr>
+          <td>Fixação</td>
+        </tr>
+        <tr>
+          <td>Cor</td>
+        </tr>
+        <tr>
+          <td>Relação A/V</td>
+        </tr>
+      </tbody>
+    </table>
 
-  
+    <table class="table table-sm" id="ceratometria">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+          <th scope="col">Miras</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr></tr>
+        <tr></tr>
+      </tbody>
+    </table>
 
-    <div>
-        <hr>
-      <div v-if="objetoEmpty.reflexoPulpilar === false">
-      <h6 class="text-center mt-3 mb-3">Reflexos Pulpilares</h6>
+    <table class="table table-sm" id="retinoscopia">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>AV</td>
+        </tr>
+      </tbody>
+    </table>
 
-        <ReflexosPulpilares  :reflexosProps="this.fichaClinica.reflexoPulpilar"/>
-      </div>
-    </div>
+    <table class="table table-sm" id="forometria">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col"></th>
+          <th scope="col">Longe</th>
+          <th scope="col">40 cm</th>
+          <th scope="col">20 cm</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SC</td>
+        </tr>
+        <tr>
+          <td>CC</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div v-if="objetoEmpty.ppc === false">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Ppc</h6>
-        <Ppc :ppcProps="this.fichaClinica.ppc" />
-      </div>
-    </div>
-
-    <div v-if="objetoEmpty.AvMotora === false">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Avaliação Motora</h6>
-
-        <AvMotora :avMotoraProps="this.fichaClinica.avMotora"/>
-      </div>
-    </div>
-
-    
-
-    <div v-if="objetoEmpty.ReservasFusionais === false">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Reservas Fusionais</h6>
-
-        <ReservasFusionais :reservasProps="this.fichaClinica.reservasFusionais"/>
-      </div>
-    </div>
-
-  
-
-    <div v-if="objetoEmpty.AmpliAcomodacao === false">
-        <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Amplitude de Acomodação</h6>
-
-        <AmpliAcomodacao :amplitudeProps="this.fichaClinica.amplitude" />
-      </div>
-    </div>
-
-    
-    <div v-if="objetoEmpty.flexAcomoda === false">
-      <hr>
-      <div>
-      <h6 class="text-center mt-3 mb-3">Flexibilidade e Facilidade de Acomodação</h6>
-
-        <FlexAcomodacao :flexProps="this.fichaClinica.flexiDeAcomodacao" />
-      </div>
-    </div>
-
-   
-    <div v-if="objetoEmpty.retinoscopia">
-       <hr>
-
-      <div>
-        <Retinoscopia :retinoscopiaProps="this.fichaClinica.retinoscopia" />
-      </div>
-    </div>
-
-    <footer id="sticky-footer" class="py-2 text-white-50 mb-4 p-3">
-      <b-button
-        pill
-        variant="light"
-        class="mr-2"
-        type="submit"
-        block
-        @click="imprimir"
-      >
-        <b-icon-printer-fill submit class="mr-3"></b-icon-printer-fill>Imprimir
-      </b-button>
-    </footer>
-  </div>
-</div>
-     
+    <table id="rx">
+      <thead>
+        <tr>
+          <th class="text-center"></th>
+          <th class="text-center">Esférico</th>
+          <th class="text-center">Cilíndrico</th>
+          <th class="text-center">Eixo</th>
+          <th class="text-center">AV</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OD</td>
+          <td>
+            <input
+              type="number"
+              step="0.25"
+              class="form-control num form-control form-control-sm"
+              id="__BVID__491"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              max="0"
+              step="0.25"
+              class="form-control num form-control form-control-sm"
+              id="__BVID__492"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              min="0"
+              max="360"
+              step="5"
+              class="form-control form-control form-control-sm"
+              id="__BVID__493"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              step="1"
+              class="form-control num form-control form-control-sm"
+              id="__BVID__494"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>OE</td>
+          <td>
+            <input
+              type="number"
+              step="0.25"
+              class="form-control num form-control form-control-sm"
+              id="__BVID__495"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              max="0"
+              step="0.25"
+              class="form-control num form-control form-control-sm"
+              id="__BVID__496"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              min="0"
+              max="360"
+              step="5"
+              class="form-control form-control form-control-sm"
+              id="__BVID__497"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              step="1"
+              class="form-control num form-control form-control-sm"
+              id="__BVID__498"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Adição</td>
+          <td colspan="2">
+            <input
+              type="text"
+              class="form-control form-control form-control-sm"
+              id="__BVID__499"
+            />
+          </td>
+          <td>AV. Perto</td>
+          <td>
+            <input
+              type="text"
+              class="form-control form-control form-control-sm"
+              id="__BVID__500"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </b-card>
 </template>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
+Obs
 <script>
-import { mapState } from "vuex";
-import FichaClinicaService from "../../services/fichaClinica";
-//import PrescricaoUltEx from "../Consulta/PrescricaoUltExame";
-import Anamnese from "../Consulta/Anamnese";
-import Biomicro from "../Consulta/Biomicro";
-import Oftalmoscopia from "../Consulta/Oftalmoscopia";
-import Tonometria from "../Consulta/Tonometria";
-import ReflexosPulpilares from "../Consulta/ReflexosPulpilares";
-import Ppc from "../Consulta/Ppc";
-import AvMotora from "../Consulta/AvMotora";
-import ReservasFusionais from "../Consulta/ReservasFusionais";
-import AmpliAcomodacao from "../Consulta/AmpliDeAcomodacao";
-import FlexAcomodacao from "../Consulta/FlexAcomodacao";
-import Retinoscopia from "../Consulta/Retinoscopia";
-import logoBms from '../../assets/LogoBms.png'
-
-
+import avMotora from "../../assets/av.png";
+import biomicro from "../../assets/biomicro.png";
+import oftalmo from "../../assets/oftalmo.png";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 export default {
-  components: {
-    Anamnese,
-    Biomicro,
-    Oftalmoscopia,
-    Tonometria,
-    ReflexosPulpilares,
-    Ppc,
-    AvMotora,
-    ReservasFusionais,
-    AmpliAcomodacao,
-    FlexAcomodacao,
-    Retinoscopia
-    
-    // PrescricaoUltEx,
-  },
-  props: {
-    anamnesePropsImpressao: {
-      type: Object,
-    },
-
-    teste: {
-      type: String,
-    },
-  },
-
-  computed: {
-    ...mapState({
-      afichaClinica: (state) => state.fichaClinica,
-    }),
-  },
-
-  mounted(){
-    this.$refs['my-modal'].show()
-  },
-
+  created() {},
   data() {
     return {
-      logoBms:logoBms,
-      flag:false,
-      anamnese: {},
-      fichaClinica: {},
-      optionVisualizar : [
-        {text: "Acuidade", value: "acuidade"},
-        {text: "Prescrição Ultimo Exame", value: "prescriUltEx"},
-        {text: "Cerametria", value: "cerametria"},
-        {text: "Biomicroscopia", value: "biomicro"},
-        {text: "Oftalmoscopia", value: "oftalmo"},
-        {text: "Reflexo Pulpilar", value: "reflexoPulpilar"},
-        {text: "PPC", value: "ppc"},
-        {text: "Avaliação Motora", value: "avMotora"},
-        {text: "Reservas Fusionais", value: "ReservasFusionais"},
-        {text: "Amplitude de Acomodação", value: "AmpliAcomodacao"},
-        {text: "Flexibilidade e Facilidade de Acomodação", value: "flexAcomoda"},
-        {text: "Retinoscopia", value: "retinoscopia"},
-        {text: "Tonometria", value: "tonometria"},
-
+      oftalmo: oftalmo,
+      avMotora: avMotora,
+      biomicro: biomicro,
+      antecedentesFamiliar: [
+        { text: "Diabetes", value: "DIABETES_AF" },
+        { text: "Estrabismo", value: "ESTRABISMO_AF" },
+        { text: "Glaucoma", value: "GLAUCOMA_AF" },
+        { text: "Pressão Alta", value: "PRESSAOALTA_AF" },
+        { text: "Catarata", value: "CATARATA_AF" },
       ],
-      objetoEmpty: {acuidade: false, prescriUltEx:false, cerametria:false, biomicro:false, tonometria:false, oftalmo:false,
-      reflexoPulpilar:false , ppc: false, AvMotora:false, ReservasFusionais:false, AmpliAcomodacao:false, flexAcomoda:false,
-      retinoscopia:false},
-      visualizarRelatorio : [],
-      acuidade: false,
-       output: null,
+      options: [
+        { text: "Usa Óculos ", value: "USAOCULOS" },
+        { text: "Dificuldade Longe ", value: "DIFICULDADELONGE" },
+        { text: "Dificuldade Perto", value: "DIFICULDADEPERTO" },
+        { text: "Cefaléia - Dor de cabeça", value: "CEFALEIA" },
+      ],
+      medicamentos: [
+        { text: "Losartana", value: "LOSARTANA" },
+        { text: "Captopril", value: "CAPTOPRIL" },
+        { text: "Atenolol", value: "ATENOLOL" },
+        { text: "Nifidipino", value: "NIFIDIPINO" },
+        { text: "Propanolol", value: "PROPANOLOL" },
+        { text: "Hidrocloratiazida", value: "HIDROCLORATIAZIDA" },
+        { text: "Metiformina", value: "METIFORMINA" },
+        { text: "Glibencamida", value: "GLIBENCAMIDA" },
+        { text: "AAS", value: "AAS" },
+        { text: "Sinvastantina", value: "SINVASTANTINA" },
+        { text: "Polaramine", value: "POLARAMINE" },
+        { text: "Omeprazol", value: "OMEPRAZOL" },
+      ],
+      doencaSistematica: [
+        { text: "Asma", value: "ASMA" },
+        { text: "Colesterol", value: "COLESTEROL" },
+        { text: "Diabetes", value: "DIABETES" },
+        { text: "Hipertensão", value: "HIPERTENSAO" },
+        { text: "Renite", value: "RENITE" },
+        { text: "Sinusite", value: "SINUSITE" },
+        { text: "Alergias", value: "ALERGIAS" },
+        { text: "Reumatismo", value: "REUMATISMO" },
+      ],
+      doencaOcular: [
+        { text: "Glaucoma", value: "GLAUCOMA" },
+        { text: "Catarata", value: "CATARATA" },
+        { text: "Pterígio", value: "PTEREGIO_OD" },
+        { text: "Ceratocone", value: "CERATOCONE" },
+        { text: "Estrabismo", value: "ESTRABISMO" },
+        { text: "Trauma Ocular", value: "TRAUMA_OCULAR" },
+        { text: "Corpo Estranho", value: "CORPO_ESTRANHO" },
+        { text: "Queimaduras", value: "QUEIMADURAS" },
+        { text: "Inflamações", value: "INFLAMACOES" },
+        { text: "Cegueira", value: "CEGUEIRA" },
+        { text: "Descolamento de Retina", value: "DESCOLAMENTO_RETINA" },
+        { text: "Toxoplasmose", value: "TOXOPLASMOSE" },
+        { text: "Extrabismo", value: "EXTRABISMO" },
+        { text: "Alérgico", value: "ALERGICO" },
+        { text: "Defeitos de Refração", value: "DEFEITOS_REFRACAO" },
+      ],
       sintomas: [
         { text: "Prurido", value: "PRURIDO" },
         { text: "Fotofobia", value: "FOTOFOBIA" },
@@ -337,156 +538,278 @@ export default {
         { text: "Força a Visão", value: "FORCAVISAO" },
         { text: "Cansaço Visual", value: "CANSACOVISUAL" },
         { text: "Sensibilidade a Luz", value: "SENSIBILIDADELUZ" },
+        { text: "Visão Dupla", value: "VISAO_DUPLA" },
+        { text: "Fotopsias - fosfeno", value: "FOTOPSIAS" },
+        { text: "Miodesopsia", value: "MIODESOPSIA" },
+        { text: "Enxaqueca", value: "EXAQUECA" },
+        { text: "Astenopia", value: "ASTENOPIA" },
+        { text: "Halos", value: "HALOS" },
+      ],
+      prescricaoUltExame: [
+        { text: "Esférico" },
+        { text: "Cilíndrico" },
+        { text: "Eixo" },
+        { text: "Adição" },
+        { text: "DNP" },
+        { text: "ALT" },
+        { text: "Lente" },
       ],
     };
   },
-
   methods: {
-    print () {
-      // Pass the element id here
-      
-        this.$htmlToPaper('printMe', null, () => {
-})
-    },
-
-  
-
-    imprimir() {
-      window.print();
-    },
-
-    read() {
-      FichaClinicaService.read(this.$route.params.uuid).then((result) => {
-        this.fichaClinica = result.data.ficha.json_fichaClinica;
-        this.anamnese = this.fichaClinica.anamnese;
-        delete this.anamnese.DATA;
-        delete this.anamnese.IDPACIENTE;
-        delete this.anamnese.IDCONSULTA;
-
-        if(Object.keys(this.fichaClinica.anamnese).length === 0){
-          this.objetoEmpty.anamnese = true
-        }
-        if(Object.keys(this.fichaClinica.prescricaoUltimoExame).length === 0){
-          this.objetoEmpty.prescriUltEx = true
-        }
-        if(Object.keys(this.fichaClinica.acuidade).length === 0){
-          this.objetoEmpty.acuidade = true
-        }
-        if(Object.keys(this.fichaClinica.cerametria).length === 0){
-          this.objetoEmpty.cerametria = true
-        }
-         if(Object.keys(this.fichaClinica.biomicro).length === 0){
-          this.objetoEmpty.biomicro = true
-        }
-        if(Object.keys(this.fichaClinica.oftalmoscopia).length === 0){
-          this.objetoEmpty.oftalmo = true
-        }
-        if(Object.keys(this.fichaClinica.tonometria).length === 0){
-          this.objetoEmpty.tonometria = true
-        }
-        if(Object.keys(this.fichaClinica.reflexoPulpilar).length === 0){
-          this.objetoEmpty.reflexoPulpilar = true
-        }
-        if(Object.keys(this.fichaClinica.ppc).length === 0){
-          this.objetoEmpty.ppc = true
-        }
-         if(Object.keys(this.fichaClinica.avMotora).length === 0 || this.fichaClinica.avMotora === undefined){
-          this.objetoEmpty.AvMotora = true
-        }
-         if(Object.keys(this.fichaClinica.reservasFusionais).length === 0){
-          this.objetoEmpty.ReservasFusionais = true
-        }
-          if(Object.keys(this.fichaClinica.amplitude).length === 0){
-          this.objetoEmpty.AmpliAcomodacao = true
-        }
-         if(Object.keys(this.fichaClinica.flexiDeAcomodacao).length === 0){
-          this.objetoEmpty.flexAcomoda = true
-        }
-         if(Object.keys(this.fichaClinica.retinoscopia).length === 0){
-          this.objetoEmpty.retinoscopia = true
-        }
-        
-        this.flag = true;
-        
-      });
-    },
-  },
-
-beforeMount(){
-this.read();
-
-},
-
-  created() {
-    //this.read();
-    
-  },
-
-  watch: {
-    anamnesePropsImpressao() {
-      this.anamnese.push(this.anamneseProps);
-    },
     teste() {
-      // console.log("teeeste props");
+      const doc = new jsPDF();
+      doc.autoTable({
+        html: "#sintomas",
+        margin: { horizontal: 5 },
+        startY: 20,
+        styles: { fontSize: 7 },
+        tableWidth: 50,
+        tableId: "salesTable",
+      });
+      doc.setFontSize(10).setTextColor(150).text("Anamnese", 99, 16);
+      doc.rect(2, 10, 205, 140);
+
+      doc.autoTable({
+        html: "#doenca",
+        margin: { horizontal: 60 },
+        styles: { fontSize: 7 },
+        startY: 20,
+        tableWidth: 50,
+      });
+
+      doc.autoTable({
+        html: "#doencaSis",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 20,
+        tableWidth: 40,
+      });
+
+      doc.autoTable({
+        html: "#medicamento",
+        margin: { horizontal: 160 },
+        styles: { fontSize: 7 },
+        startY: 20,
+        tableWidth: 40,
+      });
+
+      doc.autoTable({
+        html: "#anteceFami",
+        margin: { horizontal: 160 },
+        styles: { fontSize: 7 },
+        startY: 110,
+        tableWidth: 40,
+      });
+
+      doc.autoTable({
+        html: "#info",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 90,
+        tableWidth: 40,
+      });
+      doc.rect(2, 153, 85, 60);
+      doc
+        .setFontSize(10)
+        .setTextColor(150)
+        .text("Prescrição Ultimo Exame", 8, 158);
+
+      doc.autoTable({
+        html: "#prescriUlt",
+        margin: { horizontal: 5 },
+        styles: { fontSize: 7 },
+        startY: 160,
+        tableWidth: 78,
+      });
+      doc.setFontSize(10).setTextColor(150).text("Acuidade Visual", 138, 158);
+      doc.rect(90, 153, 117, 48);
+      doc.autoTable({
+        html: "#acuidadeSC",
+        margin: { horizontal: 150 },
+        styles: { fontSize: 7 },
+        startY: 163,
+        tableWidth: 50,
+      });
+
+      doc.autoTable({
+        html: "#acuidadeCC",
+        margin: { horizontal: 95 },
+        styles: { fontSize: 7 },
+        startY: 163,
+        tableWidth: 50,
+      });
+
+      doc.rect(2, 217, 85, 28);
+      doc.setFontSize(10).setTextColor(150).text("Ceratometria", 30, 222);
+
+      doc.autoTable({
+        html: "#ceratometria",
+        margin: { horizontal: 5 },
+        styles: { fontSize: 7 },
+        startY: 225,
+        tableWidth: 80,
+      });
+
+      doc.rect(90, 205, 117, 74);
+      doc.setFontSize(10).setTextColor(150).text("Avaliação Motora", 130, 210);
+
+      doc.autoTable({
+        html: "#avMotora",
+        margin: { horizontal: 96 },
+        styles: { fontSize: 7 },
+        startY: 214,
+        tableWidth: 105,
+      });
+      doc.addImage(this.avMotora, "JPEG", 100, 250, 33, 15);
+      doc.addImage(this.avMotora, "JPEG", 167, 250, 33, 15);
+
+      doc.rect(2, 247, 85, 44);
+      doc
+        .setFontSize(10)
+        .setTextColor(150)
+        .text("Reflexos Pulpilares", 30, 252);
+
+      doc.autoTable({
+        html: "#reflexPulpilar",
+        margin: { horizontal: 5 },
+        styles: { fontSize: 7 },
+        startY: 255,
+        tableWidth: 80,
+      });
+      doc.addPage("a4");
+
+      doc.rect(2, 5, 105, 105);
+      doc.setFontSize(10).setTextColor(150).text("Biomicroscopia", 30, 10);
+      doc.setFontSize(8).setTextColor(150).text("Observação :", 7, 100);
+      doc.addImage(this.biomicro, "JPEG", 43, 90, 53, 15);
+
+      doc.autoTable({
+        html: "#biomicro",
+        margin: { horizontal: 5 },
+        styles: { fontSize: 7 },
+        startY: 13,
+        tableWidth: 100,
+      });
+
+      doc.setFontSize(10).setTextColor(150).text("Oftalmoscopia", 140, 10);
+
+      doc.setFontSize(10).setTextColor(150).text("Observação", 115, 70);
+
+      doc.addImage(this.oftalmo, "JPEG", 155, 65, 33, 15);
+      doc.rect(110, 5, 98, 80);
+      doc.autoTable({
+        html: "#oftalmo",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 13,
+        tableWidth: 90,
+      });
+
+      doc.rect(2, 115, 105, 40);
+      doc.setFontSize(10).setTextColor(150).text("Ceratometria", 45, 120);
+      doc.autoTable({
+        html: "#ceratometria",
+        margin: { horizontal: 8 },
+        styles: { fontSize: 7 },
+        startY: 125,
+        tableWidth: 90,
+      });
+
+      doc.rect(110, 88, 98, 160);
+      doc.setFontSize(10).setTextColor(150).text("Retinoscopia", 147, 92);
+
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Estática", 115, 102);
+      doc.autoTable({
+        html: "#retinoscopia",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 105,
+        tableWidth: 90,
+      });
+
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Dinâmica", 115, 133);
+      doc.autoTable({
+        html: "#retinoscopia",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 135,
+        tableWidth: 90,
+      });
+
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Subjetivo", 115, 160);
+      doc.autoTable({
+        html: "#retinoscopia",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 162,
+        tableWidth: 90,
+      });
+
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Afinamento", 115, 190);
+      doc.autoTable({
+        html: "#retinoscopia",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 192,
+        tableWidth: 90,
+      });
+
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Adição", 115, 218);
+      doc.autoTable({
+        html: "#retinoscopia",
+        margin: { horizontal: 115 },
+        styles: { fontSize: 7 },
+        startY: 220,
+        tableWidth: 90,
+      });
+
+      doc.rect(2, 158, 105, 55);
+      doc.setFontSize(10).setTextColor(150).text("Adição", 50, 165);
+      doc
+        .setFontSize(10)
+        .setTextColor(150)
+        .text("Técnica : ____________________________________", 5, 205);
+      doc.autoTable({
+        html: "#forometria",
+        margin: { horizontal: 5 },
+        styles: { fontSize: 7 },
+        startY: 170,
+        tableWidth: 100,
+      });
+
+      
+      doc.rect(2, 218, 105, 55);
+      doc.setFontSize(10).setTextColor(150).text("Rx Final", 50, 225);
+      doc
+        .setFontSize(10)
+        .setTextColor(150)
+        .text("Técnica : ____________________________________", 5, 205);
+      doc.autoTable({
+        html: "#rx",
+        margin: { horizontal: 5 },
+        styles: { fontSize: 7 },
+        startY: 230,
+        tableWidth: 100,
+      });
+      // Or use javascript directly:
+      //      doc.autoTable({
+      //   columnStyles: { europe: { halign: 'center' } }, // European countries centered
+      //   body: [
+      //     { europe: 'Sweden', america: 'Canada', asia: 'China' },
+      //     { europe: 'Norway', america: 'Mexico', asia: 'Japan' },
+      //   ],
+      //   columns: [
+      //     { header: 'Europe', dataKey: 'europe' },
+      //     { header: 'Asia', dataKey: 'asia' },
+      //   ],
+      // })
+
+      window.open(doc.output("bloburl"));
     },
   },
 };
 </script>
 
-<style scoped>
-.conteinerImpressao {
-  margin-top: 0px;
-}
-.anamneseImpressao {
-  display: flex;
-}
-body * {
-  background: rgb(255, 255, 255);
-}
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  modal * {
-    visibility: hidden;
-  }
-
-  footer * {
-    
-  }
-
-  #sticky-footer * {
-    visibility: hidden;
-  }
-  .conteinerImpressao * {
-    visibility: visible;
-  }
-  input {
-    padding: 30px;
-  }
-}
-
-.card-footer-item {
-  display: flex;
-  justify-content: center;
-}
-
-#sticky-footer {
-  left: 35px;
-  flex-shrink: none;
-  position: fixed;
-  margin-left: 30%;
-  margin-right: 25%;
-  margin-bottom: 4px;
-  width: 35%;
-  background: linear-gradient(0deg, #015ea0 0%, #0082c8 100%);
-  border-radius: 55px;
-  padding: 4;
-}
-
-.containerPrescriUlt {
-  display: flex;
-  padding: 30px;
-}
+<style>
 </style>

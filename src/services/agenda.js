@@ -132,4 +132,12 @@ export default {
     readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
         return http.get(`/Agenda/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
     },
+
+    readDateTotal: (dataInicial, dataFinal) =>{
+        return http.get(`/Agenda/readDateTotal/${dataInicial}/${dataFinal}`)
+    },
+
+    readDateTotalFp: (dataInicial, dataFinal, idFormaPagamento) =>{
+        return http.get(`/Agenda/readDateTotalFp/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
+    }
 }

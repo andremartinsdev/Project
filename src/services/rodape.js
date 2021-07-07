@@ -1,5 +1,5 @@
 import moldura from "../assets/moldura.png";
-import {baseUrl} from '../../vue.config'
+import {publicPath} from '../../vue.config'
 
 
 export default function rodape(doc,dadosClinica, uuidClinica){
@@ -15,7 +15,7 @@ export default function rodape(doc,dadosClinica, uuidClinica){
     doc.text(`CEP : ${dadosClinica[0].cep}`, 97, 285);
 
     doc.addImage(
-      `${baseUrl}/Clinica/image/logo/${uuidClinica}`,
+      `${publicPath}/Clinica/image/logo/${uuidClinica}`,
       "JPEG",
       3,
       270,

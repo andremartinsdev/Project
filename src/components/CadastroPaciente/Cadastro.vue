@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Sidebar/>
     <div class="formCliente">
       <div>
         <b-card no-body>
@@ -261,13 +262,16 @@
 </template>
 
 <script>
+import Sidebar from '../../components/SidebarNavbar.vue'
 import { mapState, mapActions } from "vuex";
 import PacienteService from "../../services/paciente";
 import ValidatorPaciente from "../../validators/paciente";
 import cep from "cep-promise";
 // import paciente from '../../services/paciente';
 export default {
-  components: {},
+  components: {
+    Sidebar
+  },
 
   computed: {
     ...mapState({
@@ -405,7 +409,7 @@ export default {
         }
 
         const response = await PacienteService.listParams(
-          `${this.selected}=${this.campoPesquisa}&like=true&page=${this.page}`
+          `${this.selected}=${this.campoPesquisa}&like=true&page=1`
         );
         console.log(response)
         this.ListaPaciente = response.data.result;

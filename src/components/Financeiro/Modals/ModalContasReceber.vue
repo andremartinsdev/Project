@@ -2,7 +2,7 @@
   <b-modal
     @ok="handleOkReceita"
     id="modalReceita"
-    title="Cadastro de Receita"
+    title="Cadastro de Contas a Receber"
     header-bg-variant="success"
     header-text-variant="light"
     size="lg"

@@ -66,7 +66,11 @@
             ></b-img>
             <label class="text-white">Relatorio</label>
           </router-link>
-          <router-link class="nav-link mr-5" to="/Financeiro" style="padding: 0">
+          <router-link
+            class="nav-link mr-5"
+            to="/Financeiro"
+            style="padding: 0"
+          >
             <b-img
               center
               :src="imageConfig"
@@ -74,6 +78,19 @@
               width="35"
             ></b-img>
             <label class="text-white">Financeiro</label>
+          </router-link>
+           <router-link
+            class="nav-link mr-5"
+            to="/Financeiro"
+            style="padding: 0"
+          >
+            <b-img
+              center
+              :src="config"
+              alt="Center image"
+              width="35"
+            ></b-img>
+            <label class="text-white">Configurações</label>
           </router-link>
 
           <router-link class="nav-link mr-5" to="/" style="padding: 0">
@@ -103,7 +120,6 @@
           variant="light"
           animation="cylon"
           font-scale="2"
-          
         ></b-icon>
       </b-col>
     </div>
@@ -115,23 +131,17 @@
         class="text-center mt-2"
         shadow
       >
-        
       </b-sidebar>
 
-      <b-sidebar
-        id="sidebar-2"
-        width="20rem"
-        class="text-center mt-2"
-        shadow
-      >
-        <template #footer >
-       
-       <router-link   to="/CadastroClinica">
-            <b-button size="sm" variant="primary" class="mt-2 mb-2" block
-              > <b-icon-gear class="mr-2"></b-icon-gear> Cadastro da Clínica</b-button
+      <b-sidebar id="sidebar-2" width="20rem" class="text-center mt-2" shadow>
+        <template #footer>
+          <router-link to="/CadastroClinica">
+            <b-button size="sm" variant="primary" class="mt-2 mb-2" block>
+              <b-icon-gear class="mr-2"></b-icon-gear> Cadastro da
+              Clínica</b-button
             >
           </router-link>
-      </template>
+        </template>
         <template #default>
           <div class="p-3">
             <h4 id="sidebar-no-header-title">Seja Bem vindo</h4>
@@ -156,7 +166,12 @@
               class="mb-4 mt-4"
               block
               @click="showAgendamento"
-              > <b-icon-calendar2-date-fill scale="1.4" class="mr-2"></b-icon-calendar2-date-fill> Agendamentos de Hoje</b-button
+            >
+              <b-icon-calendar2-date-fill
+                scale="1.4"
+                class="mr-2"
+              ></b-icon-calendar2-date-fill>
+              Agendamentos de Hoje</b-button
             >
             <b-button
               size="sm"
@@ -165,7 +180,9 @@
               class="mb-4 mt-4"
               block
               @click="showDespesa"
-              > <b-icon-graph-down scale="1.4" class="mr-2"></b-icon-graph-down> Despesas de Hoje</b-button
+            >
+              <b-icon-graph-down scale="1.4" class="mr-2"></b-icon-graph-down>
+              Despesas de Hoje</b-button
             >
             <div v-if="showAgendamentos === true">
               <b-toast
@@ -215,8 +232,6 @@
               </b-toast>
             </div>
 
-           
-             
             <!-- <b-button variant="primary" class="mt-4" size="sm" @click="hide"
               >Fechar <b-icon-x scale="1.5" class="mb-1"></b-icon-x
             ></b-button> -->
@@ -237,17 +252,19 @@ import imageConfig from "../assets/lucros.png";
 import AgendaService from "../services/agenda";
 import DespesaService from "../services/despesas";
 import logoBms from "../assets/LogoBms.png";
+import config from "../assets/configuracao-min.png";
 import saida from "../assets/saida.png";
 import ClinicaService from "../services/clinica";
-import { mapState } from "vuex"
-import baseUrl from '../../vue.config'
+import { mapState } from "vuex";
+// import baseUrl from '../../vue.config'
 
 import moment from "moment";
+import { http } from "../services/config";
 export default {
-  props:{
-    logo:{
-      type: String
-    }
+  props: {
+    logo: {
+      type: String,
+    },
   },
   computed: {
     ...mapState({
@@ -258,6 +275,7 @@ export default {
   },
   data() {
     return {
+      config: config,
       saida: saida,
       logoBms: logoBms,
       image: image,
@@ -276,37 +294,28 @@ export default {
     };
   },
 
-  beforeCreate(){
-      console.log(this.uuidClinica)
-  }
-,
-
-
-beforeMount(){
-  console.log(this.uuidClinica)
-},
+ 
   created() {
-    console.log(this.uuidClinica)
+    console.log(this.uuidClinica);
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readAgendamentos();
       this.readDespesas();
-       this.readDadosClinica();
+      this.readDadosClinica();
     }
   },
 
   mounted() {
- 
-      console.log(this.uuidClinica)
-   
+    console.log(this.uuidClinica);
+
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
-       this.readDadosClinica();
+      this.readDadosClinica();
       // this.readDadosClinica();
     }
   },
 
   methods: {
-    logout(){
-      sessionStorage.removeItem("token")
+    logout() {
+      sessionStorage.removeItem("token");
     },
 
     editarClin() {
@@ -326,12 +335,13 @@ beforeMount(){
 
     async readDadosClinica() {
       this.dadosClinica = [];
+      console.log(http.prototype.constructor.defaults.baseURL)
       const clinica = await ClinicaService.read();
       if (clinica.data.result.length > 0) {
         this.nomeClinica = clinica.data.result[0].nomeClinica;
         this.endereco = clinica.data.result[0].endereco;
-         this.$store.commit("uuidClinica", clinica.data.result[0].uuid)
-         this.logoClinica = `${baseUrl.baseUrl}/Clinica/image/logo/${clinica.data.result[0].uuid}`
+        this.$store.commit("uuidClinica", clinica.data.result[0].uuid);
+        this.logoClinica = `${http.prototype.constructor.defaults.baseURL}/Clinica/image/logo/${clinica.data.result[0].uuid}`;
       }
     },
 
@@ -349,6 +359,7 @@ beforeMount(){
 
     readDespesas() {
       this.despesasHoje = [];
+      console.log("asssssssss")
       DespesaService.readDate(
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")

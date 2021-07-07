@@ -202,7 +202,8 @@ import moldura from "../../assets/moldura.png";
 import logoOlho from "../../assets/LogoOlho.png";
 import jsPDF from "jspdf";
 import { mapState } from 'vuex'
-import baseUrl from '../../../vue.config'
+// import baseUrl from '../../../vue.config'
+import { http } from '../../services/config';
 
 export default {
   props: {
@@ -503,7 +504,7 @@ export default {
       doc.text(`Telefone :  ${this.dadosClinica.telefone},`, 47, 285);
       doc.text(`CEP : ${this.dadosClinica.cep}`, 97, 285);
 
-      doc.addImage(`${baseUrl.baseUrl}Clinica/image/logo/${this.uuidClinica}`, "JPEG", 3, 270, 40, 20);
+      doc.addImage(`${http.prototype.constructor.defaults.baseURL}Clinica/image/logo/${this.uuidClinica}`, "JPEG", 3, 270, 40, 20);
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
       doc.addImage(this.moldura, "JPEG", 0, 248, 230, 70);
       doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);

@@ -20,19 +20,19 @@
       <div class="form-group w-50">
         <label for="exampleInputEmail1">Data do Pagamento</label>
         <b-form-input
-                      class="bg-primary text-white col-sm-12"
-                      type="date"
-                      v-model="agendamento.dataPagamento"
-                      v-b-popover.hover.bottom="
-                    'Campo Obrigatorio, Informe a Data que a consulta será realizada'
-                  "
-                    ></b-form-input>
+          class="bg-primary text-white col-sm-12"
+          type="date"
+          v-model="agendamento.dataPagamento"
+          v-b-popover.hover.bottom="
+            'Campo Obrigatorio, Informe a Data que a consulta será realizada'
+          "
+        ></b-form-input>
       </div>
     </div>
 
     <div class="form-group">
       <label for="exampleInputEmail1">Valor da Consulta</label>
-      <b-input-group prepend="R$" class=" ">
+      <b-input-group prepend="R$" class="">
         <b-form-input
           v-model.lazy="agendamento.valorConsulta"
           disabled
@@ -41,27 +41,30 @@
         ></b-form-input>
       </b-input-group>
 
-    <h6 class="text-center"> Procedimento : <label for="">{{agendamento.titulo}}</label></h6>
-
-
+      <h6 class="text-center">
+        Procedimento : <label for="">{{ agendamento.titulo }}</label>
+      </h6>
 
       <div class="dadosPaciente mt-4">
         <div class="form-group w-50 mr-2"></div>
       </div>
       <div class="flexDiv">
-      <div>
-        <b-form-checkbox
-          size="md"
-          v-model="agendamento.recebido"
-          name="check-button"
-          switch
-        >
-          Recebido
-        </b-form-checkbox>
-      </div>
-      <div v-if="agendamento.recebido" class="mr-4">
-        <b-icon-check2-circle class="h1" variant="success"></b-icon-check2-circle>
-      </div>
+        <div>
+          <b-form-checkbox
+            size="md"
+            v-model="agendamento.recebido"
+            name="check-button"
+            switch
+          >
+            Recebido
+          </b-form-checkbox>
+        </div>
+        <div v-if="agendamento.recebido" class="mr-4">
+          <b-icon-check2-circle
+            class="h1"
+            variant="success"
+          ></b-icon-check2-circle>
+        </div>
       </div>
     </div>
 
@@ -107,7 +110,7 @@ export default {
         valorConsulta: "",
         recebido: false,
         titulo: "",
-        dataPagamento: ""
+        dataPagamento: "",
       },
       formaDePagamento: [],
       oticasParceiras: [],
@@ -115,7 +118,6 @@ export default {
   },
 
   methods: {
-
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -126,22 +128,22 @@ export default {
         timer: 2500,
       });
     },
-     savePagamento() {
-       console.log( {
-          recebido: this.agendamento.recebido, dataPagamento: this.agendamento.dataPagamento
+    savePagamento() {
+      console.log({
+        recebido: this.agendamento.recebido,
+        dataPagamento: this.agendamento.dataPagamento,
+      });
+      console.log(this.agendamento)
+      AgendaService.updatePagmento(this.agendamento.uuid, {
+        recebido: this.agendamento.recebido,
+        dataPagamento: this.agendamento.dataPagamento,
+      })
+        .then(() => {
+          this.showAlert("success", "Pagamento Salvo com Sucesso");
         })
-        AgendaService.updatePagmento(this.agendamento.uuid, {
-          recebido: this.agendamento.recebido, dataPagamento: this.agendamento.dataPagamento
-        })
-          .then(() => {
-
-              this.showAlert("success", "Pagamento Salvo com Sucesso");
-
-          })
-          .catch(() => {
-            this.showAlert("error", "Ocorreu um erro ao realizar pagamento");
-          });
-
+        .catch(() => {
+          this.showAlert("error", "Ocorreu um erro ao realizar pagamento");
+        });
     },
 
     detalhesAgendamento() {
@@ -151,17 +153,20 @@ export default {
       }
       AgendaService.readAgendaJoinPaciente(this.uuidAgendamento)
         .then((result) => {
-          console.log(result)
+          console.log(result);
           this.agendamento = result.data.agendamento;
-          this.agendamento.titulo =  result.data.agendamento.descricao
-          this.agendamento.dataPagamento = moment(result.data.agendamento.dataPagamento).format("YYYY-MM-DD")
+          this.agendamento.titulo = result.data.agendamento.descricao;
+          this.agendamento.dataPagamento = moment(
+            result.data.agendamento.dataPagamento
+          ).format("YYYY-MM-DD");
           this.agendamento.data = moment(result.data.agendamento.data).format(
             "YYYY-MM-DD"
           );
-          this.agendamento.valorConsulta = result.data.agendamento.valorConsulta.toLocaleString(
-            "pt-br",
-            { style: "currency", currency: "BRL" }
-          );
+          this.agendamento.valorConsulta =
+            result.data.agendamento.valorConsulta.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL",
+            });
           this.agendamento.dataNascimento =
             this.agendamento.dataNascimento === ""
               ? "00/00/0000"
@@ -186,17 +191,17 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-.flexDiv{
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+.flexDiv {
   display: flex;
   justify-content: space-between;
 }
 
-.titulo{
-  font-family: 'Lobster', cursive;
+.titulo {
+  font-family: "Lobster", cursive;
 }
 
-#modal-lg-pagamento{
-height: 85%;
+#modal-lg-pagamento {
+  height: 85%;
 }
 </style>

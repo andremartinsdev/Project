@@ -54,7 +54,7 @@
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-4 variant="light"
-          >Cerametria</b-button
+          >Ceratometria</b-button
         >
       </b-card-header>
       <b-collapse id="accordion-4" accordion="my-accordion" role="tabpanel">

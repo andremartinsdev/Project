@@ -1,5 +1,6 @@
 <template>
   <div>
+  <Sidebar/>
     <div class="card" id="calendario2">
       <div class="card-header text-center">
         Agenda
@@ -71,6 +72,7 @@
 </template>
 
 <script>
+import Sidebar from '../../components/SidebarNavbar.vue'
 import AgendaService from "../../services/agenda";
 import ModalPagamento from "./ModalPagamento";
 import { mapState } from "vuex";
@@ -81,6 +83,7 @@ export default {
     Calendar: () => import("./Calendar"),
     ModalAgendamento: () => import("./ModalAgendamento"),
     ModalPagamento,
+    Sidebar
   },
   data() {
     return {

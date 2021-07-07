@@ -2,7 +2,7 @@
   <b-modal
     @ok="handleOk"
     id="modalDespesa"
-    title="Cadastro de Despesa"
+    title="Cadastro de Contas a pagar"
     header-bg-variant="danger"
     header-text-variant="light"
     size="lg"
@@ -13,19 +13,43 @@
         <b-tab title="Cadastro">
           <div>
             <b-input hidden v-model="despesa.idDespesa"></b-input>
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="contaFixa"
+              name="checkbox-1"
+              value="true"
+              unchecked-value="false"
+              class="float-right"
+            >
+              Conta Fixa
+            </b-form-checkbox>
             <label for="">Descrição da Despesa</label>
+
             <b-input size="sm" v-model="despesa.descricaoDespesa"></b-input>
-            <div class="containerData">
+            <b-row class="containerData mt-2">
               <div>
-                <label for="" class="mt-2">Data do Pagamento</label>
+                <b-form-group label="Data Vencimento" class="ml-3">
+                  <b-form-input
+                    size="sm"
+                    type="date"
+                    v-model="despesa.dataVencimento"
+                  ></b-form-input>
+                </b-form-group>
+              </div>
+
+              <b-form-group
+                label="Quantos Meses"
+                class="ml-3"
+                v-if="contaFixa === 'true'"
+              >
                 <b-form-input
                   size="sm"
-                  type="date"
-                  v-model="despesa.data"
-                  class="mr-2 col-sm-4"
+                  type="number"
+                  v-model="qtdMeses"
+                  class="col-sm-8"
                 ></b-form-input>
-              </div>
-            </div>
+              </b-form-group>
+            </b-row>
 
             <label for="" class="mt-2">Valor da Despesa</label>
             <b-form-input
@@ -63,28 +87,28 @@
               ></b-form-textarea>
             </div>
             <b-card
-              class="mt-4"
-              v-if="despesa.despesaPaga === false"
+              class="mt-4 text-center"
               bg-variant="danger"
+              v-if="statusPagementoDate === 'emAberto'"
             >
-              <b-form-checkbox
-                id="checkbox-1"
-                v-model="despesa.despesaPaga"
-                name="checkbox-1"
-                class="text-white text-center"
+              <b-form-select
+                class="col-sm-4"
+                size="sm"
+                v-model="statusPagementoDate"
+                :options="statusPagamento"
+                @change="mudarDataPagamento"
               >
-                Despesa não Paga
-              </b-form-checkbox>
+              </b-form-select>
             </b-card>
-            <b-card class="mt-4" v-else bg-variant="success">
-              <b-form-checkbox
-                id="checkbox-1"
-                v-model="despesa.despesaPaga"
-                name="checkbox-1"
-                class="text-white text-center"
+
+            <b-card class="mt-4 text-center" bg-variant="success" v-else>
+              <b-form-select
+                class="col-sm-4"
+                size="sm"
+                v-model="statusPagementoDate"
+                :options="statusPagamento"
               >
-                Despesa Paga
-              </b-form-checkbox>
+              </b-form-select>
             </b-card>
           </div>
         </b-tab>
@@ -151,7 +175,7 @@
         Limpar
       </b-button>
     </template>
-    <ModalFormaPagamento @reloadForma="reloadForma"/>
+    <ModalFormaPagamento @reloadForma="reloadForma" />
   </b-modal>
 </template>
 
@@ -159,23 +183,31 @@
 import DespesaService from "../../../services/despesas";
 import moment from "moment";
 import FormaDePagamentoService from "../../../services/formaDePagamento";
-import ModalFormaPagamento from '../../Agenda/ModalFormaPagamento'
+import ModalFormaPagamento from "../../Agenda/ModalFormaPagamento";
 export default {
-  components:{
-ModalFormaPagamento
+  components: {
+    ModalFormaPagamento,
   },
   data() {
     return {
+      statusPagementoDate: "emAberto",
       tabIndexDespesa: 0,
+      contaFixa: "false",
+      qtdMeses: 0,
       despesa: {
         uuid: "",
         descricaoDespesa: "",
-        data: "",
+        dataPagamento: null,
+        dataVencimento: "",
         idFormaPagamento: null,
-        despesaPaga: false,
+        despesaPaga: "",
         valor: 0,
         observacao: "",
       },
+      statusPagamento: [
+        { text: "Pago", value: "pago" },
+        { text: "Em Aberto", value: "emAberto" },
+      ],
       despesas: [],
       formaDePagamento: [],
       money2: {
@@ -193,7 +225,16 @@ ModalFormaPagamento
     this.readDespesas();
   },
   methods: {
-     openFormaPagamento() {
+    mudarDataPagamento() {
+      if (this.statusPagementoDate === "pago") {
+        this.despesa.dataPagamento = moment().format("YYYY-MM-DD");
+        this.despesa.despesaPaga = true;
+        console.log(this.despesa.dataPagamento);
+        return;
+      }
+      this.despesa.dataPagamento = null;
+    },
+    openFormaPagamento() {
       this.$bvModal.show("modal-lg-addFormaPagamento");
     },
 
@@ -207,7 +248,7 @@ ModalFormaPagamento
         timer: 2500,
       });
     },
-    
+
     readDespesas() {
       this.despesas = [];
       DespesaService.readAll()
@@ -215,7 +256,7 @@ ModalFormaPagamento
           if (result.status === 201) {
             this.despesas.push(result.data.despesas);
             this.despesas[0].map((el) => {
-              el.data = moment(el.data).format("DD/MM/YYYY");
+              el.data = moment(el.dataVencimento).format("DD/MM/YYYY");
             });
           } else {
             this.showAlert("error", "Ops! ocorreu um erro ao Listar Despesas");
@@ -248,16 +289,16 @@ ModalFormaPagamento
             this.formaPagamento(el.descricao, el.uuid)
           );
         });
-
-      
       });
     },
 
-    reloadForma(){
-      this.$emit("reloadForma")
+    reloadForma() {
+      this.$emit("reloadForma");
     },
 
     resetModalDespesa() {
+      this.contaFixa = "false";
+      this.qtdMeses = 0;
       this.despesa = {
         uuid: "",
         descricaoDespesa: "",
@@ -273,7 +314,7 @@ ModalFormaPagamento
       if (this.despesa.uuid === "") {
         if (
           this.despesa.descricao === "" ||
-          this.despesa.data === "" ||
+          this.despesa.dataVencimento === "" ||
           this.despesa.valor === 0 ||
           this.despesa.idFormaPagamento === null
         ) {
@@ -283,6 +324,26 @@ ModalFormaPagamento
           this.despesa.valor = this.despesa.valor.replace(".", "");
           this.despesa.valor = this.despesa.valor.replace(",", ".");
           delete this.despesa.uuid;
+
+          if (this.contaFixa === "true") {
+            DespesaService.saveFixa(this.despesa, this.qtdMeses)
+              .then(() => {
+                this.showAlert(
+                  "success",
+                  "Contas a Pagar Cadastradas com Sucesso"
+                );
+                this.readDespesas();
+                this.resetModalDespesa();
+              })
+              .catch(() => {
+                this.showAlert(
+                  "error",
+                  "Ocorreu um erro ao Cadastrar contas a Pagar"
+                );
+              });
+            return;
+          }
+
           DespesaService.save(this.despesa)
             .then((result) => {
               if (result.status === 201) {
@@ -336,9 +397,9 @@ ModalFormaPagamento
             this.despesa.uuid = result.data.despesa[0].uuid;
             this.despesa.descricaoDespesa =
               result.data.despesa[0].descricaoDespesa;
-            this.despesa.data = moment(result.data.despesa[0].data).format(
-              "YYYY-MM-DD"
-            );
+            this.despesa.dataVencimento = moment(
+              result.data.despesa[0].dataVencimento
+            ).format("YYYY-MM-DD");
             this.despesa.idFormaPagamento =
               result.data.despesa[0].uuidFormaPagamento;
             this.despesa.valor = result.data.despesa[0].valor.toLocaleString(
@@ -349,6 +410,14 @@ ModalFormaPagamento
             this.despesa.despesaPaga =
               result.data.despesa[0].despesaPaga === 1 ? true : false;
 
+            if (result.data.despesa[0].despesaPaga === 1) {
+              this.despesa.despesaPaga = true;
+              this.statusPagementoDate = "pago";
+            } else {
+              this.despesa.despesaPaga = false;
+              this.statusPagementoDate = "emAberto";
+            }
+
             this.tabIndexDespesa = 0;
           } else {
             this.showAlert("error", "Ops! ocorreu um erro ao Editar Despesa");
@@ -358,7 +427,7 @@ ModalFormaPagamento
           this.showAlert("error", "Ops! ocorreu um erro ao Editar Despesa");
         });
     },
-    
+
     excluirDespesa(uuid) {
       if (!uuid && uuid.length === 36) {
         this.showAlert("info", "Selecione um Registro");

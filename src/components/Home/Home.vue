@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-container class="home" fluid>
+    <Sidebar v-if="show === false" />
+    <b-container class="home" fluid v-if="show === false">
       <CardHome
         class="mb-4 mt-2"
         :consultas="this.consultas"
@@ -119,22 +120,20 @@
                       </div>
                     </div>
                   </div>
-                  
                 </div>
               </div>
             </section>
 
             <!-- Contact-->
           </b-container>
-
-         
         </b-col>
       </b-row>
-       <b-card class="text-center shadow bg-white rounded cardConteudo">
-            <div class="card1">
-              <Agendamento :agendamentos="this.fake"/>
-            </div>
-          </b-card>
+      
+      <b-card class="text-center shadow bg-white rounded cardConteudo">
+        <div class="card1">
+          <Agendamento :agendamentos="this.fake" />
+        </div>
+      </b-card>
       <section class="contact-section">
         <div class="container">
           <div class="row">
@@ -202,8 +201,6 @@
           </div>
         </div>
       </section>
-      
-
 
       <!-- <footer
         v-if="showOptionRelatorio == true"
@@ -252,6 +249,8 @@
         </div>
       </footer> -->
     </b-container>
+    <b-overlay :show="show" variant="light"  no-wrap opacity="0.99" rounded="sm"> </b-overlay>
+
     <b-modal
       id="modal-xl-t"
       hide-footer
@@ -303,6 +302,7 @@ import logoCalendar from "../../assets/logoCalendar.jpg";
 import logoOpto from "../../assets/logoOpto.jpg";
 import logoAaniversario from "../../assets/logoAaniversario.jpg";
 import Agendamento from "../Agenda/Agendamento";
+import Sidebar from "../../components/SidebarNavbar.vue";
 
 export default {
   components: {
@@ -311,7 +311,8 @@ export default {
     ModalAniversariante,
     ModalConsultaVencida,
     ModalProxConsultas,
-    Agendamento
+    Agendamento,
+    Sidebar,
   },
   computed: {
     ...mapState({
@@ -320,9 +321,10 @@ export default {
   },
   data() {
     return {
+      show: false,
       logoCalendar: logoCalendar,
       logoOpto: logoOpto,
-      logoAaniversario:logoAaniversario,
+      logoAaniversario: logoAaniversario,
       imgTela: imgTela,
       imgTela2: imgTela2,
       agendamentosDia: 0,
@@ -356,7 +358,7 @@ export default {
         bairro: "",
         numero: "",
       },
-      fake: [{uuid: '1212121', nomePaciente: 'Andre', horario:'12:22'}],
+      fake: [{ uuid: "1212121", nomePaciente: "Andre", horario: "12:22" }],
       dataHoje: moment().format("DD/MM/YYYY"),
       proximasConsultas: [],
       consultasVencidas: [],
@@ -379,7 +381,7 @@ export default {
     async readDadosClinica() {
       this.dadosClinica = [];
       const clinica = await ClinicaService.read();
-      console.log(clinica)
+      console.log(clinica);
       if (clinica.data.result.length > 0) {
         this.dadosClinica.email = clinica.data.result[0].email;
         this.dadosClinica.endereco = clinica.data.result[0].endereco;
@@ -387,7 +389,7 @@ export default {
         this.dadosClinica.bairro = clinica.data.result[0].bairro;
         this.dadosClinica.numero = clinica.data.result[0].numero;
         this.dadosClinica.cidade = clinica.data.result[0].cidade;
-        this.$store.commit("uuidClinica", clinica.data.result[0].uuid)
+        this.$store.commit("uuidClinica", clinica.data.result[0].uuid);
       }
     },
 
@@ -442,11 +444,14 @@ export default {
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       );
-      if(valorDespesa.data.result[0].total != null){
-        this.resumoFinaceiro.totalPagar = valorDespesa.data.result[0].total.toLocaleString(
-          "pt-br",
-          { style: "currency", currency: "BRL" }
-        );
+
+      console.log(valorDespesa);
+      if (valorDespesa.data.result[0].total != null) {
+        this.resumoFinaceiro.totalPagar =
+          valorDespesa.data.result[0].total.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          });
       }
     },
 
@@ -455,14 +460,14 @@ export default {
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       );
-     
-      if(valorReceita.data.result[0].total != null){
-this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleString(
-        "pt-br",
-        { style: "currency", currency: "BRL" }
-      );
+      console.log(valorReceita);
+      if (valorReceita.data.result[0].total != null) {
+        this.resumoFinaceiro.totalReceber =
+          valorReceita.data.result[0].total.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          });
       }
-      
     },
 
     async readValorLiquido() {
@@ -565,15 +570,20 @@ this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleSt
     },
   },
 
-  mounted(){
-    this.readDadosClinica()
-  },
-
-  created(){
-    this.readDadosClinica()
-  },
-
-  beforeMount() {
+  async created() {
+    this.show = true;
+    await this.readDadosClinica();
+    await this.readValorLiquido();
+    await this.countAgendamento();
+    await this.readDadosClinica();
+    await this.readProximasConsultas();
+    await this.countPaciente();
+    await this.readValorLiquido();
+    await this.readAgendamentosDia();
+    await this.consultaVencida();
+    await this.aniversariantes();
+    await this.readConsultasDia();
+    await this.readConsultasMes();
     if (this.$route.path === "/Home") {
       ClinicaService.read().then((result) => {
         if (result.data.result.length === 0) {
@@ -581,16 +591,7 @@ this.resumoFinaceiro.totalReceber = valorReceita.data.result[0].total.toLocaleSt
         }
       });
     }
-    this.countAgendamento();
-    this.readDadosClinica();
-    this.readProximasConsultas();
-    this.countPaciente();
-    this.readValorLiquido();
-    this.readAgendamentosDia();
-    this.consultaVencida();
-    this.aniversariantes();
-    this.readConsultasDia();
-    this.readConsultasMes();
+    this.show = false;
   },
 };
 </script>

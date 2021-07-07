@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Sidebar />
     <b-container fluid class="consulta">
       <div class="mb-5">
         <b-card no-body>
@@ -333,9 +334,7 @@
             </b-tab>
 
             <b-tab title="Consulta">
-             
-                <h3 class="text-center mt-3">Consulta Optometria</h3>
-             
+              <h3 class="text-center mt-3">Consulta Optometria</h3>
             </b-tab>
             <!-- <b-tab title="Pesquisar">
               <div class="jumb">
@@ -498,23 +497,48 @@
           </b-tabs>
         </b-card>
       </div>
- <b-card-group v-if="tabIndexConsulta === 3" deck style="display: flex; justify-content: center; flex-wrap: wrap;" class="mb-4">
-     <b-card bg-variant="light"  title="Nome Paciente" class="text-center col-sm-3">
-        <b-avatar class="mr-4"></b-avatar>
-        <span class="mr-auto">{{nomePaciente}}</span>
-   
-      </b-card>
+      <b-card-group
+        v-if="tabIndexConsulta === 3"
+        deck
+        style="display: flex; justify-content: center; flex-wrap: wrap"
+        class="mb-4"
+      >
+        <b-card
+          bg-variant="light"
+          title="Nome Paciente"
+          class="text-center col-sm-3"
+        >
+          <b-avatar class="mr-4"></b-avatar>
+          <span class="mr-auto">{{ nomePaciente }}</span>
+        </b-card>
 
-      <b-card bg-variant="light" title="Data Nascimento" class="text-center col-sm-3">
-        <b-icon-calendar2-date class="h3"></b-icon-calendar2-date> 
-        <b-card-text>{{dataPaciente}}</b-card-text>
-      </b-card>
-      
-        <b-card bg-variant="light"  title="Telefone de Contato" class="text-center col-sm-3">
-          <img :src="imgWhats" @click="enviarmsg" v-b-popover.hover="'Clique para ser redirecinado ao Whatsapp do Paciente'" class="mb-1 whatsPaciente" alt="" srcset="">
-        <b-card-text>{{telefonePaciente}}</b-card-text>
-      </b-card>
-  </b-card-group>
+        <b-card
+          bg-variant="light"
+          title="Data Nascimento"
+          class="text-center col-sm-3"
+        >
+          <b-icon-calendar2-date class="h3"></b-icon-calendar2-date>
+          <b-card-text>{{ dataPaciente }}</b-card-text>
+        </b-card>
+
+        <b-card
+          bg-variant="light"
+          title="Telefone de Contato"
+          class="text-center col-sm-3"
+        >
+          <img
+            :src="imgWhats"
+            @click="enviarmsg"
+            v-b-popover.hover="
+              'Clique para ser redirecinado ao Whatsapp do Paciente'
+            "
+            class="mb-1 whatsPaciente"
+            alt=""
+            srcset=""
+          />
+          <b-card-text>{{ telefonePaciente }}</b-card-text>
+        </b-card>
+      </b-card-group>
 
       <div v-if="tabIndexConsulta === 3">
         <b-card no-body>
@@ -902,7 +926,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-sm">
+                    <table class="table table-sm" id="myTable">
                       <thead>
                         <tr>
                           <th scope="col">Nome Paciente</th>
@@ -1015,7 +1039,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-sm">
+                    <table class="table table-sm" id="teste">
                       <thead>
                         <tr>
                           <th scope="col">Nome Paciente</th>
@@ -1337,7 +1361,10 @@ import AgendaService from "../../services/agenda";
 import ServicoConsulta from "../../services/consulta";
 import Laudo from "../Consulta/Laudo/LaudoPage";
 import LaudoService from "../../services/laudo";
-import imgWhats from '../../assets/whatsapp.png'
+import imgWhats from "../../assets/whatsapp.png";
+import Sidebar from "../../components/SidebarNavbar.vue";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 //import { DateTime } from "luxon";
 import moment from "moment";
@@ -1350,12 +1377,13 @@ export default {
     PrescricaoLente,
     Editor,
     Laudo,
+    Sidebar,
   },
   updated() {},
 
   data() {
     return {
-      imgWhats:imgWhats,
+      imgWhats: imgWhats,
       prescricoes: [],
       pacienteSelectedDeclaracao: null,
       pacienteSelectedFicha: null,
@@ -1371,7 +1399,7 @@ export default {
       uuidFicha: "",
       nomePaciente: "",
       dataPaciente: "",
-      telefonePaciente : "",
+      telefonePaciente: "",
       abreviaNome: "",
       selectVisualizar: "",
       color: "primary",
@@ -1457,20 +1485,58 @@ export default {
     }),
   },
   methods: {
+    imprimirPrescri() {
+      const doc = new jsPDF();
+
+      // It can parse html:
+      // <table id="my-table"><!-- ... --></table>
+
+      doc.autoTable({
+       html: "#teste",
+        margin: { horizontal: 5 },
+        startY: 20,
+        styles: { fontSize: 7 },
+        tableWidth: 220,
+        tableId: "salesTable",
+      });
+
+    //  doc.autoTable({
+    //       html: "#myTable",
+    //     margin: { horizontal: 160 },
+    //     styles: { fontSize: 12 },
+    //     startY: 20,
+    //     tableWidth: 100,
+    //   });
+    
+
+      // Or use javascript directly:
+      //      doc.autoTable({
+      //   columnStyles: { europe: { halign: 'center' } }, // European countries centered
+      //   body: [
+      //     { europe: 'Sweden', america: 'Canada', asia: 'China' },
+      //     { europe: 'Norway', america: 'Mexico', asia: 'Japan' },
+      //   ],
+      //   columns: [
+      //     { header: 'Europe', dataKey: 'europe' },
+      //     { header: 'Asia', dataKey: 'asia' },
+      //   ],
+      // })
+
+      window.open(doc.output("bloburl"));
+    },
     ...mapActions(["pacienteSelected"]),
 
     mudarEditar() {
       this.editar = false;
     },
 
-   async readClinica(){
-     try {
-       const clinica = await serviceClinica.read();
-      this.$store.commit("dadosClinica", clinica.data.result[0]);
-     } catch (error) {
-       this.showAlert("error","Ocorreu um erro ao listar dados clinica")
-     }
-    
+    async readClinica() {
+      try {
+        const clinica = await serviceClinica.read();
+        this.$store.commit("dadosClinica", clinica.data.result[0]);
+      } catch (error) {
+        this.showAlert("error", "Ocorreu um erro ao listar dados clinica");
+      }
     },
 
     imprimirAtestado() {
@@ -1694,7 +1760,7 @@ export default {
         await this.pesquisarFicha();
         this.showAlert("success", "Registro Deletado com Sucesso");
       } catch (error) {
-        this.showAlert("error","Ocorreu um erro ao deletar Registro")
+        this.showAlert("error", "Ocorreu um erro ao deletar Registro");
       }
     },
 
@@ -1913,11 +1979,9 @@ export default {
       LaudoService.read();
     },
 
-    enviarmsg(){
-       window.open(
-        `https://api.whatsapp.com/send?phone=55${
-          this.telefonePaciente
-        }&text=""`,
+    enviarmsg() {
+      window.open(
+        `https://api.whatsapp.com/send?phone=55${this.telefonePaciente}&text=""`,
         "_blank"
       );
     },
@@ -1941,7 +2005,7 @@ export default {
   created() {
     this.loadAgendamentos();
     this.list();
-    this.readClinica()
+    this.readClinica();
   },
 };
 </script>
@@ -1958,11 +2022,9 @@ export default {
   font-family: "Mitr", sans-serif;
 }
 
-.whatsPaciente{
-cursor: pointer;
+.whatsPaciente {
+  cursor: pointer;
 }
-
-
 
 .avatar {
   display: flex;
@@ -1971,7 +2033,6 @@ cursor: pointer;
 .consulta {
   margin-top: 10px;
   font-family: "Monda", sans-serif;
-  height: 1640px;
 }
 
 .check {

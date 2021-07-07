@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="consultaAnamnese">
-    <div>
+    <div >
       <b-card-group deck>
             <b-toast
           id="example-toast"
@@ -324,6 +324,7 @@ export default {
       logoOlho: logoOlho,
       visualizar: this.Visualizar,
       anamnese: [],
+    
       sintomas: [
         { text: "Prurido", value: "PRURIDO" },
         { text: "Fotofobia", value: "FOTOFOBIA" },
@@ -338,6 +339,13 @@ export default {
         { text: "Força a Visão", value: "FORCAVISAO" },
         { text: "Cansaço Visual", value: "CANSACOVISUAL" },
         { text: "Sensibilidade a Luz", value: "SENSIBILIDADELUZ" },
+        { text: "Visão Dupla", value: "VISAO_DUPLA" },
+        { text: "Fotopsias - fosfeno", value: "FOTOPSIAS" },
+        { text: "Miodesopsia", value: "MIODESOPSIA" },
+        { text: "Enxaqueca", value: "EXAQUECA" },
+        { text: "Astenopia", value: "ASTENOPIA" },
+        { text: "Halos", value: "HALOS" },
+        
       ],
       doencaOcular: [
         { text: "Glaucoma", value: "GLAUCOMA" },
@@ -345,7 +353,16 @@ export default {
         { text: "Pterígio", value: "PTEREGIO_OD" },
         { text: "Ceratocone", value: "CERATOCONE" },
         { text: "Estrabismo", value: "ESTRABISMO" },
-        { text: "Conjuntivite", value: "CONJUNTIVITE" },
+        { text: "Trauma Ocular", value: "TRAUMA_OCULAR" },
+        { text: "Corpo Estranho", value: "CORPO_ESTRANHO" },
+        { text: "Queimaduras", value: "QUEIMADURAS" },
+        { text: "Inflamações", value: "INFLAMACOES" },
+        { text: "Cegueira", value: "CEGUEIRA" },
+        { text: "Descolamento de Retina", value: "DESCOLAMENTO_RETINA" },
+        { text: "Toxoplasmose", value: "TOXOPLASMOSE" },
+        { text: "Extrabismo", value: "EXTRABISMO" },
+        { text: "Alérgico", value: "ALERGICO" },
+        { text: "Defeitos de Refração", value: "DEFEITOS_REFRACAO" },
       ],
       doencaSistematica: [
         { text: "Asma", value: "ASMA" },

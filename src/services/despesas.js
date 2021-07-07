@@ -2,45 +2,57 @@ import { http } from './config'
 
 
 export default {
-    save: (despesa) => {
-        return http.post('/Despesa', {...despesa})
-    },
+  save: (despesa) => {
+    return http.post('/Despesa', { ...despesa })
+  },
 
-    readAll: () =>{
-        return http.get('/Despesa/readAll')
-    },
+  saveFixa: (despesa, qtdMese) => {
+    return http.post(`/Despesa/contaFixa/${qtdMese}`, { ...despesa })
+  },
 
-    read: (uuid) => {
-        return http.get(`Despesa/read/${uuid}`)
-    },
+  readAll: () => {
+    return http.get('/Despesa/readAll')
+  },
 
-    delete: (uuid) => {
-        return http.delete(`/Despesa/${uuid}`)
-    },
+  read: (uuid) => {
+    return http.get(`Despesa/read/${uuid}`)
+  },
 
-    update: (despesa) => {
-        return http.put(`Despesa/${despesa.uuid}`, {...despesa})    
-    },
+  delete: (uuid) => {
+    return http.delete(`/Despesa/${uuid}`)
+  },
 
-    readDate: (dataInicial, dataFinal) =>{
-      return http.get(`Despesa/readDate/${dataInicial}/${dataFinal}`)
-    },
+  update: (despesa) => {
+    return http.put(`Despesa/${despesa.uuid}`, { ...despesa })
+  },
 
-    readDatePagas: (dataInicial, dataFinal, pago) =>{
-        return http.get(`Despesa/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
-      },
+  readDate: (dataInicial, dataFinal) => {
+    return http.get(`Despesa/readDate/${dataInicial}/${dataFinal}`)
+  },
 
-    readValorDespesa: (dataInicial, dataFinal) =>{
-        return http.get(`Despesa/readValorDespesa/${dataInicial}/${dataFinal}`)
-      },
-      
-    readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
-      return http.get(`Despesa/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
-    },
+  readDatePagas: (dataInicial, dataFinal, pago) => {
+    return http.get(`Despesa/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
+  },
 
-    readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
-        console.log(pago, "aaaaa")
-        return http.get(`Despesa/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
-      }
+  readValorDespesa: (dataInicial, dataFinal) => {
+    return http.get(`Despesa/readValorDespesa/${dataInicial}/${dataFinal}`)
+  },
+
+  readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
+    return http.get(`Despesa/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
+  },
+
+  readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
+    console.log(pago, "aaaaa")
+    return http.get(`Despesa/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
+  },
+
+  readDateAberto: (dataInicial, dataFinal) => {
+    return http.get(`Despesa/readDateAberto/${dataInicial}/${dataFinal}`)
+  },
+
+  readDateAbertoFP: (dataInicial, dataFinal, idFormaPagamento) => {
+    return http.get(`Despesa/readDateAbertoFp/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
+  }
 
 }

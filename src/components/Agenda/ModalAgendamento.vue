@@ -127,6 +127,23 @@
                     ></b-form-input>
                   </b-form-group>
 
+                   <b-form-group
+                    id="input-group-1"
+                    label="Data Pagamento:"
+                    label-for="input-1"
+                    
+                  >
+                    <b-form-input
+                      class="bg-primary text-white col-sm-12"
+                      size="sm"
+                      type="date"
+                      v-model="agendamento.dataPagamento"
+                      v-b-popover.hover.bottom="
+                    'Campo Obrigatorio, Informe a Data que a consulta será realizada'
+                  "
+                    ></b-form-input>
+                  </b-form-group>
+
                   <b-form-group
                     id="input-group-1"
                     label="Horário do Procedimento :"
@@ -529,7 +546,7 @@ export default {
         recebido: false,
         observacao: "",
         titulo: "",
-        dataPagamento: null,
+        dataPagamento: "",
       },
     };
   },

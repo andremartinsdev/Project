@@ -176,7 +176,8 @@
 
 <script>
 import ClinicaService from "../../services/clinica";
-import baseUrl from '../../../vue.config'
+import { http } from '../../services/config';
+// import baseUrl from '../../../vue.config'
 export default {
   data() {
     return {
@@ -200,7 +201,7 @@ export default {
         email: "",
         cidade: "",
         estado: "",
-        logo: `${baseUrl.baseUrl}/Clinica/image/logo`,
+        logo: "",
       },
 
       editar: true,
@@ -228,10 +229,8 @@ export default {
         if (result.data.result.length === 0) {
           return;
         }
-        this.clinica.nomeClinica = result.data.result[0].nomeClinica;
-        this.clinica.cnpjcpf = result.data.result[0].cnpjcpf;
-        this.clinica.uuid = result.data.result[0].uuid;
-        console.log(result.data.result[0].nomeClinica);
+        Object.assign(this.clinica, result.data.result[0])
+        this.clinica.logo = `${http.prototype.constructor.defaults.baseURL}/Clinica/image/logo/${result.data.result[0].uuid}`
       } catch (error) {
         // console.log("erro");
       }
@@ -254,27 +253,27 @@ export default {
     },
 
     async saveClinica() {
-      // if (this.clinica.uuid) {
-      //   try {
-      //     // this.clinica.logo = await this.toBase64(file);
-      //     await ClinicaService.update(this.clinica, this.clinica.uuid);
-      //     this.showAlert("success", "Registro Atualizado com Sucesso");
-      //     this.editar = true;
-      //   } catch (error) {
-      //     this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
-      //   }
-      // } else {
-      //   try {
-      //     const file = document.querySelector('input[type=file]').files[0]
-      //     // this.clinica.logo = await this.toBase64(file);
-      //     const result = await ClinicaService.save(this.clinica);
-      //     this.clinica.uuid = result.data.result.uuid;
-      //     this.showAlert("success", "Registro Salvo com Sucesso");
-      //     this.editar = true;
-      //   } catch (error) {
-      //     this.showAlert("error", "Ops! ocorreu um erro o Salvar Registro");
-      //   }
-      // }
+      if (this.clinica.uuid) {
+        try {
+          // this.clinica.logo = await this.toBase64(file);
+          await ClinicaService.update(this.clinica, this.clinica.uuid);
+          this.showAlert("success", "Registro Atualizado com Sucesso");
+          this.editar = true;
+        } catch (error) {
+          this.showAlert("error", "Ops! ocorreu um erro a Atualizar Registro");
+        }
+      } else {
+        try {
+          // const file = document.querySelector('input[type=file]').files[0]
+          // this.clinica.logo = await this.toBase64(file);
+          const result = await ClinicaService.save(this.clinica);
+          this.clinica.uuid = result.data.result.uuid;
+          this.showAlert("success", "Registro Salvo com Sucesso");
+          this.editar = true;
+        } catch (error) {
+          this.showAlert("error", "Ops! ocorreu um erro o Salvar Registro");
+        }
+      }
     },
 
     async readLogo() {
