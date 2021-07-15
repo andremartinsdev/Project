@@ -1,7 +1,7 @@
 <template>
   <div role="tablist">
     <b-input hidden></b-input>
-
+  
     <b-input v-model="uuidFichaProps" hidden></b-input>
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">

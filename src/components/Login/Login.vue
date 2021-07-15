@@ -83,6 +83,8 @@ export default {
     };
   },
 
+  
+
   methods: {
     showAlert(icon, title) {
       // Use sweetalert2

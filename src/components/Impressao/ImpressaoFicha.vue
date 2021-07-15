@@ -463,10 +463,34 @@ import biomicro from "../../assets/biomicro.png";
 import oftalmo from "../../assets/oftalmo.png";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+// import serviceFichaClinica from "../../services/fichaClinica";
 export default {
-  created() {},
+  mounted() {
+    this.imprimir();
+  },
   data() {
     return {
+      acuidade: [{}],
+      adicao: [{}],
+      afinamento: [{}],
+      amplitude: [{}],
+      anamnese: [{}],
+      avMotara: [{}],
+      biomicro2: [{}],
+      cerametria: [{}],
+      dx: [{}],
+      flexDeAcomodacao: [{}],
+      forometria: [{}],
+      oftalmoscopia: [],
+      ppc: [{}],
+      prescricaoUltimoExame: [{}],
+      reflexoPulpilar: [{}],
+      reservasFusionais: [{}],
+      retinoscopia: [{}],
+      rxFinal: [{}],
+      subjetivo: [{}],
+      testeAmbulatorial: [{}],
+      tonometria: [{}],
       oftalmo: oftalmo,
       avMotora: avMotora,
       biomicro: biomicro,
@@ -557,7 +581,17 @@ export default {
     };
   },
   methods: {
-    teste() {
+    // async readConsulta() {
+    //   const { data } = await serviceFichaClinica.read(this.$route.params.uuid);
+    //   console.log(data.ficha[0].json_fichaClinica);
+    //   Object.keys(data.ficha[0].json_fichaClinica).map(el =>{
+    //     this.[el].push(data.ficha[0].json_fichaClinica[el])
+    //   })
+
+    //   console.log(this.prescricaoUltimoExame)
+    // },
+
+    imprimir() {
       const doc = new jsPDF();
       doc.autoTable({
         html: "#sintomas",
@@ -778,7 +812,6 @@ export default {
         tableWidth: 100,
       });
 
-      
       doc.rect(2, 218, 105, 55);
       doc.setFontSize(10).setTextColor(150).text("Rx Final", 50, 225);
       doc
@@ -806,6 +839,7 @@ export default {
       // })
 
       window.open(doc.output("bloburl"));
+       this.$router.push("/Consulta");
     },
   },
 };

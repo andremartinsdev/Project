@@ -86,29 +86,45 @@
                 v-model="despesa.observacao"
               ></b-form-textarea>
             </div>
-            <b-card
+             <b-card
               class="mt-4 text-center"
-              bg-variant="danger"
-              v-if="statusPagementoDate === 'emAberto'"
+              bg-variant="success"
+              v-if="despesa.despesaPaga"
             >
-              <b-form-select
-                class="col-sm-4"
-                size="sm"
-                v-model="statusPagementoDate"
-                :options="statusPagamento"
-                @change="mudarDataPagamento"
-              >
-              </b-form-select>
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  v-model="despesa.despesaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="true"
+                  >Conta Paga</b-form-radio
+                >
+                <b-form-radio
+                  v-model="despesa.despesaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="false"
+                  >Conta em Aberto</b-form-radio
+                >
+              </b-form-group>
             </b-card>
-
-            <b-card class="mt-4 text-center" bg-variant="success" v-else>
-              <b-form-select
-                class="col-sm-4"
-                size="sm"
-                v-model="statusPagementoDate"
-                :options="statusPagamento"
-              >
-              </b-form-select>
+            <b-card class="mt-4 text-center" v-else bg-variant="danger">
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  v-model="despesa.despesaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="true"
+                  >Conta Paga</b-form-radio
+                >
+                <b-form-radio
+                  v-model="despesa.despesaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="false"
+                  >Conta em Aberto</b-form-radio
+                >
+              </b-form-group>
             </b-card>
           </div>
         </b-tab>
@@ -200,7 +216,7 @@ export default {
         dataPagamento: null,
         dataVencimento: "",
         idFormaPagamento: null,
-        despesaPaga: "",
+        despesaPaga: false,
         valor: 0,
         observacao: "",
       },
@@ -224,12 +240,13 @@ export default {
     this.readFormaPagamento();
     this.readDespesas();
   },
+
   methods: {
     mudarDataPagamento() {
+      this.despesa.despesaPaga = !this.despesa.despesaPaga;
+      console.log(this.despesa.despesaPaga);
       if (this.statusPagementoDate === "pago") {
         this.despesa.dataPagamento = moment().format("YYYY-MM-DD");
-        this.despesa.despesaPaga = true;
-        console.log(this.despesa.dataPagamento);
         return;
       }
       this.despesa.dataPagamento = null;
@@ -368,6 +385,7 @@ export default {
         this.despesa.valor = this.despesa.valor.replace("R$", "");
         this.despesa.valor = this.despesa.valor.replace(".", "");
         this.despesa.valor = this.despesa.valor.replace(",", ".");
+        console.log(this.despesa)
         DespesaService.update(this.despesa)
           .then((result) => {
             if (result.status === 201) {

@@ -63,28 +63,44 @@
               ></b-form-textarea>
             </div>
             <b-card
-              class="mt-4"
-              v-if="receitaData.receitaPaga === false"
-              bg-variant="danger"
+              class="mt-4 text-center"
+              bg-variant="success"
+              v-if="receitaData.receitaPaga"
             >
-              <b-form-checkbox
-                id="checkbox-1"
-                v-model="receitaData.receitaPaga"
-                name="checkbox-1"
-                class="text-white text-center"
-              >
-                Receber Receita
-              </b-form-checkbox>
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  v-model="receitaData.receitaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="true"
+                  >Conta Paga</b-form-radio
+                >
+                <b-form-radio
+                  v-model="receitaData.receitaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="false"
+                  >Conta em Aberto</b-form-radio
+                >
+              </b-form-group>
             </b-card>
-            <b-card class="mt-4" v-else bg-variant="success">
-              <b-form-checkbox
-                id="checkbox-1"
-                v-model="receitaData.receitaPaga"
-                name="checkbox-1"
-                class="text-white text-center"
-              >
-                Receita Recebida
-              </b-form-checkbox>
+            <b-card class="mt-4 text-center" v-else bg-variant="danger">
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  v-model="receitaData.receitaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="true"
+                  >Conta Paga</b-form-radio
+                >
+                <b-form-radio
+                  v-model="receitaData.receitaPaga"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  :value="false"
+                  >Conta em Aberto</b-form-radio
+                >
+              </b-form-group>
             </b-card>
           </div>
         </b-tab>
@@ -172,6 +188,11 @@ export default {
   },
   data() {
     return {
+      statusPagamento: [
+        { text: "Pago", value: "pago" },
+        { text: "Em Aberto", value: "emAberto" },
+      ],
+      statusPagementoDate: "emAberto",
       tabIndexReceita: 0,
       formaDePagamento: [],
       receitas: [],
@@ -194,6 +215,15 @@ export default {
     };
   },
   methods: {
+    mudarDataPagamento() {
+      console.log(this.receitaData.receitaPaga);
+      if (this.statusPagementoDate === "emAberto") {
+        this.statusPagementoDate = "pago";
+      } else {
+        this.statusPagementoDate = "emAberto";
+      }
+      this.receitaData.receitaPaga = !this.receitaData.receitaPaga;
+    },
     openFormaPagamento() {
       this.$bvModal.show("modal-lg-addFormaPagamento");
     },
@@ -343,8 +373,8 @@ export default {
       }
     },
 
-     reloadForma(){
-      this.$emit("reloadForma")
+    reloadForma() {
+      this.$emit("reloadForma");
     },
 
     formaPagamento(descricao, idFormaPagamento) {
@@ -362,7 +392,6 @@ export default {
             this.formaPagamento(el.descricao, el.uuid)
           );
         });
-
       });
     },
   },

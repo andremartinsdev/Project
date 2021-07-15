@@ -1036,6 +1036,19 @@
                             @click="pesquisarFicha"
                             >Pesquisar</b-button
                           >
+ <router-link
+            class="nav-link mr-5"
+            to="/Impressao"
+            style="padding: 0"
+          >
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            class="mb-3 ml-2"
+                            
+                            >Imprimir Ficha em Branco</b-button
+                          >
+ </router-link>
                         </div>
                       </div>
                     </div>
@@ -1485,6 +1498,8 @@ export default {
     }),
   },
   methods: {
+   
+
     imprimirPrescri() {
       const doc = new jsPDF();
 

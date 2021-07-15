@@ -43,7 +43,7 @@ Vue.use(BootstrapVueIcons);
 Vue.config.productionTip = false
 
 
-console.log('env', process.env);
+
 
 new Vue({
   url: 'http://localhost:3002',

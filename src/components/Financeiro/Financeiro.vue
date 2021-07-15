@@ -141,9 +141,9 @@
         <h4 class="mb-4">Contas a Receber</h4>
         <b-card-group deck>
           <!-- CARD 1 -->
-          <CardContasAReceber />
-          <CardContasAReceberRecebidas />
-          <CardContasAReceberAbertas />
+          <CardContasAReceber  :search="search" />
+          <CardContasAReceberRecebidas  :search="search" />
+          <CardContasAReceberAbertas  :search="search" />
           <!-- <b-card
           header-tag="header"
           bg-variant="info"

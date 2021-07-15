@@ -69,7 +69,7 @@ const routes = [
         }
     },
     {
-        path: '/Impressao/:uuid',
+        path: '/Impressao',
         component: Impressao,
         meta: {
             requiresAuth: true
