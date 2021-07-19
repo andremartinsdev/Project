@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "http://optometrista.bmsltda.com.br",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -12,6 +15,7 @@
     "heroku-postbuild": "npm run build",
     "install:clean":"rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run dev"
   },
+  
   "dependencies": {
     "@fullcalendar/daygrid": "^5.3.0",
     "@fullcalendar/interaction": "^5.0.0",
