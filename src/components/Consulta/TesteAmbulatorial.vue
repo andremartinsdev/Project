@@ -91,7 +91,7 @@ export default {
   },
 
   methods: {
-    createPDF() {
+   async createPDF() {
       let pdfName = "Teste Ambulatorial";
       var doc = new jsPDF();
       var linha = 90;
@@ -114,7 +114,7 @@ export default {
         )
         .setTextColor(0);
 
-       rodape(doc, this.dadosClinica, this.uuidClinica)
+      await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       doc.save(pdfName + ".pdf");
     },

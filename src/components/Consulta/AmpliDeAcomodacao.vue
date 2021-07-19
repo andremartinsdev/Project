@@ -71,8 +71,8 @@
 import jsPDF from "jspdf";
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
-import { mapState } from 'vuex'
-import rodape from '../../services/rodape'
+import { mapState } from "vuex";
+import rodape from "../../services/rodape";
 
 export default {
   props: {
@@ -86,13 +86,13 @@ export default {
   watch: {
     amplitudeProps() {
       if (Object.keys(this.amplitudeProps).length === 0) {
-         this.ampliDeAcomodacao = {
-        OD: "",
-        NIVEL_OD: "",
-        OE: "",
-        NIVEL_OE: "",
-      };
-      }else{
+        this.ampliDeAcomodacao = {
+          OD: "",
+          NIVEL_OD: "",
+          OE: "",
+          NIVEL_OE: "",
+        };
+      } else {
         this.ampliDeAcomodacao = { ...this.amplitudeProps };
         this.enviarAmpliDeAcomodacao();
       }
@@ -104,7 +104,7 @@ export default {
         OE: "",
         NIVEL_OE: "",
       };
-      this.$emit('alteraLimpar', false)
+      this.$emit("alteraLimpar", false);
       this.$store.commit("AMPLITUDE_ACOMODACAO", this.ampliDeAcomodacao);
     },
   },
@@ -121,15 +121,15 @@ export default {
     };
   },
 
-   computed:{
+  computed: {
     ...mapState({
       dadosClinica: (state) => state.dadosClinica,
-      uuidClinica: (state) => state.uuidClinica
-    })
+      uuidClinica: (state) => state.uuidClinica,
+    }),
   },
 
   methods: {
-       createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Amplitude de Acomodação";
       var doc = new jsPDF();
       var linha = 85;
@@ -141,19 +141,19 @@ export default {
       doc.text("Olho Direito : ", 25, linha, null, null);
       doc.text(this.ampliDeAcomodacao.OD, 55, linha, null, null);
 
-      doc.text("Nivel : ", 25, linha+8, null, null);
-      doc.text(this.ampliDeAcomodacao.NIVEL_OD, 40, linha+8, null, null);
+      doc.text("Nivel : ", 25, linha + 8, null, null);
+      doc.text(this.ampliDeAcomodacao.NIVEL_OD, 40, linha + 8, null, null);
 
       doc.text("Olho Esquerdo : ", 150, linha, null, null);
       doc.text(this.ampliDeAcomodacao.OE, 185, linha, null, null);
 
-      doc.text("Nivel : ", 150, linha+8, null, null);
-      doc.text(this.ampliDeAcomodacao.NIVEL_OE, 164, linha+8, null, null);
+      doc.text("Nivel : ", 150, linha + 8, null, null);
+      doc.text(this.ampliDeAcomodacao.NIVEL_OE, 164, linha + 8, null, null);
 
       doc.text("Técnica : Sheard 40 cm", 92, 150, null, null);
-   rodape(doc, this.dadosClinica, this.uuidClinica)
-      
-      if(download){
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
+
+      if (download) {
         doc.save(pdfName + ".pdf");
         return;
       }

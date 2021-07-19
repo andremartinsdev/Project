@@ -90,7 +90,7 @@ export default {
     }),
   },
   methods:{
-     createPDF(download) {
+     async createPDF(download) {
       let pdfName = "Subjetivo";
       var doc = new jsPDF();
       var linha = 90;
@@ -113,7 +113,7 @@ export default {
       doc.text("AV : ", 145, linha+8, null, null).setTextColor(0,0,255);
       doc.text(this.subjetivo.AV_OE, 155, linha+8, null, null).setTextColor(0);
 
-     rodape(doc, this.dadosClinica, this.uuidClinica)
+     await rodape(doc, this.dadosClinica, this.uuidClinica)
       if(download){
         doc.save(pdfName + ".pdf");
         return;

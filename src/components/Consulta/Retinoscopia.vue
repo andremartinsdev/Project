@@ -101,7 +101,7 @@ export default {
   },
 
   methods:{
-     createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Retinoscopia";
       var doc = new jsPDF();
       var linha = 85;
@@ -125,7 +125,7 @@ export default {
       doc.text(this.retinoscopia.AV_OE, 155, linha+8, null, null).setTextColor(0);
 
 
-     rodape(doc, this.dadosClinica, this.uuidClinica)
+     await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if(download){
         doc.save(pdfName + ".pdf");

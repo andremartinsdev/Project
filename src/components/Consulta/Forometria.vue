@@ -122,7 +122,7 @@ export default {
 
   methods:{
     
-     createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Retinoscopia";
       var doc = new jsPDF();
       var linha = 90;
@@ -152,7 +152,7 @@ export default {
 
       doc.text(`Técnica : ${this.forometria.TECNICA}`, 92, 150, null, null);
 
-     rodape(doc, this.dadosClinica, this.uuidClinica)
+     await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if(download){
         doc.save(pdfName + ".pdf");

@@ -111,7 +111,7 @@ export default {
   },
 
   methods: {
-    createPDF(download) {
+    async createPDF(download) {
       let pdfName = "PrescricaoUltimoExame";
       var doc = new jsPDF();
       var linha = 85;
@@ -128,7 +128,7 @@ export default {
       doc.text("Miras", 150, linha, null, null);
       doc.text(this.cerametria[0].miras, 150, linha + 8, null, null);
 
-      rodape(doc, this.dadosClinica, this.uuidClinica)
+      await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if (download) {
         doc.save(pdfName + ".pdf");

@@ -132,7 +132,7 @@ export default {
   },
 
   methods: {
-    createPDF(download) {
+   async createPDF(download) {
       let pdfName = "Amplitude de Acomodação";
       var doc = new jsPDF();
       var linha = 85;
@@ -155,7 +155,7 @@ export default {
       doc.text("Ciclos : ", 145, linha+8, null, null).setTextColor(0,0,255);
       doc.text(this.flexDeAcomodacao.CICLOS_OE, 162, linha+8, null, null).setTextColor(0);
 
-      rodape(doc, this.dadosClinica, this.uuidClinica)
+     await rodape(doc, this.dadosClinica, this.uuidClinica)
       
       if(download){
         doc.save(pdfName + ".pdf");

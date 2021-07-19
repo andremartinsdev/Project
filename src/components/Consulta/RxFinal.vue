@@ -250,7 +250,7 @@ export default {
   },
 
   methods: {
-    createPDF(download) {
+    async createPDF(download) {
       // let pdfName = "Adição";
       var doc = new jsPDF();
       var linha = 90;
@@ -329,7 +329,7 @@ export default {
         .setTextColor(0);
       doc.text(this.rxFinal.TRATAMENTO, 145, linha + 8, null, null);
 
-      rodape(doc, this.dadosClinica, this.uuidClinica)
+     await rodape(doc, this.dadosClinica, this.uuidClinica)
       if (download) {
         doc.save("RxFinal.pdf");
         return;

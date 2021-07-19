@@ -1544,6 +1544,7 @@ export default {
     mudarEditar() {
       this.editar = false;
     },
+    
 
     async readClinica() {
       try {

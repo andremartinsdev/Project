@@ -402,7 +402,7 @@ export default {
   },
 
   methods: {
-createPDF(download) {
+async createPDF(download) {
       // console.log(this.propsAnamnese2);
       let pdfName = "Biomicro";
       var doc = new jsPDF();
@@ -515,7 +515,7 @@ createPDF(download) {
       })
 
 
-    rodape(doc, this.dadosClinica, this.uuidClinica)
+    await rodape(doc, this.dadosClinica, this.uuidClinica)
       if(download){
         doc.save(pdfName + ".pdf");
         return;

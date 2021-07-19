@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Sidebar />
     <div class="formCliente">
       <div>
         <b-card no-body>
@@ -160,8 +161,7 @@
                       @click="aplicar"
                       class="mr-2 float-right"
                     >
-                      <b-icon-image class="mr-3"></b-icon-image
-                      >Salvar Logo
+                      <b-icon-image class="mr-3"></b-icon-image>Salvar Logo
                     </b-button>
                   </div>
                 </b-container>
@@ -176,9 +176,13 @@
 
 <script>
 import ClinicaService from "../../services/clinica";
-import { http } from '../../services/config';
+import { http } from "../../services/config";
+import Sidebar from "../../components/SidebarNavbar.vue";
 // import baseUrl from '../../../vue.config'
 export default {
+  components: {
+    Sidebar,
+  },
   data() {
     return {
       selected: "juridica",
@@ -229,8 +233,8 @@ export default {
         if (result.data.result.length === 0) {
           return;
         }
-        Object.assign(this.clinica, result.data.result[0])
-        this.clinica.logo = `${http.prototype.constructor.defaults.baseURL}/Clinica/image/logo/${result.data.result[0].uuid}`
+        Object.assign(this.clinica, result.data.result[0]);
+        this.clinica.logo = `${http.prototype.constructor.defaults.baseURL}/Clinica/image/logo/${result.data.result[0].uuid}`;
       } catch (error) {
         // console.log("erro");
       }
@@ -239,17 +243,16 @@ export default {
     async aplicar() {
       try {
         if (this.file != null) {
-        const file = document.querySelector("input[type=file]").files[0];
-        const logo = await this.toBase64(file);
-        await ClinicaService.saveLogo(logo, this.clinica.uuid);
-        window.location.reload();
-        return;
-      }
-      this.showAlert("info", "Por favor Selecione uma Imagem");
+          const file = document.querySelector("input[type=file]").files[0];
+          const logo = await this.toBase64(file);
+          await ClinicaService.saveLogo(logo, this.clinica.uuid);
+          window.location.reload();
+          return;
+        }
+        this.showAlert("info", "Por favor Selecione uma Imagem");
       } catch (error) {
-        this.showAlert("error", "Ocorreu um erro ao Salvar Logo")
+        this.showAlert("error", "Ocorreu um erro ao Salvar Logo");
       }
-      
     },
 
     async saveClinica() {
@@ -286,12 +289,17 @@ export default {
     },
 
     toBase64(file) {
-      return new Promise((resolve, reject) => {
+      try {
+        return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
       });
+      } catch (error) {
+        this.showAlert("error", "Ops! ocorreu um erro o base64");
+      }
+      
     },
   },
 };

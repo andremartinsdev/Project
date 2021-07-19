@@ -279,6 +279,9 @@
         </div>
       </b-card>
     </b-modal>
+     <!-- <b-modal id="modal-12" size="lg" title="Configuração">
+       <Config/>
+  </b-modal> -->
     <ModalAniversariante />
     <ModalConsultaVencida />
     <ModalProxConsultas />
@@ -303,6 +306,8 @@ import logoOpto from "../../assets/logoOpto.jpg";
 import logoAaniversario from "../../assets/logoAaniversario.jpg";
 import Agendamento from "../Agenda/Agendamento";
 import Sidebar from "../../components/SidebarNavbar.vue";
+// import Config from "../../components/Configuracoes/ConfiguracoesGeral.vue";
+
 
 export default {
   components: {

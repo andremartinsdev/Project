@@ -428,7 +428,7 @@ export default {
       };
     },
 
-    createPDF(download) {
+   async createPDF(download) {
       let pdfName = "Prescrição Lente";
       var doc = new jsPDF();
       var linha = 85;
@@ -486,7 +486,7 @@ export default {
       doc.text(`Observação`, 70, linha + 70, null, null);
       doc.text(this.prescricaoLente.observacao, 70, linha + 80, null, null);
 
-     rodape(doc, this.dadosClinica, this.uuidClinica)
+     await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if (download) {
         doc.save(pdfName + ".pdf");

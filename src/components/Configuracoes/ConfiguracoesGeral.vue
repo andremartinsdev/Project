@@ -1,15 +1,12 @@
 <template>
   <div>
-    <Sidebar />
     <b-card class="m-2">
       <h3 class="text-center mb-3">Configurações</h3>
-      <div class="col-sm-12" style="display: flex;">
-        <div class="col-sm-6 divDragg">
-          <h6 class="text-center mt-3 mb-4">Ordenar Ficha Clínica</h6>
-          <dragg @ordemFicha="setOrdemFicha($event)"/>
-        </div>
-        <div class="col-sm-6">
-          <h6 class="text-center mt-3 mb-4">Configurar Moldura para Relatório</h6>
+      <div class="col-sm-12" style="display: flex">
+        <div class="col-sm-12">
+          <h6 class="text-center mt-3 mb-4">
+            Configurar Moldura para Relatório
+          </h6>
 
           <b-card
             class="col-sm-12 text-center cardMoldura"
@@ -48,24 +45,22 @@
           </b-card>
         </div>
       </div>
-      <b-button @click="save" block class="mt-3 mb-3" variant="primary">salvar</b-button>
+      <b-button @click="save" block class="mt-3 mb-3" variant="primary"
+        >Salvar</b-button
+      >
     </b-card>
   </div>
 </template>
 
 <script>
 import moldura from "../../assets/moldura.png";
-import Sidebar from "../SidebarNavbar.vue";
-import Config from "../../services/configGeral"
-import dragg from "../../components/Consulta/dragg.vue";
+import Config from "../../services/configGeral";
 export default {
-  components: {
-    dragg,
-    Sidebar,
-  },
+  components: {},
 
   data() {
     return {
+      uuid: "",
       molduraVisualizada:
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOQAAADdCAMAAACc/C7aAAAAA1BMVEX+/v7IGnAoAAAASElEQVR4nO3BgQAAAADDoPlTX+EAVQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACcBsWxAAHcrYvnAAAAAElFTkSuQmCC",
       moldura,
@@ -75,23 +70,60 @@ export default {
         { text: "Padrão", value: "padrao" },
       ],
       mainProps: { width: 122, height: 5 },
-      ordemFicha: []
+      ordemFicha: [],
     };
   },
   created() {
-    this.selecionarMoldura();
+    this.read();
   },
   methods: {
-    setOrdemFicha(ficha){
-      this.ordemFicha = ficha
-      console.log(this.ordemFicha)
+    setOrdemFicha(ficha) {
+      this.ordemFicha = ficha;
+      console.log(this.ordemFicha);
     },
-    async save(){
-    const result = await Config.save({molduraRelatorio: this.molduraSelect, ordemFixaClinica: this.ordemFicha})
-    console.log(result)
+
+    showAlert(icon, title) {
+      // Use sweetalert2
+      this.$swal({
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    },
+
+    async read() {
+      try {
+        const result = await Config.read();
+        console.log(result.data.result.result);
+        this.uuid = result.data.result.result[0].uuid;
+        this.molduraSelect = result.data.result.result[0].molduraRelatorio;
+        this.selecionarMoldura();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async save() {
+      try {
+        if (this.uuid) {
+          await Config.update(this.uuid, {
+            molduraRelatorio: this.molduraSelect,
+            ordemFixaClinica: this.ordemFicha,
+          });
+          this.showAlert("success", "Configuração Editada com Sucesso");
+          return;
+        }
+        await Config.save({
+          molduraRelatorio: this.molduraSelect,
+          ordemFixaClinica: this.ordemFicha,
+        });
+        this.showAlert("success", "Configuração Salva com Sucesso");
+      } catch (error) {
+        console.log(error)
+      }
     },
     selecionarMoldura() {
-      console.log("entroooou");
       if (this.molduraSelect === "padrao") {
         this.molduraVisualizada = this.moldura;
         return;
@@ -114,13 +146,13 @@ export default {
 }
 .divImgMoldura {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 .imgRotate {
   transform: rotate(180deg);
-} 
+}
 
-.divDragg{
+.divDragg {
   max-height: 500px;
   overflow-y: scroll;
 }

@@ -266,7 +266,7 @@ export default {
       this.$store.commit("PRESCRICAO_ULTIMO_EXAME", this.prescricaoUltExame);
     },
 
-    createPDF(download) {
+   async createPDF(download) {
       let pdfName = "PrescricaoUltimoExame";
       var doc = new jsPDF();
       var linha_oe = 85;
@@ -307,7 +307,7 @@ export default {
         null,
         null
       );
-          rodape(doc, this.dadosClinica, this.uuidClinica)
+         await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if (download) {
         doc.save(pdfName + ".pdf");

@@ -444,7 +444,7 @@ export default {
     },
     
 
-       createPDF(download) {
+      async createPDF(download) {
       let pdfName = "Anamnese ";
       var doc = new jsPDF();
       var linha = 90;
@@ -567,7 +567,7 @@ export default {
 
 
       }
-    rodape(doc, this.dadosClinica, this.uuidClinica)
+    await rodape(doc, this.dadosClinica, this.uuidClinica)
       
       doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
       doc.addImage(this.moldura, "JPEG", 0, 248, 230, 70);

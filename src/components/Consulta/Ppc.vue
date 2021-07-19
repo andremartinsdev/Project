@@ -95,6 +95,8 @@
 import jsPDF from "jspdf";
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
+import rodape from "../../services/rodape";
+import { mapState } from "vuex";
 export default {
   props: {
     Limpar: {
@@ -103,6 +105,13 @@ export default {
     ppcProps: {
       type: Object,
     },
+  },
+
+  computed: {
+    ...mapState({
+      dadosClinica: (state) => state.dadosClinica,
+      uuidClinica: (state) => state.uuidClinica,
+    }),
   },
 
   watch: {
@@ -162,7 +171,7 @@ export default {
   },
 
   methods: {
-    createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Reflexos Pulpilares";
       var doc = new jsPDF();
       var linha = 85;
@@ -219,11 +228,7 @@ export default {
         }
       });
 
-      doc.setFont("times", "italic");
-      doc.text("Rua Geraldo Rodrigues Cunha, 162, Centro, Viçosa-MG", 80, 240);
-
-      doc.addImage(this.moldura, "JPEG", 0, 230, 230, 70);
-      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
       if (download) {
         doc.save(pdfName + ".pdf");
         return;

@@ -81,7 +81,7 @@
           </router-link>
            <router-link
             class="nav-link mr-5"
-            to="/Financeiro"
+            to="#"
             style="padding: 0"
           >
             <b-img
@@ -89,6 +89,7 @@
               :src="config"
               alt="Center image"
               width="35"
+              @click="teste"
             ></b-img>
             <label class="text-white">Configurações</label>
           </router-link>
@@ -238,6 +239,9 @@
           </div>
         </template>
       </b-sidebar>
+       <b-modal id="modal-12" size="lg" title="Configuração">
+       <Config/>
+  </b-modal>
     </div>
   </div>
 </template>
@@ -256,6 +260,8 @@ import config from "../assets/configuracao-min.png";
 import saida from "../assets/saida.png";
 import ClinicaService from "../services/clinica";
 import { mapState } from "vuex";
+import Config from "../components/Configuracoes/ConfiguracoesGeral.vue";
+
 // import baseUrl from '../../vue.config'
 
 import moment from "moment";
@@ -273,6 +279,11 @@ export default {
       uuidClinica: (state) => state.uuidClinica,
     }),
   },
+
+  components:{
+    Config
+  },
+
   data() {
     return {
       config: config,
@@ -314,6 +325,10 @@ export default {
   },
 
   methods: {
+    teste(){
+      console.log("entroo");
+      this.$bvModal.show("modal-12")
+    },
     logout() {
       sessionStorage.removeItem("token");
     },

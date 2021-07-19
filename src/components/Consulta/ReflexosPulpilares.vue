@@ -171,7 +171,7 @@ export default {
   },
   methods: {
     
-    createPDF(download) {
+   async createPDF(download) {
       let pdfName = "Reflexos Pulpilares";
       var doc = new jsPDF();
       var linha = 85;
@@ -264,7 +264,7 @@ export default {
         }
       });
 
-      rodape(doc, this.dadosClinica, this.uuidClinica)
+      await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if (download) {
         doc.save(pdfName + ".pdf");

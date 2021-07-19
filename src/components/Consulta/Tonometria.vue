@@ -47,14 +47,13 @@
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
 import jsPDF from "jspdf";
-import rodape from '../../services/rodape'
-import { mapState } from 'vuex'
+import rodape from "../../services/rodape";
+import { mapState } from "vuex";
 export default {
-
-   computed: {
+  computed: {
     ...mapState({
       dadosClinica: (state) => state.dadosClinica,
-      uuidClinica: (state) => state.uuidClinica
+      uuidClinica: (state) => state.uuidClinica,
     }),
   },
   props: {
@@ -103,7 +102,7 @@ export default {
   },
 
   methods: {
-    createPDF(download) {
+    async createPDF(download) {
       var doc = new jsPDF();
       var linha = 90;
 
@@ -122,8 +121,7 @@ export default {
       // doc.setDrawColor(0);
       // doc.setFillColor(255, 255, 255, 5);
       // doc.roundedRect(10, 78, 190, 40, 3, 3, "FD");
-
-          rodape(doc, this.dadosClinica, this.uuidClinica)
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
       if (download) {
         doc.save("Tonometria.pdf");
         return;
