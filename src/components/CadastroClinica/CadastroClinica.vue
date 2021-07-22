@@ -235,6 +235,7 @@ export default {
         }
         Object.assign(this.clinica, result.data.result[0]);
         this.clinica.logo = `${http.prototype.constructor.defaults.baseURL}/Clinica/image/logo/${result.data.result[0].uuid}`;
+        console.log(this.clinica.logo)
       } catch (error) {
         // console.log("erro");
       }
@@ -246,7 +247,7 @@ export default {
           const file = document.querySelector("input[type=file]").files[0];
           const logo = await this.toBase64(file);
           await ClinicaService.saveLogo(logo, this.clinica.uuid);
-          window.location.reload();
+          // window.location.reload();
           return;
         }
         this.showAlert("info", "Por favor Selecione uma Imagem");

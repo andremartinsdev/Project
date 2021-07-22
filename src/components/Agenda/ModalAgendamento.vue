@@ -246,10 +246,20 @@
                       </template>
                     </b-form-select>
                   </b-form-group>
-
+ <label
+                    class="mr-2"
+                    v-b-popover.hover.bottom="
+                      'Campo Obrigatorio, caso não tenha nenhuma Ótica Parceira cadastre uma fictícia'
+                    "
+                    >Ótica Parceira
+                    <b-icon-plus-circle
+                      class="iconsAgenda ml-2"
+                      variant="primary"
+                      @click="openModalOticaParceira"
+                    ></b-icon-plus-circle>
+                  </label>
                   <b-form-group
                     id="input-group-1"
-                    label="Ótica Parceira :"
                     label-for="input-1"
                   >
                     <b-form-select
