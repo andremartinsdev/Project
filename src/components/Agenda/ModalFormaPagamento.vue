@@ -59,7 +59,7 @@
       <b-button
         size="sm"
         variant="outline-secondary"
-        @click="limparProcedimento()"
+        @click="resetModal()"
       >
         Novo
       </b-button>
