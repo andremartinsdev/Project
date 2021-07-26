@@ -69,7 +69,6 @@
                 <th scope="col">Nome Paciente</th>
                 <th scope="col">Data Consulta</th>
                 <th scope="col">Visualizar</th>
-                <th scope="col">Imprimir</th>
                 <th scope="col">Excluir</th>
               </tr>
             </thead>
@@ -84,15 +83,6 @@
                     @click="readPrescricaoUuid(prescri.uuid)"
                   >
                     Visualizar
-                  </b-button>
-                </td>
-                <td>
-                  <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="gerarPdfPrescricao(prescri.uuid)"
-                  >
-                    Imprimir
                   </b-button>
                 </td>
                 <td>
@@ -133,6 +123,7 @@
               placeholder="ESF"
               type="number"
               size="sm"
+              step="0.25"
             ></b-input>
             <b-input
               size="sm"
@@ -140,6 +131,8 @@
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoLente.od_cilindrico"
               placeholder="CIL"
+              max="0"
+              step="0.25"
             ></b-input>
             <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
@@ -147,12 +140,13 @@
                 type="number"
                 v-model="prescricaoLente.od_eixo"
                 placeholder="EIXO"
+              min="0"
+
               ></b-input>
             </b-input-group>
 
             <b-input
               size="sm"
-              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoLente.od_av"
               placeholder="AV"
@@ -167,6 +161,8 @@
               placeholder="ESF"
               type="number"
               size="sm"
+              step="0.25"
+
             ></b-input>
             <label class="sr-only">Name</label>
             <b-input
@@ -175,6 +171,8 @@
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoLente.oe_cilindrico"
               placeholder="CIL"
+               max="0"
+              step="0.25"
             ></b-input>
             <label class="sr-only">Name</label>
 
@@ -184,15 +182,18 @@
                 type="number"
                 v-model="prescricaoLente.oe_eixo"
                 placeholder="EIXO"
+              min="0"
+
+
               ></b-input>
             </b-input-group>
 
             <b-input
               size="sm"
-              type="number"
               v-model="prescricaoLente.oe_av"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
+
             ></b-input>
           </b-form>
 
@@ -341,25 +342,29 @@ export default {
     },
     async gerarPdfPrescricao(uuid) {
       await this.readPrescricaoUuid(uuid);
-      this.createPDF(false);
+      await this.createPDF(false);
     },
 
     async readPrescricaoUuid(uuid) {
-      const prescricao = await PrescricaoService.read(uuid);
-      this.prescricaoLente.uuid = prescricao.data.prescricao.uuid;
-      this.prescricaoLente.data = prescricao.data.prescricao.data;
-      this.prescricaoLente.od_esferico = prescricao.data.prescricao.od_esferico;
-      this.prescricaoLente.od_cilindrico =
-        prescricao.data.prescricao.od_cilindrico;
-      this.prescricaoLente.od_eixo = prescricao.data.prescricao.od_eixo;
-      this.prescricaoLente.od_av = prescricao.data.prescricao.od_av;
-      this.prescricaoLente.oe_esferico = prescricao.data.prescricao.oe_esferico;
-      this.prescricaoLente.oe_cilindrico =
-        prescricao.data.prescricao.oe_cilindrico;
-      this.prescricaoLente.oe_eixo = prescricao.data.prescricao.oe_eixo;
-      this.prescricaoLente.oe_av = prescricao.data.prescricao.oe_av;
-      this.prescricaoLente.observacao = prescricao.data.prescricao.observacao;
-      this.$root.$emit("bv::toggle::collapse", "accordion-1");
+      try {
+        const prescricao = await PrescricaoService.read(uuid);
+        this.prescricaoLente.uuid = prescricao.data.prescricao.uuid;
+        this.prescricaoLente.data = prescricao.data.prescricao.data;
+        this.prescricaoLente.od_esferico = prescricao.data.prescricao.od_esferico;
+        this.prescricaoLente.od_cilindrico =
+          prescricao.data.prescricao.od_cilindrico;
+        this.prescricaoLente.od_eixo = prescricao.data.prescricao.od_eixo;
+        this.prescricaoLente.od_av = prescricao.data.prescricao.od_av;
+        this.prescricaoLente.oe_esferico = prescricao.data.prescricao.oe_esferico;
+        this.prescricaoLente.oe_cilindrico =
+          prescricao.data.prescricao.oe_cilindrico;
+        this.prescricaoLente.oe_eixo = prescricao.data.prescricao.oe_eixo;
+        this.prescricaoLente.oe_av = prescricao.data.prescricao.oe_av;
+        this.prescricaoLente.observacao = prescricao.data.prescricao.observacao;
+        this.$root.$emit("bv::toggle::collapse", "accordion-1");
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     async readPrescricaoLentePesquisa() {

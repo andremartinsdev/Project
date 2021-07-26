@@ -176,7 +176,6 @@
 
 <script>
 import ClinicaService from "../../services/clinica";
-import { http } from "../../services/config";
 import Sidebar from "../../components/SidebarNavbar.vue";
 // import baseUrl from '../../../vue.config'
 export default {
@@ -234,7 +233,7 @@ export default {
           return;
         }
         Object.assign(this.clinica, result.data.result[0]);
-        this.clinica.logo = `${http.prototype.constructor.defaults.baseURL}/Clinica/image/logo/${result.data.result[0].uuid}`;
+        this.clinica.logo = `http://143.198.187.252:3002/Clinica/image/logo/${result.data.result[0].uuid}`;
         console.log(this.clinica.logo)
       } catch (error) {
         // console.log("erro");

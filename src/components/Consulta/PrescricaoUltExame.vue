@@ -1,10 +1,192 @@
 <template>
   <div class="prescriUltimoExame">
-    <h5 class="text-center mb-3">Olho Direito</h5>
-    <b-form inline>
+    <table class="table table-sm table-borderless">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Esférico</th>
+          <th scope="col">Cilíndrico</th>
+          <th scope="col">Eixo</th>
+          <th scope="col">Adição</th>
+          <th scope="col">DNP</th>
+          <th scope="col">Alt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OD</td>
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="ESFÉRICO"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OD_ESFERICO"
+              @change="enviarPrescricaoUltExame"
+              step="0.25"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Cilíndrico"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OD_CILINDRICO"
+              @change="enviarPrescricaoUltExame"
+              step="0.25"
+              max="0"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Eixo"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OD_EIXO"
+              @change="enviarPrescricaoUltExame"
+              step="5"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Adição"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OD_ADICAO"
+              @change="enviarPrescricaoUltExame"
+              step="0.25"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="DNP"
+              size="sm"
+              v-model="prescricaoUltExame.OD_DNP"
+              @change="enviarPrescricaoUltExame"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Alt"
+              size="sm"
+              v-model="prescricaoUltExame.OD_ALT"
+              @change="enviarPrescricaoUltExame"
+            ></b-input>
+          </td>
+        </tr>
+        <tr>
+          <td>OE</td>
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="ESFÉRICO"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OE_ESFERICO"
+              @change="enviarPrescricaoUltExame"
+              step="0.25"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Cilíndrico"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OE_CILINDRICO"
+              @change="enviarPrescricaoUltExame"
+              max="0"
+              step="0.25"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Eixo"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OE_EIXO"
+              @change="enviarPrescricaoUltExame"
+              step="5"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="Adição"
+              type="number"
+              size="sm"
+              v-model="prescricaoUltExame.OE_ADICAO"
+              @change="enviarPrescricaoUltExame"
+              step="0.25"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="DNP"
+              size="sm"
+              v-model="prescricaoUltExame.OE_DNP"
+              @change="enviarPrescricaoUltExame"
+            ></b-input>
+          </td>
+
+          <td>
+            <b-input
+              class="mb-2 mr-sm-2 mb-sm-0 col-sm-12"
+              placeholder="ALT"
+              size="sm"
+              v-model="prescricaoUltExame.OE_ALT"
+              @change="enviarPrescricaoUltExame"
+            ></b-input>
+          </td>
+        </tr>
+        <tr>
+          <td>Tipo Lente</td>
+          <td colspan="2">
+            <b-input
+              size="sm"
+              placeholder="Tipo de Lente"
+              @change="enviarPrescricaoUltExame"
+              v-model="prescricaoUltExame.TIPO_LENTE"
+              class="col-sm-12"
+            ></b-input>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-2 p-4" style="display: flex; justify-content: flex-end">
+      <b-button
+        size="sm"
+        class="mr-3"
+        variant="primary"
+        @click="createPDF(false)"
+      >
+        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
+      ></b-button>
+      <b-link href="#foo" @click="createPDF(true)"
+        >Download PDF <b-icon-download></b-icon-download>
+      </b-link>
+    </div>
+
+    <!-- <b-form inline>
       <label for="input-with-list" class="mr-2">ESFÉRICO :</label>
       <b-input
-        class="mb-2 mr-sm-2 mb-sm-0 mt-2"
+        class="mb-2 mr-sm-2 mb-sm-0 "
         placeholder="ESFÉRICO"
         type="number"
         size="sm"
@@ -14,7 +196,7 @@
       <label for="input-with-list" class="mr-2">CILÍNDRICO :</label>
       <b-input
         size="sm"
-        class="mb-2 mr-sm-2 mb-sm-0 mt-2"
+        class="mb-2 mr-sm-2 mb-sm-0 "
         placeholder="CILÍNDRICO"
         @change="enviarPrescricaoUltExame"
         v-model="prescricaoUltExame.OD_CILINDRICO"
@@ -22,7 +204,7 @@
 
       <label for="input-with-list" class="mr-2">EIXO :</label>
 
-      <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0 mt-2">
+      <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0 ">
         <b-input
           size="sm"
           placeholder="EIXO"
@@ -156,7 +338,7 @@
       <b-link href="#foo" @click="createPDF(true)"
         >Download PDF <b-icon-download></b-icon-download>
       </b-link>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -167,8 +349,7 @@ import { DateTime } from "luxon";
 import jsPDF from "jspdf";
 import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
-import rodape from '../../services/rodape'
-
+import rodape from "../../services/rodape";
 
 export default {
   props: {
@@ -241,7 +422,7 @@ export default {
       idPacienteSelected: (state) => state.pacienteSelected,
       dadosClinica: (state) => state.dadosClinica,
       idConsulta: (state) => state.idConsulta,
-      uuidClinica: (state) => state.uuidClinica
+      uuidClinica: (state) => state.uuidClinica,
     }),
   },
   methods: {
@@ -266,7 +447,7 @@ export default {
       this.$store.commit("PRESCRICAO_ULTIMO_EXAME", this.prescricaoUltExame);
     },
 
-   async createPDF(download) {
+    async createPDF(download) {
       let pdfName = "PrescricaoUltimoExame";
       var doc = new jsPDF();
       var linha_oe = 85;
@@ -285,7 +466,6 @@ export default {
       delete this.prescricaoUltExame.DATA;
       delete this.prescricaoUltExame.UUIDCLINICA;
 
-      
       Object.keys(this.prescricaoUltExame).forEach((element) => {
         if (element.substring(0, 2) === "OD") {
           linha_od += 8;
@@ -307,7 +487,7 @@ export default {
         null,
         null
       );
-         await rodape(doc, this.dadosClinica, this.uuidClinica)
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
 
       if (download) {
         doc.save(pdfName + ".pdf");

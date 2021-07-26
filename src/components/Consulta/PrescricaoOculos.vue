@@ -73,7 +73,6 @@
                 <th scope="col">Nome Paciente</th>
                 <th scope="col">Data Consulta</th>
                 <th scope="col">Visualizar</th>
-                <th scope="col">Imprimir</th>
                 <th scope="col">Excluir</th>
               </tr>
             </thead>
@@ -90,15 +89,7 @@
                     Visualizar
                   </b-button>
                 </td>
-                <td>
-                  <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="imprimirPrescri(prescri.uuid)"
-                  >
-                    Imprimir
-                  </b-button>
-                </td>
+                
                 <td>
                   <b-button
                     variant="primary"
@@ -137,6 +128,7 @@
               type="number"
               size="sm"
               v-model="prescricaoOculos.od_esferico"
+              step="0.25"
             ></b-input>
             <b-input
               size="sm"
@@ -144,6 +136,8 @@
               class="mb-2 mr-sm-2 mb-sm-0"
               v-model="prescricaoOculos.od_cilindrico"
               placeholder="CIL"
+              max="0"
+              step="0.25"
             ></b-input>
             <b-input-group size="sm" prepend="°" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
@@ -151,6 +145,7 @@
                 placeholder="EIXO"
                 type="number"
                 v-model="prescricaoOculos.od_eixo"
+                min="0"
               ></b-input>
             </b-input-group>
 
@@ -158,7 +153,6 @@
               size="sm"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
-              type="number"
               v-model="prescricaoOculos.od_av"
             ></b-input>
           </b-form>
@@ -171,6 +165,7 @@
               type="number"
               size="sm"
               v-model="prescricaoOculos.oe_esferico"
+              step="0.25"
             ></b-input>
             <b-input
               size="sm"
@@ -178,6 +173,8 @@
               placeholder="CIL"
               type="number"
               v-model="prescricaoOculos.oe_cilindrico"
+              max="0"
+              step="0.25"
             ></b-input>
             <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
               <b-input
@@ -185,13 +182,13 @@
                 size="sm"
                 placeholder="EIXO"
                 type="number"
+                min="0"
               ></b-input>
             </b-input-group>
 
             <b-input
               v-model="prescricaoOculos.oe_av"
               size="sm"
-              type="number"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
             ></b-input>
@@ -204,6 +201,7 @@
               type="number"
               size="sm"
               v-model="prescricaoOculos.adicao"
+              step="0.25"
             ></b-input>
           </b-form>
 

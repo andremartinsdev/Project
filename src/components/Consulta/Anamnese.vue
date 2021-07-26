@@ -1,8 +1,8 @@
 <template>
   <b-container fluid class="consultaAnamnese">
-    <div >
+    <div>
       <b-card-group deck>
-            <b-toast
+        <b-toast
           id="example-toast"
           variant="light"
           title="Sintomas"
@@ -12,30 +12,24 @@
           v-if="this.impressao === true"
           class="ml-4"
         >
-        <b-form-group>
-          
-              <b-form-checkbox-group
-                v-model="anamnese"
-                id="checkbox"
-                :options="sintomas"
-                class="mb-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                stacked
-                @input="enviarAnamnese"
-              ></b-form-checkbox-group>
-            </b-form-group>
+          <b-form-group>
+            <b-form-checkbox-group
+              v-model="anamnese"
+              id="checkbox"
+              :options="sintomas"
+              class="mb-3"
+              value-field="value"
+              text-field="text"
+              disabled-field="notEnabled"
+              stacked
+              @input="enviarAnamnese"
+            ></b-form-checkbox-group>
+          </b-form-group>
         </b-toast>
         <b-card header="Sintomas" header-tag="header" v-else>
           <div class="check">
-            <b-input
-                  type="text"
-                  
-                  hidden
-                />
+            <b-input type="text" hidden />
             <b-form-group>
-          
               <b-form-checkbox-group
                 v-model="anamnese"
                 id="checkbox"
@@ -53,36 +47,33 @@
 
         <b-toast
           id="example-toast"
-         variant="light"
+          variant="light"
           title="Doença Ocular"
           static
           visible
           no-auto-hide
           v-if="this.impressao === true"
           class="ml-4"
-
         >
-        
-          
-             <b-form-group>
-              <b-form-checkbox-group
-                v-model="anamnese"
-                :options="doencaOcular"
-                class="mb-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                stacked
-                @input="enviarAnamnese"
-              ></b-form-checkbox-group>
-            </b-form-group>
+          <b-form-group>
+            <b-form-checkbox-group
+              v-model="doencaOcularArray"
+              :options="doencaOcular"
+              class="mb-3"
+              value-field="value"
+              text-field="text"
+              disabled-field="notEnabled"
+              stacked
+              @input="enviarAnamnese"
+            ></b-form-checkbox-group>
+          </b-form-group>
         </b-toast>
 
         <b-card header="Doença Ocular" header-tag="header" v-else>
           <div class="check">
             <b-form-group>
               <b-form-checkbox-group
-                v-model="anamnese"
+                v-model="doencaOcularArray"
                 :options="doencaOcular"
                 class="mb-3"
                 value-field="value"
@@ -95,39 +86,35 @@
           </div>
         </b-card>
 
-
-         <b-toast
+        <b-toast
           id="example-toast"
-       variant="light"
+          variant="light"
           title="Doença Sistemica"
           static
           visible
           no-auto-hide
           v-if="this.impressao === true"
           class="ml-4"
-
         >
-        
-          
-              <b-form-group>
-              <b-form-checkbox-group
-                v-model="anamnese"
-                :options="doencaSistematica"
-                class="mb-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                stacked
-                @input="enviarAnamnese"
-              ></b-form-checkbox-group>
-            </b-form-group>
+          <b-form-group>
+            <b-form-checkbox-group
+              v-model="doencaSistematicaArray"
+              :options="doencaSistematica"
+              class="mb-3"
+              value-field="value"
+              text-field="text"
+              disabled-field="notEnabled"
+              stacked
+              @input="enviarAnamnese"
+            ></b-form-checkbox-group>
+          </b-form-group>
         </b-toast>
 
         <b-card header="Doença Sistemica" header-tag="header" v-else>
           <div class="check">
             <b-form-group>
               <b-form-checkbox-group
-                v-model="anamnese"
+                v-model="doencaSistematicaArray"
                 :options="doencaSistematica"
                 class="mb-3"
                 value-field="value"
@@ -140,7 +127,7 @@
           </div>
         </b-card>
 
- <b-toast
+        <b-toast
           id="example-toast"
           variant="light"
           title="Medicamento"
@@ -150,29 +137,25 @@
           class="ml-4"
           v-if="this.impressao === true"
         >
-        
-          
-               <b-form-group>
-              <b-form-checkbox-group
-                v-model="anamnese"
-                :options="medicamentos"
-                class="mb-3"
-                value-field="value"
-                text-field="text"
-                disabled-field="notEnabled"
-                stacked
-                @input="enviarAnamnese"
-              ></b-form-checkbox-group>
-            </b-form-group>
+          <b-form-group>
+            <b-form-checkbox-group
+              v-model="medicamentosArray"
+              :options="medicamentos"
+              class="mb-3"
+              value-field="value"
+              text-field="text"
+              disabled-field="notEnabled"
+              stacked
+              @input="enviarAnamnese"
+            ></b-form-checkbox-group>
+          </b-form-group>
         </b-toast>
-
-        
 
         <b-card header="Medicamento" header-tag="header" v-else>
           <div class="check">
             <b-form-group>
               <b-form-checkbox-group
-                v-model="anamnese"
+                v-model="medicamentosArray"
                 :options="medicamentos"
                 class="mb-3"
                 value-field="value"
@@ -188,36 +171,32 @@
     </div>
 
     <b-toast
-          id="example-toast"
-          variant="light"
-          static
-          visible
-          no-auto-hide
-          v-if="this.impressao === true"
-          class="ml-4"
+      id="example-toast"
+      variant="light"
+      static
+      visible
+      no-auto-hide
+      v-if="this.impressao === true"
+      class="ml-4"
+    >
+      <b-form-group>
+        <b-form-checkbox-group
+          v-model="optionsArray"
+          :options="options"
+          class="mt-3"
+          value-field="value"
+          text-field="text"
+          disabled-field="notEnabled"
+          @input="enviarAnamnese"
+        ></b-form-checkbox-group>
+      </b-form-group>
+    </b-toast>
 
-        >
-        
-          
-               <b-form-group>
-          <b-form-checkbox-group
-            v-model="anamnese"
-            :options="options"
-            class="mt-3"
-            value-field="value"
-            text-field="text"
-            disabled-field="notEnabled"
-            @input="enviarAnamnese"
-          ></b-form-checkbox-group>
-        </b-form-group>
-        </b-toast>
-
-        
     <div class="mt-3" v-else>
       <b-card>
         <b-form-group>
           <b-form-checkbox-group
-            v-model="anamnese"
+            v-model="optionsArray"
             :options="options"
             class="mt-3"
             value-field="value"
@@ -230,35 +209,32 @@
     </div>
 
     <b-toast
-          id="example-toast"
-          variant="light"
-          title="Antecedentes Familiares"
-          static
-          visible
-          no-auto-hide
-          v-if="this.impressao === true"
-          class="ml-4"
-
-        >
-        
-          
-               <b-form-group>
-          <b-form-checkbox-group
-            v-model="anamnese"
-            :options="antecedentesFamiliar"
-            class="mt-3"
-            value-field="value"
-            text-field="text"
-            disabled-field="notEnabled"
-            @input="enviarAnamnese"
-          ></b-form-checkbox-group>
-        </b-form-group>
-        </b-toast>
+      id="example-toast"
+      variant="light"
+      title="Antecedentes Familiares"
+      static
+      visible
+      no-auto-hide
+      v-if="this.impressao === true"
+      class="ml-4"
+    >
+      <b-form-group>
+        <b-form-checkbox-group
+          v-model="antecedentesFamiliarArray"
+          :options="antecedentesFamiliar"
+          class="mt-3"
+          value-field="value"
+          text-field="text"
+          disabled-field="notEnabled"
+          @input="enviarAnamnese"
+        ></b-form-checkbox-group>
+      </b-form-group>
+    </b-toast>
     <div class="mt-3 mb-2" v-else>
       <b-card>
         <b-form-group label="Antecedentes Familiares">
           <b-form-checkbox-group
-            v-model="anamnese"
+            v-model="antecedentesFamiliarArray"
             :options="antecedentesFamiliar"
             class="mt-3"
             value-field="value"
@@ -289,10 +265,9 @@
 import { mapState } from "vuex";
 // import { DateTime } from "luxon";
 import jsPDF from "jspdf";
-import logoOlho from '../../assets/LogoOlho.png'
+import logoOlho from "../../assets/LogoOlho.png";
 import moldura from "../../assets/moldura.png";
-import rodape from '../../services/rodape';
-
+import rodape from "../../services/rodape";
 
 export default {
   props: {
@@ -324,7 +299,12 @@ export default {
       logoOlho: logoOlho,
       visualizar: this.Visualizar,
       anamnese: [],
-    
+      doencaOcularArray: [],
+      doencaSistematicaArray: [],
+      medicamentosArray: [],
+      optionsArray: [],
+      antecedentesFamiliarArray: [],
+
       sintomas: [
         { text: "Prurido", value: "PRURIDO" },
         { text: "Fotofobia", value: "FOTOFOBIA" },
@@ -345,7 +325,6 @@ export default {
         { text: "Enxaqueca", value: "EXAQUECA" },
         { text: "Astenopia", value: "ASTENOPIA" },
         { text: "Halos", value: "HALOS" },
-        
       ],
       doencaOcular: [
         { text: "Glaucoma", value: "GLAUCOMA" },
@@ -404,10 +383,8 @@ export default {
     };
   },
   watch: {
-
-    propsAnamnese2(){
-    
-      this.anamnese = Object.keys(this.propsAnamnese2)
+    propsAnamnese2() {
+      this.anamnese = Object.keys(this.propsAnamnese2);
       this.enviarAnamnese();
     },
     Visualizar() {
@@ -416,12 +393,11 @@ export default {
     },
     LimparAnamnese() {
       this.anamnese = [];
-      this.$emit('alteraLimpar', false)
+      this.$emit("alteraLimpar", false);
       this.$store.commit("ANAMNESE", {});
     },
   },
 
-  
   methods: {
     showAlert(icon, title) {
       // Use sweetalert2
@@ -438,25 +414,23 @@ export default {
       this.anamnese = this.propsAnamnese2;
     },
 
-     convertNomeColuna(coluna) {
+    convertNomeColuna(coluna) {
       if (coluna === "OD_ESFERICO") return "Olho Direito Esferico";
       if (coluna === "OD_CILINDRICO") return "Olho Direito Cilindrico";
     },
-    
 
-      async createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Anamnese ";
       var doc = new jsPDF();
       var linha = 90;
 
-     doc.text("Anamnese", 105, 40, null, null, "center");
+      doc.text("Anamnese", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
       doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
       //ANAMNESE
-      var a = 1
-      if (a  > 0) {
-        
+      var a = 1;
+      if (a > 0) {
         delete this.propsAnamnese2.DATA;
         delete this.propsAnamnese2.IDPACIENTE;
         delete this.propsAnamnese2.IDCONSULTA;
@@ -466,126 +440,144 @@ export default {
         doc.text("Medicamento", 160, linha, null, null);
         doc.text("Observação", 25, 130, null, null);
         doc.text("Antecedentes Familiares", 70, 130, null, null);
-        this.sintomas.map((item) => { 
-           if(this.propsAnamnese2[item.value]){
-          linha += 8;
-          //segundo parametro e altura, terceiro é largura, quarto espaço interno
-          doc.setTextColor(100);
-          doc.setFontSize(10);
-          doc.text(item.text, 25, linha, null, null);
-         
-          var checkBox = new jsPDF.API.AcroFormCheckBox();
-          checkBox.fieldName = "CheckBox1";
-          checkBox.Rect = [10, linha - 5, 7, 7];
-          doc.addField(checkBox);
+        this.sintomas.map((item) => {
+          if (this.propsAnamnese2[item.value]) {
+            linha += 8;
+            //segundo parametro e altura, terceiro é largura, quarto espaço interno
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(item.text, 25, linha, null, null);
+
+            var checkBox = new jsPDF.API.AcroFormCheckBox();
+            checkBox.fieldName = "CheckBox1";
+            checkBox.Rect = [10, linha - 5, 7, 7];
+            doc.addField(checkBox);
           }
         });
-        linha = 55
-        this.doencaOcular.map((item) => { 
-          
-           if(this.propsAnamnese2[item.value]){
-             linha += 8;
-          //segundo parametro e altura, terceiro é largura, quarto espaço interno
-          doc.setTextColor(100);
-          doc.setFontSize(10);
-          doc.text(item.text, 70, linha, null, null);
-         
-          var checkBox = new jsPDF.API.AcroFormCheckBox();
-          checkBox.fieldName = "CheckBox1";
-          checkBox.Rect = [58, linha - 5, 7, 7];
-          doc.addField(checkBox);
-          }
-        });
+        linha = 55;
+        this.doencaOcular.map((item) => {
+          if (this.propsAnamnese2[item.value]) {
+            linha += 8;
+            //segundo parametro e altura, terceiro é largura, quarto espaço interno
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(item.text, 70, linha, null, null);
 
-
-        linha = 55
-        this.doencaSistematica.map((item) => { 
-         
-           if(this.propsAnamnese2[item.value]){
-              linha += 8;
-          //segundo parametro e altura, terceiro é largura, quarto espaço interno
-          doc.setTextColor(100);
-          doc.setFontSize(10);
-          doc.text(item.text, 115, linha, null, null);
-         
-          var checkBox = new jsPDF.API.AcroFormCheckBox();
-          checkBox.fieldName = "CheckBox1";
-          checkBox.Rect = [105, linha - 5, 7, 7];
-          doc.addField(checkBox);
+            var checkBox = new jsPDF.API.AcroFormCheckBox();
+            checkBox.fieldName = "CheckBox1";
+            checkBox.Rect = [58, linha - 5, 7, 7];
+            doc.addField(checkBox);
           }
         });
 
-        linha = 55
-        this.medicamentos.map((item) => { 
-         
-           if(this.propsAnamnese2[item.value]){
-              linha += 8;
-          //segundo parametro e altura, terceiro é largura, quarto espaço interno
-          doc.setTextColor(100);
-          doc.setFontSize(10);
-          doc.text(item.text, 160, linha, null, null);
-         
-          var checkBox = new jsPDF.API.AcroFormCheckBox();
-          checkBox.fieldName = "CheckBox1";
-          checkBox.Rect = [150, linha - 5, 7, 7];
-          doc.addField(checkBox);
-          }
-        });
-        linha = 160
-        this.options.map((item) => { 
-         
-           if(this.propsAnamnese2[item.value]){
-              linha += 8;
-          //segundo parametro e altura, terceiro é largura, quarto espaço interno
-          doc.setTextColor(100);
-          doc.setFontSize(10);
-          doc.text(item.text, 25, linha, null, null);
-         
-          var checkBox = new jsPDF.API.AcroFormCheckBox();
-          checkBox.fieldName = "CheckBox1";
-          checkBox.Rect = [10, linha - 5, 7, 7];
-          doc.addField(checkBox);
+        linha = 55;
+        this.doencaSistematica.map((item) => {
+          if (this.propsAnamnese2[item.value]) {
+            linha += 8;
+            //segundo parametro e altura, terceiro é largura, quarto espaço interno
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(item.text, 115, linha, null, null);
+
+            var checkBox = new jsPDF.API.AcroFormCheckBox();
+            checkBox.fieldName = "CheckBox1";
+            checkBox.Rect = [105, linha - 5, 7, 7];
+            doc.addField(checkBox);
           }
         });
 
-        linha = 160
-        this.antecedentesFamiliar.map((item) => { 
-         
-           if(this.propsAnamnese2[item.value]){
-              linha += 8;
-          //segundo parametro e altura, terceiro é largura, quarto espaço interno
-          doc.setTextColor(100);
-          doc.setFontSize(10);
-          doc.text(item.text, 70, linha, null, null);
-         
-          var checkBox = new jsPDF.API.AcroFormCheckBox();
-          checkBox.fieldName = "CheckBox1";
-          checkBox.Rect = [60, linha - 5, 7, 7];
-          doc.addField(checkBox);
+        linha = 55;
+        this.medicamentos.map((item) => {
+          if (this.propsAnamnese2[item.value]) {
+            linha += 8;
+            //segundo parametro e altura, terceiro é largura, quarto espaço interno
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(item.text, 160, linha, null, null);
+
+            var checkBox = new jsPDF.API.AcroFormCheckBox();
+            checkBox.fieldName = "CheckBox1";
+            checkBox.Rect = [150, linha - 5, 7, 7];
+            doc.addField(checkBox);
+          }
+        });
+        linha = 160;
+        this.options.map((item) => {
+          if (this.propsAnamnese2[item.value]) {
+            linha += 8;
+            //segundo parametro e altura, terceiro é largura, quarto espaço interno
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(item.text, 25, linha, null, null);
+
+            var checkBox = new jsPDF.API.AcroFormCheckBox();
+            checkBox.fieldName = "CheckBox1";
+            checkBox.Rect = [10, linha - 5, 7, 7];
+            doc.addField(checkBox);
           }
         });
 
+        linha = 160;
+        this.antecedentesFamiliar.map((item) => {
+          if (this.propsAnamnese2[item.value]) {
+            linha += 8;
+            //segundo parametro e altura, terceiro é largura, quarto espaço interno
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(item.text, 70, linha, null, null);
 
+            var checkBox = new jsPDF.API.AcroFormCheckBox();
+            checkBox.fieldName = "CheckBox1";
+            checkBox.Rect = [60, linha - 5, 7, 7];
+            doc.addField(checkBox);
+          }
+        });
       }
-    await rodape(doc, this.dadosClinica, this.uuidClinica)
-      
-      doc.addImage(this.moldura, "JPEG", 220, -80, 230, 70, null, null, 180);
-      doc.addImage(this.moldura, "JPEG", 0, 248, 230, 70);
-      if(download){
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
+
+     
+      if (download) {
         doc.save(pdfName + ".pdf");
         return;
       }
-       window.open(doc.output("bloburl"));
+      window.open(doc.output("bloburl"));
     },
 
-    
     enviarAnamnese() {
-      var anamneseSelected = {};
+      let anamneseSelected = {};
+      let doencaOcularSelected = {};
+      let doencaSistematicaSelected = {};
+      let optionSelected = {};
+      let medicamentosSelected = {};
+      let antecedentesFamiliaresSelected = {};
+
       this.anamnese.map((resul) => {
         anamneseSelected[resul] = true;
       });
 
-      this.$store.commit("ANAMNESE", anamneseSelected);
+      this.doencaOcularArray.map((resul) => {
+        doencaOcularSelected[resul] = true;
+      });
+
+      this.doencaSistematicaArray.map((resul) => {
+        doencaSistematicaSelected[resul] = true;
+      });
+
+       this.optionsArray.map((resul) => {
+        optionSelected[resul] = true;
+      });
+
+      this.medicamentosArray.map((resul) => {
+        medicamentosSelected[resul] = true;
+      });
+
+       this.antecedentesFamiliarArray.map((resul) => {
+        antecedentesFamiliaresSelected[resul] = true;
+      });
+
+
+
+      this.$store.commit("ANAMNESE", [{"sintomas":anamneseSelected, "doencaOcular":doencaOcularSelected, "doencaSistemica":doencaSistematicaSelected, "options":optionSelected, "medicamentos":medicamentosSelected, "antecedentesFamiliares":antecedentesFamiliaresSelected}]);
     },
   },
 };
@@ -607,10 +599,5 @@ export default {
 .check {
   display: flex;
   flex-wrap: wrap;
-  
 }
-
-
-
-
 </style>

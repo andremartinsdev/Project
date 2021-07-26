@@ -63,7 +63,7 @@
       <b-button
         size="sm"
         variant="outline-secondary"
-        @click="limparProcedimento()"
+        @click="resetModalOticaParceira()"
       >
         Novo
       </b-button>

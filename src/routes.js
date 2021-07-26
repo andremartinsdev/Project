@@ -12,6 +12,7 @@ import Impressao from './components/Impressao/ImpressaoFicha.vue'
 import Login from './components/Login/Login.vue'
 import Relatorio from './components/Relatorios/Relatorio.vue'
 import Financeiro from './components/Financeiro/Financeiro.vue'
+import ImpressaoData from './components/Impressao/ImpressaoData.vue'
 import drag from './components/Consulta/dragg.vue'
 
 
@@ -108,6 +109,13 @@ const routes = [
     {
         path: '/Financeiro',
         component: Financeiro,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/ImpressaoData/:uuid',
+        component: ImpressaoData,
         meta: {
             requiresAuth: true
         }

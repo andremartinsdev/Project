@@ -220,7 +220,7 @@
               </b-card>
             </b-tab>
 
-            <b-tab title="Pesquisar Consultas Realizadas">
+            <!-- <b-tab title="Pesquisar Consultas Realizadas">
               <b-card class="prescricao agendadosHoje">
                 <div class="flex mb-4">
                   <div class="mr-3">
@@ -331,7 +331,7 @@
                   </div>
                 </div>
               </b-card>
-            </b-tab>
+            </b-tab> -->
 
             <b-tab title="Consulta">
               <h3 class="text-center mt-3">Consulta Optometria</h3>
@@ -498,7 +498,7 @@
         </b-card>
       </div>
       <b-card-group
-        v-if="tabIndexConsulta === 3"
+        v-if="tabIndexConsulta === 2"
         deck
         style="display: flex; justify-content: center; flex-wrap: wrap"
         class="mb-4"
@@ -540,7 +540,7 @@
         </b-card>
       </b-card-group>
 
-      <div v-if="tabIndexConsulta === 3">
+      <div v-if="tabIndexConsulta === 2">
         <b-card no-body>
           <b-tabs v-model="tabIndex" card>
             <b-tab title="Prescrição para Óculos" active>
@@ -1725,7 +1725,7 @@ export default {
           ).format("DD/MM/YYYY");
           this.abreviaNome = this.nomePaciente[0];
         });
-        this.tabIndexConsulta = 3;
+        this.tabIndexConsulta = 2;
         this.showAlert("success", "Pronto para Iniciar consulta");
       }
     },
