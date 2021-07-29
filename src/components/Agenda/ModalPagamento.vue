@@ -17,6 +17,17 @@
           class="form-control bg-primary text-white"
         />
       </div>
+        <div class="form-group w-50 mr-2">
+        <label for="exampleInputEmail1">Data do Agendamento</label>
+        <b-form-input
+          class="bg-primary text-white col-sm-12"
+          type="date"
+          v-model="agendamento.data"
+          v-b-popover.hover.bottom="
+            'Campo Obrigatorio, Informe a Data que a consulta será realizada'
+          "
+        ></b-form-input>
+      </div>
       <div class="form-group w-50">
         <label for="exampleInputEmail1">Data do Pagamento</label>
         <b-form-input
@@ -28,6 +39,7 @@
           "
         ></b-form-input>
       </div>
+     
     </div>
 
     <div class="form-group">
@@ -41,9 +53,7 @@
         ></b-form-input>
       </b-input-group>
 
-      <h6 class="text-center">
-        Procedimento : <label for="">{{ agendamento.titulo }}</label>
-      </h6>
+     
 
       <div class="dadosPaciente mt-4">
         <div class="form-group w-50 mr-2"></div>
@@ -65,15 +75,26 @@
             variant="success"
           ></b-icon-check2-circle>
         </div>
+
+         <div v-if="agendamento.recebido" class="mr-4">
+          <b-icon-check2-circle
+            class="h1"
+            variant="success"
+          ></b-icon-check2-circle>
+        </div>
       </div>
     </div>
 
     <template #modal-footer="{ hide }">
-      <b-button size="sm" variant="primary" @click="savePagamento()">
+      <b-button block size="sm" variant="primary" @click="savePagamento()">
         Salvar
       </b-button>
 
-      <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
+       <b-button block size="sm" variant="primary" @click="hide('forget')">
+        Imprimir Recibo
+      </b-button>
+
+      <b-button block size="sm" variant="secondary" @click="hide('forget')">
         Fechar
       </b-button>
     </template>
@@ -81,6 +102,7 @@
 </template>
 
 <script>
+import jsPDF from 'jspdf'
 import AgendaService from "../../services/agenda";
 import moment from "moment";
 export default {
@@ -111,6 +133,7 @@ export default {
         recebido: false,
         titulo: "",
         dataPagamento: "",
+        data:""
       },
       formaDePagamento: [],
       oticasParceiras: [],
@@ -118,6 +141,13 @@ export default {
   },
 
   methods: {
+    createPDF(){
+      var doc = new jsPDF("l", "mm", [257, 250]);
+
+      doc.text()
+
+    },
+
     showAlert(icon, title) {
       // Use sweetalert2
 
@@ -155,11 +185,12 @@ export default {
         .then((result) => {
           console.log(result);
           this.agendamento = result.data.agendamento;
+          this.agendamento.data = result.data.agendamento.data;
           this.agendamento.titulo = result.data.agendamento.descricao;
           this.agendamento.dataPagamento = moment(
             result.data.agendamento.dataPagamento
-          ).format("YYYY-MM-DD");
-          this.agendamento.data = moment(result.data.agendamento.data).format(
+          ).add('day',1).format("YYYY-MM-DD");
+          this.agendamento.data = moment(result.data.agendamento.data).add('day',1).format(
             "YYYY-MM-DD"
           );
           this.agendamento.valorConsulta =
@@ -170,7 +201,7 @@ export default {
           this.agendamento.dataNascimento =
             this.agendamento.dataNascimento === ""
               ? "00/00/0000"
-              : moment(result.data.agendamento.dataNascimento).format(
+              : moment(result.data.agendamento.dataNascimento).add('day',1).format(
                   "DD/MM/YYYY"
                 );
           if (this.agendamento.recebido === 0) {

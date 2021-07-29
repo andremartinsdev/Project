@@ -172,7 +172,7 @@ export default {
       return {
         id: dados.uuid,
         title: dados.titulo,
-        start: moment(dados.data).format("YYYY-MM-DD"),
+        start: moment(dados.data).add('day', 1).format("YYYY-MM-DD"),
         description: dados.observacao,
       };
     },

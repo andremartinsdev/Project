@@ -348,7 +348,8 @@ this.laudo = {
           this.laudo.data = moment().format("YYYY-MM-DD");
           this.laudo.idPaciente = this.idPaciente;
           this.laudo.idConsulta = consulta.data.result.idConsulta[0];
-          await LaudoService.save(this.laudo);
+          const { data } = await LaudoService.save(this.laudo);
+          this.laudo.uuid = data.result.uuid
           this.showAlert("success", "Laudo Registrado com Sucesso");
           return;
         }

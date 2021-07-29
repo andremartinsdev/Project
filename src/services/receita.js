@@ -2,44 +2,47 @@ import { http } from './config'
 
 
 export default {
-    save: (receita) => {
-      
-        return http.post('/Receita', { ...receita })
-    },
+  save: (receita) => {
 
-    readAll: () =>{
-        return http.get('/Receita/readAll')
-    },
+    return http.post('/Receita', { ...receita })
+  },
 
-    read: (uuid) => {
-        return http.get(`Receita/read/${uuid}`)
-    },
+  readAll: () => {
+    return http.get('/Receita/readAll')
+  },
 
-    delete: (uuid) => {
-        return http.delete(`/Receita/${uuid}`)
-    },
-    readValorReceita: (dataInicial, dataFinal) =>{
-        return http.get(`Receita/readValorReceita/${dataInicial}/${dataFinal}`)
-      },
+  read: (uuid) => {
+    return http.get(`Receita/read/${uuid}`)
+  },
 
-    update: (receita) => {
-       
-        return http.put(`Receita/${receita.uuid}`, {...receita})    
-    },
+  delete: (uuid) => {
+    return http.delete(`/Receita/${uuid}`)
+  },
+  readValorReceita: (dataInicial, dataFinal) => {
+    return http.get(`Receita/readValorReceita/${dataInicial}/${dataFinal}`)
+  },
 
-    readDate: (dataInicial, dataFinal) =>{
-      return http.get(`Receita/readDate/${dataInicial}/${dataFinal}`)
-    },
+  update: (receita) => {
 
-    readDatePagas: (dataInicial, dataFinal, pago) =>{
-        return http.get(`Receita/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
-      },
-      
-    readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
-      return http.get(`Receita/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
-    },
+    return http.put(`Receita/${receita.uuid}`, { ...receita })
+  },
 
-    readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
-        return http.get(`Receita/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
-      }
+  readDate: (dataInicial, dataFinal) => {
+    return http.get(`Receita/readDate/${dataInicial}/${dataFinal}`)
+  },
+
+  readDatePagas: (dataInicial, dataFinal, pago) => {
+    return http.get(`Receita/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
+  },
+
+  readDateFormaPagamento: (dataInicial, dataFinal, idFormaPagamento) => {
+    return http.get(`Receita/readDateFormaPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}`)
+  },
+
+  readDatePagasPagamento: (dataInicial, dataFinal, idFormaPagamento, pago) => {
+    return http.get(`Receita/readDatePagasPagamento/${dataInicial}/${dataFinal}/${idFormaPagamento}/${pago}`)
+  },
+  readDateAll: (dataInicial, dataFinal) => {
+    return http.get(`Receita/readDateAll/${dataInicial}/${dataFinal}`)
+  },
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="containerPrescri">
     <b-card no-body class="mb-5">
-      <b-card-header header-tag="header" class="p-1" role="tab">
+      <!-- <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-pesquisa 
           variant="transparent"
           class="shadow"
@@ -12,7 +12,7 @@
         id="accordion-pesquisa"
         accordion="my-accordion"
         role="tabpanel"
-      >
+      > -->
         <b-card-body>
           <div>
             <label for="">Selecione o Paciente</label>
@@ -103,7 +103,7 @@
             </tbody>
           </table>
         </b-card-body>
-      </b-collapse>
+      <!-- </b-collapse> -->
     </b-card>
 
     <b-card no-body class="mb-1">
@@ -114,7 +114,6 @@
       </b-card-header>
       <b-collapse
         id="accordion-1"
-        visible
         accordion="my-accordion"
         role="tabpanel"
       >
@@ -155,6 +154,13 @@
               placeholder="AV"
               v-model="prescricaoOculos.od_av"
             ></b-input>
+
+             <b-input
+              size="sm"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="DNP"
+              v-model="prescricaoOculos.od_dnp"
+            ></b-input>
           </b-form>
 
           <b-form inline class="mt-4">
@@ -191,6 +197,13 @@
               size="sm"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="AV"
+            ></b-input>
+
+             <b-input
+              v-model="prescricaoOculos.oe_dnp"
+              size="sm"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              placeholder="DNP"
             ></b-input>
           </b-form>
           <b-form inline class="mt-5">
@@ -232,26 +245,27 @@
               ><b-button
                 class="mr-3"
                 pill
+                size="sm"
                 variant="primary"
                 @click="savePrescricao"
                 >Salvar</b-button
               >
             </b-col>
             <b-col lg="1" class="pb-2">
-              <b-button pill @click="cancelar">Limpar</b-button>
+              <b-button size="sm" pill @click="cancelar">Limpar</b-button>
             </b-col>
             <b-col lg="2" class="pb-2">
               <b-button
                 size="sm"
                 class="mr-3 "
                 variant="primary"
-                @click="createPDF(false)"
+                @click="createPDFmodelo2(false)"
                 pill
               >
                 Imprimir
-                <b-icon-printer-fill
+                <b-icon-files
                   class="ml-3"
-                ></b-icon-printer-fill></b-button
+                ></b-icon-files></b-button
             ></b-col>
             <b-col lg="2"> 
                <b-link href="#foo" @click="createPDF(true)"
@@ -263,12 +277,47 @@
         </b-card-body>
       </b-collapse>
     </b-card>
+    <table id="modelo2" v-show="false">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Esférico</th>
+          <th>Cilíndrico</th>
+          <th>Eixo</th>
+          <th>AV</th>
+          <th>DNP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OD</td>
+          <td>{{prescricaoOculos.od_esferico}}</td>
+          <td>{{prescricaoOculos.od_cilindrico}}</td>
+          <td>{{prescricaoOculos.od_eixo}}</td>
+          <td>{{prescricaoOculos.od_av}}</td>
+          <td>{{prescricaoOculos.od_dnp}}</td>
+        </tr>
+        <tr>
+          <td>OE</td>
+           <td>{{prescricaoOculos.oe_esferico}}</td>
+          <td>{{prescricaoOculos.oe_cilindrico}}</td>
+          <td>{{prescricaoOculos.oe_eixo}}</td>
+          <td>{{prescricaoOculos.oe_av}}</td>
+          <td>{{prescricaoOculos.oe_dnp}}</td>
+        </tr>
+          <tr>
+          <td>Adição</td>
+          <td colspan="5">{{prescricaoOculos.adicao}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
 import jsPDF from "jspdf";
-import logoOlho from "../../assets/LogoOlho.png";
+import 'jspdf-autotable';
+import logoOlho from "../../assets/LogoOlho.jpg";
 import moldura from "../../assets/moldura.png";
 import ConsultaService from "../../services/consulta";
 import PrescricaoService from "../../services/prescricaoOculos";
@@ -279,6 +328,7 @@ import { DateTime } from "luxon";
 import moment from "moment";
 import prescricaoOculos from "../../services/prescricaoOculos";
 import rodape from '../../services/rodape';
+import logoOpto from '../../assets/logoOpt.jpg';
 
 export default {
   props: {
@@ -294,6 +344,7 @@ export default {
   },
   data() {
     return {
+      logoOpto:logoOpto,
       visiblePesquisa: false,
       visiblePrescri: false,
       dataInicial: "",
@@ -328,6 +379,8 @@ export default {
         oe_cilindrico: "",
         oe_eixo: "",
         oe_av: "",
+        od_dnp:"",
+        oe_dnp:"",
         adicao: "",
         observacao: "",
         lente: "",
@@ -365,6 +418,7 @@ export default {
     },
 
     async imprimirPrescri(uuid) {
+      
       await this.readPrescricaoUuid(uuid);
       this.createPDF(false);
     },
@@ -399,6 +453,7 @@ export default {
 
     async readPrescricaoUuid(uuid) {
       const prescricao = await PrescricaoService.read(uuid);
+      console.log(this.dadosClinica)
       Object.assign(this.prescricaoOculos, prescricao.data.prescricao);
       this.$root.$emit("bv::toggle::collapse", "accordion-1");
     },
@@ -440,12 +495,50 @@ export default {
         oe_cilindrico: "",
         oe_eixo: "",
         oe_av: "",
+        oe_dnp: "",
+        od_dnp: "",
         adicao: "",
         observacao: "",
       };
     },
 
-    async createPDF(download) {
+    async createPDFmodelo2(download) {
+      let pdfName = "Prescrição Óculos";
+      var doc = new jsPDF();
+      var linha = 85;
+       doc.setFontSize(12).text(`Paciente : `, 5, 75, null, null);
+     doc.addImage(this.logoOpto, "JPEG", 59, 10, 80, 40);
+       doc.autoTable({
+        html: "#modelo2",
+        margin: { horizontal: 5 },
+        startY: 85,
+        styles: { fontSize: 12 },
+        tableWidth: 200,
+         theme: 'grid',
+         colSpan: 5,
+      });
+     
+      doc.setFontSize(12).text(`Lente : `, 5, linha + 45, null, null);
+      doc.setFontSize(11).text(`Observação : Favor medir DNP com pupilômetro. Retorno com 01 Ano`, 5, linha + 60, null, null);
+      doc.text(this.prescricaoOculos.observacao, 15, linha + 60, null, null);
+      doc.setDrawColor(0).line(140, 180, 65, 180);
+       doc.text(`Optometrista`, 90, 186, null, null);
+       doc.text(`${this.dadosClinica[0].cidade}, ${moment().add('day',1).format("DD/MM/YYYY")}`, 90, 193, null, null);
+       doc.setFontSize(11).text(`O presente exame efetuado pelo optometrista, tem por finalidade a correção dos defeitos retrativos, a
+avaliação sensorial e motora, através da indicação de lentes corretoras retrativas e/ou exercícios ortópticos. O
+diagnósticos de doenças oculares e seu tratamento são de competência do profissional médico.`, 15, 260, null, null);
+    //  await rodape(doc, this.dadosClinica, this.uuidClinica)
+
+      if (download) {
+        doc.save(pdfName + ".pdf");
+        return;
+      }
+      window.open(doc.output("bloburl"));
+    },
+
+
+
+     async createPDF(download) {
       let pdfName = "Prescrição Óculos";
       var doc = new jsPDF();
       var linha = 85;
@@ -453,7 +546,7 @@ export default {
       doc.text("Prescrição Óculos", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
-      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+      doc.addImage(this.logoOlho, "JPEG", 70, 50, 55, 25);
       doc.text("Olho Direito", 25, linha, null, null);
       doc.text("Olho Esquerdo", 150, linha, null, null);
 

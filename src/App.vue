@@ -50,6 +50,7 @@ body::-webkit-scrollbar-thumb {
   border: 3px solid rgb(255, 255, 255);  /* creates padding around scroll thumb */
 }
 body {
+  font-size: 14px!important;
   background: #43c6ac; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to bottom,

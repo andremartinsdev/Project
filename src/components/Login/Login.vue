@@ -65,7 +65,7 @@
 
 <script>
 import logo from "../../../public/logo.png";
-import logoOlho from "../../assets/LogoOlho.png";
+import logoOlho from "../../assets/LogoOlho2.png";
 import logoBms from "../../assets/LogoBms.png";
 import LoginService from "../../services/login";
 

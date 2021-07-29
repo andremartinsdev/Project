@@ -57,6 +57,14 @@
           </b-button>
         </b-row>
       </b-card>
+      <div class="mt-4 shadow p-3" style="background: rgb(212, 212, 211)">
+        <h6 class="text-center p-2">Relatório Financeiro</h6>
+        <b-button  v-b-popover.hover.bottom="
+      'Informe o período antes de gerar o relatório'
+    " class="mr-2 mt-1" @click="gerar" variant="info"
+          >Fluxo de Contas (Pagar/Receber)</b-button
+        >
+      </div>
 
       <div class="mt-4 shadow p-4 containerPagas">
         <h4 class="mb-4">Contas a Pagar</h4>
@@ -65,75 +73,6 @@
           <CardContasAPagar :search="search" />
           <CardContasAPagarPagas :search="search" />
           <CardContasAPagarAbertas :search="search" />
-          <!-- <b-card
-          header-tag="header"
-          bg-variant="info"
-          footer-tag="footer"
-          v-b-popover.hover.bottom="
-            'Total à Receber : Composto por todos Atendimentos não Finalizados'
-          "
-        >
-          <h6 class="text-white">
-            <b-icon-arrow-up variant="light"></b-icon-arrow-up> Total à Receber
-          </h6>
-          <h6 class="text-white">
-            {{
-              valorReceber.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            }}
-          </h6>
-        </b-card> -->
-
-          <!-- CARD 2 -->
-
-          <!-- CARD 3 -->
-
-          <!-- <b-card
-          header-tag="header"
-          bg-variant="danger"
-          footer-tag="footer"
-          v-b-popover.hover.bottom="
-            'Despesas : Composta por todas Despesas Cadastradas'
-          "
-        >
-          <h6 class="text-white">
-            <b-icon-arrow-down variant="light"></b-icon-arrow-down>
-            Despesas em Aberto
-          </h6>
-          <h6 class="text-white">
-            {{
-              valorDespesa.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            }}
-          </h6>
-        </b-card>
-
-
-        <b-card
-          header-tag="header"
-          bg-variant="danger"
-          footer-tag="footer"
-          v-b-popover.hover.bottom="
-            'Despesas : Composta por todas Despesas Cadastradas'
-          "
-        >
-          <h6 class="text-white">
-            <b-icon-arrow-down variant="light"></b-icon-arrow-down>
-            Despesas em Aberto
-          </h6>
-          <h6 class="text-white">
-            {{
-              valorDespesa.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            }}
-          </h6>
-        </b-card> -->
         </b-card-group>
       </div>
 
@@ -141,80 +80,17 @@
         <h4 class="mb-4">Contas a Receber</h4>
         <b-card-group deck>
           <!-- CARD 1 -->
-          <CardContasAReceber  :search="search" />
-          <CardContasAReceberRecebidas  :search="search" />
-          <CardContasAReceberAbertas  :search="search" />
-          <!-- <b-card
-          header-tag="header"
-          bg-variant="info"
-          footer-tag="footer"
-          v-b-popover.hover.bottom="
-            'Total à Receber : Composto por todos Atendimentos não Finalizados'
-          "
-        >
-          <h6 class="text-white">
-            <b-icon-arrow-up variant="light"></b-icon-arrow-up> Total à Receber
-          </h6>
-          <h6 class="text-white">
-            {{
-              valorReceber.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            }}
-          </h6>
-        </b-card> -->
-
-          <!-- <b-card
-          header-tag="header"
-          bg-variant="danger"
-          footer-tag="footer"
-          v-b-popover.hover.bottom="
-            'Despesas : Composta por todas Despesas Cadastradas'
-          "
-        >
-          <h6 class="text-white">
-            <b-icon-arrow-down variant="light"></b-icon-arrow-down>
-            Despesas em Aberto
-          </h6>
-          <h6 class="text-white">
-            {{
-              valorDespesa.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            }}
-          </h6>
-        </b-card>
-
-
-        <b-card
-          header-tag="header"
-          bg-variant="danger"
-          footer-tag="footer"
-          v-b-popover.hover.bottom="
-            'Despesas : Composta por todas Despesas Cadastradas'
-          "
-        >
-          <h6 class="text-white">
-            <b-icon-arrow-down variant="light"></b-icon-arrow-down>
-            Despesas em Aberto
-          </h6>
-          <h6 class="text-white">
-            {{
-              valorDespesa.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            }}
-          </h6>
-        </b-card> -->
+          <CardContasAReceber :search="search" />
+          <CardContasAReceberRecebidas :search="search" />
+          <CardContasAReceberAbertas :search="search" />
+         
         </b-card-group>
       </div>
       <div>
         <b-button
           variant="primary"
           pill
+          v-show="false"
           block
           v-b-toggle.collapse-2
           class="mt-4 mb-4"
@@ -226,6 +102,83 @@
           </b-card>
         </b-collapse>
       </div>
+      <table id="receita"  v-show="false">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Forma de Pag.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(desp, index) in receitaRelatorio" :key="index">
+            <td>{{ desp.descricaoReceita }}</td>
+            <td>{{ desp.valor }}</td>
+            <td>{{ desp.data }}</td>
+            <td>{{ desp.descFormaPagamento }}</td>
+          </tr>
+          <tr>
+            <th>Valor Total</th>
+            <td>{{ totalReceber }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="despe"  v-show="false">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data Vencimento</th>
+            <th>Data Pag.</th>
+            <th>Forma de Pag.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(desp, index) in despesaRelatorio" :key="index">
+            <td>{{ desp.descricaoDespesa }}</td>
+            <td>{{ desp.valor }}</td>
+            <td>{{ desp.dataVencimento }}</td>
+            <td>{{ desp.dataPagamento }}</td>
+            <td>{{ desp.descFormaPagamento }}</td>
+          </tr>
+          <tr>
+            <th>Valor Total</th>
+            <td>{{ totalPagar }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="agenda" v-show="false">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Procedimento</th>
+            <th>Paciente</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Data Pagamento</th>
+            <th>Forma de Pag.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(desp, index) in agendaRelatorio" :key="index">
+            <td>{{ desp.titulo }}</td>
+            <td>{{ desp.text }}</td>
+            <td>{{ desp.nomePaciente }}</td>
+            <td>{{ desp.valorConsulta }}</td>
+            <td>{{ desp.data }}</td>
+            <td>{{ desp.dataPagamento }}</td>
+            <td>{{ desp.descricao }}</td>
+          </tr>
+
+          <tr>
+            <th>Valor Total</th>
+            <td>{{ totalAgenda }}</td>
+          </tr>
+        </tbody>
+      </table>
 
       <ModalDespesa @reloadForma="readFormaPagamento" />
       <ModalReceber @reloadForma="readFormaPagamento" />
@@ -243,11 +196,14 @@ import CardContasAReceberAbertas from "./Cards/contas-a-receber/Card-contas-rece
 import ModalDespesa from "../Financeiro/Modals/ModalContasPagar";
 import ModalReceber from "../Financeiro/Modals/ModalContasReceber";
 import AgendaService from "../../services/agenda";
-import moment from "moment";
+// import moment from "moment";
 import DespesaService from "../../services/despesas";
 import ReceitaService from "../../services/receita";
 import FormaDePagamentoService from "../../services/formaDePagamento";
 import Sidebar from "../../components/SidebarNavbar.vue";
+import moment from "moment";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 //  import Chart from "../Chart/Chart";
 export default {
   components: {
@@ -267,6 +223,12 @@ export default {
   },
   data() {
     return {
+      totalAgenda: 0,
+      totalReceber: 0,
+      totalPagar: 0,
+      despesaRelatorio: [],
+      receitaRelatorio: [],
+      agendaRelatorio: [],
       search: { dataInicial: "", dataFinal: "", formaDePagamento: null },
       despesas: [],
       money2: {
@@ -277,24 +239,7 @@ export default {
         masked: false /* doesn't work with directive */,
       },
 
-      totalContasPagar: 0,
-      totalContasPagas: 0,
-      totalContasAbertas: 0,
-      totalContasNaoRecebidas: 0,
-
-      totalReceber: 0,
-      totalRecebidas: 0,
-      valorReceitasPagas: 0,
-      valorDespesasPagas: 0,
-
-      valorReceitasFuturas: 0,
-      valorDespesasFuturas: 0,
-
-      valorSaldoPagas: 0,
-      valorSaldoFuturas: 0,
-      valorReceita: 0,
-      valorReceber: 0,
-      valorDespesa: 0,
+     
       dataInicial: "",
       dataFinal: "",
       formaDePagamento: [],
@@ -308,229 +253,130 @@ export default {
   },
 
   methods: {
-    async contasPagarEReceber() {
-      await this.totalPagar();
-      await this.totalPago();
-      await this.totalAbertas();
-      await this.totalContasReceber();
-      await this.totalContasRecebidas();
-      await this.totalNaoRecebido();
+    async gerar() {
+      if (this.dataInicial === "" || this.dataFinal === "") {
+        this.showAlert("info", "Por favor Informe o Período inicial e Final");
+        return;
+      }
+      await this.relatorioContasReceber();
+      await this.relatorioContasPagar();
+      await this.relatorioAgenda();
+      var doc = new jsPDF();
+      doc.setFontSize(15).text("Relatório Financeiro", 85, 10);
+      doc.setFontSize(10).text("Contas a Pagar", 35, 43);
+      doc.autoTable({
+        html: "#despe",
+        margin: { horizontal: 2 },
+        styles: { fontSize: 7 },
+        startY: 47,
+        tableWidth: 100,
+      });
+
+      doc.setFontSize(10).text("Contas a Receber", 145, 43);
+      doc.autoTable({
+        html: "#receita",
+        margin: { horizontal: 110 },
+        styles: { fontSize: 7 },
+        startY: 47,
+        drawHeaderCell: [255, 0, 0],
+        tableWidth: 100,
+      });
+
+      doc.addPage();
+      doc.setFontSize(10).text("Contas a Receber", 145, 43);
+      doc.autoTable({
+        html: "#agenda",
+        margin: { horizontal: 2 },
+        styles: { fontSize: 10 },
+        startY: 10,
+        drawHeaderCell: [255, 0, 0],
+        tableWidth: 205,
+      });
+
+      window.open(doc.output("bloburl"));
     },
 
-    async contasPagarEReceberFormaPagamento() {
-      await this.totalPagarFormaPagamento();
-      await this.totalPagoFormaDePagamento();
-      await this.totalAbertasFormaPagamento();
-      await this.totalContasReceberFormaP();
-      await this.totalContasRecebidasFormaP();
-      await this.totalContasNaoRecebidasFormaP();
-    },
-
-    //contas a pagar e receber sem forma de pagamento
-
-    async totalPagar() {
-      const totalPagar = await DespesaService.readDate(
+    async relatorioAgenda() {
+      const { data } = await AgendaService.readDateFinanceiro(
         this.dataInicial,
         this.dataFinal
       );
-      this.totalContasPagar = totalPagar.data.result[0].valorTotal;
+      console.log(data);
+      this.agendaRelatorio = data.agendamentos;
+      this.agendaRelatorio.forEach((element) => {
+        this.totalAgenda += element.valorConsulta;
+        element.dataPagamento = moment(element.dataPagamento)
+          .add("day", 1)
+          .format("DD/MM/YYYY");
+        element.valorConsulta = element.valorConsulta.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        });
+        element.data = moment(element.data).add("day", 1).format("DD/MM/YYYY");
+      });
+
+      this.totalAgenda = this.totalAgenda.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      });
+    },
+    async relatorioContasPagar() {
+      try {
+        const { data } = await DespesaService.readDateAll(
+          this.dataInicial,
+          this.dataFinal
+        );
+        this.despesaRelatorio = data.result;
+        this.despesaRelatorio.forEach((element) => {
+          this.totalPagar += element.valor;
+          element.dataPagamento = moment(element.dataPagamento)
+            .add("day", 1)
+            .format("DD/MM/YYYY");
+          element.valor = element.valor.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          });
+          element.dataVencimento = moment(element.dataVencimento)
+            .add("day", 1)
+            .format("DD/MM/YYYY");
+        });
+
+        this.totalPagar = this.totalPagar.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        });
+        console.log(this.despesaRelatorio);
+      } catch (error) {
+        console.log(error);
+      }
     },
 
-    async totalPago() {
-      const totalPago = await DespesaService.readDatePagas(
-        this.dataInicial,
-        this.dataFinal,
-        true
-      );
-      this.totalContasPagas = totalPago.data.result[0].valorTotalDespesa;
-    },
-
-    async totalAbertas() {
-      const totalAbertas = await DespesaService.readDateAberto(
-        this.dataInicial,
-        this.dataFinal
-      );
-      this.totalContasAbertas = totalAbertas.data.result[0].valorTotalDespesa;
-      console.log(this.totalContasAbertas);
-    },
-
-    async totalContasReceber() {
-      const constasPagas = await ReceitaService.readDate(
-        this.dataInicial,
-        this.dataFinal
-      );
-      const agenda = await AgendaService.readDateTotal(
-        this.dataInicial,
-        this.dataFinal
-      );
-      const total =
-        agenda.data.result[0].totalReceitaAgendamento +
-        constasPagas.data.result[0].valorTotal;
-      this.totalReceber = total;
-    },
-
-    async totalContasRecebidas() {
-      const totalRecebidas = await AgendaService.readDatePagas(
-        this.dataInicial,
-        this.dataFinal,
-        true
-      );
-      const totalRecebidasReceita = await ReceitaService.readDatePagas(
-        this.dataInicial,
-        this.dataFinal,
-        true
-      );
-      const total =
-        totalRecebidasReceita.data.result[0].valorTotalReceita +
-        totalRecebidas.data.agendamentos[0].totalReceitaAgendamento;
-      this.totalRecebidas = total;
-    },
-
-    async totalNaoRecebido() {
-      const totalRecebidas = await AgendaService.readDatePagas(
-        this.dataInicial,
-        this.dataFinal,
-        false
-      );
-      const totalRecebidasReceita = await ReceitaService.readDatePagas(
-        this.dataInicial,
-        this.dataFinal,
-        false
-      );
-      const total =
-        totalRecebidasReceita.data.result[0].valorTotalReceita +
-        totalRecebidas.data.agendamentos[0].totalReceitaAgendamento;
-      this.totalContasNaoRecebidas = total;
-      console.log(total);
-    },
-
-    //contas a pagar e receber COM forma de pagamento
-
-    async totalPagarFormaPagamento() {
-      const totalPagar = await DespesaService.readDateFormaPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      );
-      let valor1 =
-        totalPagar.data.result[0].valorTotal === null
-          ? 0
-          : totalPagar.data.result[0].valorTotal;
-      this.totalContasPagar = valor1;
-      console.log(this.totalContasPagar);
-      //totalPagar
-    },
-
-    async totalPagoFormaDePagamento() {
-      const totalPago = await DespesaService.readDatePagasPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect,
-        true
-      );
-      let valor1 =
-        totalPago.data.result[0].valorTotalDespesa === null
-          ? 0
-          : totalPago.data.result[0].valorTotalDespesa;
-      this.totalContasPagas = valor1;
-      //totalContasPagasFpagamento
-      console.log(totalPago);
-    },
-
-    async totalAbertasFormaPagamento() {
-      const totalAbertas = await DespesaService.readDateAbertoFP(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      );
-      let valor1 =
-        totalAbertas.data.result[0].valorTotalDespesa === null
-          ? 0
-          : totalAbertas.data.result[0].valorTotalDespesa;
-      this.totalContasAbertas = valor1;
-      //totalAbertas
-      console.log(totalAbertas);
-    },
-
-    //formaTermina
-
-    async totalContasReceberFormaP() {
-      const constasPagas = await ReceitaService.readDateFormaPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      );
-      const agenda = await AgendaService.readDateTotalFp(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      );
-
-      let valor1 =
-        agenda.data.result[0].totalReceitaAgendamento === null
-          ? 0
-          : agenda.data.result[0].totalReceitaAgendamento;
-      let valor2 =
-        constasPagas.data.result[0].totalReceita === undefined
-          ? 0
-          : constasPagas.data.result[0].totalReceita;
-      console.log(constasPagas.data.result[0].totalReceita);
-
-      this.totalReceber = valor1 + valor2;
-      console.log(valor1, valor2);
-    },
-
-    async totalContasRecebidasFormaP() {
-      const totalRecebidas = await AgendaService.readDatePagasPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect,
-        true
-      );
-      const totalRecebidasReceita = await ReceitaService.readDatePagasPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect,
-        true
-      );
-
-      let valor1 =
-        totalRecebidasReceita.data.result === undefined
-          ? 0
-          : totalRecebidasReceita.data.result[0].valorTotalReceita;
-      let valor2 =
-        totalRecebidas.data.consultaReceber === undefined
-          ? 0
-          : totalRecebidas.data.consultaReceber[0].valorTotalAgenda;
-      this.totalRecebidas = valor1 + valor2;
-      console.log(valor1, valor2);
-    },
-
-    async totalContasNaoRecebidasFormaP() {
-      const totalRecebidas = await AgendaService.readDatePagasPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect,
-        false
-      );
-      const totalRecebidasReceita = await ReceitaService.readDatePagasPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect,
-        false
-      );
-
-      let valor1 =
-        totalRecebidasReceita.data.result === undefined
-          ? 0
-          : totalRecebidasReceita.data.result[0].valorTotalReceita;
-      let valor2 =
-        totalRecebidas.data.consultaReceber === undefined
-          ? 0
-          : totalRecebidas.data.consultaReceber[0].valorTotalAgenda;
-
-      this.totalContasNaoRecebidas = valor1 + valor2;
-      console.log(totalRecebidas);
+    async relatorioContasReceber() {
+      try {
+        const { data } = await ReceitaService.readDateAll(
+          this.dataInicial,
+          this.dataFinal
+        );
+        this.receitaRelatorio = data.result;
+        this.receitaRelatorio.forEach((element) => {
+          this.totalReceber += element.valor;
+          element.data = moment(element.data)
+            .add("day", 1)
+            .format("DD/MM/YYYY");
+          element.valor = element.valor.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          });
+        });
+        this.totalReceber = this.totalReceber.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL",
+        });
+        console.log(this.receitaRelatorio);
+       
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     showAlert(icon, title) {
@@ -550,19 +396,11 @@ export default {
         return;
       }
 
-      this.search = {dataInicial:this.dataInicial, dataFinal: this.dataFinal, formaDePagamento: this.formaDePagamentoSelect}
-    },
-
-    receita() {
-      this.valorReceita = 0;
-      AgendaService.readDateRelatorioReceita(
-        this.dataInicial,
-        this.dataFinal
-      ).then((result) => {
-        result.data.consulta.map((el) => {
-          this.valorReceita += el.valorConsulta;
-        });
-      });
+      this.search = {
+        dataInicial: this.dataInicial,
+        dataFinal: this.dataFinal,
+        formaDePagamento: this.formaDePagamentoSelect,
+      };
     },
 
     formaPagamento(descricao, idFormaPagamento) {
@@ -581,139 +419,6 @@ export default {
           );
         });
       });
-    },
-
-    receber() {
-      this.valorReceber = 0;
-      AgendaService.readDateRelatorioReceber(
-        this.dataInicial,
-        this.dataFinal
-      ).then((result) => {
-        result.data.consultaReceber.map((el) => {
-          this.valorReceber += el.valorConsulta;
-        });
-      });
-    },
-
-    readReceitaData() {
-      ReceitaService.readDate(this.dataInicial, this.dataFinal).then(
-        (result) => {
-          if (result.status === 201) {
-            result.data.result.map((el) => {
-              this.valorReceita += el.valor;
-            });
-          } else {
-            this.showAlert(
-              "error",
-              "Ops! ocorreu um erro ao calcular valor das Despesas"
-            );
-          }
-        }
-      );
-    },
-
-    readValorDespesa() {
-      this.valorDespesa = 0;
-      DespesaService.readDate(this.dataInicial, this.dataFinal)
-        .then((result) => {
-          if (result.status === 201) {
-            result.data.result.map((el) => {
-              this.valorDespesa += el.valor;
-            });
-          } else {
-            this.showAlert(
-              "error",
-              "Ops! ocorreu um erro ao calcular valor das Despesas"
-            );
-          }
-        })
-        .catch(() => {
-          this.showAlert(
-            "error",
-            "Ops!! ocorreu um erro ao calcular valor das Despesas"
-          );
-        });
-    },
-
-    readValorReceitaFormaPagamento() {
-      ReceitaService.readDateFormaPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      )
-        .then((result) => {
-          console.log("readValorReceitaFormaPagamento", result);
-          if (result.status === 201) {
-            result.data.result.map((el) => {
-              this.valorReceita += el.valor;
-            });
-            console.log(this.valorReceita);
-          } else {
-            this.showAlert(
-              "error",
-              "Ops! ocorreu um erro ao calcular valor das Receitas"
-            );
-          }
-        })
-        .catch(() => {
-          this.showAlert(
-            "error",
-            "Ops!! ocorreu um erro ao calcular valor das Receitas"
-          );
-        });
-    },
-
-    readValorDespesaFormaPagamento() {
-      DespesaService.readDateFormaPagamento(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      )
-        .then((result) => {
-          console.log("readValorDespesaFormaPagamento", result);
-          if (result.status === 201) {
-            result.data.result.map((el) => {
-              this.valorDespesa += el.valor;
-            });
-          } else {
-            this.showAlert(
-              "error",
-              "Ops! ocorreu um erro ao calcular valor das Despesas"
-            );
-          }
-        })
-        .catch(() => {
-          this.showAlert(
-            "error",
-            "Ops!! ocorreu um erro ao calcular valor das Despesas"
-          );
-        });
-    },
-
-    receitaFormaPagamento() {
-      this.valorReceita = 0;
-      AgendaService.readDateRelatorioReceitaFormPag(
-        this.dataInicial,
-        this.dataFinal,
-        this.formaDePagamentoSelect
-      )
-        .then((result) => {
-          console.log("receitaFormaPagamento", result);
-          if (result.status === 201) {
-            this.atendimentos = result.data.consulta;
-            this.atendimentos.map((el) => {
-              el.dataPagamento = moment(el.dataPagamento).format("DD/MM/YYYY");
-            });
-            result.data.consulta.map((el) => {
-              this.valorReceita += el.valorConsulta;
-            });
-          } else {
-            this.showAlert("error", "Ops! erro no relatorio #1");
-          }
-        })
-        .catch(() => {
-          this.showAlert("error", "Ops! erro no relatorio #1");
-        });
     },
 
     openReceita() {
@@ -741,5 +446,11 @@ export default {
 .containerPagas {
   background: rgb(212, 212, 211);
   border-radius: 10px;
+}
+.containerrelatorio {
+  display: flex;
+  overflow: auto;
+  border-radius: 10px;
+  justify-content: center;
 }
 </style>

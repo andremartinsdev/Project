@@ -352,15 +352,6 @@
           Alterações
         </b-button>
         <b-button
-          v-show="editar"
-          pill
-          @click="novo"
-          variant="success"
-          class="mr-2"
-        >
-          <b-icon-file-plus class="mr-3"></b-icon-file-plus>Novo
-        </b-button>
-        <b-button
           v-show="!editar"
           v-if="inicioConsulta == false"
           pill

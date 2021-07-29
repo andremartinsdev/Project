@@ -49,7 +49,7 @@
 <script>
 import jsPDF from "jspdf";
 import rodape from '../../services/rodape'
-import logoOlho from "../../assets/LogoOlho.png";
+import logoOlho from "../../assets/LogoOlho.jpg";
 import moldura from "../../assets/moldura.png";
 import { mapState } from 'vuex'
 export default {
@@ -120,7 +120,7 @@ export default {
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
       doc.text("Técnica: AutoRefratômetro", 45, 68, null, null, "center");
-      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+       doc.addImage(this.logoOlho, "JPEG", 70, 50, 55, 25);
       doc.text("Olho Direito", 25, linha, null, null);
       doc.text(this.cerametria[0].olhoDireito, 25, linha + 8, null, null);
       doc.text("Olho Esquerdo", 88, linha, null, null);

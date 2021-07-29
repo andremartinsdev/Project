@@ -199,7 +199,7 @@
 
 <script>
 import moldura from "../../assets/moldura.png";
-import logoOlho from "../../assets/LogoOlho.png";
+import logoOlho from "../../assets/LogoOlho.jpg";
 import jsPDF from "jspdf";
 import { mapState } from 'vuex'
 // import baseUrl from '../../../vue.config'
@@ -386,7 +386,7 @@ export default {
       doc.text("Tonometria", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
-      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+      doc.addImage(this.logoOlho, "JPEG", 70, 50, 55, 25);
       doc.setDrawColor(0, 0, 255);
       doc.rect(25, 58 + 30, 40, 35); // draw red lines
       doc.rect(25, 95 + 30, 40, 35); // draw red lines

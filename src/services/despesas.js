@@ -14,6 +14,10 @@ export default {
     return http.get('/Despesa/readAll')
   },
 
+  readDateAll: (dataInicial, dataFinal) => {
+    return http.get(`/Despesa/readDateAll/${dataInicial}/${dataFinal}`)
+  },
+
   read: (uuid) => {
     return http.get(`Despesa/read/${uuid}`)
   },

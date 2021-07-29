@@ -35,6 +35,10 @@ export default {
         return http.get(`/Agenda/readDate/${dataInicial}/${dataFinal}`)
     },
 
+    readDateFinanceiro: (dataInicial, dataFinal) => {
+        return http.get(`/Agenda/readDateFinanceiro/${dataInicial}/${dataFinal}`)
+    },
+
     readDatePagas: (dataInicial, dataFinal, pago) => {
         return http.get(`/Agenda/readDatePagas/${dataInicial}/${dataFinal}/${pago}`)
     },

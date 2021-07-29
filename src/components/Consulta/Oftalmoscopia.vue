@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import logoOlho from "../../assets/LogoOlho.png";
+import logoOlho from "../../assets/LogoOlho.jpg";
 import moldura from "../../assets/moldura.png";
 import jsPDF from "jspdf";
 import { mapState } from "vuex";
@@ -304,7 +304,7 @@ export default {
       doc.text("Oftalmoscopia", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
-      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+       doc.addImage(this.logoOlho, "JPEG", 70, 50, 55, 25);
       doc.text("Olho Direito", 25, linha, null, null);
       doc.text("Olho Esquerdo", 150, linha, null, null);
 

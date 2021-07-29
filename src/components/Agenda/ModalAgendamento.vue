@@ -400,33 +400,7 @@
                     @click="pesquisarAgendamentos"
                     >Pesquisar</b-button
                   >
-                  <b-button
-                    pill
-                    variant="primary"
-                    class="mr-2"
-                    @click="proximaPage"
-                    v-if="page < totalPage"
-                    size="sm"
-                    >Proxima Pagina</b-button
-                  >
-                  <b-button
-                    pill
-                    variant="primary"
-                    class="mr-2"
-                    disabled
-                    size="sm"
-                    v-else
-                    >Proxima Pagina</b-button
-                  >
-                  <label>
-                    Total de Páginas
-                    <b-badge variant="primary">{{ totalPage }}</b-badge>
-                  </label>
-                  <label class="ml-4">
-                    Página Atual
-                    <b-badge variant="primary">{{ page }}</b-badge>
-                  </label>
-                  <b-button
+                   <b-button
                     pill
                     variant="primary"
                     @click="anteriorPage"
@@ -444,6 +418,34 @@
                     class="mr-2 ml-2"
                     >Pagina Anterior</b-button
                   >
+                
+                  <label>
+                    Total de Páginas
+                    <b-badge variant="primary">{{ totalPage }}</b-badge>
+                  </label>
+                  <label class="ml-4">
+                    Página Atual
+                    <b-badge variant="primary">{{ page }}</b-badge>
+                  </label>
+                    <b-button
+                    pill
+                    variant="primary"
+                    class="ml-2"
+                    @click="proximaPage"
+                    v-if="page < totalPage"
+                    size="sm"
+                    >Proxima Pagina</b-button
+                  >
+                  <b-button
+                    pill
+                    variant="primary"
+                    class="ml-2"
+                    disabled
+                    size="sm"
+                    v-else
+                    >Proxima Pagina</b-button
+                  >
+                 
                 </div>
               </div>
             </div>
@@ -593,7 +595,7 @@ export default {
       return {
         id: dados.uuid,
         title: dados.titulo,
-        start: moment(dados.data).format("YYYY-MM-DD"),
+        start: moment(dados.data).add('day', 1).format("YYYY-MM-DD"),
         description: dados.observacao,
       };
     },
@@ -694,7 +696,7 @@ export default {
           }
           this.agendamentoPesquisa = agendamentos.data.result.result;
           this.agendamentoPesquisa.map((el) => {
-            el.data = moment(el.data).format("DD/MM/YYYY");
+            el.data = moment(el.data).add('day', 1).format("DD/MM/YYYY");
           });
 
           this.agendamentoPesquisa.sort((a, b) => {
@@ -714,7 +716,7 @@ export default {
 
           this.agendamentoPesquisa = agendamentos.data.agendamentos.result;
           this.agendamentoPesquisa.forEach((element) => {
-            element.data = moment(element.data).format("DD/MM/YYYY");
+            element.data = moment(element.data).add('day', 1).format("DD/MM/YYYY");
           });
           if (
             agendamentos.data.agendamentos.total[0].count > 6 &&
@@ -741,7 +743,7 @@ export default {
         .then((result) => {
           this.agendamentoPesquisa = result.data.result.result;
           this.agendamentoPesquisa.map((el) => {
-            el.data = moment(el.data).format("DD/MM/YYYY");
+            el.data = moment(el.data).add('day', 1).format("DD/MM/YYYY");
           });
           this.agendamentoPesquisa.sort((a, b) => {
             return parseInt(a.data) - parseInt(b.data);
@@ -765,7 +767,7 @@ export default {
         .then((result) => {
           this.agendamentoPesquisa = result.data.result.result;
           this.agendamentoPesquisa.map((el) => {
-            el.data = moment(el.data).format("DD/MM/YYYY");
+            el.data = moment(el.data).add('day', 1).format("DD/MM/YYYY");
           });
           this.agendamentoPesquisa.sort((a, b) => {
             return parseInt(a.data) - parseInt(b.data);
@@ -904,7 +906,10 @@ export default {
         AgendaService.readParams(uuid)
           .then((result) => {
             Object.assign(this.agendamento, result.data.agendamento);
-            this.agendamento.data = moment(this.agendamento.data).format(
+            this.agendamento.dataPagamento = moment(this.agendamento.dataPagamento).add('day', 1).format(
+              "YYYY-MM-DD"
+            );
+            this.agendamento.data = moment(this.agendamento.data).add('day', 1).format(
               "YYYY-MM-DD"
             );
             this.agendamento.idProcedimento =

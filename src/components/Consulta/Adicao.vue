@@ -28,8 +28,8 @@
         variant="primary"
         @click="createPDF(false)"
       >
-        Imprimir <b-icon-printer-fill class="ml-3"></b-icon-printer-fill
-      ></b-button>
+        Imprimir <b-icon-printer class="ml-3"></b-icon-printer>
+      </b-button>
       <b-link href="#foo" @click="createPDF(true)"
         >Download PDF <b-icon-download></b-icon-download>
       </b-link>
@@ -39,7 +39,7 @@
 
 <script>
 import jsPDF from "jspdf";
-import logoOlho from "../../assets/LogoOlho.png";
+import logoOlho from "../../assets/LogoOlho.jpg";
 import moldura from "../../assets/moldura.png";
 import { mapState } from 'vuex'
 // import baseUrl from '../../../vue.config'
@@ -103,7 +103,7 @@ export default {
       doc.text("Adição", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
-      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+       doc.addImage(this.logoOlho, "JPEG", 70, 50, 55, 25);
 
 
        doc.text("Olho Direito : ", 25, linha, null, null).setTextColor(0,0,255);

@@ -1,22 +1,22 @@
 <template>
   <div class="containerPrescri">
     <b-card no-body class="mb-5">
-      <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button
+      <!-- <b-card-header header-tag="header" class="p-1" role="tab"> -->
+        <!-- <b-button
           block
           v-b-toggle.accordionPesquisaPrescriOculos
           variant="transparent"
           class="shadow"
           >Pesquisar Prescrição para Lente
           <b-icon-search class="ml-2"></b-icon-search
-        ></b-button>
-      </b-card-header>
-      <b-collapse
+        ></b-button> -->
+      <!-- </b-card-header> -->
+      <!-- <b-collapse
         id="accordionPesquisaPrescriOculos"
         visible
         accordion="my-accordion"
         role="tabpanel"
-      >
+      > -->
         <b-card-body>
           <div>
             <label for="">Selecione o Paciente</label>
@@ -98,7 +98,7 @@
             </tbody>
           </table>
         </b-card-body>
-      </b-collapse>
+      <!-- </b-collapse> -->
     </b-card>
 
     <b-card no-body class="mb-1">
@@ -109,7 +109,6 @@
       </b-card-header>
       <b-collapse
         id="accordion-1"
-        visible
         accordion="my-accordion"
         role="tabpanel"
       >
@@ -263,7 +262,7 @@ import ConsultaService from "../../services/consulta";
 import PrescricaoService from "../../services/prescicaoLente";
 import AgendaService from "../../services/agenda";
 import jsPDF from "jspdf";
-import logoOlho from "../../assets/LogoOlho.png";
+import logoOlho from "../../assets/LogoOlho.jpg";
 import moldura from "../../assets/moldura.png";
 import { mapState } from "vuex";
 import moment from "moment";
@@ -441,7 +440,7 @@ export default {
       doc.text("Prescrição Lente", 105, 40, null, null, "center");
       doc.setFontSize(12);
       doc.text("Nome Clinica", 105, 48, null, null, "center");
-      doc.addImage(this.logoOlho, "JPEG", 90, 55, 25, 15);
+      doc.addImage(this.logoOlho, "JPEG", 70, 50, 55, 25);
       doc.text("Olho Direito", 25, linha, null, null);
       doc.text("Olho Esquerdo", 150, linha, null, null);
 
