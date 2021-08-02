@@ -145,6 +145,7 @@ export default {
              element
             );
           });
+          this.$emit("alterProcedimento")
           this.$store.commit("procedimentoSelect", this.optionsPro);
         })
         .catch(() => {
@@ -185,6 +186,7 @@ export default {
             this.showAlert("success", "Procedimento Salvo com Sucesso");
             this.procedimento.uuid = result.data.uuid.uuid;
             this.$store.commit("procedimentoSelectPush", this.procedimento);
+            this.readAllProcedimentos()
           })
           .catch(() => {
             this.showAlert("error", "Erro ao salvar Procedimento");

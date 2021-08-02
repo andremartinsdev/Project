@@ -494,7 +494,7 @@
     </div>
     <ModalFormaPagamento @reloadForma="readFormaPagamento" />
     <ModalOticaParceira @realoadOpticaP="readOticaParceira" />
-    <ModalProcedimento />
+    <ModalProcedimento @alterProcedimento="readProcedimento"/>
   </b-modal>
 </template>
 
@@ -602,6 +602,7 @@ export default {
 
     async readProcedimento() {
       try {
+        this.optionsProcedimento = []
         const procedimento = await ProcedimentoService.readAll();
         procedimento.data.procedimento.forEach((element) => {
           this.optionsProcedimento.push(

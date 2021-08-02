@@ -1,5 +1,24 @@
 <template>
-  <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto teste">
+<div>
+  <div class="imgOlho">
+        <img :src="logoOlho" width="500" alt="">
+    </div>
+    <h1> BMS Optometrista </h1>
+    
+    <form action="">
+    <h2>Faça seu Login</h2>
+
+        <img :src="logoBms" alt="" srcset="">
+        <div class="containerInputs">
+           
+            <input type="text" v-model="login.cpfcnpj" placeholder="Login" />
+            <input type="password" v-model="login.senha" placeholder="Senha" />
+            <input type="submit" @click="logar" value="Entrar" />
+        </div>
+        <small>&copy; BMS LTDA 2021 </small>
+    </form>
+</div>
+  <!-- <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto teste">
     <div class="col-lg-6 containerMenu">
       <div class="card2 card px-4 py-5">
         <div class="row"><img :src="logoOlho" class="logo2" /></div>
@@ -60,7 +79,7 @@
         </div>
       </footer>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -97,6 +116,7 @@ export default {
       });
     },
     async logar() {
+      event.preventDefault()
       if (this.login.cpfcnpj === "" || this.login.senha === "") {
         this.showAlert("info", "Campo de Login e Senha devem ser Preenchidos");
         return;
@@ -118,228 +138,166 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
-body {
-  color: #000;
-  overflow-x: hidden;
-  height: 100%;
-  background-color: #1a237e;
-  background-repeat: no-repeat;
-  font-family: "Montserrat", sans-serif;
-}
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.card0 {
-  box-shadow: 0px 4px 8px 0px #757575;
-  border-radius: 10px;
-  width: 50%;
-}
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #43c6ac;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to bottom,
+                    #191654,
+                    #43c6ac) fixed;
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to bottom,
+                    #191654,
+                    #43c6ac) fixed;
+        }
 
-.card2 {
-  margin: 0 auto;
-  width: 100%;
-}
+        form {
+            background-color: white;
+            max-width: 500px;
+            width: 70%;
+            padding-top: 351px;
+            height: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+            position: absolute;
 
-.logo {
-  width: 200px;
-  height: 100px;
-  margin: 0 auto;
-}
+        }
 
-button {
-  margin: 0 auto;
-}
+        form input[type=text]:focus,
+        form input[type=password]:focus {
+            outline: none;
 
-.image {
-  width: 360px;
-  height: 280px;
-}
+        }
 
-.border-line {
-  border-right: 1px solid #eeeeee;
-}
+        form input[type=text]:hover,
+        form input[type=password]:hover {
+            padding-left: 30px;
+            color: turquoise;
+        }
 
-.facebook {
-  background-color: #3b5998;
-  color: #fff;
-  font-size: 18px;
-  padding-top: 5px;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
 
-.twitter {
-  background-color: #1da1f2;
-  color: #fff;
-  font-size: 18px;
-  padding-top: 5px;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
+        form input[type=submit]:hover {
+            background-color: rgb(45, 167, 154);
+        }
 
-.linkedin {
-  background-color: #2867b2;
-  color: #fff;
-  font-size: 18px;
-  padding-top: 5px;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
+        form input[type=submit] {
+            width: 100%;
+            height: 45px;
+            border-radius: 5px;
+            border: none;
+            margin-top: 35px;
+            background-color: turquoise;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.5s;
+            letter-spacing: .1rem;
+        }
 
-.line {
-  height: 3px;
-  width: 35%;
-  background-color: #e0e0e0;
-  margin-top: 10px;
-  margin-left: 20px;
-}
+        form input[type=text],
+        form input[type=password] {
+            width: 100%;
+            
+            height: 45px;
+            border: 1px solid #43c6ac;
+            padding-left: 10px;
+            margin: 10px 0;
+            font-size: 15px;
+            transition: 0.7s;
+            color: #666;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            color: rgba(64, 224, 208, 0);
+            text-decoration: none;
+            letter-spacing: .1rem;
+        }
+        small{
+            left: 15px;
+            position: absolute;
+            top: 96%; 
+        }
 
-.or {
-  width: 20%;
-  font-weight: bold;
-}
+        .imgOlho{
+            position: absolute;
+            right: 50%;
+            top: 10%;
+           
+        }
 
-.text-sm {
-  font-size: 14px !important;
-}
+        img {
+            margin: auto 16%;
+            position: absolute;
+            top: 6%;
+        }
 
-::placeholder {
-  color: #bdbdbd;
-  opacity: 1;
-  font-weight: 300;
-}
+        h1{
+            font-family: 'Montserrat Alternates', sans-serif;
+            position: absolute;
+            top: 67%;
+            left: 48%;
+            color: rgb(243, 246, 247);
+            font-size: 50px;
+            letter-spacing: .4rem;
+        }
+       
+        h2{
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-size: 25px;
+            letter-spacing: .2rem;
+            text-align: center;
+            position: absolute;
+            top: 30%;
+            left: 24%;
+            }
+/* 
+        .containerInputs{
+            position: absolute;
+            background-color: rgba(0, 128, 128, 0.089);
+           width: 95%;
+           left: 10px;
+           padding: 20px;
+           border-radius: 10px;
+           
+        } */
 
-:-ms-input-placeholder {
-  color: #bdbdbd;
-  font-weight: 300;
-}
+        @media (max-width: 700px) {
 
-::-ms-input-placeholder {
-  color: #bdbdbd;
-  font-weight: 300;
-}
+            .imgOlho{
+                display: none;
+            }
 
-input,
-textarea {
-  padding: 10px 12px 10px 12px;
-  border: 1px solid lightgrey;
-  border-radius: 12px;
-  margin-bottom: 5px;
-  margin-top: 2px;
-  width: 100%;
-  box-sizing: border-box;
-  color: #2c3e50;
-  font-size: 14px;
-  letter-spacing: 1px;
-}
+           
 
-input:focus,
-textarea:focus {
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-  border: 1px solid #304ffe;
-  outline-width: 0;
-}
+            h1{
+                display: none;
+            }
+            form {
+                width: 95%;
+                margin-left: 2.5%;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
 
-button:focus {
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-  outline-width: 0;
-}
+            form input[type=text],
+            form input[type=password] {
+                width: 100%;
+            }
+        }
 
-a {
-  color: inherit;
-  cursor: pointer;
-}
+        @media (max-width: 1033px) {
+            .imgOlho{
+                display: none;
+            }
 
-.btn-blue {
-  background-color: #1a237e;
-  color: #fff;
-  border-radius: 2px;
-}
-
-.btn-blue:hover {
-  background-color: rgb(21, 32, 182);
-  cursor: pointer;
-}
-
-.bg-blue {
-  color: #fff;
-  background-color: #1a237e;
-}
-
-@media screen and (max-width: 991px) {
-  .logo {
-    margin: 0 auto;
-  }
-
-  .titulo {
-    display: none;
-  }
-
-  .logo2 {
-    display: none;
-  }
-  .img {
-    width: 220px;
-    height: 200px;
-  }
-  .image {
-    width: 300px;
-    height: 220px;
-  }
-
-  .border-line {
-    border-right: none;
-  }
-
-  .card2 {
-    border-top: 1px solid #eeeeee !important;
-    margin: 0px 15px;
-  }
-  .card0 {
-    width: 100%;
-    overflow: auto;
-    margin-top: 0;
-  }
-  .footer {
-    z-index: 1000;
-  }
-}
-
-.logo2 {
-  width: 200px;
-  margin: 0 auto;
-}
-
-.teste {
-  height: 100%;
-}
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: red;
-  color: white;
-  text-align: center;
-}
-.img {
-  margin: 0 auto;
-}
-
-.teste2 {
-  margin: 0 auto;
-  width: 100px;
-}
-.containerMenu {
-  margin: 0 auto;
-}
+            h1{
+                display: none;
+            }
+        }
 </style>

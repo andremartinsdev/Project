@@ -374,7 +374,6 @@ export default {
 
     readDespesas() {
       this.despesasHoje = [];
-      console.log("asssssssss")
       DespesaService.readDate(
         moment().format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
