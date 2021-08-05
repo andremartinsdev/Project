@@ -233,7 +233,7 @@ export default {
           return;
         }
         Object.assign(this.clinica, result.data.result[0]);
-        this.clinica.logo = `http://localhost:3002/Clinica/image/logo/${result.data.result[0].uuid}`;
+        this.clinica.logo = `http://147.182.248.150:3002/Clinica/image/logo/${result.data.result[0].uuid}`;
         console.log(this.clinica.logo)
       } catch (error) {
         this.showAlert("error", "Um erro ocorreu ao ler os dados da Cliníca");
