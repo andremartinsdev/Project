@@ -32,7 +32,8 @@
                       <b-form-input
                         v-model="clinica.nomeClinica"
                         trim
-                        max="50"
+                        max="25"
+
                       ></b-form-input>
                     </div>
 
@@ -212,7 +213,6 @@ export default {
   },
   created() {
     this.read();
-    this.readLogo();
   },
   methods: {
     showAlert(icon, title) {
@@ -233,10 +233,10 @@ export default {
           return;
         }
         Object.assign(this.clinica, result.data.result[0]);
-        this.clinica.logo = `http://143.198.187.252:3002/Clinica/image/logo/${result.data.result[0].uuid}`;
+        this.clinica.logo = `http://localhost:3002/Clinica/image/logo/${result.data.result[0].uuid}`;
         console.log(this.clinica.logo)
       } catch (error) {
-        // console.log("erro");
+        this.showAlert("error", "Um erro ocorreu ao ler os dados da Cliníca");
       }
     },
 
@@ -246,7 +246,7 @@ export default {
           const file = document.querySelector("input[type=file]").files[0];
           const logo = await this.toBase64(file);
           await ClinicaService.saveLogo(logo, this.clinica.uuid);
-          // window.location.reload();
+          window.location.reload();
           return;
         }
         this.showAlert("info", "Por favor Selecione uma Imagem");
@@ -256,9 +256,12 @@ export default {
     },
 
     async saveClinica() {
+      if(this.clinica.nomeClinica > 25){
+        this.showAlert("error", "Ops! O Campo Nome Cliníca não pode ter mais de 25 caracteres");
+        return
+      }
       if (this.clinica.uuid) {
         try {
-          // this.clinica.logo = await this.toBase64(file);
           await ClinicaService.update(this.clinica, this.clinica.uuid);
           this.showAlert("success", "Registro Atualizado com Sucesso");
           this.editar = true;
@@ -267,8 +270,6 @@ export default {
         }
       } else {
         try {
-          // const file = document.querySelector('input[type=file]').files[0]
-          // this.clinica.logo = await this.toBase64(file);
           const result = await ClinicaService.save(this.clinica);
           this.clinica.uuid = result.data.result.uuid;
           this.showAlert("success", "Registro Salvo com Sucesso");
@@ -279,14 +280,7 @@ export default {
       }
     },
 
-    async readLogo() {
-      //  const logo = await ClinicaService.readLogo()
-      //  this.clinica.logo = logo
-      //  console.log(logo)
-      //  var img = new Image();
-      //   img.src = logo.data;
-      //  console.log(img)
-    },
+  
 
     toBase64(file) {
       try {

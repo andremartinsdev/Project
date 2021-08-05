@@ -258,6 +258,9 @@ export default {
         this.showAlert("info", "Por favor Informe o Período inicial e Final");
         return;
       }
+      
+     
+      
       await this.relatorioContasReceber();
       await this.relatorioContasPagar();
       await this.relatorioAgenda();
@@ -302,9 +305,10 @@ export default {
         this.dataFinal
       );
       console.log(data);
+      this.totalAgenda = 0;
       this.agendaRelatorio = data.agendamentos;
       this.agendaRelatorio.forEach((element) => {
-        this.totalAgenda += element.valorConsulta;
+        this.totalAgenda = this.totalAgenda + element.valorConsulta;
         element.dataPagamento = moment(element.dataPagamento)
           .add("day", 1)
           .format("DD/MM/YYYY");
@@ -326,6 +330,7 @@ export default {
           this.dataInicial,
           this.dataFinal
         );
+        this.totalPagar = 0;
         this.despesaRelatorio = data.result;
         this.despesaRelatorio.forEach((element) => {
           this.totalPagar += element.valor;
@@ -357,6 +362,7 @@ export default {
           this.dataInicial,
           this.dataFinal
         );
+         this.totalReceber = 0;
         this.receitaRelatorio = data.result;
         this.receitaRelatorio.forEach((element) => {
           this.totalReceber += element.valor;

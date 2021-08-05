@@ -128,7 +128,7 @@
           </b-container>
         </b-col>
       </b-row>
-      
+
       <b-card class="text-center shadow bg-white rounded cardConteudo">
         <div class="card1">
           <Agendamento :agendamentos="this.fake" />
@@ -249,37 +249,36 @@
         </div>
       </footer> -->
     </b-container>
-    <b-overlay :show="show" variant="light"  no-wrap opacity="0.99" rounded="sm"> </b-overlay>
+    <b-overlay :show="show" variant="light" no-wrap opacity="0.99" rounded="sm">
+    </b-overlay>
 
     <b-modal
       id="modal-xl-t"
       hide-footer
       size="xl"
-      title="Seja Bem Vindo ao BMS Opto ... Temos algumas instruções para você"
+      title="Seja Bem Vindo ao BMS Opto"
     >
-      <b-card>
-        <div>
-          <b-carousel
-            id="carousel-fade"
-            style="text-shadow: 0px 0px 2px #000"
-            fade
-            indicators
-            img-width="1024"
-            img-height="480"
-          >
-            <b-carousel-slide
-              caption="Primeiro Passo"
-              :img-src="imgTela"
-            ></b-carousel-slide>
-            <b-carousel-slide
-              caption="Segundo Passo"
-              :img-src="imgTela2"
-            ></b-carousel-slide>
-          </b-carousel>
-        </div>
-      </b-card>
+      <div>
+        <b-carousel
+          id="carousel-fade"
+          style="text-shadow: 0px 0px 2px #000"
+          fade
+          indicators
+          img-width="1024"
+          img-height="480"
+        >
+          <b-carousel-slide
+            caption="Seja Bem vindos ao Nosso Sistema"
+            :img-src="imgTela"
+          ></b-carousel-slide>
+          <b-carousel-slide
+            caption="Seja Bem vindos ao Nosso Sistema"
+            :img-src="imgTela2"
+          ></b-carousel-slide>
+        </b-carousel>
+      </div>
     </b-modal>
-     <!-- <b-modal id="modal-12" size="lg" title="Configuração">
+    <!-- <b-modal id="modal-12" size="lg" title="Configuração">
        <Config/>
   </b-modal> -->
     <ModalAniversariante />
@@ -299,15 +298,14 @@ import ModalAniversariante from "../Home/Modals/ModalAniversariante";
 import ModalConsultaVencida from "../Home/Modals/ModalConsultaVencida";
 import ModalProxConsultas from "../Home/Modals/ModalProxConsultas";
 import ClinicaService from "../../services/clinica";
-import imgTela from "../../assets/tela-min.png";
-import imgTela2 from "../../assets/tela2-min.png";
+import imgTela from "../../assets/bemvindo.png";
+import imgTela2 from "../../assets/bemvindo.png";
 import logoCalendar from "../../assets/logoCalendar.jpg";
 import logoOpto from "../../assets/logoOpto.jpg";
 import logoAaniversario from "../../assets/logoAaniversario.jpg";
 import Agendamento from "../Agenda/Agendamento";
 import Sidebar from "../../components/SidebarNavbar.vue";
 // import Config from "../../components/Configuracoes/ConfiguracoesGeral.vue";
-
 
 export default {
   components: {
@@ -421,6 +419,7 @@ export default {
         element.data = moment(element.data).format("DD/MM/YYYY");
         this.proximasConsultas.push(element);
       });
+
       if (consultas.data.consultas.length > 0) {
         this.proximaConsultaLoad = true;
       }
