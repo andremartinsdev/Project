@@ -894,7 +894,7 @@ export default {
       ).then((result) => {
         this.agendamentosData = result.data.agendamentos.result;
         this.agendamentosData.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -909,7 +909,7 @@ export default {
       ).then((result) => {
         this.agendamentosData = result.data.agendamentos.result;
         this.agendamentosData.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -918,12 +918,12 @@ export default {
     proximaPageAgHoje() {
       this.page = this.page + 1;
       AgendaService.readDateInnerPaginationNavigation(
-        moment().format("YYYY-MM-DD"),
+        moment().add('day',1).format("YYYY-MM-DD"),
         this.page
       ).then((result) => {
         this.agendamentos = result.data.agendamentos.result;
         this.agendamentos.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -939,7 +939,7 @@ export default {
       ).then((result) => {
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
       });
     },
@@ -954,7 +954,7 @@ export default {
       ).then((result) => {
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
       });
     },
@@ -967,7 +967,7 @@ export default {
       ).then((result) => {
         this.agendamentos = result.data.agendamentos.result;
         this.agendamentos.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -983,7 +983,7 @@ export default {
           result.data.agendamentos.total[0].count / 5
         );
         this.agendamentosData.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
         if (this.dataInicialAg === this.dataFinalAg) {
           this.agendamentosData.sort(this.compararHora);
@@ -1006,7 +1006,7 @@ export default {
           result.data.agendamentos.total[0].count / 5
         );
         this.agendamentosDataFinalizado.map((el) => {
-          el.data = moment(el.data).format("DD/MM/YYYY");
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
         if (this.dataInicialAgFinalizado === this.dataFinalAgFinalizado) {
           this.agendamentosDataFinalizado.sort(this.compararHora);
@@ -1028,7 +1028,7 @@ export default {
           this.telefonePaciente = result.data.paciente.telefone;
           this.dataPaciente = moment(
             result.data.paciente.dataNascimento
-          ).format("DD/MM/YYYY");
+          ).add('day',1).format("DD/MM/YYYY");
           this.abreviaNome = this.nomePaciente[0];
         });
         this.tabIndexConsulta = 2;
@@ -1049,14 +1049,14 @@ export default {
     loadAgendamentos() {
       this.page = 1;
       this.totalPage = 1;
-      AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
+      AgendaService.readDateInnerPagination(moment().add('day',1).format("YYYY-MM-DD")).then(
         (result) => {
           this.agendamentos = result.data.agendamentos.result;
           this.totalPage = Math.ceil(
             result.data.agendamentos.total[0].count / 5
           );
           this.agendamentos.map((el) => {
-            el.data = moment(el.data).format("DD/MM/YYYY");
+            el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
           });
         }
       );
@@ -1095,7 +1095,7 @@ export default {
             this.dataFinalFicha
           );
           ficha.data.result.forEach((element) => {
-            element.data = moment(element.data).format("DD/MM/YYYY");
+            element.data = moment(element.data).add('day',1).format("DD/MM/YYYY");
             this.fichaPesquisa.push(element);
           });
 
@@ -1107,7 +1107,7 @@ export default {
           this.dataFinalFicha
         );
         ficha.data.result.result.forEach((element) => {
-          element.data = moment(element.data).format("DD/MM/YYYY");
+          element.data = moment(element.data).add('day',1).format("DD/MM/YYYY");
           this.fichaPesquisa.push(element);
         });
       } catch (error) {
@@ -1162,6 +1162,8 @@ export default {
       ).then((result) => {
         this.ListaConsulta = result.data.result.result;
         this.ListaConsulta.titulo = this.retornaTipoConsulta();
+      }).catch(error =>{
+         this.showAlert("error", "Ocorreu um erro na paginação");
       });
     },
 
@@ -1176,6 +1178,9 @@ export default {
         ).then((result) => {
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
+        }).catch(erro =>{
+         this.showAlert("error", "Ocorreu um erro na paginação");
+
         });
       } else if (this.typePesquisa === "laudo") {
         LaudoService.read(
@@ -1186,6 +1191,9 @@ export default {
         ).then((result) => {
           this.ListaConsulta = result.data.result.result;
           this.ListaConsulta.titulo = this.retornaTipoConsulta();
+        }).catch(error =>{
+         this.showAlert("error", "Ocorreu um erro na paginação");
+
         });
       }
     },
@@ -1207,6 +1215,9 @@ export default {
             this.ListaConsulta = result.data.result.result;
             this.ListaConsulta.titulo = this.retornaTipoConsulta();
           }
+        }).catch(error =>{
+         this.showAlert("error", "Ocorreu um erro na lista de consulta");
+
         });
       } else {
         this.showAlert("info", "Selecione um Paciente !");
