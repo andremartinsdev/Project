@@ -220,12 +220,9 @@
               </b-card>
             </b-tab>
 
-          
-
             <b-tab title="Consulta">
               <h3 class="text-center mt-3">Consulta Optometria</h3>
             </b-tab>
-           
           </b-tabs>
         </b-card>
       </div>
@@ -534,95 +531,92 @@
                   role="tabpanel"
                   aria-expanded="true"
                 > -->
-                  <b-card-body>
+                <b-card-body>
+                  <div>
+                    <label for="">Selecione o Paciente</label>
+                    <b-form-select
+                      v-model="pacienteSelectedFicha"
+                      :options="ListaPaciente"
+                      size="sm"
+                      class="mb-3"
+                      value-field="value"
+                      text-field="text"
+                      disabled-field="notEnabled"
+                    >
+                      <template #first>
+                        <b-form-select-option :value="null"
+                          >-- Paciente --</b-form-select-option
+                        >
+                      </template>
+                    </b-form-select>
                     <div>
-                      <label for="">Selecione o Paciente</label>
-                      <b-form-select
-                        v-model="pacienteSelectedFicha"
-                        :options="ListaPaciente"
-                        size="sm"
-                        class="mb-3"
-                        value-field="value"
-                        text-field="text"
-                        disabled-field="notEnabled"
-                      >
-                        <template #first>
-                          <b-form-select-option :value="null"
-                            >-- Paciente --</b-form-select-option
-                          >
-                        </template>
-                      </b-form-select>
-                      <div>
+                      <div style="width: 100%">
                         <div style="width: 100%">
-                          <div style="width: 100%">
-                            <label for="example-datepicker">Data Inicial</label>
-                            <b-form-datepicker
-                              id="example-datepicker"
-                              size="sm"
-                              v-model="dataInicalFicha"
-                              class="mb-2 col-sm-3"
-                              placeholder="Data não Informada"
-                            ></b-form-datepicker>
-                          </div>
+                          <label for="example-datepicker">Data Inicial</label>
+                          <b-form-datepicker
+                            id="example-datepicker"
+                            size="sm"
+                            v-model="dataInicalFicha"
+                            class="mb-2 col-sm-3"
+                            placeholder="Data não Informada"
+                          ></b-form-datepicker>
+                        </div>
 
-                          <div>
-                            <label for="example-datepicker">Data Final</label>
-                            <b-form-datepicker
-                              id="example-datepicker"
-                              size="sm"
-                              v-model="dataFinalFicha"
-                              class="mb-2 col-sm-3"
-                              placeholder="Data não Informada"
-                            ></b-form-datepicker>
-                          </div>
+                        <div>
+                          <label for="example-datepicker">Data Final</label>
+                          <b-form-datepicker
+                            id="example-datepicker"
+                            size="sm"
+                            v-model="dataFinalFicha"
+                            class="mb-2 col-sm-3"
+                            placeholder="Data não Informada"
+                          ></b-form-datepicker>
+                        </div>
+                        <b-button
+                          variant="primary"
+                          size="sm"
+                          class="mb-4 mt-2"
+                          @click="pesquisarFicha"
+                          >Pesquisar</b-button
+                        >
+                        <router-link
+                          class="nav-link mr-5"
+                          to="/Impressao"
+                          style="padding: 0"
+                        >
                           <b-button
                             variant="primary"
                             size="sm"
-                            class="mb-4 mt-2"
-                            @click="pesquisarFicha"
-                            >Pesquisar</b-button
+                            class="mb-3 ml-2"
+                            >Imprimir Ficha em Branco</b-button
                           >
-                          <router-link
-                            class="nav-link mr-5"
-                            to="/Impressao"
-                            style="padding: 0"
-                          >
-                            <b-button
-                              variant="primary"
-                              size="sm"
-                              class="mb-3 ml-2"
-                              >Imprimir Ficha em Branco</b-button
-                            >
-                          </router-link>
-                        </div>
+                        </router-link>
                       </div>
                     </div>
-                    <table class="table table-sm" id="teste">
-                      <thead>
-                        <tr>
-                          <th scope="col">Nome Paciente</th>
-                          <th scope="col">Data Consulta</th>
-                          <th scope="col">Visualizar</th>
-                          <th scope="col">Excluir</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          v-for="ficha in this.fichaPesquisa"
-                          :key="ficha.uuid"
-                        >
-                          <th>{{ ficha.nomePaciente }}</th>
-                          <td>{{ ficha.data }}</td>
-                          <td>
-                            <b-button
-                              variant="primary"
-                              size="sm"
-                              @click="visualizar(ficha.uuid)"
-                            >
-                              Visualizar
-                            </b-button>
-                          </td>
-                          <!-- <td>
+                  </div>
+                  <table class="table table-sm" id="teste">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nome Paciente</th>
+                        <th scope="col">Data Consulta</th>
+                        <th scope="col">Visualizar</th>
+                        <th scope="col">Excluir</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="ficha in this.fichaPesquisa" :key="ficha.uuid">
+                        <th>{{ ficha.nomePaciente }}</th>
+                        <td>{{ ficha.data }}</td>
+                        <td>
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            @click="visualizar(ficha.uuid)"
+                          >
+                            Visualizar
+                          </b-button>
+                        </td>
+                        <!-- <td>
                             <b-button
                               variant="primary"
                               size="sm"
@@ -632,19 +626,19 @@
                             </b-button>
                           </td> -->
 
-                          <td>
-                            <b-button
-                              variant="primary"
-                              size="sm"
-                              @click="deleteFicha(ficha.uuid)"
-                            >
-                              Excluir
-                            </b-button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </b-card-body>
+                        <td>
+                          <b-button
+                            variant="primary"
+                            size="sm"
+                            @click="deleteFicha(ficha.uuid)"
+                          >
+                            Excluir
+                          </b-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </b-card-body>
                 <!-- </b-collapse> -->
               </b-card>
               <b-card class="fichaClinica">
@@ -857,6 +851,7 @@ export default {
         const clinica = await serviceClinica.read();
         this.$store.commit("dadosClinica", clinica.data.result[0]);
       } catch (error) {
+        console.log(error);
         this.showAlert("error", "Ocorreu um erro ao listar dados clinica");
       }
     },
@@ -894,7 +889,7 @@ export default {
       ).then((result) => {
         this.agendamentosData = result.data.agendamentos.result;
         this.agendamentosData.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -909,7 +904,7 @@ export default {
       ).then((result) => {
         this.agendamentosData = result.data.agendamentos.result;
         this.agendamentosData.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -918,12 +913,12 @@ export default {
     proximaPageAgHoje() {
       this.page = this.page + 1;
       AgendaService.readDateInnerPaginationNavigation(
-        moment().add('day',1).format("YYYY-MM-DD"),
+        moment().add("day", 1).format("YYYY-MM-DD"),
         this.page
       ).then((result) => {
         this.agendamentos = result.data.agendamentos.result;
         this.agendamentos.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -939,7 +934,7 @@ export default {
       ).then((result) => {
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
       });
     },
@@ -954,7 +949,7 @@ export default {
       ).then((result) => {
         this.agendamentosDataFinalizado = result.data.agendamentos.result;
         this.agendamentosDataFinalizado.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
       });
     },
@@ -967,7 +962,7 @@ export default {
       ).then((result) => {
         this.agendamentos = result.data.agendamentos.result;
         this.agendamentos.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
         this.agendamentos.sort(this.compararHora);
       });
@@ -983,7 +978,7 @@ export default {
           result.data.agendamentos.total[0].count / 5
         );
         this.agendamentosData.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
         if (this.dataInicialAg === this.dataFinalAg) {
           this.agendamentosData.sort(this.compararHora);
@@ -1006,7 +1001,7 @@ export default {
           result.data.agendamentos.total[0].count / 5
         );
         this.agendamentosDataFinalizado.map((el) => {
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
         });
         if (this.dataInicialAgFinalizado === this.dataFinalAgFinalizado) {
           this.agendamentosDataFinalizado.sort(this.compararHora);
@@ -1026,9 +1021,9 @@ export default {
           this.uuidPaciente = pacienteUuid;
           this.nomePaciente = result.data.paciente.nomePaciente;
           this.telefonePaciente = result.data.paciente.telefone;
-          this.dataPaciente = moment(
-            result.data.paciente.dataNascimento
-          ).add('day',1).format("DD/MM/YYYY");
+          this.dataPaciente = moment(result.data.paciente.dataNascimento)
+            .add("day", 1)
+            .format("DD/MM/YYYY");
           this.abreviaNome = this.nomePaciente[0];
         });
         this.tabIndexConsulta = 2;
@@ -1049,17 +1044,15 @@ export default {
     loadAgendamentos() {
       this.page = 1;
       this.totalPage = 1;
-      AgendaService.readDateInnerPagination(moment().add('day',1).format("YYYY-MM-DD")).then(
-        (result) => {
-          this.agendamentos = result.data.agendamentos.result;
-          this.totalPage = Math.ceil(
-            result.data.agendamentos.total[0].count / 5
-          );
-          this.agendamentos.map((el) => {
-            el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
-          });
-        }
-      );
+      AgendaService.readDateInnerPagination(
+        moment().add("day", 1).format("YYYY-MM-DD")
+      ).then((result) => {
+        this.agendamentos = result.data.agendamentos.result;
+        this.totalPage = Math.ceil(result.data.agendamentos.total[0].count / 5);
+        this.agendamentos.map((el) => {
+          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
+        });
+      });
     },
 
     showAlert(icon, title) {
@@ -1082,6 +1075,7 @@ export default {
         await this.pesquisarFicha();
         this.showAlert("success", "Registro Deletado com Sucesso");
       } catch (error) {
+        console.log(error);
         this.showAlert("error", "Ocorreu um erro ao deletar Registro");
       }
     },
@@ -1095,7 +1089,9 @@ export default {
             this.dataFinalFicha
           );
           ficha.data.result.forEach((element) => {
-            element.data = moment(element.data).add('day',1).format("DD/MM/YYYY");
+            element.data = moment(element.data)
+              .add("day", 1)
+              .format("DD/MM/YYYY");
             this.fichaPesquisa.push(element);
           });
 
@@ -1107,7 +1103,9 @@ export default {
           this.dataFinalFicha
         );
         ficha.data.result.result.forEach((element) => {
-          element.data = moment(element.data).add('day',1).format("DD/MM/YYYY");
+          element.data = moment(element.data)
+            .add("day", 1)
+            .format("DD/MM/YYYY");
           this.fichaPesquisa.push(element);
         });
       } catch (error) {
@@ -1159,12 +1157,15 @@ export default {
         this.dataInicial,
         this.dataFinal,
         this.pagePesquisa
-      ).then((result) => {
-        this.ListaConsulta = result.data.result.result;
-        this.ListaConsulta.titulo = this.retornaTipoConsulta();
-      }).catch(error =>{
-         this.showAlert("error", "Ocorreu um erro na paginação");
-      });
+      )
+        .then((result) => {
+          this.ListaConsulta = result.data.result.result;
+          this.ListaConsulta.titulo = this.retornaTipoConsulta();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.showAlert("error", "Ocorreu um erro na paginação");
+        });
     },
 
     anteriorPagePesquisa() {
@@ -1175,26 +1176,30 @@ export default {
           this.dataInicial,
           this.dataFinal,
           this.pagePesquisa
-        ).then((result) => {
-          this.ListaConsulta = result.data.result.result;
-          this.ListaConsulta.titulo = this.retornaTipoConsulta();
-        }).catch(erro =>{
-         this.showAlert("error", "Ocorreu um erro na paginação");
-
-        });
+        )
+          .then((result) => {
+            this.ListaConsulta = result.data.result.result;
+            this.ListaConsulta.titulo = this.retornaTipoConsulta();
+          })
+          .catch((erro) => {
+            console.log(erro);
+            this.showAlert("error", "Ocorreu um erro na paginação");
+          });
       } else if (this.typePesquisa === "laudo") {
         LaudoService.read(
           this.dataInicial,
           this.dataFinal,
           this.idPaciente,
           this.pagePesquisa
-        ).then((result) => {
-          this.ListaConsulta = result.data.result.result;
-          this.ListaConsulta.titulo = this.retornaTipoConsulta();
-        }).catch(error =>{
-         this.showAlert("error", "Ocorreu um erro na paginação");
-
-        });
+        )
+          .then((result) => {
+            this.ListaConsulta = result.data.result.result;
+            this.ListaConsulta.titulo = this.retornaTipoConsulta();
+          })
+          .catch((error) => {
+            console.log(error);
+            this.showAlert("error", "Ocorreu um erro na paginação");
+          });
       }
     },
 
@@ -1205,20 +1210,22 @@ export default {
           idPaciente: this.idPaciente,
           dataInicial: this.dataInicial,
           dataFinal: this.dataFinal,
-        }).then((result) => {
-          if (Object.keys(result.data.result).length === 0) {
-            this.showAlert("info", "Nenhuma Informação Encontrada");
-          } else {
-            this.totalPagePesquisa = Math.ceil(
-              result.data.result.total[0].count / 5
-            );
-            this.ListaConsulta = result.data.result.result;
-            this.ListaConsulta.titulo = this.retornaTipoConsulta();
-          }
-        }).catch(error =>{
-         this.showAlert("error", "Ocorreu um erro na lista de consulta");
-
-        });
+        })
+          .then((result) => {
+            if (Object.keys(result.data.result).length === 0) {
+              this.showAlert("info", "Nenhuma Informação Encontrada");
+            } else {
+              this.totalPagePesquisa = Math.ceil(
+                result.data.result.total[0].count / 5
+              );
+              this.ListaConsulta = result.data.result.result;
+              this.ListaConsulta.titulo = this.retornaTipoConsulta();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.showAlert("error", "Ocorreu um erro na lista de consulta");
+          });
       } else {
         this.showAlert("info", "Selecione um Paciente !");
       }
