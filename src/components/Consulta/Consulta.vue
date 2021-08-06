@@ -1045,12 +1045,13 @@ export default {
       this.page = 1;
       this.totalPage = 1;
       AgendaService.readDateInnerPagination(
-        moment().add("day", 1).format("YYYY-MM-DD")
+        moment().format("YYYY-MM-DD")
       ).then((result) => {
         this.agendamentos = result.data.agendamentos.result;
         this.totalPage = Math.ceil(result.data.agendamentos.total[0].count / 5);
         this.agendamentos.map((el) => {
-          el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
+          console.log(el.data)
+          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
         });
       });
     },
