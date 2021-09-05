@@ -210,7 +210,7 @@ export default {
             margin: 10px 0;
             font-size: 15px;
             transition: 0.7s;
-            color: #666;
+            color: #666!important;
             border-left: none;
             border-right: none;
             border-top: none;
@@ -289,6 +289,12 @@ export default {
             form input[type=password] {
                 width: 100%;
             }
+        }
+
+        @media (max-height: 600px){
+          form {
+            height: 120%;
+          }
         }
 
         @media (max-width: 1033px) {
