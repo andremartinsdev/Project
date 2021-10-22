@@ -16,7 +16,7 @@ export default {
     return http.get(`/fichaClinica/${uuid}`)
   },
 
-  readPagination: (idPaciente,dataInicial,dataFinal,page) => {
+  readPagination: (idPaciente,dataInicial,dataFinal,page = 1) => {
     return http.get(`fichaClinica/readPagination/${idPaciente}/${dataInicial}/${dataFinal}/page?page=${page}`)
 
   },

@@ -307,11 +307,13 @@ export default {
 
  
   created() {
+    
     console.log(this.uuidClinica);
     if (this.$route.path.substr(0, 11) != "/" && this.$route.path) {
       this.readAgendamentos();
       this.readDespesas();
       this.readDadosClinica();
+      
     }
   },
 

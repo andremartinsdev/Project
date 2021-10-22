@@ -251,7 +251,7 @@ export default {
       receitas: [],
     };
   },
-
+  
   methods: {
     async gerar() {
       if (this.dataInicial === "" || this.dataFinal === "") {
