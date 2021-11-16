@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Sidebar/>
+    <Sidebar />
     <div class="formCliente">
       <div>
         <b-card no-body>
@@ -190,12 +190,12 @@
                     >
                   </b-input-group-append>
                   <b-button
-                      variant="primary"
-                      size="sm"
-                      class="ml-3"
-                      @click="list"
-                      >Pesquisar Todos</b-button
-                    >
+                    variant="primary"
+                    size="sm"
+                    class="ml-3"
+                    @click="list"
+                    >Pesquisar Todos</b-button
+                  >
                 </b-input-group>
                 <div class="tablePaciente">
                   <table class="table text-center">
@@ -223,12 +223,21 @@
                         </td>
                         <td>{{ item.cpf }}</td>
                         <td>
-                          <b-dropdown variant="primary"  size="sm" center text="Ações">
+                          <b-dropdown
+                            variant="primary"
+                            size="sm"
+                            center
+                            text="Ações"
+                          >
+
                             <b-dropdown-item @click="read(item.uuid)"
                               >Editar</b-dropdown-item
                             >
                             <b-dropdown-item @click="deletePaciente(item.uuid)"
                               >Deletar</b-dropdown-item
+                            >
+                            <b-dropdown-item @click="talkFromWhatsApp(item.telefone)"
+                              >WhatsApp</b-dropdown-item
                             >
                             <b-dropdown-divider></b-dropdown-divider>
                           </b-dropdown>
@@ -262,7 +271,7 @@
 </template>
 
 <script>
-import Sidebar from '../../components/SidebarNavbar.vue'
+import Sidebar from "../../components/SidebarNavbar.vue";
 import { mapState, mapActions } from "vuex";
 import PacienteService from "../../services/paciente";
 import ValidatorPaciente from "../../validators/paciente";
@@ -270,7 +279,7 @@ import cep from "cep-promise";
 // import paciente from '../../services/paciente';
 export default {
   components: {
-    Sidebar
+    Sidebar,
   },
 
   computed: {
@@ -338,13 +347,17 @@ export default {
   },
 
   methods: {
-
-    mudarMaskPesquisa(){
-      if(this.selected === "cpf"){
-        this.maskPesquisa = "###.###.###-##"
-        return
+    talkFromWhatsApp(telefone){
+      window.open(
+        `https://api.whatsapp.com/send?phone=55${telefone}&text=`
+      );
+    },
+    mudarMaskPesquisa() {
+      if (this.selected === "cpf") {
+        this.maskPesquisa = "###.###.###-##";
+        return;
       }
-      this.maskPesquisa = ""
+      this.maskPesquisa = "";
     },
     ...mapActions([
       "savePaciente",
@@ -396,7 +409,7 @@ export default {
       this.campoPesquisaError = "";
     },
 
-       async listParams() {
+    async listParams() {
       try {
         if (!this.selected) {
           this.campoPesquisaError = "Selecione uma Opção para pesquisar.";
@@ -411,7 +424,7 @@ export default {
         const response = await PacienteService.listParams(
           `${this.selected}=${this.campoPesquisa}&like=true&page=1`
         );
-        console.log(response)
+        console.log(response);
         this.ListaPaciente = response.data.result;
         const totalRows = response.data.total[0].count;
         this.totalPage = Math.ceil(totalRows / 10);
@@ -420,7 +433,6 @@ export default {
         // console.log(ex);
       }
     },
-
 
     async list() {
       try {
@@ -448,9 +460,9 @@ export default {
     async previousPage() {
       try {
         if (this.page > 1) {
-        this.page -= 1;
-        const pacientes = await PacienteService.previousPage(this.page);
-        this.ListaPaciente = pacientes.data.result;
+          this.page -= 1;
+          const pacientes = await PacienteService.previousPage(this.page);
+          this.ListaPaciente = pacientes.data.result;
         }
       } catch (ex) {
         // console.log(ex);
