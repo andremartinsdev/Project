@@ -59,9 +59,13 @@
       </b-card>
       <div class="mt-4 shadow p-3" style="background: rgb(212, 212, 211)">
         <h6 class="text-center p-2">Relatório Financeiro</h6>
-        <b-button  v-b-popover.hover.bottom="
-      'Informe o período antes de gerar o relatório'
-    " class="mr-2 mt-1" @click="gerar" variant="info"
+        <b-button
+          v-b-popover.hover.bottom="
+            'Informe o período antes de gerar o relatório'
+          "
+          class="mr-2 mt-1"
+          @click="gerar"
+          variant="info"
           >Fluxo de Contas (Pagar/Receber)</b-button
         >
       </div>
@@ -83,7 +87,6 @@
           <CardContasAReceber :search="search" />
           <CardContasAReceberRecebidas :search="search" />
           <CardContasAReceberAbertas :search="search" />
-         
         </b-card-group>
       </div>
       <div>
@@ -102,7 +105,7 @@
           </b-card>
         </b-collapse>
       </div>
-      <table id="receita"  v-show="false">
+      <table id="receita" v-show="false">
         <thead>
           <tr>
             <th>Descrição</th>
@@ -125,7 +128,7 @@
         </tbody>
       </table>
 
-      <table id="despe"  v-show="false">
+      <table id="despe" v-show="false">
         <thead>
           <tr>
             <th>Descrição</th>
@@ -239,7 +242,6 @@ export default {
         masked: false /* doesn't work with directive */,
       },
 
-     
       dataInicial: "",
       dataFinal: "",
       formaDePagamento: [],
@@ -251,16 +253,14 @@ export default {
       receitas: [],
     };
   },
-  
+
   methods: {
     async gerar() {
       if (this.dataInicial === "" || this.dataFinal === "") {
         this.showAlert("info", "Por favor Informe o Período inicial e Final");
         return;
       }
-      
-     
-      
+
       await this.relatorioContasReceber();
       await this.relatorioContasPagar();
       await this.relatorioAgenda();
@@ -286,7 +286,7 @@ export default {
       });
 
       doc.addPage();
-      doc.setFontSize(10).text("Contas a Receber", 145, 43);
+      doc.setFontSize(10).text("Agendamentos a receber", 95, 6);
       doc.autoTable({
         html: "#agenda",
         margin: { horizontal: 2 },
@@ -362,7 +362,7 @@ export default {
           this.dataInicial,
           this.dataFinal
         );
-         this.totalReceber = 0;
+        this.totalReceber = 0;
         this.receitaRelatorio = data.result;
         this.receitaRelatorio.forEach((element) => {
           this.totalReceber += element.valor;
@@ -379,7 +379,6 @@ export default {
           currency: "BRL",
         });
         console.log(this.receitaRelatorio);
-       
       } catch (error) {
         console.log(error);
       }
