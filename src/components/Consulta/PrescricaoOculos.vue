@@ -13,96 +13,98 @@
         accordion="my-accordion"
         role="tabpanel"
       > -->
-        <b-card-body>
+      <b-card-body>
+        <div>
+          <label for="">Selecione o Paciente</label>
+          <b-form-select
+            v-model="pacienteSelected"
+            :options="pacientes"
+            size="sm"
+            class="mb-3"
+            value-field="uuid"
+            text-field="nomePaciente"
+            disabled-field="notEnabled"
+            @change="testePaciente"
+          ></b-form-select>
           <div>
-            <label for="">Selecione o Paciente</label>
-            <b-form-select
-              v-model="pacienteSelected"
-              :options="pacientes"
-              size="sm"
-              class="mb-3"
-              value-field="uuid"
-              text-field="nomePaciente"
-              disabled-field="notEnabled"
-              @change="testePaciente"
-            ></b-form-select>
-            <div>
+            <div style="width: 100%">
               <div style="width: 100%">
-                <div style="width: 100%">
-                  <label for="example-datepicker">Data Inicial</label>
-                  <b-form-datepicker
-                    id="example-datepicker"
-                    size="sm"
-                    v-model="dataInicial"
-                    class="mb-2 col-sm-3"
-                    placeholder="Data não Informada"
-                  ></b-form-datepicker>
-                </div>
-
-                <div>
-                  <label for="example-datepicker">Data Final</label>
-                  <b-form-datepicker
-                    id="example-datepicker"
-                    size="sm"
-                    v-model="dataFinal"
-                    class="mb-2 col-sm-3"
-                    placeholder="Data não Informada"
-                  ></b-form-datepicker>
-                </div>
-                <b-button
-                  variant="primary"
+                <label for="example-datepicker">Data Inicial</label>
+                <b-form-datepicker
+                  id="example-datepicker"
                   size="sm"
-                  class="mb-4 mt-2"
-                  @click="readPrescricaoPesquisa"
-                  >Pesquisar</b-button
-                >
-
-                <b-button
-                  variant="primary"
-                  size="sm"
-                  class="mb-4 mt-2 ml-2"
-                  @click="novaPesquisa"
-                  >Nova Pesquisa</b-button
-                >
+                  v-model="dataInicial"
+                  class="mb-2 col-sm-3"
+                  placeholder="Data não Informada"
+                ></b-form-datepicker>
               </div>
+
+              <div>
+                <label for="example-datepicker">Data Final</label>
+                <b-form-datepicker
+                  id="example-datepicker"
+                  size="sm"
+                  v-model="dataFinal"
+                  class="mb-2 col-sm-3"
+                  placeholder="Data não Informada"
+                ></b-form-datepicker>
+              </div>
+              <b-button
+                variant="primary"
+                size="sm"
+                class="mb-4 mt-2"
+                @click="readPrescricaoPesquisa"
+                >Pesquisar</b-button
+              >
+
+              <b-button
+                variant="primary"
+                size="sm"
+                class="mb-4 mt-2 ml-2"
+                @click="novaPesquisa"
+                >Nova Pesquisa</b-button
+              >
             </div>
           </div>
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th scope="col">Nome Paciente</th>
-                <th scope="col">Data Consulta</th>
-                <th scope="col">Visualizar</th>
-                <th scope="col">Excluir</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="prescri in this.prescricoes" :key="prescri.uuid">
-                <th>{{ prescri.nomePaciente }}</th>
-                <td>{{ prescri.data }}</td>
-                <td>
-                  <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="readPrescricaoUuid(prescri.uuid)"
-                  >
-                    Visualizar
-                  </b-button>
-                </td>
-                
-                <td>
-                  <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="excluir(prescri.uuid)"
-                  >
-                    Excluir
-                  </b-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </b-card-body>
+        </div>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Nome Paciente</th>
+              <th scope="col">Data Consulta</th>
+              <th scope="col">Visualizar</th>
+              <th scope="col">Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="prescri in this.prescricoes" :key="prescri.uuid">
+              <th>{{ prescri.nomePaciente }}</th>
+              <td>{{ prescri.data }}</td>
+              <td>
+                <b-button
+                  variant="primary"
+                  size="sm"
+                  @click="
+                    readPrescricaoUuid(prescri.uuid, prescri.nomePaciente)
+                  "
+                >
+                  Visualizar
+                </b-button>
+              </td>
+
+              <td>
+                <b-button
+                  variant="primary"
+                  size="sm"
+                  @click="excluir(prescri.uuid)"
+                >
+                  Excluir
+                </b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </b-card-body>
       <!-- </b-collapse> -->
     </b-card>
 
@@ -112,11 +114,7 @@
           >Cadastro de Prescrição para Óculos</b-button
         >
       </b-card-header>
-      <b-collapse
-        id="accordion-1"
-        accordion="my-accordion"
-        role="tabpanel"
-      >
+      <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
         <b-card-body>
           <b-form inline>
             <b-input hidden v-model="prescricaoOculos.uuid"></b-input>
@@ -155,7 +153,7 @@
               v-model="prescricaoOculos.od_av"
             ></b-input>
 
-             <b-input
+            <b-input
               size="sm"
               class="mb-2 mr-sm-2 mb-sm-0"
               placeholder="DNP"
@@ -199,7 +197,7 @@
               placeholder="AV"
             ></b-input>
 
-             <b-input
+            <b-input
               v-model="prescricaoOculos.oe_dnp"
               size="sm"
               class="mb-2 mr-sm-2 mb-sm-0"
@@ -257,23 +255,20 @@
             <b-col lg="2" class="pb-2">
               <b-button
                 size="sm"
-                class="mr-3 "
+                class="mr-3"
                 variant="primary"
                 @click="createPDFmodelo2(false)"
                 pill
               >
                 Imprimir
-                <b-icon-files
-                  class="ml-3"
-                ></b-icon-files></b-button
+                <b-icon-files class="ml-3"></b-icon-files></b-button
             ></b-col>
-            <b-col lg="2"> 
-               <b-link href="#foo" @click="createPDF(true)"
-              >Download PDF <b-icon-download></b-icon-download>
-            </b-link>
+            <b-col lg="2">
+              <b-link href="#foo" @click="createPDF(true)"
+                >Download PDF <b-icon-download></b-icon-download>
+              </b-link>
             </b-col>
           </b-row>
-          
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -291,23 +286,23 @@
       <tbody>
         <tr>
           <td>OD</td>
-          <td>{{prescricaoOculos.od_esferico}}</td>
-          <td>{{prescricaoOculos.od_cilindrico}}</td>
-          <td>{{prescricaoOculos.od_eixo}}</td>
-          <td>{{prescricaoOculos.od_av}}</td>
-          <td>{{prescricaoOculos.od_dnp}}</td>
+          <td>{{ prescricaoOculos.od_esferico }}</td>
+          <td>{{ prescricaoOculos.od_cilindrico }}</td>
+          <td>{{ prescricaoOculos.od_eixo }}</td>
+          <td>{{ prescricaoOculos.od_av }}</td>
+          <td>{{ prescricaoOculos.od_dnp }}</td>
         </tr>
         <tr>
           <td>OE</td>
-           <td>{{prescricaoOculos.oe_esferico}}</td>
-          <td>{{prescricaoOculos.oe_cilindrico}}</td>
-          <td>{{prescricaoOculos.oe_eixo}}</td>
-          <td>{{prescricaoOculos.oe_av}}</td>
-          <td>{{prescricaoOculos.oe_dnp}}</td>
+          <td>{{ prescricaoOculos.oe_esferico }}</td>
+          <td>{{ prescricaoOculos.oe_cilindrico }}</td>
+          <td>{{ prescricaoOculos.oe_eixo }}</td>
+          <td>{{ prescricaoOculos.oe_av }}</td>
+          <td>{{ prescricaoOculos.oe_dnp }}</td>
         </tr>
-          <tr>
+        <tr>
           <td>Adição</td>
-          <td colspan="5">{{prescricaoOculos.adicao}}</td>
+          <td colspan="5">{{ prescricaoOculos.adicao }}</td>
         </tr>
       </tbody>
     </table>
@@ -316,7 +311,7 @@
 
 <script>
 import jsPDF from "jspdf";
-import 'jspdf-autotable';
+import "jspdf-autotable";
 import logoOlho from "../../assets/LogoOlho.jpg";
 import moldura from "../../assets/moldura.png";
 import ConsultaService from "../../services/consulta";
@@ -327,8 +322,8 @@ import { mapState } from "vuex";
 import { DateTime } from "luxon";
 import moment from "moment";
 import prescricaoOculos from "../../services/prescricaoOculos";
-import rodape from '../../services/rodape';
-import logoOpto from '../../assets/logoOpt.jpg';
+import rodape from "../../services/rodape";
+import logoOpto from "../../assets/logoOpt.jpg";
 
 export default {
   props: {
@@ -344,7 +339,7 @@ export default {
   },
   data() {
     return {
-      logoOpto:logoOpto,
+      logoOpto: logoOpto,
       visiblePesquisa: false,
       visiblePrescri: false,
       dataInicial: "",
@@ -379,12 +374,13 @@ export default {
         oe_cilindrico: "",
         oe_eixo: "",
         oe_av: "",
-        od_dnp:"",
-        oe_dnp:"",
+        od_dnp: "",
+        oe_dnp: "",
         adicao: "",
         observacao: "",
         lente: "",
       },
+      nomeClientePdfModelo2: "",
     };
   },
 
@@ -396,7 +392,7 @@ export default {
       idPaciente: (state) => state.pacienteSelected,
       uuidAgendamento: (state) => state.uuidAgendamento,
       uuidClinica: (state) => state.uuidClinica,
-      dadosClinica: (state) => state.dadosClinica
+      dadosClinica: (state) => state.dadosClinica,
     }),
   },
   methods: {
@@ -418,7 +414,6 @@ export default {
     },
 
     async imprimirPrescri(uuid) {
-      
       await this.readPrescricaoUuid(uuid);
       this.createPDF(false);
     },
@@ -451,9 +446,9 @@ export default {
       });
     },
 
-    async readPrescricaoUuid(uuid) {
+    async readPrescricaoUuid(uuid, nomeClientePdfModelo2) {
       const prescricao = await PrescricaoService.read(uuid);
-      console.log(this.dadosClinica)
+      this.nomeClientePdfModelo2 = nomeClientePdfModelo2;
       Object.assign(this.prescricaoOculos, prescricao.data.prescricao);
       this.$root.$emit("bv::toggle::collapse", "accordion-1");
     },
@@ -504,30 +499,61 @@ export default {
 
     async createPDFmodelo2(download) {
       let pdfName = "Prescrição Óculos";
-      var doc = new jsPDF();
+      var doc = new jsPDF("l", "pt");
       var linha = 85;
-       doc.setFontSize(12).text(`Paciente : `, 5, 75, null, null);
-     doc.addImage(this.logoOpto, "JPEG", 59, 10, 80, 40);
-       doc.autoTable({
+      doc
+        .setFontSize(12)
+        .text(`Paciente: ${this.nomeClientePdfModelo2}`, 5, 190, null, null);
+      doc.addImage(this.logoOpto, "JPEG", 315, 20, 220, 120);
+      doc.autoTable({
         html: "#modelo2",
         margin: { horizontal: 5 },
-        startY: 85,
+        startY: 210,
         styles: { fontSize: 12 },
-        tableWidth: 200,
-         theme: 'grid',
-         colSpan: 5,
+        tableWidth: 831,
+        theme: "grid",
+        colSpan: 5,
       });
-     
-      doc.setFontSize(12).text(`Lente : `, 5, linha + 45, null, null);
-      doc.setFontSize(11).text(`Observação : Favor medir DNP com pupilômetro. Retorno com 01 Ano`, 5, linha + 60, null, null);
-      doc.text(this.prescricaoOculos.observacao, 15, linha + 60, null, null);
-      doc.setDrawColor(0).line(140, 180, 65, 180);
-       doc.text(`Optometrista`, 90, 186, null, null);
-       doc.text(`${this.dadosClinica[0].cidade}, ${moment().add('day',1).format("DD/MM/YYYY")}`, 90, 193, null, null);
-       doc.setFontSize(11).text(`O presente exame efetuado pelo optometrista, tem por finalidade a correção dos defeitos retrativos, a
+
+      doc
+        .setFontSize(12)
+        .text(
+          `Lente: ${this.prescricaoOculos.lente}`,
+          5,
+          linha + 250,
+          null,
+          null
+        );
+      doc
+        .setFontSize(11)
+        .text(
+          `Observação: ${this.prescricaoOculos.observacao}`,
+          5,
+          linha + 280,
+          null,
+          null
+        );
+      doc.setDrawColor(0).line(270, 455, 485, 455);
+      doc.text(`Optometrista`, 345, 470, null, null);
+      doc.text(
+        `${this.dadosClinica[0].cidade}, ${moment()
+          .add("day", 1)
+          .format("DD/MM/YYYY")}`,
+        345,
+        485,
+        null,
+        null
+      );
+      doc.setFontSize(11).text(
+        `O presente exame efetuado pelo optometrista, tem por finalidade a correção dos defeitos retrativos, a
 avaliação sensorial e motora, através da indicação de lentes corretoras retrativas e/ou exercícios ortópticos. O
-diagnósticos de doenças oculares e seu tratamento são de competência do profissional médico.`, 15, 260, null, null);
-    //  await rodape(doc, this.dadosClinica, this.uuidClinica)
+diagnósticos de doenças oculares e seu tratamento são de competência do profissional médico.`,
+        125,
+        535,
+        null,
+        null
+      );
+      //  await rodape(doc, this.dadosClinica, this.uuidClinica)
 
       if (download) {
         doc.save(pdfName + ".pdf");
@@ -536,9 +562,7 @@ diagnósticos de doenças oculares e seu tratamento são de competência do prof
       window.open(doc.output("bloburl"));
     },
 
-
-
-     async createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Prescrição Óculos";
       var doc = new jsPDF();
       var linha = 85;
@@ -616,7 +640,7 @@ diagnósticos de doenças oculares e seu tratamento são de competência do prof
       doc.text(`Observação`, 70, linha + 70, null, null);
       doc.text(this.prescricaoOculos.observacao, 70, linha + 80, null, null);
 
-     await rodape(doc, this.dadosClinica, this.uuidClinica)
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
 
       if (download) {
         doc.save(pdfName + ".pdf");
@@ -627,9 +651,12 @@ diagnósticos de doenças oculares e seu tratamento são de competência do prof
 
     async savePrescricao() {
       try {
-        if(this.idPaciente === -1){
-          this.showAlert("info", "Por favor inicie a consulta na aba de agendamento")
-          return
+        if (this.idPaciente === -1) {
+          this.showAlert(
+            "info",
+            "Por favor inicie a consulta na aba de agendamento"
+          );
+          return;
         }
         if (this.prescricaoOculos.uuid === "") {
           this.dadosConsulta.idPaciente = this.idPaciente;
