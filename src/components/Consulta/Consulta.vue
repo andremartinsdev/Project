@@ -579,6 +579,7 @@
                           @click="pesquisarFicha"
                           >Pesquisar</b-button
                         >
+
                         <router-link
                           class="nav-link mr-5"
                           to="/Impressao"
@@ -601,6 +602,7 @@
                         <th scope="col">Data Consulta</th>
                         <th scope="col">Visualizar</th>
                         <th scope="col">Excluir</th>
+                        <th scope="col">Imprimir Ficha Geral</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -634,6 +636,20 @@
                           >
                             Excluir
                           </b-button>
+                        </td>
+
+                        <td>
+                          <router-link
+                            :to="`/ImpressaoFichaGeral/${ficha.uuid}`"
+                          >
+                            <b-button
+                              variant="success"
+                              class="mb-3"
+                              size="sm"
+                              @click="imprimirFichaGeral(ficha.uuid)"
+                              >Imprimir</b-button
+                            >
+                          </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -802,6 +818,10 @@ export default {
     }),
   },
   methods: {
+    imprimirFichaGeral(uuid) {
+      console.log(this.$route.params.uuid, "aquiiiiiii");
+      this.visualizar(uuid);
+    },
     imprimirPrescri() {
       const doc = new jsPDF();
 
@@ -1044,16 +1064,18 @@ export default {
     loadAgendamentos() {
       this.page = 1;
       this.totalPage = 1;
-      AgendaService.readDateInnerPagination(
-        moment().format("YYYY-MM-DD")
-      ).then((result) => {
-        this.agendamentos = result.data.agendamentos.result;
-        this.totalPage = Math.ceil(result.data.agendamentos.total[0].count / 5);
-        this.agendamentos.map((el) => {
-          console.log(el.data)
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
-        });
-      });
+      AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
+        (result) => {
+          this.agendamentos = result.data.agendamentos.result;
+          this.totalPage = Math.ceil(
+            result.data.agendamentos.total[0].count / 5
+          );
+          this.agendamentos.map((el) => {
+            console.log(el.data);
+            el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
+          });
+        }
+      );
     },
 
     showAlert(icon, title) {

@@ -1,7 +1,7 @@
 <template>
   <div role="tablist">
     <b-input hidden></b-input>
-  
+
     <b-input v-model="uuidFichaProps" hidden></b-input>
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
@@ -379,8 +379,6 @@
           ></b-icon-arrow-counterclockwise
           >Limpar
         </b-button>
-
-
       </div>
     </footer>
   </div>
@@ -468,7 +466,8 @@ export default {
       this.ForometriaData = this.fichaClinicaProps.forometria;
       this.OftalmoscopiaData = this.fichaClinicaProps.oftalmoscopia;
       this.PpcData = this.fichaClinicaProps.ppc;
-      this.PrescricaoUltimoExameData = this.fichaClinicaProps.prescricaoUltimoExame;
+      this.PrescricaoUltimoExameData =
+        this.fichaClinicaProps.prescricaoUltimoExame;
       this.ReflexosPulpilaresData = this.fichaClinicaProps.reflexoPulpilar;
       this.ReservasFusionaisData = this.fichaClinicaProps.reservasFusionais;
       this.RetinoscopiaData = this.fichaClinicaProps.retinoscopia;
@@ -568,8 +567,6 @@ export default {
 
       doc.text("Ficha Clínica", 105, 10, null, null, "center");
 
-
-
       //ANAMNESE
       if (Object.keys(this.AnamneseData).length > 0) {
         doc.setFontSize(12);
@@ -629,30 +626,25 @@ export default {
         var linhaAcuidade = linha;
         doc.setFontSize(12);
         doc.setTextColor(0);
-        doc.text( "Acuidade Visual", 105,  linhaAcuidade + 20, null, null, "center");
         doc.text(
-          "CC",
-          30,
-          linhaAcuidade + 29,
+          "Acuidade Visual",
+          105,
+          linhaAcuidade + 20,
           null,
-          null
-        );
-        doc.text(
-          "Olho Direito",
-          20,
-          linhaAcuidade + 34,
           null,
-          null
+          "center"
         );
-        linhaAcuidade += 8
+        doc.text("CC", 30, linhaAcuidade + 29, null, null);
+        doc.text("Olho Direito", 20, linhaAcuidade + 34, null, null);
+        linhaAcuidade += 8;
         Object.keys(this.AcuidadeVisualData.cc.olhoDireito).forEach((item) => {
-
           linhaAcuidade += 13;
           doc.setTextColor(100);
           doc.setFontSize(10);
           doc.text(
-              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}`
-            ,
+            `${item.toUpperCase()} : ${
+              this.AcuidadeVisualData.cc.olhoDireito[item]
+            }`,
             12,
             linhaAcuidade + 20,
             null,
@@ -661,35 +653,28 @@ export default {
         });
 
         Object.keys(this.AcuidadeVisualData.cc.olhoEsquerto).forEach((item) => {
-
           linhaAcuidade = linha;
           doc.setTextColor(100);
           doc.setFontSize(10);
           doc.text(
-              `${item.toUpperCase()} : ${this.AcuidadeVisualData.cc.olhoDireito[item]}`
-            ,
+            `${item.toUpperCase()} : ${
+              this.AcuidadeVisualData.cc.olhoDireito[item]
+            }`,
             100,
             linhaAcuidade + 20,
             null,
             null
           );
-
         });
-
-
       }
-
-
 
       doc.save(pdfName + ".pdf");
     },
-
 
     convertNomeColuna(coluna) {
       if (coluna === "OD_ESFERICO") return "Olho Direito Esferico";
       if (coluna === "OD_CILINDRICO") return "Olho Direito Cilindrico";
     },
-
 
     showAlert(icon, title) {
       // Use sweetalert2
@@ -746,12 +731,13 @@ export default {
         idConsulta: this.idConsultaData,
         atendido: true,
         dataVencimento: this.dataVencimento,
-      }).then(() => {
-        
-        // console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
-      }).catch(()=>{
-        this.showAlert("error","ocorreu um erro ao finalizar consulta")
-      });
+      })
+        .then(() => {
+          // console.log(result + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeu");
+        })
+        .catch(() => {
+          this.showAlert("error", "ocorreu um erro ao finalizar consulta");
+        });
       const dados = {
         ...this.fichaClinica,
       };
@@ -759,11 +745,9 @@ export default {
       if (ValidaObjectEmpty(dados) === true) {
         ServicoFichaClinica.save(this.dadosFicha, this.fichaClinica)
           .then(() => {
-            
-              this.showAlert("success", "Ficha Clínica Salva com Sucesso");
-              this.limpar();
-              this.$emit("ConsultaFinalizada")
-            
+            this.showAlert("success", "Ficha Clínica Salva com Sucesso");
+            this.limpar();
+            this.$emit("ConsultaFinalizada");
           })
           .catch(() => {
             this.showAlert("error", "Erro ao salvar Ficha");

@@ -125,7 +125,7 @@ export default {
         doc.save(pdfName + ".pdf");
         return;
       }
-
+    
       window.open(doc.output("bloburl"));
       
     },
