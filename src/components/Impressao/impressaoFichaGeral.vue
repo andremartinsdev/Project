@@ -589,14 +589,10 @@ export default {
     async readConsulta() {
       const { data } = await serviceFichaClinica.read(this.$route.params.uuid);
       this.jsonTotal = data;
-      console.log(
-        this.jsonTotal.ficha[0].json_fichaClinica,
-        "aqui mofiiiiiiiii"
-      );
+      console.log(this.jsonTotal.ficha[0].json_fichaClinica);
     },
 
     imprimir() {
-      console.log("doideraaaaaaaaaaaaaa jsPdf");
       const doc = new jsPDF();
       doc.autoTable({
         html: "#sintomas",
