@@ -679,14 +679,14 @@ export default {
     anamneseSintomas() {
       const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
 
-      this.newArrayClinica = this.sintomas
+      const aux = this.sintomas
         .map((item) => item.value)
         .filter((a) => keysJsonTotal.includes(a));
 
       this.sintomas = this.sintomas.filter(
-        (a) => this.newArrayClinica.filter((b) => b == a.value).length == 1
+        (a) => aux.filter((b) => b == a.value).length == 1
       );
-      console.log(this.jsonTotal);
+      console.log(this.jsonTotal.prescricaoUltimoExame.OD_ESFERICO);
     },
 
     imprimir() {
