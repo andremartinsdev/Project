@@ -451,9 +451,13 @@
       <tbody>
         <tr>
           <td></td>
+          <td>{{ jsonTotal.retinoscopia.OD || "" }}</td>
+          <td>{{ jsonTotal.retinoscopia.OE || "" }}</td>
         </tr>
         <tr>
           <td>AV</td>
+          <td>{{ jsonTotal.retinoscopia.AV_OD || "" }}</td>
+          <td>{{ jsonTotal.retinoscopia.AV_OE || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -473,8 +477,8 @@
           <td>SC</td>
           <td></td>
           <td>{{ jsonTotal.forometria.CC.LONGE || "" }}</td>
-          <td>{{ jsonTotal.forometria.CC.CM40 }}</td>
-          <td>{{ jsonTotal.forometria.CC.CM20 }}</td>
+          <td>{{ jsonTotal.forometria.CC.CM40 || "" }}</td>
+          <td>{{ jsonTotal.forometria.CC.CM20 || "" }}</td>
         </tr>
         <tr>
           <td>CC</td>
@@ -504,29 +508,29 @@
       <tbody>
         <tr>
           <td>OD</td>
-          <td>{{ jsonTotal.rxFinal.OD.ESFERICO }}</td>
-          <td>{{ jsonTotal.rxFinal.OD.CILINDRICO }}</td>
-          <td>{{ jsonTotal.rxFinal.OD.EIXO }}</td>
-          <td>{{ jsonTotal.rxFinal.OD.AV }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.ESFERICO || "" }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.CILINDRICO || "" }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.EIXO || "" }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.AV || "" }}</td>
         </tr>
         <tr>
           <td>OE</td>
-          <td>{{ jsonTotal.rxFinal.OE.ESFERICO }}</td>
-          <td>{{ jsonTotal.rxFinal.OE.CILINDRICO }}</td>
-          <td>{{ jsonTotal.rxFinal.OE.EIXO }}</td>
-          <td>{{ jsonTotal.rxFinal.OE.AV }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.ESFERICO || "" }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.CILINDRICO || "" }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.EIXO || "" }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.AV || "" }}</td>
         </tr>
         <tr>
           <td>Adição</td>
-          <td colspan="2">{{ jsonTotal.rxFinal.ADICAO }}</td>
+          <td colspan="2">{{ jsonTotal.rxFinal.ADICAO || "" }}</td>
           <td>AV. Perto</td>
-          <td>{{ jsonTotal.rxFinal.AV_PERTO }}</td>
+          <td>{{ jsonTotal.rxFinal.AV_PERTO || "" }}</td>
         </tr>
         <tr>
           <td>Tipo lente:</td>
-          <td colspan="2">{{ jsonTotal.rxFinal.TIPO_LENTE }}</td>
+          <td colspan="2">{{ jsonTotal.rxFinal.TIPO_LENTE || "" }}</td>
           <td>Tratamento:</td>
-          <td>{{ jsonTotal.rxFinal.TRATAMENTO }}</td>
+          <td>{{ jsonTotal.rxFinal.TRATAMENTO || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -559,7 +563,84 @@ export default {
   data() {
     return {
       newArrayClinica: [],
-      jsonTotal: [{}],
+      jsonTotal: {
+        acuidade: {
+          cc: {
+            ao: {},
+            olhoDireito: {},
+            olhoEsquerto: {},
+          },
+          sc: {
+            ao: {},
+            olhoDireito: {},
+            olhoEsquerto: {},
+          },
+        },
+        anamnese: {},
+        prescricaoUltimoExame: {},
+        cerametria: [{}],
+        avMotora: {
+          OD: {
+            DUCCOES: "",
+            KAPPA: "",
+          },
+          OE: {
+            DUCCOES: "",
+            KAPPA: "",
+          },
+        },
+        biomicro: [
+          {
+            olhoDireito: {},
+            olhoEsquerdo: {},
+          },
+        ],
+        oftalmoscopia: [
+          {
+            olhoDireito: {},
+            olhoEsquerdo: {},
+          },
+        ],
+        forometria: {
+          CC: {
+            CM20: "",
+            CM40: "",
+            LONGE: "",
+          },
+          SC: {
+            CM20: "",
+            CM40: "",
+            LONGE: "",
+          },
+        },
+        retinoscopia: { OD: "", OE: "", AV_OD: "", AV_OE: "" },
+        rxFinal: {
+          OD: {
+            AV: "",
+            CILINDRICO: "",
+            EIXO: "",
+            ESFERICO: "",
+          },
+          OE: {
+            AV: "",
+            CILINDRICO: "",
+            EIXO: "",
+            ESFERICO: "",
+          },
+        },
+        reflexoPulpilar: {
+          OD: {
+            ACOMODATIVO: "",
+            CONSENSUAL: "",
+            FOTOMOTOR: "",
+          },
+          OE: {
+            ACOMODATIVO: "",
+            CONSENSUAL: "",
+            FOTOMOTOR: "",
+          },
+        },
+      },
       acuidade: [{}],
       adicao: [{}],
       afinamento: [{}],
@@ -686,7 +767,7 @@ export default {
       this.sintomas = this.sintomas.filter(
         (a) => aux.filter((b) => b == a.value).length == 1
       );
-      console.log(this.jsonTotal.prescricaoUltimoExame.OD_ESFERICO);
+      console.log(this.jsonTotal);
     },
 
     imprimir() {
