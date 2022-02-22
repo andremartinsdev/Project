@@ -642,11 +642,7 @@
                           <router-link
                             :to="`/ImpressaoFichaGeral/${ficha.uuid}`"
                           >
-                            <b-button
-                              variant="success"
-                              class="mb-3"
-                              size="sm"
-                              @click="imprimirFichaGeral(ficha.uuid)"
+                            <b-button variant="success" class="mb-3" size="sm"
                               >Imprimir</b-button
                             >
                           </router-link>
@@ -818,10 +814,6 @@ export default {
     }),
   },
   methods: {
-    imprimirFichaGeral(uuid) {
-      console.log(this.$route.params.uuid, "aquiiiiiii");
-      this.visualizar(uuid);
-    },
     imprimirPrescri() {
       const doc = new jsPDF();
 

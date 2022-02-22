@@ -1,6 +1,6 @@
 <template>
   <b-card>
-    <b-button @click="teste">gerar</b-button>
+    <b-button>gerar</b-button>
 
     <table class="table table-sm table-borderless" id="sintomas">
       <thead>
@@ -12,9 +12,7 @@
       <tbody>
         <tr v-for="sintoma in sintomas" :key="sintoma.value">
           <td>{{ sintoma.text }}</td>
-          <td>
-            <b-form-radio name="radio-size" size="sm">X</b-form-radio>
-          </td>
+          <td>X</td>
         </tr>
       </tbody>
     </table>
@@ -98,8 +96,39 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="precri in prescricaoUltExame" :key="precri.text">
-          <td>{{ precri.text }}</td>
+        <tr>
+          <td>Esférico</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OD_ESFERICO || "" }}</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OE_ESFERICO || "" }}</td>
+        </tr>
+        <tr>
+          <td>Cilíndrico</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OD_CILINDRICO || "" }}</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OE_CILINDRICO || "" }}</td>
+        </tr>
+        <tr>
+          <td>Eixo</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OD_EIXO || "" }}</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OE_EIXO || "" }}</td>
+        </tr>
+        <tr>
+          <td>Adição</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OD_ADICAO || "" }}</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OE_ADICAO || "" }}</td>
+        </tr>
+        <tr>
+          <td>DNP</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OD_DNP || "" }}</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OE_DNP || "" }}</td>
+        </tr>
+        <tr>
+          <td>ALT</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OD_ALT || "" }}</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.OE_ALT || "" }}</td>
+        </tr>
+        <tr>
+          <td>Lente</td>
+          <td>{{ jsonTotal.prescricaoUltimoExame.TIPO_LENTE || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -120,12 +149,39 @@
         <tr></tr>
         <tr>
           <td>OD</td>
+          <td>
+            {{ jsonTotal.acuidade.sc.olhoDireito.vl || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.sc.olhoDireito.vp || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.sc.olhoDireito.ph || "" }}
+          </td>
         </tr>
         <tr>
           <td>OE</td>
+          <td>
+            {{ jsonTotal.acuidade.sc.olhoEsquerto.vl || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.sc.olhoEsquerto.vp || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.sc.olhoEsquerto.ph || "" }}
+          </td>
         </tr>
         <tr>
           <td>AO</td>
+          <td>
+            {{ jsonTotal.acuidade.sc.ao.vl || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.sc.ao.vp || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.sc.ao.ph || "" }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -146,12 +202,39 @@
         <tr></tr>
         <tr>
           <td>OD</td>
+          <td>
+            {{ jsonTotal.acuidade.cc.olhoDireito.vl || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.cc.olhoDireito.vp || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.cc.olhoDireito.ph || "" }}
+          </td>
         </tr>
         <tr>
           <td>OE</td>
+          <td>
+            {{ jsonTotal.acuidade.cc.olhoEsquerto.vl || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.cc.olhoEsquerto.vp || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.cc.olhoEsquerto.ph || "" }}
+          </td>
         </tr>
         <tr>
           <td>AO</td>
+          <td>
+            {{ jsonTotal.acuidade.cc.ao.vl || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.cc.ao.vp || "" }}
+          </td>
+          <td>
+            {{ jsonTotal.acuidade.cc.ao.ph || "" }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -166,9 +249,9 @@
       </thead>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{ jsonTotal.cerametria[0].olhoDireito || "" }}</td>
+          <td>{{ jsonTotal.cerametria[0].olhoEsquerdo || "" }}</td>
+          <td>{{ jsonTotal.cerametria[0].miras || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -184,12 +267,19 @@
       <tbody>
         <tr>
           <td>Kappa</td>
+          <td>{{ jsonTotal.avMotora.OD.KAPPA || "" }}</td>
+          <td>{{ jsonTotal.avMotora.OE.KAPPA || "" }}</td>
         </tr>
-        <tr>
-          <td>Hirschberg</td>
-        </tr>
+
         <tr>
           <td>Ducções</td>
+          <td>{{ jsonTotal.avMotora.OD.DUCCOES || "" }}</td>
+          <td>{{ jsonTotal.avMotora.OE.DUCCOES || "" }}</td>
+        </tr>
+
+        <tr>
+          <td>Hirschberg</td>
+          <td>{{ jsonTotal.avMotora.HIRSCHBERG || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -205,12 +295,18 @@
       <tbody>
         <tr>
           <td>Fotomotor</td>
+          <td>{{ jsonTotal.reflexoPulpilar.OD.ACOMODATIVO || "" }}</td>
+          <td>{{ jsonTotal.reflexoPulpilar.OE.ACOMODATIVO || "" }}</td>
         </tr>
         <tr>
           <td>Consensual</td>
+          <td>{{ jsonTotal.reflexoPulpilar.OD.CONSENSUAL || "" }}</td>
+          <td>{{ jsonTotal.reflexoPulpilar.OE.CONSENSUAL || "" }}</td>
         </tr>
         <tr>
           <td>Acomodativo</td>
+          <td>{{ jsonTotal.reflexoPulpilar.OD.FOTOMOTOR || "" }}</td>
+          <td>{{ jsonTotal.reflexoPulpilar.OE.FOTOMOTOR || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -226,33 +322,58 @@
       <tbody>
         <tr>
           <td>Cílios</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.cilios || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.cilios || "" }}</td>
         </tr>
         <tr>
           <td>Sobrancelhas</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.sombrancelha || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.sombrancelha || "" }}</td>
         </tr>
         <tr>
           <td>Pálpebras</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.palpebra || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.palpebra || "" }}</td>
         </tr>
         <tr>
           <td>Conjuntiva</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.conjuntiva || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.conjuntiva || "" }}</td>
         </tr>
         <tr>
           <td>Esclerótica</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.esclerotica || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.esclerotica || "" }}</td>
         </tr>
         <tr>
           <td>Córnea</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.cornea || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.cornea || "" }}</td>
         </tr>
         <tr>
           <td>Íris</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.iris || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.iris || "" }}</td>
         </tr>
         <tr>
           <td>Pupila</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.pupila || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.pupila || "" }}</td>
         </tr>
         <tr>
           <td>Cristalino</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.cristalina || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.cristalina || "" }}</td>
         </tr>
         <tr>
           <td>Câmara Anterior</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.camaraAnterior || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.camaraAnterior || "" }}</td>
+        </tr>
+        <tr>
+          <td>Observação</td>
+          <td>{{ jsonTotal.biomicro[0].olhoDireito.obs || "" }}</td>
+          <td>{{ jsonTotal.biomicro[0].olhoEsquerdo.obs || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -268,21 +389,38 @@
       <tbody>
         <tr>
           <td>Papila</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.papila || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.papila || "" }}</td>
         </tr>
         <tr>
           <td>Escavação</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.escavacao || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.escavacao || "" }}</td>
         </tr>
         <tr>
           <td>Mácula</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.macula || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.macula || "" }}</td>
         </tr>
         <tr>
           <td>Fixação</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.fixacao || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.fixacao || "" }}</td>
         </tr>
         <tr>
           <td>Cor</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.cor || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.cor || "" }}</td>
         </tr>
         <tr>
           <td>Relação A/V</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.relacaoAv || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.relacaoAv || "" }}</td>
+        </tr>
+        <tr>
+          <td>Observação</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoDireito.obs || "" }}</td>
+          <td>{{ jsonTotal.oftalmoscopia[0].olhoEsquerdo.obs || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -333,9 +471,22 @@
       <tbody>
         <tr>
           <td>SC</td>
+          <td></td>
+          <td>{{ jsonTotal.forometria.CC.LONGE || "" }}</td>
+          <td>{{ jsonTotal.forometria.CC.CM40 }}</td>
+          <td>{{ jsonTotal.forometria.CC.CM20 }}</td>
         </tr>
         <tr>
           <td>CC</td>
+          <td></td>
+          <td>{{ jsonTotal.forometria.SC.LONGE || "" }}</td>
+          <td>{{ jsonTotal.forometria.SC.CM40 || "" }}</td>
+          <td>{{ jsonTotal.forometria.SC.CM20 || "" }}</td>
+        </tr>
+
+        <tr>
+          <td>Técnica</td>
+          <td>{{ jsonTotal.forometria.TECNICA || "" }}</td>
         </tr>
       </tbody>
     </table>
@@ -353,97 +504,29 @@
       <tbody>
         <tr>
           <td>OD</td>
-          <td>
-            <input
-              type="number"
-              step="0.25"
-              class="form-control num form-control form-control-sm"
-              id="__BVID__491"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              max="0"
-              step="0.25"
-              class="form-control num form-control form-control-sm"
-              id="__BVID__492"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              min="0"
-              max="360"
-              step="5"
-              class="form-control form-control form-control-sm"
-              id="__BVID__493"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              step="1"
-              class="form-control num form-control form-control-sm"
-              id="__BVID__494"
-            />
-          </td>
+          <td>{{ jsonTotal.rxFinal.OD.ESFERICO }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.CILINDRICO }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.EIXO }}</td>
+          <td>{{ jsonTotal.rxFinal.OD.AV }}</td>
         </tr>
         <tr>
           <td>OE</td>
-          <td>
-            <input
-              type="number"
-              step="0.25"
-              class="form-control num form-control form-control-sm"
-              id="__BVID__495"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              max="0"
-              step="0.25"
-              class="form-control num form-control form-control-sm"
-              id="__BVID__496"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              min="0"
-              max="360"
-              step="5"
-              class="form-control form-control form-control-sm"
-              id="__BVID__497"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              step="1"
-              class="form-control num form-control form-control-sm"
-              id="__BVID__498"
-            />
-          </td>
+          <td>{{ jsonTotal.rxFinal.OE.ESFERICO }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.CILINDRICO }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.EIXO }}</td>
+          <td>{{ jsonTotal.rxFinal.OE.AV }}</td>
         </tr>
         <tr>
           <td>Adição</td>
-          <td colspan="2">
-            <input
-              type="text"
-              class="form-control form-control form-control-sm"
-              id="__BVID__499"
-            />
-          </td>
+          <td colspan="2">{{ jsonTotal.rxFinal.ADICAO }}</td>
           <td>AV. Perto</td>
-          <td>
-            <input
-              type="text"
-              class="form-control form-control form-control-sm"
-              id="__BVID__500"
-            />
-          </td>
+          <td>{{ jsonTotal.rxFinal.AV_PERTO }}</td>
+        </tr>
+        <tr>
+          <td>Tipo lente:</td>
+          <td colspan="2">{{ jsonTotal.rxFinal.TIPO_LENTE }}</td>
+          <td>Tratamento:</td>
+          <td>{{ jsonTotal.rxFinal.TRATAMENTO }}</td>
         </tr>
       </tbody>
     </table>
@@ -470,10 +553,12 @@ import serviceFichaClinica from "../../services/fichaClinica";
 export default {
   async mounted() {
     await this.readConsulta();
+    await this.anamneseSintomas();
     this.imprimir();
   },
   data() {
     return {
+      newArrayClinica: [],
       jsonTotal: [{}],
       acuidade: [{}],
       adicao: [{}],
@@ -567,7 +652,7 @@ export default {
         { text: "Força a Visão", value: "FORCAVISAO" },
         { text: "Cansaço Visual", value: "CANSACOVISUAL" },
         { text: "Sensibilidade a Luz", value: "SENSIBILIDADELUZ" },
-        { text: "Visão Dupla", value: "VISAO_DUPLA" },
+        { text: "Visão Dupla", value: " VISAO_DUPLA" },
         { text: "Fotopsias - fosfeno", value: "FOTOPSIAS" },
         { text: "Miodesopsia", value: "MIODESOPSIA" },
         { text: "Enxaqueca", value: "EXAQUECA" },
@@ -588,8 +673,20 @@ export default {
   methods: {
     async readConsulta() {
       const { data } = await serviceFichaClinica.read(this.$route.params.uuid);
-      this.jsonTotal = data;
-      console.log(this.jsonTotal.ficha[0].json_fichaClinica);
+      this.jsonTotal = data.ficha[0].json_fichaClinica;
+    },
+
+    anamneseSintomas() {
+      const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
+
+      this.newArrayClinica = this.sintomas
+        .map((item) => item.value)
+        .filter((a) => keysJsonTotal.includes(a));
+
+      this.sintomas = this.sintomas.filter(
+        (a) => this.newArrayClinica.filter((b) => b == a.value).length == 1
+      );
+      console.log(this.jsonTotal);
     },
 
     imprimir() {
