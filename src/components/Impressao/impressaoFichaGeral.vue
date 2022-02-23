@@ -12,7 +12,6 @@
       <tbody>
         <tr v-for="sintoma in sintomas" :key="sintoma.value">
           <td>{{ sintoma.text }}</td>
-          <td>X</td>
         </tr>
       </tbody>
     </table>
@@ -440,7 +439,7 @@
       </tbody>
     </table>
 
-    <table class="table table-sm" id="retinoscopia">
+    <table class="table table-sm" id="estatica">
       <thead>
         <tr>
           <th></th>
@@ -451,13 +450,79 @@
       <tbody>
         <tr>
           <td></td>
-          <td>{{ jsonTotal.retinoscopia.OD || "" }}</td>
-          <td>{{ jsonTotal.retinoscopia.OE || "" }}</td>
+          <td>{{ jsonTotal.retinoscopia.OD }}</td>
+          <td>{{ jsonTotal.retinoscopia.OE }}</td>
         </tr>
         <tr>
           <td>AV</td>
-          <td>{{ jsonTotal.retinoscopia.AV_OD || "" }}</td>
-          <td>{{ jsonTotal.retinoscopia.AV_OE || "" }}</td>
+          <td>{{ jsonTotal.retinoscopia.AV_OD }}</td>
+          <td>{{ jsonTotal.retinoscopia.AV_OE }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-sm" id="subjetivo">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td>{{ jsonTotal.subjetivo.OD }}</td>
+          <td>{{ jsonTotal.subjetivo.OE }}</td>
+        </tr>
+        <tr>
+          <td>AV</td>
+          <td>{{ jsonTotal.subjetivo.AV_OD }}</td>
+          <td>{{ jsonTotal.subjetivo.AV_OE }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-sm" id="afinamento">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td>{{ jsonTotal.afinamento.OD }}</td>
+          <td>{{ jsonTotal.afinamento.OE }}</td>
+        </tr>
+        <tr>
+          <td>AV</td>
+          <td>{{ jsonTotal.afinamento.AVD }}</td>
+          <td>{{ jsonTotal.afinamento.AVE }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-sm" id="adicao">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Olho Direito</th>
+          <th scope="col">Olho Esquerdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td>{{ jsonTotal.adicao.OD }}</td>
+          <td>{{ jsonTotal.adicao.OE }}</td>
+        </tr>
+        <tr>
+          <td>AV</td>
+          <td>{{ jsonTotal.adicao.AV_OD }}</td>
+          <td>{{ jsonTotal.adicao.AV_OE }}</td>
         </tr>
       </tbody>
     </table>
@@ -558,6 +623,11 @@ export default {
   async mounted() {
     await this.readConsulta();
     await this.anamneseSintomas();
+    await this.anamneseDoencaOcular();
+    await this.anamneseDoencaSistemica();
+    await this.anamneseMedicamentos();
+    await this.anamneseOutrasInformacoes();
+    await this.anamneseAntecedentesFamiliar();
     this.imprimir();
   },
   data() {
@@ -639,6 +709,30 @@ export default {
             CONSENSUAL: "",
             FOTOMOTOR: "",
           },
+        },
+        adicao: {
+          OD: "",
+          OE: "",
+          AV_OD: "",
+          AV_OE: "",
+        },
+        afinamento: {
+          OD: "",
+          OE: "",
+          AV_OD: "",
+          AV_OE: "",
+        },
+        subjetivo: {
+          OD: "",
+          OE: "",
+          AV_OD: "",
+          AV_OE: "",
+        },
+        estatica: {
+          OD: "",
+          OE: "",
+          AV_OD: "",
+          AV_OE: "",
         },
       },
       acuidade: [{}],
@@ -768,6 +862,66 @@ export default {
         (a) => aux.filter((b) => b == a.value).length == 1
       );
       console.log(this.jsonTotal);
+    },
+
+    anamneseDoencaOcular() {
+      const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
+
+      const aux = this.doencaOcular
+        .map((item) => item.value)
+        .filter((a) => keysJsonTotal.includes(a));
+
+      this.doencaOcular = this.doencaOcular.filter(
+        (a) => aux.filter((b) => b == a.value).length == 1
+      );
+    },
+
+    anamneseDoencaSistemica() {
+      const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
+
+      const aux = this.doencaSistematica
+        .map((item) => item.value)
+        .filter((a) => keysJsonTotal.includes(a));
+
+      this.doencaSistematica = this.doencaSistematica.filter(
+        (a) => aux.filter((b) => b == a.value).length == 1
+      );
+    },
+
+    anamneseMedicamentos() {
+      const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
+
+      const aux = this.medicamentos
+        .map((item) => item.value)
+        .filter((a) => keysJsonTotal.includes(a));
+
+      this.medicamentos = this.medicamentos.filter(
+        (a) => aux.filter((b) => b == a.value).length == 1
+      );
+    },
+
+    anamneseOutrasInformacoes() {
+      const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
+
+      const aux = this.options
+        .map((item) => item.value)
+        .filter((a) => keysJsonTotal.includes(a));
+
+      this.options = this.options.filter(
+        (a) => aux.filter((b) => b == a.value).length == 1
+      );
+    },
+
+    anamneseAntecedentesFamiliar() {
+      const keysJsonTotal = Object.keys(this.jsonTotal.anamnese);
+
+      const aux = this.antecedentesFamiliar
+        .map((item) => item.value)
+        .filter((a) => keysJsonTotal.includes(a));
+
+      this.antecedentesFamiliar = this.antecedentesFamiliar.filter(
+        (a) => aux.filter((b) => b == a.value).length == 1
+      );
     },
 
     imprimir() {
@@ -934,46 +1088,37 @@ export default {
 
       doc.setFontSize(8).setTextColor(0, 0, 255).text("Estática", 115, 102);
       doc.autoTable({
-        html: "#retinoscopia",
+        html: "#estatica",
         margin: { horizontal: 115 },
         styles: { fontSize: 7 },
         startY: 105,
         tableWidth: 90,
       });
 
-      doc.setFontSize(8).setTextColor(0, 0, 255).text("Dinâmica", 115, 133);
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Subjetivo", 115, 130);
       doc.autoTable({
-        html: "#retinoscopia",
+        html: "#subjetivo",
         margin: { horizontal: 115 },
         styles: { fontSize: 7 },
-        startY: 135,
+        startY: 132,
         tableWidth: 90,
       });
 
-      doc.setFontSize(8).setTextColor(0, 0, 255).text("Subjetivo", 115, 160);
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Afinamento", 115, 160);
       doc.autoTable({
-        html: "#retinoscopia",
+        html: "#afinamento",
         margin: { horizontal: 115 },
         styles: { fontSize: 7 },
         startY: 162,
         tableWidth: 90,
       });
 
-      doc.setFontSize(8).setTextColor(0, 0, 255).text("Afinamento", 115, 190);
+      doc.setFontSize(8).setTextColor(0, 0, 255).text("Adição", 115, 188);
       doc.autoTable({
-        html: "#retinoscopia",
+        html: "#adicao",
         margin: { horizontal: 115 },
         styles: { fontSize: 7 },
-        startY: 192,
-        tableWidth: 90,
-      });
-
-      doc.setFontSize(8).setTextColor(0, 0, 255).text("Adição", 115, 218);
-      doc.autoTable({
-        html: "#retinoscopia",
-        margin: { horizontal: 115 },
-        styles: { fontSize: 7 },
-        startY: 220,
+        startY: 190,
         tableWidth: 90,
       });
 

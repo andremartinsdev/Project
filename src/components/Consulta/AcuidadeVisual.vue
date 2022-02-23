@@ -132,7 +132,7 @@
           size="sm"
           class="mb-2 mr-sm-2 mb-sm-0"
           placeholder="VL"
-          v-model="acuidade[0].cc.olhoEsquerto.ph"
+          v-model="acuidade[0].cc.olhoEsquerto.vl"
           @change="enviarAcuidade"
         ></b-input>
         <b-input-group prepend="°" size="sm" class="mb-2 mr-sm-2 mb-sm-0">
@@ -201,9 +201,9 @@
 import moldura from "../../assets/moldura.png";
 import logoOlho from "../../assets/LogoOlho.jpg";
 import jsPDF from "jspdf";
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 // import baseUrl from '../../../vue.config'
-import rodape from '../../services/rodape'
+import rodape from "../../services/rodape";
 
 export default {
   props: {
@@ -217,11 +217,11 @@ export default {
       type: Boolean,
     },
   },
-  computed:{
+  computed: {
     ...mapState({
-       dadosClinica: (state) => state.dadosClinica,
-      uuidClinica: (state) => state.uuidClinica
-    })
+      dadosClinica: (state) => state.dadosClinica,
+      uuidClinica: (state) => state.uuidClinica,
+    }),
   },
   data() {
     return {
@@ -373,13 +373,12 @@ export default {
     },
   },
 
-  
   methods: {
     enviarAcuidade() {
       this.$store.commit("ACUIDADE", this.acuidade);
     },
 
-   async createPDF(download) {
+    async createPDF(download) {
       let pdfName = "Anamnese";
       var doc = new jsPDF();
       var linha = 85;
@@ -500,8 +499,8 @@ export default {
           null
         );
       });
-      
-       await rodape(doc, this.dadosClinica, this.uuidClinica)
+
+      await rodape(doc, this.dadosClinica, this.uuidClinica);
       if (download) {
         doc.save(pdfName + ".pdf");
         return;
