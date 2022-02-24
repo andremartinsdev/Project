@@ -1,5 +1,11 @@
 <template>
   <div>
+    <iframe
+      :src="fichaGeral"
+      style="border: none"
+      hidden
+      title="Iframe Example"
+    ></iframe>
     <Sidebar />
     <b-container fluid class="consulta">
       <div class="mb-5">
@@ -639,13 +645,13 @@
                         </td>
 
                         <td>
-                          <router-link
-                            :to="`/ImpressaoFichaGeral/${ficha.uuid}`"
+                          <b-button
+                            variant="success"
+                            class="mb-3"
+                            size="sm"
+                            @click="imprimirFichaGeral(ficha.uuid)"
+                            >Imprimir</b-button
                           >
-                            <b-button variant="success" class="mb-3" size="sm"
-                              >Imprimir</b-button
-                            >
-                          </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -712,6 +718,7 @@ export default {
 
   data() {
     return {
+      fichaGeral: "",
       imgWhats: imgWhats,
       prescricoes: [],
       pacienteSelectedDeclaracao: null,
@@ -814,6 +821,9 @@ export default {
     }),
   },
   methods: {
+    imprimirFichaGeral(uuid) {
+      this.fichaGeral = `/ImpressaoFichaGeral/${uuid}`;
+    },
     imprimirPrescri() {
       const doc = new jsPDF();
 
